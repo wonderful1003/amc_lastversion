@@ -1,13 +1,13 @@
 package com.amc.service.domain;
 
-public class OpenAlarm {
+public class Alarm {
 
 		int openAlarmNo;
 		int screenContentNo;
 		String userId;
 		String openAlarmRegDate;
 		
-		public OpenAlarm() {
+		public Alarm() {
 			super();
 		}
 		
