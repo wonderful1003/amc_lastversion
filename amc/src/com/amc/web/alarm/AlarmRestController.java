@@ -8,16 +8,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.amc.service.alarm.AlarmService;
 
+
 @Controller
 @RequestMapping("/alarm/*")
 public class AlarmRestController {
 
+	/*
 	@Autowired
-	@Qualifier("alarmServiceImpl")
+	@Qualifier("alarmServiceImpl") */
 	AlarmService alarmService;
+	
+	
 
 	public AlarmRestController() {
 		System.out.println("PurchaseController() default Constructor");
+		
 	}
 	
 	@RequestMapping("/json/alarm/deleteCancelAlarm")
@@ -26,5 +31,6 @@ public class AlarmRestController {
 		return null;
 		
 	}
+
 	
 }

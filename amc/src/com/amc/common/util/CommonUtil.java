@@ -42,6 +42,13 @@ public class CommonUtil {
 		return CommonUtil.null2str(org, "");
 	}
 
+	public static String eliminatorLast(String str) {		
+	    if (str.length() > 0 && str.charAt(str.length()-1)==',') {
+	      str = str.substring(0, str.length()-1);
+	    }
+	    return str;		
+	}
+
 	public static String toDateStr(String dateStr) {
 		if (dateStr == null)
 			return "";

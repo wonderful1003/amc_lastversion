@@ -2,14 +2,47 @@ package com.amc.service.movie;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.ibatis.session.SqlSession;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
+
 import com.amc.common.Search;
 import com.amc.service.domain.Movie;
 import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
+import com.amc.service.domain.onetime.MovieList;
 import com.amc.service.domain.onetime.Twitter;
 
+import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
+
+//@Repository("movieApiDAOImpl")
 public abstract class MovieDAOAdapter implements MovieDAO {
+	
+	MovieDAO movieDAO;
+	
+	//Field
+	@Autowired
+	@Qualifier("sqlSessionTemplate")
+	private SqlSession sqlSession;
+	
+	public void setSqlSession(SqlSession sqlSession) {
+		System.out.println("::" + getClass() +" .setSqlsession Call....");
+		this.sqlSession = sqlSession;
+	}
+
+	//Constructor
+	public MovieDAOAdapter() {
+		System.out.println("::" + getClass() +" default Construcor call....");
+	} 
+
+	
+	
 	@Override
 	public List<Movie> getMoiveAdminList(Search search) {
 		// TODO Auto-generated method stub
@@ -58,12 +91,13 @@ public abstract class MovieDAOAdapter implements MovieDAO {
 		return null;
 	}
 
-	@Override
-	public List<MovieAPI> getAPIMoiveList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	public List<MovieList> getAPIMoiveList() throws Exception{
 
+		return null;
+		}
+				
+	
 	@Override
 	public int addMovie(MovieAPI movieAPI) {
 		// TODO Auto-generated method stub

@@ -7,6 +7,7 @@ import com.amc.service.domain.Movie;
 import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
+import com.amc.service.domain.onetime.MovieList;
 import com.amc.service.domain.onetime.Twitter;
 
 public interface MovieService {
@@ -37,7 +38,7 @@ public interface MovieService {
 	// RESTCONTROLLER 타는 부분
 
 	// 등록을 누른 후 외부 영화 API 목록 불러오기
-	public List<MovieAPI> getAPIMoiveList();
+	public List<MovieList> getAPIMoiveList() throws Exception;
 
 	// submit을 누른후 외부 영화 API 상세 + 네이버 영화 포스터 API를 가져온 후 DB등록
 	public int addMovie(MovieAPI movieAPI);

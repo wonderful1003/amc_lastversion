@@ -1,16 +1,64 @@
 package com.amc.service.movie.impl;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import com.amc.common.Search;
+import com.amc.common.util.CommonUtil;
 import com.amc.service.domain.Movie;
 import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
+import com.amc.service.domain.onetime.MovieList;
+import com.amc.service.domain.onetime.Screen;
 import com.amc.service.domain.onetime.Twitter;
+import com.amc.service.movie.MovieDAO;
+import com.amc.service.movie.MovieDAOAdapter;
 import com.amc.service.movie.MovieService;
 
+
+import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
+import kr.or.kobis.kobisopenapi.consumer.rest.exception.OpenAPIFault;
+import kr.or.kobis.kobisopenapi.consumer.soap.movie.MovieListResult;
+
+
+@Service("movieServiceImpl")
 public class MovieServiceImpl implements MovieService {
+	
+	///Field
+	
+	
+	@Autowired
+	@Qualifier("movieDAOImpl")
+	
+	//@Qualifier("movieApiDAOImpl")	
+	
+	private MovieDAO movieDAO;
+	
+	public void setMovieDAO(MovieDAO movieDAO) {
+		this.movieDAO = movieDAO;
+	}
+	
+	///Constructor
+	public MovieServiceImpl() {
+		System.out.println(this.getClass());		
+	}
 
 	@Override
 	public List<Movie> getMoiveAdminList(Search search) {
@@ -61,16 +109,355 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	public List<MovieAPI> getAPIMoiveList() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<MovieList> getAPIMoiveList() throws Exception {
+		
+		System.out.println("MovieServieImpl getAPIMoiveList()" );
+		return   movieDAO.getAPIMoiveList();
+		
 	}
 
 	@Override
 	public int addMovie(MovieAPI movieAPI) {
-		// TODO Auto-generated method stub
-		return 0;
+		// 발급키
+		
+		System.out.println("MovieServiceImp addMovie called....");
+		
+		 		MovieDAO movieDAO = null ;
+		 	
+		 
+				String key = "430156241533f1d058c603178cc3ca0e";
+				
+				// Variables declare
+				String actorsNm = "";
+				String delimeter = ",";
+				String movieCountry = "";
+				String directorNms = "";
+				String directorNm = "";		
+				String watchGradeNm = "";
+				String genreNm ="";
+				String genreNms ="";
+				String postUrl = "";
+				String movieEndDate = "";		
+				String syonpsis = "";
+				String trailer = "";
+				
+				
+				
+		        // split()을 이용해 '-'를 기준으로 문자열을 자른다.
+		        // split()은 지정한 문자를 기준으로 문자열을 잘라 배열로 반환한다.
+				
+			
+				String movieCd = movieAPI.getMovieCd();
+				
+				System.out.println("MovieServiceImp addMovie :: movieCd " + movieCd);
+	     
+	            movieEndDate = movieAPI.getMovieEndDate();
+	            syonpsis = movieAPI.getSyonpsis();
+	            trailer = movieAPI.getTrailer();
+		     
+		        
+		        System.out.println("movieEndDate" + movieEndDate);
+		        System.out.println("syonpsis" + syonpsis);
+		        System.out.println("trailer" + trailer);
+				
+				// KOBIS 오픈 API Rest Client를 통해 호출
+			    KobisOpenAPIRestService service = new KobisOpenAPIRestService(key);
+			    
+				// 영화코드조회 서비스 호출 (boolean isJson, movieCd)  
+			   
+			    String movieContentInfo = null;
+				try {
+					movieContentInfo = service.getMovieInfo(true, movieCd);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			    
+			    JSONObject jsonObject = null;
+			    String movieInfoResult = null;
+			    JSONObject jsonmovieInfoResult = null;
+			    JSONObject jsonmovieInfo = null;
+			    String movieInfo = null;
+			    String showTm = null;
+			    String movieNm = null;
+			    String openDt = null;
+				try {
+					jsonObject = new JSONObject(movieContentInfo);			
+					movieInfoResult = jsonObject.getString("movieInfoResult");
+					jsonmovieInfoResult = new JSONObject(movieInfoResult);
+					movieInfo = jsonmovieInfoResult.getString("movieInfo");
+					jsonmovieInfo = new JSONObject(movieInfo);
+					showTm = jsonmovieInfo.getString("showTm");
+					movieNm = jsonmovieInfo.getString("movieNm");
+					openDt = jsonmovieInfo.getString("openDt");
+				} catch (JSONException e1) {
+			
+					e1.printStackTrace();
+				}
+			
+			    
+			    System.out.println("showTm :: " + showTm);
+			    System.out.println("movieNm :: " + movieNm);
+			    System.out.println("openDt :: " + openDt);
+		    	    
+			    JSONArray jsonArray = null;
+				try {
+					jsonArray = jsonmovieInfo.getJSONArray("audits");
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			    System.out.println("jsonArray-->"+jsonArray);
+			  
+			    
+			    for (int index = 0, total = jsonArray.length(); index < total; index++) {
+			         try {
+						jsonObject = jsonArray.getJSONObject(index);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			         try {
+						watchGradeNm = jsonObject.getString("watchGradeNm");
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		             System.out.println("watchGradeNm :" + watchGradeNm  );  
+			    }                           
+			    
+			    JSONArray actorsArray = null;
+				try {
+					actorsArray = jsonmovieInfo.getJSONArray("actors");
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}  
+			    List<String> actorList = new ArrayList<String>();
+			    
+			    if (actorsArray.length() != 0) {	    
+				    System.out.println("actorsArray-->"+actorsArray);
+				    
+					    for (int index = 0, total = actorsArray.length(); index < total; index++) {
+				         try {
+							jsonObject = actorsArray.getJSONObject(index);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				         try {
+							actorsNm = jsonObject.getString("peopleNm");
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				         
+				      
+				         actorList.add(actorsNm);
+				        
+			         
+				         //actorNms += actorsNm + delimeter;
+		 	             
+				    }  
+					    
+				
+			
+				    //actorNms = CommonUtil.eliminatorLast(actorNms);		    
+				    //System.out.println("actorNms :" + actorNms  ); 
+				    
+			    } else {
+			    	System.out.println("actorsArray.length() " + actorsArray.length());
+			    }   
+			    
+			    JSONArray directorsArray = null;
+				try {
+					directorsArray = jsonmovieInfo.getJSONArray("directors");
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			    List<String> directorList = new ArrayList<String>();
+			    if (directorsArray.length() != 0) {	    
+				    System.out.println("directorsArray-->"+directorsArray);
+				    
+					    for (int index = 0, total = directorsArray.length(); index < total; index++) {
+				         try {
+							jsonObject = directorsArray.getJSONObject(index);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				         try {
+							directorNm = jsonObject.getString("peopleNm");
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				         
+
+				         directorList.add(directorNm);
+				        
+				         
+				         // directorNms += actorsNm + delimeter;
+		 	             
+				    }   
+			
+					//directorNms = CommonUtil.eliminatorLast(directorNms);		    
+				    //System.out.println("directorNms :" + directorNms  ); 
+				    
+			    } else {
+			    	System.out.println("directorsArray.length() " + directorsArray.length());
+			    }   
+			    
+			    JSONArray genresArray = null;
+				try {
+					genresArray = jsonmovieInfo.getJSONArray("genres");
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			    List<String> genreList = new ArrayList<String>();
+			    if (genresArray.length() != 0) {	    
+				    System.out.println("genresArray-->"+ genresArray);
+				    
+					    for (int index = 0, total = genresArray.length(); index < total; index++) {
+				         try {
+							jsonObject = genresArray.getJSONObject(index);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				         try {
+							genreNm = jsonObject.getString("genreNm");
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				         
+				         genreList.add(genreNm);
+				         
+				         // genreNms += genreNm + delimeter;
+		 	             
+				    }   
+					
+					//genreNms = CommonUtil.eliminatorLast(genreNms);		    
+				    //System.out.println("genreNms :" + genreNms  ); 
+				    
+			    } else {
+			    	System.out.println("genresArray.length() " + genresArray.length());
+			    }   
+				
+			    
+				
+			    System.out.println("movieContentInfo" + movieContentInfo);
+			    
+			    //
+			    //Naver API call for moviePoster Image Featch
+			    //
+			    
+			    String clientId = "IHe0VrmfNN7Bh383bpqD";//애플리케이션 클라이언트 아이디값";
+			    String clientSecret = "iyFkgy3twl";//애플리케이션 클라이언트 시크릿값";
+
+			    try {
+			   	    String title = URLEncoder.encode(movieNm, "UTF-8");
+			   	    String yearf = URLEncoder.encode("2017", "UTF-8");
+			   	    String yeart = URLEncoder.encode("2017", "UTF-8");
+			   	    
+			   	    String apiURL = "https://openapi.naver.com/v1/search/movie.json?query="+ title +
+			   	    		"&yearfrom=" + yearf + "&yearto=" + yeart;
+			   	    //		"&yearfrom=" + yearf + "&yearto=" + yeart;
+			   	    		 // json 결과
+			   	    //String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ title; // xml 결과
+			   	    URL url = new URL(apiURL);
+			   	    HttpURLConnection con = (HttpURLConnection)url.openConnection();
+			   	    con.setRequestMethod("GET");
+			   	    con.setRequestProperty("X-Naver-Client-Id", clientId);
+			   	    con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
+			   	    int responseCode = con.getResponseCode();
+			   	    BufferedReader br;
+			     
+			   	    if(responseCode==200) { // 정상 호출
+			           br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			           
+			           String line = null;
+			           String values = new String();
+			           final StringBuffer buffer = new StringBuffer(2048);
+			           while ((line = br.readLine()) != null) {	               
+			               values += line;
+			           }
+			           
+			           System.out.println("Naver API info values : " + values.toString());
+			           
+			        
+			           jsonObject = new JSONObject(values);   
+			          
+			           JSONArray itemsArray = jsonObject.getJSONArray("items");
+			           System.out.println("itemsArray-->"+itemsArray);
+			          
+			   	    
+				   	   for (int index = 0, total = itemsArray.length(); index < total; index++) {
+				   	         jsonObject = itemsArray.getJSONObject(index);
+				   	         postUrl = jsonObject.getString("image");
+				   	         System.out.println("postUrl :" + postUrl  );  
+				   	    }            
+			    
+			           
+			        } else {  // 에러 발생
+			           br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+			        }
+			   	    
+			    } catch(Exception e){
+		            System.out.println(e.getMessage());
+		        }
+			    
+			    //Screen Domain loading 
+			    Screen screen = new Screen();
+			    
+			    /* Movie  movie = new Movie();
+			
+			    
+			    movie.setMovieOpenDate(openDt);
+				movie.setActor(actorList);
+				movie.setDirector(directorList);
+				movie.setGenre(genreList);
+				movie.setRating(watchGradeNm);
+				movie.setMovieTitle(movieNm);
+				movie.setRunningTime(showTm);
+				movie.setPoster(postUrl);
+				movie.setMovieEndDate(movieEndDate);
+				movie.setSynopsis(syonpsis);
+				movie.setTrailer(trailer); */
+					
+			    screen.setOpenDt(openDt);
+			    screen.setActors(actorsNm);
+		    	screen.setDirector(directorNms);	
+		    	screen.setGenres(genreNms);
+			    screen.setWatchGradeNm(watchGradeNm);
+			    screen.setMovieNm(movieNm);
+			    screen.setPostUrl(postUrl);	  
+			    screen.setShowTm(showTm);
+			    screen.setEndDt(movieEndDate);
+			    screen.setSynopsis(syonpsis);
+			    screen.setTrailer(trailer);
+			    
+			    System.out.println("actorNms     ::" + screen.getActors());
+			    System.out.println("directorNms  ::" + screen.getDirector());
+			    System.out.println("genreNms     ::" + screen.getGenres());
+			    System.out.println("movieNm      ::" + screen.getMovieNm());
+			    System.out.println("postUrl      ::" + screen.getPostUrl());
+			    System.out.println("watchGradeNm ::" + screen.getWatchGradeNm());
+			    System.out.println("showTm       ::" + screen.getShowTm());
+			    System.out.println("openDt       ::" + screen.getOpenDt());
+			    System.out.println("movieEndDate ::" + screen.getEndDt());
+			    System.out.println("syonpsis     ::" + screen.getSynopsis());
+			    System.out.println("trailer      ::" + screen.getTrailer());
+		    
+				return   movieDAO.addMovie(movieAPI);
+
+	
 	}
+				
+	
 
 	@Override
 	public int addWish(int movieNo) {
