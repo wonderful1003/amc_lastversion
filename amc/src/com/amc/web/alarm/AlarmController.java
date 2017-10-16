@@ -26,6 +26,7 @@ public class AlarmController {
 	@RequestMapping(value="getCancelAlarmList", method=RequestMethod.GET)
 	public String getCancelAlarmList(@ModelAttribute("Search")Search search, Model model) throws Exception{
 		
+		Model a;
 		alarmService.getCancelAlarmList(search);
 		
 		return null;

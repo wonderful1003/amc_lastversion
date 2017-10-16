@@ -16,7 +16,7 @@ import com.amc.service.cinema.CinemaService;
 public class CinemaController {
 
 	@Autowired
-	@Qualifier("alarmServiceImpl")
+	@Qualifier("cinemaServiceImpl")
 	private CinemaService clarmService;
 	
 	public CinemaController(){
