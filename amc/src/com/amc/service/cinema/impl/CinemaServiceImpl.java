@@ -1,5 +1,7 @@
 package com.amc.service.cinema.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,9 +25,13 @@ public class CinemaServiceImpl implements CinemaService {
 	}
 
 	@Override
-	public Map<String, List<Object>> unifiedSearch(Search search) {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, Object> unifiedSearch(Search search) {
+		
+		Map<String, Object> unifiedSearch = new HashMap<String,Object>();
+		
+		unifiedSearch = cinemaDAO.unifiedSearch(search);
+			
+		return unifiedSearch;
 	}
 
 	@Override

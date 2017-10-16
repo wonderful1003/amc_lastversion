@@ -7,5 +7,29 @@
  					
 <mapper namespace="ProductMapper">
   	
-  	
+  	<resultMap id="productSelectMap" type="com.amc.service.domain.Product">
+  			<result property="prodNo" column="prod_no" jdbcType="NUMERIC"/>
+  			<result property="prodPrice" column="prod_price" jdbcType="NUMERIC"/>
+  			<result property="totalStock" column="total_stock" jdbcType="NUMERIC"/>
+  			<result property="salesStock" column="sales_stock" jdbcType="NUMERIC"/>
+  			<result property="stock" column="stock" jdbcType="NUMERIC"/>
+  			<result property="expiryDate" column="expiry_date" jdbcType="DATE"/>
+  			<result property="prodImage" column="prod_image" jdbcType="VARCHAR"/>
+  			<result property="prodName" column="prod_name" jdbcType="VARCHAR"/>
+  			<result property="prodDetail" column="prod_detail" jdbcType="VARCHAR"/>
+  			<result property="prodSetInfo" column="prod_set_info" jdbcType="VARCHAR"/>
+  			<result property="salesOpenDate" column="sales_opendate" jdbcType="DATE"/>
+  			<result property="salesEndDate" column="sales_enddate" jdbcType="DATE"/>
+  			<result property="prodRegDate" column="prod_regdate" jdbcType="DATE"/>
+  			<result property="prodType" column="prod_type" jdbcType="CHAR"/>
+	</resultMap>
+	
+  	<select id="getUniProductList" parameterType="string" resultMap="productSelectMap">
+		
+		SELECT prod_no, prod_regdate, prod_type, prod_name, prod_price, prod_image
+		FROM Product
+		WHERE prod_name LIKE '%${value}%'
+		
+	</select>
+  
 </mapper>
