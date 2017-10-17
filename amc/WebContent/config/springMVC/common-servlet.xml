@@ -15,12 +15,9 @@
 
 
 	<context:component-scan base-package="com.amc.web">
-		<context:include-filter type="annotation"
-								expression="org.springframework.stereotype.Controller"/>
-		<context:exclude-filter type="annotation"
-								expression="org.springframework.stereotype.Service"/>
-		<context:exclude-filter type="annotation"
-								expression="org.springframework.stereotype.Repository"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
 	</context:component-scan>
 
 	
@@ -54,7 +51,7 @@
 			:: 아래와 같이 서술적 기술 Test 후 주석처리해서 Test 할것 :: Default / Zero Configuration --> 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
     	<property name="maxUploadSize" value="5242880000"></property>
-    	<property name="uploadTempDir" ref="fileSystemResource"/>
+    	<!-- <property name="uploadTempDir" ref="fileSystemResource"/> -->
     </bean>
     
 <!--     <bean id="fileSystemResource" class="org.springframework.core.io.FileSystemResource">
