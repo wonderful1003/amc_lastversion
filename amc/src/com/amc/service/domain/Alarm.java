@@ -2,6 +2,7 @@ package com.amc.service.domain;
 
 public class Alarm {
 
+		//! °ø°Ý·Â
 		int alarmNo;
 		int screenContentNo;
 		String userId;

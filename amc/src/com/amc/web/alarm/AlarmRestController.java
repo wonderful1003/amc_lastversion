@@ -20,6 +20,11 @@ public class AlarmRestController {
 		System.out.println("PurchaseController() default Constructor");
 	}
 	
+	/**
+	 * 
+	 * @param cancelAlarmNo
+	 * @return
+	 */
 	@RequestMapping("/json/alarm/deleteCancelAlarm")
 	public String deleteCancelAlarm(@RequestParam("CancelAlarmNo")int cancelAlarmNo){
 		
