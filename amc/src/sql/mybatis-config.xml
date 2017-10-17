@@ -13,12 +13,11 @@
 <typeAliases>
 	<typeAlias alias="search" 		 type="com.amc.common.Search" />
 	<typeAlias alias="booking" 		 type="com.amc.service.domain.Booking" />
-	<typeAlias alias="cancelAlarm" 	 type="com.amc.service.domain.CancelAlarm" />
 	<typeAlias alias="comment" 		 type="com.amc.service.domain.Comment" />
 	<typeAlias alias="freeBoard" 	 type="com.amc.service.domain.FreeBoard" />
 	<typeAlias alias="movie" 		 type="com.amc.service.domain.onetime.Screen" />
 	<typeAlias alias="movieAPI" 	 type="com.amc.service.domain.MovieAPI" />
-	<typeAlias alias="openAlarm" 	 type="com.amc.service.domain.OpenAlarm" />
+	<typeAlias alias="alarm" 	 type="com.amc.service.domain.alarm" />
 	<typeAlias alias="product" 		 type="com.amc.service.domain.Product" />
 	<typeAlias alias="purchase"		 type="com.amc.service.domain.Purchase" />
 	<typeAlias alias="screen"		 type="com.amc.service.domain.Screen" />
@@ -30,12 +29,11 @@
 	
   <mappers>
     <mapper resource="sql/BookingMapper.xml"/>
-    <mapper resource="sql/CancelAlarmMapper.xml"/>
     <mapper resource="sql/CommentMapper.xml"/>
     <mapper resource="sql/FreeBoardMapper.xml"/>
     <mapper resource="sql/MovieMapper.xml"/>
     <mapper resource="sql/MovieApiMapper.xml"/>
-    <mapper resource="sql/OpenAlarmMapper.xml"/>
+    <mapper resource="sql/alarmMapper.xml"/>
     <mapper resource="sql/ProductMapper.xml"/>
     <mapper resource="sql/PurchaseMapper.xml"/>
     <mapper resource="sql/ScreenMapper.xml"/>
