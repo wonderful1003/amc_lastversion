@@ -5,13 +5,14 @@ import java.util.List;
 public class Movie {
 
 	private int movieNo;
+	private String movieCd;
 	private String movieOpenDate;
 	private String movieEndDate;
 	private String movieTitle;
 	private String poster;
 	private List<String> director;
 	private List<String> actor;
-	private String genre;
+	private List<String> genre;
 	private String rating;
 	private String runningTime;
 	private String synopsis;
@@ -35,6 +36,14 @@ public class Movie {
 
 	public int getMovieNo() {
 		return movieNo;
+	}
+	
+	public String getMovieCd() {
+		return movieCd;
+	}
+
+	public void setMovieCd(String movieCd) {
+		this.movieCd = movieCd;
 	}
 
 	public void setMovieNo(int movieNo) {
@@ -89,11 +98,11 @@ public class Movie {
 		this.actor = actor;
 	}
 
-	public String getGenre() {
+	public List<String> getGenre() {
 		return genre;
 	}
 
-	public void setGenre(String genre) {
+	public void setGenre(List<String> genre) {
 		this.genre = genre;
 	}
 
