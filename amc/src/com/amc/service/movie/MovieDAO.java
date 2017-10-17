@@ -40,6 +40,7 @@ public interface MovieDAO {
 
 	// 영화 삭제
 	public void deleteMovie(int movieNo);
+	
 
 	// 마이페이지에서 위시리스트 불러오기
 	public List<WishList> getWishList(Search search, String userId);

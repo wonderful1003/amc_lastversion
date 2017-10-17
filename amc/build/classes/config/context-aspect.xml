@@ -18,11 +18,7 @@
 	 <aop:config>
 	 	<aop:aspect  ref="logAspect">
 	 		<aop:around 
-<<<<<<< HEAD
 					pointcut="execution(* com.amc.service..*Impl.*(..) )"	method="invoke"/>
-=======
-					pointcut="execution(* com.amc.mvc.service..*Impl.*(..) )"	method="invoke"/>
->>>>>>> refs/heads/master
 	 	</aop:aspect>
 	 </aop:config>
 
