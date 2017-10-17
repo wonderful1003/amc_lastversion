@@ -19,6 +19,7 @@ import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.onetime.MovieJson;
 import com.amc.service.domain.onetime.MovieList;
 import com.amc.service.domain.onetime.MovieListResult;
+import com.amc.service.domain.onetime.Screen;
 import com.amc.service.movie.MovieService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -156,21 +157,26 @@ public class MovieRestController {
             movieCd = itemList[0].substring(1, 9);          
             movieName = itemList[1];
             movieContry = itemList[2];
-            movieEndDate = itemList[3];            
+            movieEndDate = itemList[3]; 
+            syonpsis = itemList[4]; 
+            trailer= itemList[5]; 
         }
 		
 		System.out.println("movieCd : " + movieCd);
 		System.out.println("movieName : " + movieName);
 		System.out.println("movieContry : " + movieContry);
-		System.out.println("movieEndDate : " + movieEndDate);		
+		System.out.println("movieEndDate : " + movieEndDate);	
+		System.out.println("syonpsis : " + syonpsis);	
+		System.out.println("trailer : " + trailer);	
+		
   	
 	    //movieListResult.setMovieList((List<MovieList>) movieList);
 	    
-	    MovieAPI movieAPI = new MovieAPI();
-	    movieAPI.setMovieCd(movieCd);
-	    movieAPI.setMovieEndDate(movieEndDate);
-	    movieAPI.setSyonpsis(syonpsis);
-	    movieAPI.setTrailer(trailer);
+	    Screen screen = new Screen();
+	    screen.setMovieCd(movieCd);
+	    screen.setEndDt(movieEndDate);
+	    screen.setSynopsis(syonpsis);
+	    screen.setTrailer(trailer);
 	    
 	    
 		if (oper.equals("del")) {
@@ -183,7 +189,7 @@ public class MovieRestController {
 			return 0;		
 		} else
 			
-		return  rtn = movieService.addMovie(movieAPI);
+		return  rtn = movieService.addMovie(screen);
 	}
 
 }

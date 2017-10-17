@@ -39,6 +39,7 @@ public class Screen {
 	private String steelCut;
 	
 	
+	
 	public String getSteelCut() {
 		return steelCut;
 	}

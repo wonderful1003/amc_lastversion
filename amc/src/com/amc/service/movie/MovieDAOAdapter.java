@@ -17,6 +17,7 @@ import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
+import com.amc.service.domain.onetime.Screen;
 import com.amc.service.domain.onetime.Twitter;
 
 import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
@@ -99,7 +100,7 @@ public abstract class MovieDAOAdapter implements MovieDAO {
 				
 	
 	@Override
-	public int addMovie(MovieAPI movieAPI) {
+	public int addMovie(Screen screen) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

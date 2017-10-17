@@ -16,7 +16,7 @@
 	<typeAlias alias="cancelAlarm" 	 type="com.amc.service.domain.CancelAlarm" />
 	<typeAlias alias="comment" 		 type="com.amc.service.domain.Comment" />
 	<typeAlias alias="freeBoard" 	 type="com.amc.service.domain.FreeBoard" />
-	<typeAlias alias="movie" 		 type="com.amc.service.domain.Movie" />
+	<typeAlias alias="movie" 		 type="com.amc.service.domain.onetime.Screen" />
 	<typeAlias alias="movieAPI" 	 type="com.amc.service.domain.MovieAPI" />
 	<typeAlias alias="openAlarm" 	 type="com.amc.service.domain.OpenAlarm" />
 	<typeAlias alias="product" 		 type="com.amc.service.domain.Product" />

@@ -20,6 +20,7 @@ import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
+import com.amc.service.domain.onetime.Screen;
 import com.amc.service.domain.onetime.Twitter;
 import com.amc.service.movie.MovieDAO;
 import com.amc.service.movie.MovieDAOAdapter;
@@ -143,12 +144,7 @@ public class MovieApiDAOImpl implements MovieDAO {
 		return null;
 	}
 
-	@Override
-	public int addMovie(MovieAPI movieAPI) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+	
 	@Override
 	public int addWish(int movieNo) {
 		// TODO Auto-generated method stub
@@ -210,10 +206,12 @@ public class MovieApiDAOImpl implements MovieDAO {
 	}
 
 	// submit을 누른후 외부 영화 API 상세 + 네이버 영화 포스터 API를 가져온 후 DB등록
-	//public int addMovie(MovieAPI movieAPI) 	 {
-	//		return sqlSession.insert("MovieMapper.addMovie",movieAPI);
+	public int addMovie(Screen screen) 	 {
+			System.out.println("MovieAPIDAOImpl called ....");
+		
+			return sqlSession.insert("MovieMapper.addMovie",screen);
 			
-	//}
+	}
 	
 	// 관리목록에서 클릭한경우는 수정화면으로, 영화목록에서 클릭한경우는 상세정보화면으로
 

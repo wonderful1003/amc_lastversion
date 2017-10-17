@@ -116,19 +116,18 @@ public class MovieServiceImpl implements MovieService {
 		
 	}
 
+	
 	@Override
-	public int addMovie(MovieAPI movieAPI) {
+	public int addMovie(Screen screen) {
 		// 발급키
 		
 		System.out.println("MovieServiceImp addMovie called....");
-		
-		 		MovieDAO movieDAO = null ;
-		 	
-		 
+				 
 				String key = "430156241533f1d058c603178cc3ca0e";
 				
 				// Variables declare
 				String actorsNm = "";
+				String actorNms = "";
 				String delimeter = ",";
 				String movieCountry = "";
 				String directorNms = "";
@@ -147,13 +146,13 @@ public class MovieServiceImpl implements MovieService {
 		        // split()은 지정한 문자를 기준으로 문자열을 잘라 배열로 반환한다.
 				
 			
-				String movieCd = movieAPI.getMovieCd();
+				String movieCd = screen.getMovieCd();
 				
 				System.out.println("MovieServiceImp addMovie :: movieCd " + movieCd);
 	     
-	            movieEndDate = movieAPI.getMovieEndDate();
-	            syonpsis = movieAPI.getSyonpsis();
-	            trailer = movieAPI.getTrailer();
+	            movieEndDate = screen.getEndDt();
+	            syonpsis = screen.getSteelCut();
+	            trailer = screen.getTrailer();
 		     
 		        
 		        System.out.println("movieEndDate" + movieEndDate);
@@ -256,14 +255,14 @@ public class MovieServiceImpl implements MovieService {
 				         actorList.add(actorsNm);
 				        
 			         
-				         //actorNms += actorsNm + delimeter;
+				         actorNms += actorsNm + delimeter;
 		 	             
 				    }  
 					    
 				
 			
-				    //actorNms = CommonUtil.eliminatorLast(actorNms);		    
-				    //System.out.println("actorNms :" + actorNms  ); 
+				    actorNms = CommonUtil.eliminatorLast(actorNms);		    
+				    System.out.println("actorNms :" + actorNms  ); 
 				    
 			    } else {
 			    	System.out.println("actorsArray.length() " + actorsArray.length());
@@ -298,12 +297,12 @@ public class MovieServiceImpl implements MovieService {
 				         directorList.add(directorNm);
 				        
 				         
-				         // directorNms += actorsNm + delimeter;
+				         directorNms += directorNm + delimeter;
 		 	             
 				    }   
 			
-					//directorNms = CommonUtil.eliminatorLast(directorNms);		    
-				    //System.out.println("directorNms :" + directorNms  ); 
+					directorNms = CommonUtil.eliminatorLast(directorNms);		    
+				    System.out.println("directorNms :" + directorNms  ); 
 				    
 			    } else {
 			    	System.out.println("directorsArray.length() " + directorsArray.length());
@@ -336,12 +335,12 @@ public class MovieServiceImpl implements MovieService {
 				         
 				         genreList.add(genreNm);
 				         
-				         // genreNms += genreNm + delimeter;
+				         genreNms += genreNm + delimeter;
 		 	             
 				    }   
 					
-					//genreNms = CommonUtil.eliminatorLast(genreNms);		    
-				    //System.out.println("genreNms :" + genreNms  ); 
+					genreNms = CommonUtil.eliminatorLast(genreNms);		    
+				    System.out.println("genreNms :" + genreNms  ); 
 				    
 			    } else {
 			    	System.out.println("genresArray.length() " + genresArray.length());
@@ -410,26 +409,11 @@ public class MovieServiceImpl implements MovieService {
 		            System.out.println(e.getMessage());
 		        }
 			    
-			    //Screen Domain loading 
-			    Screen screen = new Screen();
+			    //Screen Domain loading 			
 			    
-			    /* Movie  movie = new Movie();
-			
-			    
-			    movie.setMovieOpenDate(openDt);
-				movie.setActor(actorList);
-				movie.setDirector(directorList);
-				movie.setGenre(genreList);
-				movie.setRating(watchGradeNm);
-				movie.setMovieTitle(movieNm);
-				movie.setRunningTime(showTm);
-				movie.setPoster(postUrl);
-				movie.setMovieEndDate(movieEndDate);
-				movie.setSynopsis(syonpsis);
-				movie.setTrailer(trailer); */
-					
+			  
 			    screen.setOpenDt(openDt);
-			    screen.setActors(actorsNm);
+			    screen.setActors(actorNms);
 		    	screen.setDirector(directorNms);	
 		    	screen.setGenres(genreNms);
 			    screen.setWatchGradeNm(watchGradeNm);
@@ -452,13 +436,11 @@ public class MovieServiceImpl implements MovieService {
 			    System.out.println("syonpsis     ::" + screen.getSynopsis());
 			    System.out.println("trailer      ::" + screen.getTrailer());
 		    
-				return   movieDAO.addMovie(movieAPI);
+				return   movieDAO.addMovie(screen);
 
 	
 	}
-				
 	
-
 	@Override
 	public int addWish(int movieNo) {
 		// TODO Auto-generated method stub
@@ -507,4 +489,5 @@ public class MovieServiceImpl implements MovieService {
 		return null;
 	}
 
+	
 }

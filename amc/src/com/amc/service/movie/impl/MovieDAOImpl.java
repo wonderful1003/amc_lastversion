@@ -17,6 +17,7 @@ import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
+import com.amc.service.domain.onetime.Screen;
 import com.amc.service.domain.onetime.Twitter;
 import com.amc.service.movie.MovieDAO;
 import com.amc.service.movie.MovieDAOAdapter;
@@ -121,8 +122,11 @@ public class MovieDAOImpl implements MovieDAO {
 		return 0;
 	}
 	
-	public int addMovie(MovieAPI movieAPI) 	 {
-		return sqlSession.insert("MovieMapper.addMovie",movieAPI);
+	public int addMovie(Screen screen) 	 {
+		System.out.println("MovieDAOImpl called ... addMovie...");
+		
+		
+		return sqlSession.insert("MovieMapper.addMovie",screen);
 		
 }
 
