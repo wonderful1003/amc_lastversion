@@ -17,7 +17,7 @@
 	<typeAlias alias="freeBoard" 	 type="com.amc.service.domain.FreeBoard" />
 	<typeAlias alias="movie" 		 type="com.amc.service.domain.onetime.Screen" />
 	<typeAlias alias="movieAPI" 	 type="com.amc.service.domain.MovieAPI" />
-	<typeAlias alias="alarm" 	 type="com.amc.service.domain.alarm" />
+	<typeAlias alias="alarm" 		 type="com.amc.service.domain.Alarm" />
 	<typeAlias alias="product" 		 type="com.amc.service.domain.Product" />
 	<typeAlias alias="purchase"		 type="com.amc.service.domain.Purchase" />
 	<typeAlias alias="screen"		 type="com.amc.service.domain.Screen" />
@@ -33,10 +33,9 @@
     <mapper resource="sql/FreeBoardMapper.xml"/>
     <mapper resource="sql/MovieMapper.xml"/>
     <mapper resource="sql/MovieApiMapper.xml"/>
-    <mapper resource="sql/alarmMapper.xml"/>
+    <mapper resource="sql/AlarmMapper.xml"/>
     <mapper resource="sql/ProductMapper.xml"/>
     <mapper resource="sql/PurchaseMapper.xml"/>
-    <mapper resource="sql/ScreenMapper.xml"/>
     <mapper resource="sql/ScreenContentMapper.xml"/>
     <mapper resource="sql/StatisticMapper.xml"/>
     <mapper resource="sql/UserMapper.xml"/>
