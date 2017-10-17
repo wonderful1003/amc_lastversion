@@ -25,6 +25,11 @@ public class AlarmRestController {
 		
 	}
 	
+	/**
+	 * 
+	 * @param cancelAlarmNo
+	 * @return
+	 */
 	@RequestMapping("/json/alarm/deleteCancelAlarm")
 	public String deleteCancelAlarm(@RequestParam("CancelAlarmNo")int cancelAlarmNo){
 		

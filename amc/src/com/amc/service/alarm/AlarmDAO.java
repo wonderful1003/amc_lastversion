@@ -3,18 +3,17 @@ package com.amc.service.alarm;
 import java.util.List;
 
 import com.amc.common.Search;
-import com.amc.service.domain.CancelAlarm;
-import com.amc.service.domain.OpenAlarm;
+import com.amc.service.domain.Alarm;
 
 public interface AlarmDAO {
 
-public void addCancelAlarm(CancelAlarm cancelAlarm);
+public void addCancelAlarm(Alarm cancelAlarm);
+
+	public void addOpenAlarm(Alarm openAlarm);
 	
-	public void addOpenAlarm(OpenAlarm openAlarm);
+	public List<Alarm> getCancelAlarmList(Search search);
 	
-	public List<CancelAlarm> getCancelAlarmList(Search search);
-	
-	public List<OpenAlarm> getOpenAlarmList(Search search);
+	public List<Alarm> getOpenAlarmList(Search search);
 	
 	public void deleteCancelAlarm(int cancelAlarmNo);
 	

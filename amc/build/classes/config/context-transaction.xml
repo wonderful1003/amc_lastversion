@@ -55,12 +55,17 @@
 	<!-- AOP : pointcut / advisor 설정 -->
 	<aop:config>
 		<aop:pointcut 	id="requiredTx"
+<<<<<<< HEAD
 						expression="execution(* com.amc.service..*ServiceImpl.*(..) )" />
 		<aop:advisor 	advice-ref="txAdvice"  pointcut-ref="requiredTx"  />
 		
 		
 		
 		
+=======
+									expression="execution(* com.model2.mvc.service..*ServiceImpl.*(..) )" />
+		<aop:advisor 	advice-ref="txAdvice"  pointcut-ref="requiredTx"  />
+>>>>>>> refs/heads/master
 	</aop:config>
 
 </beans>
