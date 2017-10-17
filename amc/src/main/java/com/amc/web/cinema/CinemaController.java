@@ -1,8 +1,6 @@
 package com.amc.web.cinema;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.amc.common.Search;
 import com.amc.service.cinema.CinemaService;
-import com.amc.service.domain.Movie;
 
 @Controller
 @RequestMapping("/cinema/*")
@@ -34,13 +31,15 @@ public class CinemaController {
 		
 		search.setSearchKeyword("ถา");
 		
+		String searchKeyword = search.getSearchKeyword();
+		
 		Map<String,Object> unifiedSearch = new HashMap<String,Object>();
 		
-		unifiedSearch = cinemaService.unifiedSearch(search);
+		unifiedSearch = cinemaService.unifiedSearch(searchKeyword);
 		
-		System.out.println(unifiedSearch.get("uniProdctList"));
+		System.out.println("Controller" + unifiedSearch.get("uniProdctList"));
 		
-		model.addAttribute(unifiedSearch);
+		model.addAttribute("unifiedSearch",unifiedSearch);
 		
 		return "forward:/cinema/unifiedSearch.jsp";
 	}

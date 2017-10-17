@@ -24,7 +24,7 @@
   			<result property="prodType" column="prod_type" jdbcType="CHAR"/>
 	</resultMap>
 	
-  	<select id="getUniProductList" parameterType="string" resultMap="productSelectMap">
+  	<select id="uniProductList" parameterType="string" resultMap="productSelectMap">
 		
 		SELECT prod_no, prod_regdate, prod_type, prod_name, prod_price, prod_image
 		FROM Product

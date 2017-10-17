@@ -20,7 +20,6 @@
 	<typeAlias alias="alarm" 		 type="com.amc.service.domain.Alarm" />
 	<typeAlias alias="product" 		 type="com.amc.service.domain.Product" />
 	<typeAlias alias="purchase"		 type="com.amc.service.domain.Purchase" />
-	<typeAlias alias="screen"		 type="com.amc.service.domain.Screen" />
 	<typeAlias alias="screenContent" type="com.amc.service.domain.ScreenContent" />
 	<typeAlias alias="statistic" 	 type="com.amc.service.domain.Statistic" />
 	<typeAlias alias="user" 		 type="com.amc.service.domain.User" />

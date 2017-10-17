@@ -4,7 +4,7 @@ public class WishList {
 
 	int wishNo;
 	String userId;
-	int screenContentNo;
+	int movieNo;
 	
 	
 	public WishList() {
@@ -26,18 +26,18 @@ public class WishList {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
-	public int getScreenContentNo() {
-		return screenContentNo;
+
+	public int getMovieNo() {
+		return movieNo;
 	}
-	
-	public void setScreenContentNo(int screenContentNo) {
-		this.screenContentNo = screenContentNo;
+
+	public void setMovieNo(int movieNo) {
+		this.movieNo = movieNo;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "WishList [wishNo=" + wishNo + ", userId=" + userId + ", screenContentNo=" + screenContentNo + "]";
+		return "WishList [wishNo=" + wishNo + ", userId=" + userId + ", movieNo=" + movieNo + "]";
 	}
 		
 }

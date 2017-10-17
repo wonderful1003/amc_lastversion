@@ -15,8 +15,8 @@ import com.amc.service.alarm.AlarmService;
 @RequestMapping("/alarm/*")
 public class AlarmController {
 	
-	//@Autowired
-	//@Qualifier("alarmServiceImpl")
+	@Autowired
+	@Qualifier("alarmServiceImpl")
 	private AlarmService alarmService;
 	
 	public AlarmController(){

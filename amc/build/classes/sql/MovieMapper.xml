@@ -26,26 +26,26 @@
   		<result property="genres" 			column="genre" 				jdbcType="VARCHAR"/>
   		<result property="watchGradeNm" 	column="rating" 			jdbcType="VARCHAR"/>
   		<result property="showTm" 			column="runningtime"		jdbcType="VARCHAR"/>  		
-  		<result property="synopsis" 		column="synopsis" 			jdbcType="VARCHAR"/>
-  		<result property="steelCut" 		column="steelcut" 			jdbcType="VARCHAR"/>
+  		<result property="synopsis" 		column="synopsis" 			jdbcType="VARCHAR"/>  	
   		<result property="trailer" 			column="trailer" 			jdbcType="VARCHAR"/>
   	</resultMap>
  
    	<insert 	id="addMovie" 	 parameterType="movie">
   		INSERT
-		INTO movie ( movie_no, movieRegDate, movie_opendate,movie_enddate,
-						 movie_title,director,poster,
-					     actor,genre,runningtime,rating,synopsis,trailer)
-		VALUES (  seq_product_prod_no.nextval, sysdate,
+		INTO movie ( movie_no,  movie_regdate, movie_opendate,movie_enddate,
+						 movie_title,poster,director,actor,
+					     genre,rating,runningtime,synopsis,trailer)
+		VALUES (  	seq_movie_no.nextval, sysdate,
 	    <if test="openDt 		 != null">            #{openDt},  							</if>  
 		<if test="endDt 		 != null">			  to_date(#{endDt},'mm/dd/yyyy'),       </if>
 				  #{movieNm},
-		<if test="directors 	 != null">			  #{directors},    						</if>
 		<if test="postUrl   	 != null">			  #{postUrl},       					</if>	
+		<if test="directors 	 != null">			  #{directors},    						</if>
+	
 		<if test="actors    	 != null">			  #{actors},	    					</if>
 				  #{genres},
-				  #{showTm},
-		<if test="watchGradeNm   != null">	 		  #{watchGradeNm},  					</if>				  
+		<if test="watchGradeNm   != null">	 		  #{watchGradeNm},  					</if>	
+				  #{showTm},				  
 		<if test="synopsis 		 != null">		 	  #{synopsis},							</if>
 		<if test="trailer 		 != null">			  #{trailer}							</if>	  
 		 )
@@ -123,9 +123,10 @@
 	<select  id="getMovieList"  parameterType="search"	resultMap="movieSelectMap">
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
-	  					FROM		(	SELECT movie_no, movie_opendate,movie_enddate,movie_title,
-	  					                       director,poster,actor,genre,rating,synopsis,steelcut,trailer
-	  									FROM movieinfo 
+	  					FROM		(	SELECT movie_no, movie_regdate, movie_opendate,movie_enddate,movie_title,
+	  					                       poster,director,actor,genre,rating,runningtime,synopsis,steelcut,
+	  					                       trailer
+	  									FROM   movie 
 	  									
 	  										<if test="searchCondition != null">
 												<where>
@@ -134,10 +135,7 @@
 													</if>
 													<if test="searchCondition == 1 and searchKeyword !='' ">
 										 				movie_title = #{searchKeyword}
-													</if>
-													<if test="searchCondition == 2 and searchKeyword !='' ">
-										 				price = #{searchKeyword}
-													</if>
+													</if>												
 												</where>
 											</if>
 											ORDER BY movie_no DESC ) inner_table
@@ -161,27 +159,27 @@
 	<!-- SQL : SELECT ROW Count -->
 	 <select  id="getTotalCount"  parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*)
-	  	FROM(	SELECT p.prod_no, p.prod_name,	p.prod_detail,p.manufacture_day,
-	  										   p.price,p.image_file,p.reg_date,p.prod_quanity,	
-	  										   p.warehouse_code, t.tran_status_code
-	  									FROM product p, transaction t
-	  									WHERE p.prod_no = t.prod_no(+)
+	  	FROM(	SELECT  movie_no, movie_regdate, movie_opendate,movie_enddate,movie_title,
+	  					poster,director,actor,genre,rating,runningtime,synopsis,steelcut,trailer
+	  					FROM movie
 						<if test="searchCondition != null">
 							<where>
 								<if test="searchCondition == 0 and searchKeyword !='' ">
-						 			prod_no = #{searchKeyword}
+						 			movie_no = #{searchKeyword}
 								</if>
 								<if test="searchCondition == 1 and searchKeyword !='' ">
-						 			prod_name = #{searchKeyword}
-								</if>
-								<if test="searchCondition == 2 and searchKeyword !='' ">
-						 			price = #{searchKeyword}
-								</if>
+						 			movie_title = #{searchKeyword}
+								</if>								
 							</where>
 						</if> ) countTable						
 	 </select>
 	 
-	 
-  
+	<select id="uniMovieList" parameterType="string" resultMap="movieSelectMap">
+		
+		SELECT movie_no, movie_title, poster
+		FROM movie
+		WHERE movie_title LIKE '%${value}%'
+		
+	</select>
 	  
  </mapper>

@@ -98,7 +98,7 @@ CREATE TABLE moviecomment(
 	user_id VARCHAR2(50) NOT NULL REFERENCES users(user_id),
 	movie_no NUMBER NOT NULL REFERENCES movie(movie_no),
 	moviecomment VARCHAR2(400) NOT NULL,
-	moviecommnet_regdate DATE NOT NULL,
+	moviecomment_regdate DATE NOT NULL,
 	blindcomment_flag CHAR(1),
 	PRIMARY KEY(moviecommnet_no)
 );
@@ -109,13 +109,13 @@ CREATE TABLE screencontent(
 	screencontent_regdate DATE, 
 	screen_date DATE NOT NULL,
 	screen_opentime DATE NOT NULL,
-	screen_enddate DATE NOT NULL,
+	screen_endtime DATE NOT NULL,
 	screen_theater CHAR(1) NOT NULL,
 	ticket_price NUMBER NOT NULL,
 	preview_flag CHAR(1),
 	preview_title VARCHAR2(50),
 	ticket_opendate DATE,
-	invate_actor VARCHAR2(50),
+	invite_actor VARCHAR2(50),
 	PRIMARY KEY(screencontent_no)	
 );
 
@@ -229,7 +229,7 @@ INSERT
 INTO moviecomment VALUES( seq_movie_comment_no.nextval, 'manager', 10000, '¾È³çÇÏ¼¼¿ë', to_date(SYSDATE,'YYYY/MM/DD HH24:MI:SS'),'0');
 
 INSERT
-INTO screencontent VALUES(seq_screencontent_no.nextval, 10000, SYSDATE,to_date('2017/10/20','YYYY/MM/DD'),to_date('2017/10/20 12:00','YYYY/MM/DD HH24:MI'), to_date('2017/10/20 15:00','YYYY/MM/DD HH24:MI'),'1', 20000,'1','¹üÁËµµ½Ã', to_date('2017/10/18 18:00','YYYY/MM/DD HH24:MI'),'¸¶µ¿¼®, À±°è»ó');
+INTO screencontent VALUES(seq_screencontent_no.nextval, 10000, SYSDATE,to_date('2017/10/20','YYYY/MM/DD'),to_date('2017/10/20 12:00','YYYY/MM/DD HH24:MI'), to_date('2017/10/20 15:00','YYYY/MM/DD HH24:MI'),'1', 20000,'Y','¹üÁËµµ½Ã', to_date('2017/10/18 18:00','YYYY/MM/DD HH24:MI'),'¸¶µ¿¼®, À±°è»ó');
 
 INSERT
 INTO booking VALUES ('b'||seq_booking_booking_no.nextval, 'aaa111', 'manager', 10000,  SYSDATE, 1, 9000, 'A7', 'temporary_qr_url_address');

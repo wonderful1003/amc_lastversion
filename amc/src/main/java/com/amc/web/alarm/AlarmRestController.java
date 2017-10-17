@@ -12,10 +12,9 @@ import com.amc.service.alarm.AlarmService;
 @Controller
 @RequestMapping("/alarm/*")
 public class AlarmRestController {
-
-	/*
+	
 	@Autowired
-	@Qualifier("alarmServiceImpl") */
+	@Qualifier("alarmServiceImpl")
 	AlarmService alarmService;
 	
 	
@@ -24,12 +23,7 @@ public class AlarmRestController {
 		System.out.println("PurchaseController() default Constructor");
 		
 	}
-	
-	/**
-	 * 
-	 * @param cancelAlarmNo
-	 * @return
-	 */
+
 	@RequestMapping("/json/alarm/deleteCancelAlarm")
 	public String deleteCancelAlarm(@RequestParam("CancelAlarmNo")int cancelAlarmNo){
 		
