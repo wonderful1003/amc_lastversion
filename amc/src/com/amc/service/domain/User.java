@@ -18,10 +18,20 @@ public class User {
 	private String calendarType;
 	private String gender;
 	private String deleteUserFlag;
-	
+	private String uuId;
+ 	
+
 	public User() {
 	}
 	
+	public String getUuId() {
+		return uuId;
+	}
+
+	public void setUuId(String uuId) {
+		this.uuId = uuId;
+	}
+
 	public String getUserId() {
 		return userId;
 	}

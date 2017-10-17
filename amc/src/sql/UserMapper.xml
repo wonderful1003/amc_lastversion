@@ -6,5 +6,101 @@
 
 <mapper namespace="UserMapper">
  	
+	<resultMap id="userSelectMap" type="user">
+		<result property="userId" 			column="user_id" 			jdbcType="VARCHAR2"/>
+		<result property="userName"			column="user_name" 			jdbcType="VARCHAR2" />
+		<result property="password" 		column="password" 			jdbcType="VARCHAR2" />
+		<result property="role" 			column="role" 				jdbcType="VARCHAR2" />		
+		<result property="addr" 			column="addr" 				jdbcType="VARCHAR2" />
+		<result property="addrDetail" 		column="addr_detail"		jdbcType="VARCHAR2" />
+		<result property="userRegDate" 		column="user_regdate" 		jdbcType="DATE" />
+		<result property="birth" 			column="birth" 				jdbcType="DATE" />
+		<result property="phone1" 			column="phone1" 			jdbcType="VARCHAR2" />
+		<result property="phone2" 			column="phone2" 			jdbcType="VARCHAR2" />
+		<result property="phone3" 			column="phone3" 			jdbcType="VARCHAR2" />
+		<result property="calendarType" 	column="sl_yn" 				jdbcType="CHAR" />
+		<result property="gender" 			column="gender" 			jdbcType="CHAR" />
+		<result property="deleteUserFlag" 	column="delete_user_flag" 	jdbcType="CHAR" />		
+		<result property="uuId" 			column="uuser_id" 			jdbcType="VARCHAR2"  />	
+	</resultMap>
+	
+	<!-- SQL : INSERT -->
+	<insert 	id="addUser"		parameterType="user" >
+	 	INSERT
+		INTO users	( user_id, user_name, password, role, birth, phone1, phone2, phone3, user_regdate) 
+		VALUES	 	( #{userId}, #{userName}, #{password}, 'user', #{birth}, 
+						#{phone1}, #{phone2}, #{phone3}, SYSDATE )
+	 </insert>
+	 
+	 <!-- SQL : SELECT ONE -->
+	 <select 	id="getUser"	parameterType="string"	resultMap="userSelectMap">
+		SELECT
+		user_id, user_name, password, role, phone1, phone2, phone3, user_regdate) 		
+		FROM users 
+		WHERE user_id = #{value}
+	 </select>
+ 
+ 	<!-- SQL : SELECT LIST -->
+	<select  id="getUserList"  parameterType="search"	resultMap="userSelectMap">
+	  	SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  			FROM (	SELECT user_id , user_name 
+						FROM users
+							<if test="searchCondition != null">
+								<where>
+									<if test="searchCondition == 0 and searchKeyword !='' ">
+										user_id = #{searchKeyword}
+									</if>
+								
+									<if test="searchCondition == 1 and searchKeyword !='' ">
+										user_name = #{searchKeyword}
+									</if>
+								</where>
+							</if>
+						ORDER BY user_id ) inner_table
+						WHERE ROWNUM &lt;= #{endRowNum} )
+				WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+	 </select>
+ 
+ 	 <!-- SQL : UPDATE -->
+	 <update	id="updateUser"	parameterType="user" >
+	   	UPDATE users
+	   		<set>
+		   		user_name 	= #{userName},
+				phone1		= #{phone1},
+				phone2		= #{phone2},
+				phone3		= #{phone3},						
+				addr 		= #{addr},
+				addr_detail	= #{addrDetail}
+	   		</set>
+	   	WHERE user_id = #{userId}
+	 </update>
+
+	 <!-- SQL : SELECT ONE -->
+	 <select 	id="getId"	parameterType="user"	resultMap="userSelectMap">
+		SELECT
+		user_id, password 		
+		FROM users 
+		WHERE user_name = #{userName} and cell_phone = #{phone} and birth = #{birth}
+	 </select>
+
+	<!-- SQL : SELECT ROW Count -->	 
+	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM (	SELECT user_id , user_name , email
+				FROM users
+					<if test="searchCondition != null">
+						<where>
+							<if test="searchCondition == 0 and searchKeyword !='' ">
+					 			user_id = #{searchKeyword}
+							</if>
+						
+							<if test="searchCondition == 1 and searchKeyword !='' ">
+						 		user_name = #{searchKeyword}
+							</if>
+						</where>
+					</if> 
+				) countTable						
+	 </select>
 	 
 </mapper>

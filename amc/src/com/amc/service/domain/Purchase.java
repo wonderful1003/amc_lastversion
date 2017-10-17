@@ -16,6 +16,7 @@ public class Purchase {
 	private int totalProdPrice;
 	private int tranCode;
 	private Date orderRegDate;
+	private String impId;
 	
 	private Product prodNo;
 	private User userId;
@@ -23,6 +24,14 @@ public class Purchase {
 	public Purchase() {
 	}
 
+	public String getImpId() {
+		return impId;
+	}
+
+	public void setImpId(String impId) {
+		this.impId = impId;
+	}
+	
 	public String getOrderNo() {
 		return orderNo;
 	}
