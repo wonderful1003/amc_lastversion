@@ -8,7 +8,7 @@ import com.amc.service.domain.Alarm;
 public interface AlarmDAO {
 
 public void addCancelAlarm(Alarm cancelAlarm);
-	
+
 	public void addOpenAlarm(Alarm openAlarm);
 	
 	public List<Alarm> getCancelAlarmList(Search search);

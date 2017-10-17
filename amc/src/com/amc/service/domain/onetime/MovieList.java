@@ -13,8 +13,10 @@ public class MovieList {
 	private String prdtStatNm;
 	private String nationAlt;
 	private String genreAlt;
-	private String repNationnm;
+	private String repNationNm;	
 	private String repGenreNm;
+	
+	
 	private List<Director> directors;
 	private List<Company> companys;
 	private String showTm;
@@ -94,12 +96,12 @@ public class MovieList {
 		this.genreAlt = genreAlt;
 	}
 
-	public String getRepNationnm() {
-		return repNationnm;
+	public String getrepNationNm() {
+		return repGenreNm;
 	}
 
-	public void setRepNationnm(String repNationnm) {
-		this.repNationnm = repNationnm;
+	public void setRepNationnm(String repNationNm) {
+		this.repGenreNm = repNationNm;
 	}
 
 	public String getRepGenreNm() {
@@ -125,6 +127,15 @@ public class MovieList {
 	public void setCompanys(List<Company> companys) {
 		this.companys = companys;
 	}
+	
+	public String getRepNationNm() {
+		return repNationNm;
+	}
+
+	public void setRepNationNm(String repNationNm) {
+		this.repNationNm = repNationNm;
+	}
+
 
 	public String getShowTm() {
 		return showTm;

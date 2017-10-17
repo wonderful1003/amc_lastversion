@@ -18,7 +18,7 @@
 	 <aop:config>
 	 	<aop:aspect  ref="logAspect">
 	 		<aop:around 
-					pointcut="execution(* com.amc.mvc.service..*Impl.*(..) )"	method="invoke"/>
+					pointcut="execution(* com.amc.service..*Impl.*(..) )"	method="invoke"/>
 	 	</aop:aspect>
 	 </aop:config>
 
