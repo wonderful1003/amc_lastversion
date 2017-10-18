@@ -10,9 +10,19 @@ public class Comment {
 	private String commentContent;
 	private String parentCommentNo;
 	private List<Comment> replyList;
-	
+	private String commentRegDate;
+
+
 	public Comment(){
 		super();
+	}
+	
+	public String getCommentRegDate() {
+		return commentRegDate;
+	}
+
+	public void setCommentRegDate(String commentRegDate) {
+		this.commentRegDate = commentRegDate;
 	}
 
 	public String getCommentNo() {

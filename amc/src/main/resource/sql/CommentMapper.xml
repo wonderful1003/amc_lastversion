@@ -4,8 +4,19 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="CommentMapper">
+<mapper namespace="ComnentMapper">
  	
- 	
+ 	<!-- Purpose of resultMap is mapping resultSet of SQL -->
+
+  	<resultMap id ="commentSelectMap" type="comment">
+  	
+  		<result property="commentNo" 		column="comment_no" 	 jdbcType="NUMERIC"/>
+  		<result property="freeBoardNo" 		column="freeboard_no" 	 jdbcType="NUMERIC"/>
+  		<result property="userId" 			column="user_id" 		 jdbcType="VARCHAR"/>
+  		<result property="commentRegDate" 	column="comment_regdate" jdbcType="DATE"/>
+  		<result property="parentCommentNo" 	column="parent_no" 		 jdbcType="NUMERIC"/>
+  		<result property="commentContent" 	column="comment_content" jdbcType="VARCHAR"/>
+ 
+  	</resultMap>	
 
 </mapper>
