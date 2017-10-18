@@ -9,7 +9,7 @@ public class Movie {
 	
 	private String movieNmEn;
 	
-	private String prdtYear;
+	private String prdtYear; //제작년도
 	private String openDt;
 	private String endDt;
 	private String synopsis;
@@ -245,7 +245,7 @@ public class Movie {
 	}
 	@Override
 	public String toString() {
-		return "Screen [movieCd=" + movieCd + ", movieNm=" + movieNm + ", movieNmEn=" + movieNmEn + ", prdtYear="
+		return "Movie [movieCd=" + movieCd + ", movieNm=" + movieNm + ", movieNmEn=" + movieNmEn + ", prdtYear="
 				+ prdtYear + ", openDt=" + openDt + ", endDt=" + endDt + ", synopsis=" + synopsis + ", trailer="
 				+ trailer + ", typeNm=" + typeNm + ", prdtStatNm=" + prdtStatNm + ", nationAlt=" + nationAlt
 				+ ", genres=" + genres + ", repNationNm=" + repNationNm + ", repGenreNm=" + repGenreNm + ", directors="

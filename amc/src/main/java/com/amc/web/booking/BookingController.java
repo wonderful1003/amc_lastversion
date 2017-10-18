@@ -46,8 +46,9 @@ public class BookingController {
 		System.out.println("/booking/getScreenMovieList : GET");
 		
 		List<Movie> movieList = bookingService.getScreenMovieList();
+		model.addAttribute("movieList", movieList);
 		
-		return "redirect:/booking/selectScreenMoive.jsp";
+		return "forward:/booking/selectScreenMoive.jsp";
 	}
 	
 	@RequestMapping( value="selectSeat", method=RequestMethod.GET)
@@ -73,10 +74,12 @@ public class BookingController {
 	@RequestMapping( value="getBooking", method=RequestMethod.GET)
 	public String getBooking(@RequestParam("bookingNo") String bookingNo, 
 												Model model) throws Exception{
-		//b10000
+		//127.0.0.1:8080/booking/getBooking?bookingNo=b10000
 		System.out.println("/booking/getBooking : GET");
 		
-		Booking booking = bookingService.getBooking(bookingNo);
+		System.out.println("BookingController ¾È, bookingNo : "+bookingNo);
+		Booking booking = bookingService.getBooking(bookingNo); 
+		System.out.println("booking : "+booking);
 		model.addAttribute("booking", booking);
 	
 		return "forward:/booking/getBooking.jsp";

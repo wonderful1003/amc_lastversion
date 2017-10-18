@@ -22,69 +22,95 @@
       <result property="screenContentRegDate" column="screencontent_regdate" jdbcType="DATE" />
    </resultMap>
    
-
    
-<!--    <insert id="addScreenContent" parameterType="screenContent">
-   INSERT INTO screencontent(screencontent_no, movie_no, screencontent_regdate, screen_date, screen_opentime, screen_endtime, 
-                                          screen_theater, ticket_price, preview_flag, preview_title, ticket_opendate,invite_actor)
-   VALUES(seq_screencontent_no.nextval, #{movie.movieNo}, TO_DATE(SYSDATE,'YYYY/MM/DD'), TO_DATE(#{screenDate}, 'YYYY/MM/DD'), 
-               TO_DATE(#{screenOpenTime},'YYYY/MM/DD HH24:MI'),  TO_DATE(#{screenEndTime},'YYYY/MM/DD HH24:MI'), #{screenTheater}, #{ticketPrice},
-               <if test="previewFlag =='Y'"> 'Y', #{previewTitle}, TO_DATE(#{ticketOpentDate}, 'YYYY/MM/DD HH24:MI:SS'), #{inviteActor}</if>
-               <if test="previewFlag =='N'"> 'N', NULL, NULL, NULL</if>
-                  )   
-   </insert>
-   
-   <update id="updateScreenContent" parameterType="screenContent">
-   UPDATE screencontent
-      <set>
-            screen_date = TO_DATE(#{screenDate}, 'YYYY/MM/DD'),
-            screen_opentime = TO_DATE(#{screenOpenTime},'YYYY/MM/DD HH24:MI'),
-            screen_endtime = TO_DATE(#{screenEndTime},'YYYY/MM/DD HH24:MI'),
-            screen_theater = #{screenTheater},
-            ticket_price = #{ticketPrice},
-            <if test="previewFlag !='Y'"> preview_flag = #{previewFlag}, preview_title = #{previewTitle}, ticket_opendate = TO_DATE(#{ticketOpentDate}, 
-            'YYYY/MM/DD HH24:MI:SS'),  invite_actor =  #{inviteActor}</if>
-            <if test="previewFlag !='N' ">preview_flag = #{previewFlag}, preview_title = NULL, ticket_opendate = NULL, invite_actor = NULL </if>
-      </set>
-      WHERE screencontent_no = #{screenContentNo}
-   </update>
-   
-   <delete id="deleteScreenContent" parameterType="String">
-      DELETE FROM screencontent
-      WHERE screencontent_no = #{screenContentNo}
-   </delete>
-   
-   
-   <select id="getScreenContent" parameterMap="String" resultMap="screenContentSelectMap"> 
-      SELECT screencontent_no, movie_no, screencontent_regdate, screen_date, screen_opentime, screen_endtime, 
-                                          screen_theater, ticket_price, preview_flag, preview_title, ticket_opendate,invite_actor
-      FROM screencontent
-      WHERE screencontent_no = #{screenContentNo}
-   </select>
-   
-   
-   <select id="getScreenContentList" parameterType="map" resultMap="screenContentSelectMap">
-      SELECT * FROM (SELECT inner_table.*, ROWWNUM AS row_seq
-                        FROM (SELECT screencontent_no, movie_no, screencontent_regdate, screen_date, screen_opentime, screen_endtime, 
-                                          screen_theater, ticket_price, preview_flag, preview_title, ticket_opendate,invite_actor
-      FROM screencontent
-      WHERE moive_no = #{movieNo} ORDER BY screen_opentime )inner_table
-      WHERE ROWNUM &lt; = #{search.endRowNum})   
+   <select id="getScreenContentList2" parameterType="map" resultMap="screenContentSelectMap">
+      SELECT * 
+      FROM (SELECT inner_table.*, ROWNUM AS row_seq
+            FROM ( SELECT screencontent_no, movie_no, screencontent_regdate, screen_date, screen_opentime, screen_endtime, screen_theater, ticket_price, preview_flag, preview_title, ticket_opendate,invite_actor
+					FROM screencontent 
+					WHERE movie_no = #{movieNo}
+					<if test="search.searchKeyword !='' and search.searchKeyword != null"> 
+						AND screen_date between (to_date(#{search.searchKeyword}, 'yy/mm/dd')) AND (to_date(#{search.searchKeyword}, 'yy/mm/dd')+7)  
+					</if> 
+					ORDER BY screen_opentime
+     			   )inner_table
+     		 WHERE ROWNUM &lt; = #{search.endRowNum})   
       WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
    </select>
-   
-   대관되어있는 영화시간
-   <select id="notEmptyScreenContent" parameterType="map" resultMap='screenContentSelectMap'>
-      SELECT screen_opentime, screen_endtime FROM   screencontent WHERE screen_theater = #{screenTheater} AND screen_date = #{screenDate}
-   </select>
-   
-   시간이 중복되어있는지
-   <select id="checkScreenDupTime" parameterType="String" resultType="int">
-      SELECT COUNT(*) FROM screencontent WHERE  screen_theater = #{screenTheater} AND screen_date = #{screenDate}
-      AND BTEWEEN screen_opentime AND screen_endtime 
-   </select>
- -->   
-   
+	
+	<insert id="addScreenContent" parameterType="screenContent">
+	INSERT INTO screencontent(screencontent_no, movie_no, screencontent_regdate, screen_date, screen_opentime, screen_endtime, 
+														screen_theater, ticket_price, preview_flag, preview_title, ticket_opendate,invite_actor)
+	VALUES(seq_screencontent_no.nextval, #{movie.movieNo}, TO_CHAR(SYSDATE,'YYYY/MM/DD'), TO_DATE(#{screenDate}, 'YYYY/MM/DD'), 
+					TO_DATE(#{screenOpenTime},'YYYY/MM/DD HH24:MI'),  TO_DATE(#{screenEndTime},'YYYY/MM/DD HH24:MI'), #{screenTheater}, #{ticketPrice},
+					<if test='(previewFlag == "Y")'> #{previewFlag}, #{previewTitle}, TO_DATE(#{ticketOpenDate}, 'YYYY/MM/DD HH24:MI:SS'), #{inviteActor}</if>
+					<if test='(previewFlag == "N")'> 'N', NULL, NULL, NULL</if>
+						)	
+	</insert>
+	
+	<update id="updateScreenContent" parameterType="screenContent">
+	UPDATE screencontent
+		<set>
+				screen_date = TO_DATE(#{screenDate}, 'YYYY/MM/DD'),
+				screen_opentime = TO_DATE(#{screenOpenTime},'YYYY/MM/DD HH24:MI'),
+				screen_endtime = TO_DATE(#{screenEndTime},'YYYY/MM/DD HH24:MI'),
+				screen_theater = #{screenTheater},
+				ticket_price = #{ticketPrice},
+				<if test='(previewFlag == "Y")'> preview_flag = #{previewFlag}, preview_title = #{previewTitle}, ticket_opendate = TO_DATE(#{ticketOpentDate}, 
+				'YYYY/MM/DD HH24:MI:SS'),  invite_actor =  #{inviteActor}</if>
+				<if test='(previewFlag == "N")'>preview_flag = #{previewFlag}, preview_title = NULL, ticket_opendate = NULL, invite_actor = NULL </if>
+		</set>
+		WHERE screencontent_no = #{screenContentNo}
+	</update>
+	
+	<delete id="deleteScreenContent" parameterType="int">
+		DELETE FROM screencontent
+		WHERE screencontent_no = #{screenContentNo}
+	</delete>
+	 
+	
+	<select id="getScreenContent" parameterType="string" resultMap="screenContentSelectMap"> 
+		SELECT screencontent_no, movie_no, TO_CHAR(screencontent_regdate,'YYYY/MM/DD') screencontent_regdate , 
+						TO_CHAR(screen_date,'YYYY/MM/DD') screen_date , TO_CHAR(screen_opentime,'HH24:MI') screen_opentime, 
+						 TO_CHAR(screen_endtime,'HH24:MI') screen_endtime, screen_theater, ticket_price, preview_flag, 
+						 preview_title,  TO_CHAR(ticket_opendate,'YYYY/MM/DD HH24:MI')  ticket_opendate,invite_actor
+				FROM screencontent
+		WHERE screencontent_no = #{screenContentNo}
+	</select>
+	
+	
+	<select id="getScreenContentList" parameterType="map" resultMap="screenContentSelectMap">
+		SELECT screencontent_no, movie_no, TO_CHAR(screencontent_regdate,'YYYY/MM/DD') screencontent_regdate , 
+		TO_CHAR(screen_date,'YYYY/MM/DD') screen_date , TO_CHAR(screen_opentime,'HH24:MI') screen_opentime, 
+		 TO_CHAR(screen_endtime,'HH24:MI') screen_endtime, screen_theater, ticket_price, preview_flag, 
+		 preview_title,  TO_CHAR(ticket_opendate,'YYYY/MM/DD HH24:MI')  ticket_opendate,invite_actor
+		FROM screencontent
+		WHERE movie_no = #{movieNo} ORDER BY screen_date, screen_opentime
+<!-- 		
+	SELECT * FROM (SELECT inner_table.*, ROWWNUM AS row_seq
+		 FROM (SELECT screencontent_no, movie_no, screencontent_regdate, screen_date, screen_opentime, screen_endtime, 
+			screen_theater, ticket_price, preview_flag, preview_title, ticket_opendate,invite_actor
+		FROM screencontent
+		WHERE moive_no = #{movieNo} ORDER BY screen_opentime )inner_table
+		WHERE ROWNUM &lt; = #{search.endRowNum})	
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
+		 -->
+		
+		
+	</select> 
+
+	<!-- 대관되어있는 영화시간 -->
+	<select id="notEmptyScreenContent" parameterType="map" resultMap='screenContentSelectMap'>
+		SELECT screen_opentime, screen_endtime FROM	screencontent WHERE screen_theater = #{screenTheater} AND screen_date = #{screenDate}
+	</select>
+	
+	<!-- 시간이 중복되어있는지 -->
+	<select id="checkScreenDupTime" parameterType="map" resultType="int">
+		SELECT COUNT(*) FROM screencontent WHERE  screen_theater = '1' AND screen_date = #{screenDate}
+		AND screen_endtime > TO_CHAR(#{screenOpenTime},'YYYY/MM/DD HH24:MI') AND TO_CHAR(#{screenEndTime},'YYYY/MM/DD HH24:MI') > screen_opentime
+	</select>
+	
+	
     <select id="uniPreviewList" parameterType="string" resultMap="screenContentSelectMap">
 	SELECT * FROM 
 				(SELECT sc.preview_flag, sc.preview_title, mv.movie_no, mv.poster 

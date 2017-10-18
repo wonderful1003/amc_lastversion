@@ -1,23 +1,22 @@
 package com.amc.service.booking;
 
+
 import java.util.List;
 
 import com.amc.common.Search;
 import com.amc.service.domain.Booking;
 import com.amc.service.domain.Movie;
-import com.amc.service.domain.Statistic;
 
 public interface BookingDAO {
 
-	public List<Movie> getScreenMovieList(); //다시확인하기
-	
+/*	public List<Movie> getScreenMovieList(Search search); //다시확인하기
+*/	
 	public List<Movie> getPreviewList();   //다시확인하기
 	
 	public void addBooking(Booking booking);
 	
 	public void getSeatView(int screenContentNo);
 	
-	public void addStatic(Statistic statistic);
 	
 	public void deleteBooking(String bookingNo);
 	

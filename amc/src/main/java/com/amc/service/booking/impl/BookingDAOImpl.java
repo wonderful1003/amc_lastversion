@@ -11,7 +11,6 @@ import com.amc.common.Search;
 import com.amc.service.booking.BookingDAO;
 import com.amc.service.domain.Booking;
 import com.amc.service.domain.Movie;
-import com.amc.service.domain.Statistic;
 
 @Repository("bookingDAOImpl")
 public class BookingDAOImpl implements BookingDAO {
@@ -26,11 +25,11 @@ public class BookingDAOImpl implements BookingDAO {
 		this.sqlSession = sqlSession;
 	}
 	
-	@Override
-	public List<Movie> getScreenMovieList() {
+/*	@Override
+	public List<Movie> getScreenMovieList(Search search) {
 		// TODO Auto-generated method stub
-		return null;
-	}
+		return sqlSession.selectList("MovieMapper.getMovieList", search);
+	}*/
 
 	@Override
 	public List<Movie> getPreviewList() {
@@ -50,11 +49,7 @@ public class BookingDAOImpl implements BookingDAO {
 		
 	}
 
-	@Override
-	public void addStatic(Statistic statistic) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public void deleteBooking(String bookingNo) {
@@ -64,6 +59,7 @@ public class BookingDAOImpl implements BookingDAO {
 
 	@Override
 	public Booking getBooking(String bookingNo) {
+		System.out.println("BookingDAOImpl ¾È, bookingNo : "+bookingNo);
 		
 		return sqlSession.selectOne("BookingMapper.getBooking", bookingNo);
 	}

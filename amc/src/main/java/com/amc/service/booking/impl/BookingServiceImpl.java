@@ -1,6 +1,8 @@
 package com.amc.service.booking.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +14,6 @@ import com.amc.service.booking.BookingDAO;
 import com.amc.service.booking.BookingService;
 import com.amc.service.domain.Booking;
 import com.amc.service.domain.Movie;
-import com.amc.service.domain.Statistic;
-import com.amc.service.screen.ScreenDAO;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 
 @Service("bookingServiceImpl")
 public class BookingServiceImpl implements BookingService {
@@ -65,11 +62,7 @@ public class BookingServiceImpl implements BookingService {
 		
 	}
 
-	@Override
-	public void addStatic(Statistic statistic) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public void deleteBooking(String bookingNo) {

@@ -27,7 +27,8 @@ public interface MovieService {
 	public List<Movie> getCommingSoonList(Search search);
 	
 	public Movie getMovie(int movieNo) throws Exception;
-	
+
+
 	// 영화 수정
 	public void updateMovie(Movie movie);
 

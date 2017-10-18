@@ -36,6 +36,7 @@ public class MovieDAOImpl implements MovieDAO {
 	public void setSqlSession(SqlSession sqlSession) {
 		System.out.println("::" + getClass() +" .setSqlsession Call....");
 		this.sqlSession = sqlSession;
+		
 	}
 
 	//Constructor
