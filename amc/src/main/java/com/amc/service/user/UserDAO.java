@@ -18,6 +18,9 @@ public interface UserDAO {
 	
 	// 회원정보수정 UPDATE
 	public void updateUser(User user) throws Exception;
+	
+	// 회원 id 찾기
+	public String getId(User user) throws Exception ;
 			
 	// 회원 탈퇴
 	public void deleteUser(User user) throws Exception;

@@ -4,7 +4,159 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+		
 <mapper namespace="PurchaseMapper">
- 	
- 	
+	
+	<resultMap id="purchaseSelectMap" type="purchase">		
+		<result property="orderNo" 				column="ORDER_NO" 			jdbcType="CHAR"/>
+		<result property="receiverName" 		column="RECEIVER_NAME" 		jdbcType="VARCHAR"/>
+		<result property="paymentOption" 		column="PAYMENT_OPTION" 	jdbcType="VARCHAR"/>
+		<result property="addrDlvy" 			column="ADDR_DLVY" 			jdbcType="VARCHAR"/>		
+		<result property="addrDlvyDetail" 		column="ADDR_DLVYDETAIL" 	jdbcType="VARCHAR"/>
+		<result property="orderStock"			column="ORDER_STOCK" 		jdbcType="NUMERIC"/>
+		<result property="receiverPhone1" 		column="RECEIVER_PHONE1" 	jdbcType="VARCHAR"/>	
+		<result property="receiverPhone2" 		column="RECEIVER_PHONE2" 	jdbcType="VARCHAR"/>
+		<result property="receiverPhone3" 		column="RECEIVER_PHONE3" 	jdbcType="VARCHAR"/>
+		<result property="totalProdPrice" 		column="TOTAL_PRODPRICE" 	jdbcType="NUMERIC"/>
+		<result property="tranCode" 			column="TRAN_CODE" 			jdbcType="CHAR"/>
+		<result property="orderRegDate"			column="ORDER_REGDATE" 		jdbcType="DATE"/>
+		<result property="impId"				column="IMP_ID" 			jdbcType="VARCHAR"/>
+		
+		<association property="user"	 	javaType="User">
+			<id property="userId" 			column="user_id" 			jdbcType="VARCHAR" />
+			
+			<result property="userId" 			column="user_id" 			jdbcType="VARCHAR"/>
+			<result property="userName"			column="user_name" 			jdbcType="VARCHAR"/>
+			<result property="password" 		column="password" 			jdbcType="VARCHAR"/>
+			<result property="role" 			column="role" 				jdbcType="VARCHAR"/>		
+			<result property="addr" 			column="addr" 				jdbcType="VARCHAR"/>
+			<result property="addrDetail" 		column="addr_detail"		jdbcType="VARCHAR"/>
+			<result property="userRegDate" 		column="user_regdate" 		jdbcType="DATE"/>
+			<result property="birth" 			column="birth" 				jdbcType="DATE"/>
+			<result property="phone1" 			column="phone1" 			jdbcType="VARCHAR"/>
+			<result property="phone2" 			column="phone2" 			jdbcType="VARCHAR"/>
+			<result property="phone3" 			column="phone3" 			jdbcType="VARCHAR"/>
+			<result property="calendarType" 	column="sl_yn" 				jdbcType="CHAR"/>
+			<result property="gender" 			column="gender" 			jdbcType="CHAR"/>
+			<result property="deleteUserFlag" 	column="delete_user_flag" 	jdbcType="CHAR"/>		
+			<result property="uuId" 			column="uuser_id" 			jdbcType="VARCHAR"/>	
+		</association>
+			
+	
+		<association property="product"		javaType="Product">
+			<id property="prodNo"			column="prod_no" 			jdbcType="NUMERIC"/>
+			
+  			<result property="prodNo" 			column="prod_no" 		jdbcType="NUMERIC"/>
+  			<result property="prodPrice" 		column="prod_price" 	jdbcType="NUMERIC"/>
+  			<result property="totalStock" 		column="total_stock" 	jdbcType="NUMERIC"/>
+  			<result property="salesStock" 		column="sales_stock" 	jdbcType="NUMERIC"/>
+  			<result property="stock" 			column="stock" 			jdbcType="NUMERIC"/>
+  			<result property="expiryDate" 		column="expiry_date" 	jdbcType="NUMERIC"/>
+  			<result property="prodImage" 		column="prod_image" 	jdbcType="VARCHAR"/>
+  			<result property="prodName" 		column="prod_name" 		jdbcType="VARCHAR"/>
+  			<result property="prodDetail" 		column="prod_detail" 	jdbcType="VARCHAR"/>
+  			<result property="prodSetInfo" 		column="prod_set_info" 	jdbcType="VARCHAR"/>
+  			<result property="salesOpenDate" 	column="sales_opendate" jdbcType="DATE"/>
+  			<result property="salesEndDate" 	column="sales_enddate" 	jdbcType="DATE"/>
+  			<result property="prodRegDate" 		column="prod_regdate" 	jdbcType="DATE"/>
+  			<result property="prodType" 		column="prod_type" 		jdbcType="CHAR"/>
+		</association>
+	</resultMap>
+		
+		<!-- SQL : INSERT -->
+		<insert id="addPurchase" parameterType="purchase">
+		 	INSERT
+			INTO transaction
+			VALUES	(	'p'||seq_transaction_order_no.nextval,
+						#{receiverName},
+						#{paymentOption},
+						#{addrDlvy},
+						#{addrDetail},
+						#{orderStock},
+						#{receiverPhone1},
+						#{receiverPhone2},
+						#{receiverPhone3},
+						#{totalProdPrice},
+						#{tranCode},
+						SYSDATE,
+						#{product.prodNo},
+						#{user.userId},
+						#{impId}	)	 
+	 	</insert>
+			
+ 		<!-- SQL : SELECT ONE -->
+ 		<select id="getPurchase" parameterType="string" resultMap="purchaseSelectMap">
+			SELECT
+			ADDR_DLVY, ADDR_DLVYDETAIL, ORDER_REGDATE, RECEIVER_NAME, RECEIVER_PHONE1, RECEIVER_PHONE2, RECEIVER_PHONE3, PAYMENT_OPTION, ORDER_NO, user_id, prod_no
+			FROM transaction
+			WHERE ORDER_NO = #{value}
+		</select>
+		
+		<!-- SQL : UPDATE -->			
+		<update id="updatePurchase" parameterType="purchase">
+  			UPDATE transaction
+  			<set>
+	    		<if test="paymentOption !=null">	PAYMENT_OPTION		=#{paymentOption},	</if>
+	  			<if test="receiverName !=null">	  	RECEIVER_NAME		=#{receiverName},	</if>
+	  			<if test="receiverPhone1 !=null">  	RECEIVER_PHONE1		=#{receiverPhone1},	</if> 
+	  			<if test="receiverPhone2 !=null">  	RECEIVER_PHONE2		=#{receiverPhone2},	</if>
+	  			<if test="receiverPhone3 !=null">  	RECEIVER_PHONE3		=#{receiverPhone3},	</if>
+	  			<if test="addrDlvy !=null">			ADDR_DLVY			=#{addrDlvy},		</if> 
+	  			<if test="addrDlvyDetail !=null">	ADDR_DLVYDETAIL		=#{addrDlvyDetail},	</if>	  			 						  			
+	  			<if test="tranCode != null"> 		TRAN_CODE			=#{tranCode} 		</if> 	 	
+  			</set>
+			WHERE ORDER_NO = #{orderNo}  		
+  		</update>
+		
+		<!-- SQL : UPDATE -->
+		<update id="updateTranCode" parameterType="purchase" >
+  			UPDATE transaction
+  			<set>
+    			<if test="tranCode !=null">	TRAN_CODE = #{tranCode},	
+    			</if>
+  			</set>
+			WHERE ORDER_NO = #{orderNo}  		
+  		</update>
+		
+		<!-- SQL : DELETE -->
+		<delete id="deletePurchase" parameterType="String">
+			DELETE
+			FROM product
+			WHERE prod_no = #{value}
+		</delete>
+		
+		<!--  map으로 바꿔주기 -->
+	  	<select id="getPurchaseList" parameterType="map" resultMap="purchaseSelectMap">
+	  		SELECT *
+	  		FROM	(	SELECT inner_table.* , ROWNUM AS row_seq
+	  			 		FROM	(	SELECT *
+	  								FROM transaction
+	  									<if test="user !='admin' ">
+											WHERE user_id = #{user}									
+										</if>
+									ORDER BY ORDER_NO ) inner_table
+	  					WHERE ROWNUM &lt;= #{search.endRowNum}	)
+			WHERE row_seq 
+			BETWEEN #{search.startRowNum} AND #{search.endRowNum}
+	  	</select>
+	 
+		<!-- SQL : SELECT ROW Count -->	 
+		<select  id="getTotalCount"  parameterType="Search"	 resultType="int">
+	 	SELECT COUNT(*)
+	  	FROM	(	SELECT *
+					FROM transaction 						
+					<if test="searchKeyword !='admin' ">
+					WHERE user_id =	#{searchKeyword} 
+					</if>	) countTable						  	
+	 	</select>
+	 	
+	 	<!-- SQL : SELECT LIST -->
+<!--	<select id = "getPurchaseByProd" parameterType="int" resultMap="purchaseSelectMap">
+  			SELECT 
+  				t.*, p.*, u.* 
+  			FROM  transaction t, product p, users u 
+  			WHERE  t.prod_no= #{value} 
+  			AND t.prod_no=p.prod_no AND t.buyer_id=u.user_id
+  		</select>
+ -->	
 </mapper>
