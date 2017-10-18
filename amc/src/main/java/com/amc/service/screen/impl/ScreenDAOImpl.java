@@ -54,14 +54,17 @@ public class ScreenDAOImpl implements ScreenDAO {
 	@Override
 	public int addScreenContent(ScreenContent screenContent) {
 		System.out.println("ScreenDAOImpl의 addScreenContent 메소드 시작...");
-		sqlSession.insert("ScreenContentMapper.addScreenContent", screenContent);
+		//sqlSession.insert("ScreenContentMapper.addScreenContent", screenContent);
 		System.out.println("ScreenDAOImpl의 addScreenContent 메소드 끝...");
-		return 0;
+		return sqlSession.insert("ScreenContentMapper.addScreenContent", screenContent);
 	}
 
 	@Override
 	public ScreenContent getScreenContent(int screenContentNo) {
-		return null;
+		System.out.println("ScreenDAOImpl의 getScreenContent 메소드 시작...");
+		//sqlSession.insert("ScreenContentMapper.addScreenContent", screenContent);
+		System.out.println("ScreenDAOImpl의 getScreenContent 메소드 끝...");
+		return sqlSession.selectOne("ScreenContentMapper.getScreenContent",	screenContentNo);
 	}
 
 	@Override

@@ -27,7 +27,7 @@
 	<insert id="addScreenContent" parameterType="screenContent">
 	INSERT INTO screencontent(screencontent_no, movie_no, screencontent_regdate, screen_date, screen_opentime, screen_endtime, 
 														screen_theater, ticket_price, preview_flag, preview_title, ticket_opendate,invite_actor)
-	VALUES(seq_screencontent_no.nextval, #{movie.movieNo}, TO_DATE(SYSDATE,'YYYY/MM/DD'), TO_DATE(#{screenDate}, 'YYYY/MM/DD'), 
+	VALUES(seq_screencontent_no.nextval, #{movie.movieNo}, TO_CHAR(SYSDATE,'YYYY/MM/DD'), TO_DATE(#{screenDate}, 'YYYY/MM/DD'), 
 					TO_DATE(#{screenOpenTime},'YYYY/MM/DD HH24:MI'),  TO_DATE(#{screenEndTime},'YYYY/MM/DD HH24:MI'), #{screenTheater}, #{ticketPrice},
 					<if test='(previewFlag == "Y")'> #{previewFlag}, #{previewTitle}, TO_DATE(#{ticketOpenDate}, 'YYYY/MM/DD HH24:MI:SS'), #{inviteActor}</if>
 					<if test='(previewFlag == "N")'> 'N', NULL, NULL, NULL</if>
@@ -56,18 +56,20 @@
 	 
 	
 	<select id="getScreenContent" parameterType="string" resultMap="screenContentSelectMap"> 
-		SELECT screencontent_no, movie_no, screencontent_regdate, screen_date, screen_opentime, screen_endtime, 
-														screen_theater, ticket_price, preview_flag, preview_title, ticket_opendate,invite_actor
-		FROM screencontent
+		SELECT screencontent_no, movie_no, TO_CHAR(screencontent_regdate,'YYYY/MM/DD') screencontent_regdate , 
+						TO_CHAR(screen_date,'YYYY/MM/DD') screen_date , TO_CHAR(screen_opentime,'HH24:MI') screen_opentime, 
+						 TO_CHAR(screen_endtime,'HH24:MI') screen_endtime, screen_theater, ticket_price, preview_flag, 
+						 preview_title,  TO_CHAR(ticket_opendate,'YYYY/MM/DD HH24:MI')  ticket_opendate,invite_actor
+				FROM screencontent
 		WHERE screencontent_no = #{screenContentNo}
 	</select>
 	
 	
 	<select id="getScreenContentList" parameterType="map" resultMap="screenContentSelectMap">
-		SELECT screencontent_no, movie_no, to_char(screencontent_regdate,'YYYY/MM/DD') screencontent_regdate , 
-		to_char(screen_date,'YYYY/MM/DD') screen_date , to_char(screen_opentime,'HH24:MI') screen_opentime, 
-		 to_char(screen_endtime,'HH24:MI') screen_endtime, screen_theater, ticket_price, preview_flag, 
-		 preview_title,  to_char(ticket_opendate,'YYYY/MM/DD HH24:MI')  ticket_opendate,invite_actor
+		SELECT screencontent_no, movie_no, TO_CHAR(screencontent_regdate,'YYYY/MM/DD') screencontent_regdate , 
+		TO_CHAR(screen_date,'YYYY/MM/DD') screen_date , TO_CHAR(screen_opentime,'HH24:MI') screen_opentime, 
+		 TO_CHAR(screen_endtime,'HH24:MI') screen_endtime, screen_theater, ticket_price, preview_flag, 
+		 preview_title,  TO_CHAR(ticket_opendate,'YYYY/MM/DD HH24:MI')  ticket_opendate,invite_actor
 		FROM screencontent
 		WHERE movie_no = #{movieNo} ORDER BY screen_date, screen_opentime
 <!-- 		
@@ -91,7 +93,7 @@
 	<!-- 시간이 중복되어있는지 -->
 	<select id="checkScreenDupTime" parameterType="map" resultType="int">
 		SELECT COUNT(*) FROM screencontent WHERE  screen_theater = '1' AND screen_date = #{screenDate}
-		AND screen_endtime > to_date(#{screenOpenTime},'YYYY/MM/DD HH24:MI') AND to_date(#{screenEndTime},'YYYY/MM/DD HH24:MI') > screen_opentime
+		AND screen_endtime > TO_CHAR(#{screenOpenTime},'YYYY/MM/DD HH24:MI') AND TO_CHAR(#{screenEndTime},'YYYY/MM/DD HH24:MI') > screen_opentime
 	</select>
 	
 	
