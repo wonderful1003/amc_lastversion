@@ -1,19 +1,50 @@
 package com.amc.service.booking.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import com.amc.common.Search;
+import com.amc.service.booking.BookingDAO;
 import com.amc.service.booking.BookingService;
 import com.amc.service.domain.Booking;
 import com.amc.service.domain.Movie;
 import com.amc.service.domain.Statistic;
+import com.amc.service.screen.ScreenDAO;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
+@Service("bookingServiceImpl")
 public class BookingServiceImpl implements BookingService {
+	
+	@Autowired
+	@Qualifier("bookingDAOImpl")
+	private BookingDAO bookingDAO;
+	
+	public void setBookingDAO(BookingDAO bookingDAO) {
+		this.bookingDAO = bookingDAO;
+	}
+	
 
 	@Override
 	public List<Movie> getScreenMovieList() {
-		// TODO Auto-generated method stub
-		return null;
+		
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        Calendar calendar = Calendar.getInstance();
+
+        String dateToday = simpleDateFormat.format(calendar.getTime());
+        System.out.println("Today : " + dateToday);
+        
+	    //List<Movie> todayMovieList = movieDAO.
+         
+
+        List<Movie> list = new ArrayList<Movie>();
+		
+		return list;
 	}
 
 	@Override
@@ -48,8 +79,8 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public Booking getBooking(String bookingNo) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return bookingDAO.getBooking(bookingNo);
 	}
 
 	@Override

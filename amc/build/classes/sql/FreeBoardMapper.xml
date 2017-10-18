@@ -6,6 +6,18 @@
 
 <mapper namespace="FreeBoardMapper">
  	
- 	
+ 	<!-- Purpose of resultMap is mapping resultSet of SQL -->
+
+  	 <resultMap id ="freeBoardMap" type="freeBoard">
+  	
+  		<result property="freeBoardNo" 		column="freeboard_no" 		jdbcType="NUMERIC"/>
+  		<result property="freeBoardTitle" 	column="freeboard_title" 	jdbcType="VARCHAR"/>
+  		<result property="userId" 			column="user_id" 			jdbcType="VARCHAR"/>
+  		<result property="freeBoardRegDate" column="freeboard_regdate"	jdbcType="DATE"/>
+  		<result property="freeBoardViews" 	column="freeboard_views" 	jdbcType="NUMERIC"/>
+  		<result property="freeBoardImage" 	column="freeboard_image" 	jdbcType="VARCHAR"/>
+  		<result property="freeBoardContent" column="freeboard_content" 	jdbcType="VARCHAR"/>
+	 
+  	</resultMap>	
 
 </mapper>
