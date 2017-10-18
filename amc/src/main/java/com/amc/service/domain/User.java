@@ -18,10 +18,20 @@ public class User {
 	private String calendarType;
 	private String gender;
 	private String deleteUserFlag;
-	
+	private String uuId;
+ 	
+
 	public User() {
 	}
 	
+	public String getUuId() {
+		return uuId;
+	}
+
+	public void setUuId(String uuId) {
+		this.uuId = uuId;
+	}
+
 	public String getUserId() {
 		return userId;
 	}
@@ -106,5 +116,13 @@ public class User {
 	public void setDeleteUserFlag(String deleteUserFlag) {
 		this.deleteUserFlag = deleteUserFlag;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", role=" + role
+				+ ", addr=" + addr + ", addrDetail=" + addrDetail + ", userRegDate=" + userRegDate + ", birth=" + birth
+				+ ", phone1=" + phone1 + ", phone2=" + phone2 + ", phone3=" + phone3 + ", calendarType=" + calendarType
+				+ ", gender=" + gender + ", deleteUserFlag=" + deleteUserFlag + ", uuId=" + uuId + "]";
+	}
+
 }
