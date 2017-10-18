@@ -50,16 +50,18 @@
 					
 					$("input[name='screenContentEndTime' ]").val(JSONData.screenEndTime);
 					
-					$("input[name='screenTheater' ]").val(JSONData.screenTheater);
+					$("select[name='screenTheater' ]").val(JSONData.screenTheater);
 					
 					$("input[name='ticketPrice' ]").val(JSONData.ticketPrice);
 					$("input[name='previewTitle' ]").val(null);
 					$("input[name='previewOpenDate' ]").val(null);
 					$("input[name='previewOpenTime' ]").val(null);
 					$("input[name='inviteActor' ]").val(null);
+					$("input[name='previewChecked' ]").attr("checked",false);
 					
 					if(JSONData.previewFlag == 'Y'){
-						$("input[name='previewChecked' ]").is(":checked") == true;
+						$("input[name='previewChecked' ]").attr("checked",true);
+						
 						var previewOpenDate = JSONData.ticketOpenDate;
 						previewOpenDate = previewOpenDate.substr(0,10);
 						
@@ -76,8 +78,14 @@
 						
 					}
 					
-
+					$("#addScreenContent").remove();
+					$("#updateScreenContent").remove();
 					
+					var displayValue = "<button type='button' id='updateScreenContent'>수정해용</button>"
+					
+						//$("#test01").after(displayValue);
+					
+						$("input[name='movieNo']").after(displayValue);
 				}
 			})
 			
@@ -145,7 +153,7 @@
 			);
 		
 	//	$("form").attr("method", "POST").attr("action", "/screen/json/addScreenContent/"+movieNo).submit();
-	fncGetScreenContentList ();
+			fncGetScreenContentList ();
 
 	}
 	
@@ -201,7 +209,7 @@
 				displayValue += "</table>";
 				console.log(displayValue);
 					$("#test").html(displayValue);
-					alert("ddd");
+		
 										
 			}
 
@@ -298,7 +306,8 @@
 		<input type="hidden" name="ticketOpenDate">
 		<input type="hidden" name='movieNo' value='10000'>
 	
-<button type="button" id="add">등록행</button>
+<button type="button" id="addScreenContent">등록행</button>
+<div id='test01'></div>
 </form>
 
 </body>
