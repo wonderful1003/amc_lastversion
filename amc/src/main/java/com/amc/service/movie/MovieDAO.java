@@ -7,12 +7,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.amc.common.Search;
 import com.amc.service.domain.Movie;
-import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
-import com.amc.service.domain.onetime.Screen;
 import com.amc.service.domain.onetime.Twitter;
+
 
 
 public interface MovieDAO {
@@ -31,9 +30,13 @@ public interface MovieDAO {
 	// 시사회 영화 목록 불러오기
 	public List<Movie> getCommingSoonList(Search search);
 	
+	// 영화 목록 총 검색 수 
+	public int getTotalCount(Search search) throws Exception;	
+	
 	
 	// 영화 가져오기
-	public Movie getMovie(int movieNo);
+	public Movie getMovie(int movieNo) throws Exception;
+	
 
 	// 영화 수정
 	public void updateMovie(Movie movie);
@@ -52,7 +55,7 @@ public interface MovieDAO {
 		
 
 	// submit을 누른후 외부 영화 API 상세 + 네이버 영화 포스터 API를 가져온 후 DB등록
-	public int addMovie(Screen screen);
+	public int addMovie(Movie movie);
 	
 	// 관리목록에서 클릭한경우는 수정화면으로, 영화목록에서 클릭한경우는 상세정보화면으로
 

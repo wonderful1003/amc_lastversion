@@ -1,42 +1,76 @@
 package com.amc.service.screen.impl;
 
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import com.amc.common.Search;
+import com.amc.service.domain.Movie;
 import com.amc.service.domain.ScreenContent;
+import com.amc.service.screen.ScreenDAO;
 import com.amc.service.screen.ScreenService;
 
+@Repository("screenServiceImpl")
 public class ScreenServiceImpl implements ScreenService {
+	
+	@Autowired
+	@Qualifier("screenDAOImpl")
+	private ScreenDAO screenDAO;
+	
+	public void setScreenDAO(ScreenDAO screenDAO){
+		this.screenDAO = screenDAO;
+	}
+	
+	public ScreenServiceImpl() {
+		System.out.println(this.getClass());	
+	}
 
 	@Override
-	public List<ScreenContent> getScreenContentList(Search search, int screenNo) {
-		// TODO Auto-generated method stub
+	public List<Movie> getMovieList(Search search) {
 		return null;
 	}
 
 	@Override
+	public Movie getMovie(int movieNo) {
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getScreenContentList(Search search, int movieNo) {
+		System.out.println("ScreenServiceImpl의 getScreenContentList 메소드 시작..");
+		
+		return screenDAO.getScreenContentList(search, movieNo);
+	}
+
+	@Override
 	public int addScreenContent(ScreenContent screenContent) {
-		// TODO Auto-generated method stub
-		return 0;
+		System.out.println("ScreenServiceImpl의 addScreenContent 메소드 시작..");
+		
+		
+		return screenDAO.addScreenContent(screenContent);
 	}
 
 	@Override
 	public boolean checkScreenDupTime(String screenOpenTime, String screenEndTime) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
+	public ScreenContent getScreenContent(int screenContentNo) {
+		return null;
+	}
+
+	@Override
 	public int updateScreenContent(ScreenContent screenContent) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int deleteScreenContent(int screenContentNo) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
-
 
 }

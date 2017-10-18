@@ -15,7 +15,7 @@
 	<typeAlias alias="booking" 		 type="com.amc.service.domain.Booking" />
 	<typeAlias alias="comment" 		 type="com.amc.service.domain.Comment" />
 	<typeAlias alias="freeBoard" 	 type="com.amc.service.domain.FreeBoard" />
-	<typeAlias alias="movie" 		 type="com.amc.service.domain.onetime.Screen" />
+	<typeAlias alias="movie" 		 type="com.amc.service.domain.Movie" />
 	<typeAlias alias="movieAPI" 	 type="com.amc.service.domain.MovieAPI" />
 	<typeAlias alias="alarm" 		 type="com.amc.service.domain.Alarm" />
 	<typeAlias alias="product" 		 type="com.amc.service.domain.Product" />

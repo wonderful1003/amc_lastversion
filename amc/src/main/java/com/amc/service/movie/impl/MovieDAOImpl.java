@@ -17,10 +17,10 @@ import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
-import com.amc.service.domain.onetime.Screen;
 import com.amc.service.domain.onetime.Twitter;
 import com.amc.service.movie.MovieDAO;
 import com.amc.service.movie.MovieDAOAdapter;
+
 
 import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
 import kr.or.kobis.kobisopenapi.consumer.rest.exception.OpenAPIFault;
@@ -36,6 +36,7 @@ public class MovieDAOImpl implements MovieDAO {
 	public void setSqlSession(SqlSession sqlSession) {
 		System.out.println("::" + getClass() +" .setSqlsession Call....");
 		this.sqlSession = sqlSession;
+		
 	}
 
 	//Constructor
@@ -49,10 +50,21 @@ public class MovieDAOImpl implements MovieDAO {
 	}
 
 	// 현재 상영 영화 목록 불러오기
+	
 	public List<Movie> getMovieList(Search search) {
 		
-		return null;
+		System.out.println("MovieDAOImpl called ....");
+		
+		/*for(Object m : sqlSession.selectList("MovieMapper.getMovieList",search)){
+			System.out.println((Movie)m);
+		}*/
+		
+		List<Movie> list = sqlSession.selectList("MovieMapper.getMovieList",search);
+		//System.out.println("list value show :: " + ((Movie)list.get(0)).toString());
+		
+		return (sqlSession.selectList("MovieMapper.getMovieList",search));
 	}
+	
 
 	// 상영 예정 영화 목록 불러오기
 	public List<Movie> getMoviePreviewList(Search search) {
@@ -64,8 +76,9 @@ public class MovieDAOImpl implements MovieDAO {
 		return null;
 	}
 
-	public Movie getMovie(int movieNo) {
-		return null;
+		
+	public Movie getMovie(int movieNo) throws Exception {
+		return sqlSession.selectOne("MovieMapper.getProduct",movieNo);
 	}
 
 	// 영화 수정
@@ -122,11 +135,24 @@ public class MovieDAOImpl implements MovieDAO {
 		return 0;
 	}
 	
-	public int addMovie(Screen screen) 	 {
+	public int addMovie(Movie movie) 	 {
 		System.out.println("MovieDAOImpl called ... addMovie...");
 		
 		
-		return sqlSession.insert("MovieMapper.addMovie",screen);
+		System.out.println("actorNms     ::" + movie.getActors());
+	    System.out.println("directorNms  ::" + movie.getDirector());
+	    System.out.println("genreNms     ::" + movie.getGenres());
+	    System.out.println("movieNm      ::" + movie.getMovieNm());
+	    System.out.println("postUrl      ::" + movie.getPostUrl());
+	    System.out.println("watchGradeNm ::" + movie.getWatchGradeNm());
+	    System.out.println("showTm       ::" + movie.getShowTm());
+	    System.out.println("openDt       ::" + movie.getOpenDt());
+	    System.out.println("movieEndDate ::" + movie.getEndDt());
+	    System.out.println("syonpsis     ::" + movie.getSynopsis());
+	    System.out.println("trailer      ::" + movie.getTrailer());
+    	
+		
+		return sqlSession.insert("MovieMapper.addMovie",movie);
 		
 }
 
@@ -188,7 +214,10 @@ public class MovieDAOImpl implements MovieDAO {
 		return null;
 	}
 
-	
-	
+	@Override
+	public int getTotalCount(Search search) throws Exception {		
+		return sqlSession.selectOne("MovieMapper.getTotalCount",search);
+	}
 
+	
 }
