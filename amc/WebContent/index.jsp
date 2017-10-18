@@ -21,5 +21,6 @@
 		<h2>예매</h2>
 		<h2><a href = "/booking/getScreenMovieList">영화 예매 1단계로 가기</a></h2>
 		<h2><a href = "/booking/selectPreview.jsp">시사회 예매 1단계로 가기</a></h2>
+		<a href='/screen/getScreenContentList/10000'>영화 번호 10000의 상영정보보기</a>
 	</body>
 </html>

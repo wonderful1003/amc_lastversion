@@ -34,7 +34,7 @@
 		var ticketOpenDate =  $("input[name='previewOpenDate']").val()+" "+$("input[name='previewOpenTime']").val();
 		var inviteActor = $("input[name='inviteActor']").val();
 	
-	 	alert(screenEndTime);
+	 
 		
 		if(previewChecked == true){
 			var previewFlag = "Y";
@@ -55,6 +55,32 @@
 	
 	$(function () {
 		$("#add").on("click", function () {
+			
+			$.ajax(
+				{
+					type:'post',
+					url: "/screen/json/addScreenContent/"+movieNo,
+					headers : {
+						"Accept" : "application/json"
+						"Content-Type" : "application/json"
+					},
+					data : {
+						JSON.stringify(
+								{screenDate : screenDate},
+								{screenOpenTime : screenOpenTime},
+								{screenEndTime : screenEndTime},
+								{screenTheater : screenTheater},
+								{ticketPrice : ticketPrice},
+								{previewChecked : previewChecked},
+								{previewTitle : previewTitle},
+								{ticketOpenDate : ticketOpenDate},
+								{inviteActor : inviteActor},
+								{previewFlag : previewFlag}
+						)
+					},
+					
+				}		
+			);
 			fncAddScreenContent();
 		});
 	});
@@ -71,20 +97,20 @@
 
 <form>
 
-<table width="650" border="1">
+<table border="1">
 	<tr>
-		<th width="50">상영번호</th>
-		<th width="50">영화번호</th>
-		<th width="50">상영등록일자</th>
-		<th width="50">상영일자</th>
-		<th width="50">상영시작시간</th>
-		<th width="50">상영종료시간</th>
-		<th width="50">상영관</th>
-		<th width="50">가격</th>
-		<th width="50">시사회여부</th>
-		<th width="50">시사회제목</th>
-		<th width="50">티켓오픈날짜</th>
-		<th width="50">초대배우</th>
+		<th>상영번호</th>
+		<th>영화번호</th>
+		<th>상영등록일자</th>
+		<th>상영일자</th>
+		<th>상영시작시간</th>
+		<th>상영종료시간</th>
+		<th>상영관</th>
+		<th>가격</th>
+		<th>시사회여부</th>
+		<th>시사회제목</th>
+		<th>티켓오픈날짜</th>
+		<th>초대배우</th>
 	</tr>
 	<c:set var="i" value="0"/>
 	<c:forEach var ="screenContent" items="${list }">
