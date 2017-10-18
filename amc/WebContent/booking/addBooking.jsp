@@ -10,6 +10,7 @@
 		
 		<h2></h2>
 	</body>
+<<<<<<< HEAD
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
@@ -117,4 +118,6 @@ IMP.init('imp41659269');
 
 	<input type="button" value="결제하기" onClick="javascript:kakaoPay()"/>
 
+=======
+>>>>>>> refs/remotes/origin/master
 </html>

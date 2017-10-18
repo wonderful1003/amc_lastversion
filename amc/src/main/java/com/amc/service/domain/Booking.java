@@ -14,8 +14,12 @@ public class Booking {
 	private List<String> bookingSeatNo; 
 	private String qrUrl;
 	private String movieNo;
-
 	
+	private Movie movie;
+	private ScreenContent screenContent;
+
+
+
 	public Booking() {
 		super();
 	}
@@ -99,15 +103,32 @@ public class Booking {
 	public void setMovieNo(String movieNo) {
 		this.movieNo = movieNo;
 	}
+	
+	public Movie getMovie() {
+		return movie;
+	}
+
+	public void setMovie(Movie movie) {
+		this.movie = movie;
+	}
+
+	public ScreenContent getScreenContent() {
+		return screenContent;
+	}
+
+	public void setScreenContent(ScreenContent screenContent) {
+		this.screenContent = screenContent;
+	}
 
 	@Override
 	public String toString() {
 		return "Booking [bookingNo=" + bookingNo + ", impId=" + impId + ", userId=" + userId + ", screenContentNo="
 				+ screenContentNo + ", bookingRegDate=" + bookingRegDate + ", headCount=" + headCount
 				+ ", totalTicketPrice=" + totalTicketPrice + ", bookingSeatNo=" + bookingSeatNo + ", qrUrl=" + qrUrl
-				+ ", movieNo=" + movieNo + "]";
+				+ ", movieNo=" + movieNo + ", movie=" + movie + ", screenContent=" + screenContent + "]";
 	}
-	
+
+
 	
 	
 }

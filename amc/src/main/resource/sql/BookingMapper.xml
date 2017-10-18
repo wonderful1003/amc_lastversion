@@ -6,5 +6,58 @@
 
 <mapper namespace="BookingMapper">
  	
+ 	<!-- Purpose of resultMap is mapping resultSet of SQL -->
 
+  	 <resultMap id ="bookingSelectMap" type="booking">
+  	
+  		<result property="bookingNo" 		column="booking_no" 		jdbcType="CHAR"/>
+  		<result property="impId" 			column="imp_id" 			jdbcType="VARCHAR"/>
+  		<result property="userId" 			column="user_id" 			jdbcType="VARCHAR"/>
+  		<result property="screenContentNo" 	column="screencontent_no" 	jdbcType="NUMERIC"/>
+  		<result property="bookingRegDate" 	column="booking_regdate" 	jdbcType="DATE"/>
+  		<result property="headCount" 		column="head_count" 		jdbcType="NUMERIC"/>	
+  		<result property="totalTicketPrice" column="total_ticketprice"	jdbcType="NUMERIC"/>
+		<result property="bookingSeatNo" 	column="bookingseat_no"		jdbcType="VARCHAR"/>		
+  		<result property="qrUrl" 			column="qr_url" 			jdbcType="VARCHAR"/>
+		
+		<association property="buyer"			resultMap="MovieMapper.movieSelectMap"/>
+		<association property="purchaseProd"	resultMap="ScreenContentMapper.screenContentSelectMap"/>
+  	</resultMap>
+  		
+  	<select id="getBooking" parameterType="java.lang.String" resultMap="bookingSelectMap" >
+  		SELECT *	 		
+		FROM booking   
+		WHERE booking_no = #{bookingNo}											
+  	</select>
+  	
+  	<select id="getBookingList" parameterType="search" resultMap="bookingSelectMap">
+		SELECT *
+  		FROM ( SELECT inner_table.* , ROWNUM AS row_seq
+  						FROM ( 	SELECT b.*, m.*
+  								FROM booking b, movie m 
+						  		<where>
+						  			b.
+						  			<if test="searchCondition!=null " >
+						  				<if test="searchCondition==0  and searchKeyword !=''  and searchKeyword != null">
+						  						AND user_id	=	#{searchKeyword}
+						  				</if> 
+	<!-- 					  				<if test="searchCondition==1   and searchKeyword !=''  and searchKeyword != null ">
+						  						AND p.prod_name like '%'|| #{searchKeyword}||'%'
+						  				</if>  				
+						  				<if test="searchCondition==2  and searchKeyword !=''  and searchKeyword != null">
+						  						AND p.price = #{searchKeyword}
+						  				</if> 
+	-->
+						  			</if>
+						  		</where> 												 
+								ORDER BY
+								<if test="sortBy == 'asc' ">b.booking_regdate asc</if> 
+								<if test="sortBy == 'desc' ">b.booking_regdate desc</if> 
+								<if test="sortBy != 'asc' and  sortBy != 'desc' ">b.bookin_no</if> 									
+							) inner_table
+
+					WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+  	</select>
+  	
 </mapper>
