@@ -5,8 +5,6 @@ import java.util.List;
 import com.amc.common.Search;
 import com.amc.service.domain.Booking;
 import com.amc.service.domain.Movie;
-import com.amc.service.domain.ScreenContent;
-import com.amc.service.domain.Statistic;
 
 public interface BookingService {
 	
@@ -14,13 +12,9 @@ public interface BookingService {
 	
 	public List<Movie> getPreviewList();   //다시확인하기
 	
-	public List<ScreenContent> getScreenTimeList();
-	
 	public void addBooking(Booking booking);
 	
 	public void getSeatView(int screenContentNo);
-	
-	public void addStatic(Statistic statistic);
 	
 	public void deleteBooking(String bookingNo);
 	
@@ -35,7 +29,9 @@ public interface BookingService {
 	public void selectCancelAlarm(int screenContentNo);
 	
 	//여기서부터는 restController가 사용
-
+	public List<Movie> getScreenDateList(int selectScreenNo);
+	
+	public List<Movie> getScreenTimeList(String selectScreenDate);
 	
 	public void sendEmailQR(String bookinNo, String email);
 	

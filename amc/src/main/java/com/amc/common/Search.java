@@ -7,7 +7,9 @@ public class Search {
 	private int currentPage;
 	private String searchCondition;
 	private String searchKeyword;
+	private String searchKeyword2;
 	private int pageSize;
+		int pageUnit;
 	private String sortBy;
 	//==> 리스트화면 currentPage에 해당하는 회원정보를 ROWNUM 사용 SELECT 위해 추가된 Field 
 	//==> UserMapper.xml 의 
@@ -16,6 +18,7 @@ public class Search {
 	
 	private int endRowNum;
 	private int startRowNum;
+	boolean stockView;
 	
 	///Constructor
 	public Search() {
@@ -29,6 +32,13 @@ public class Search {
 		this.pageSize = paseSize;
 	}
 	
+	public int getPageUnit() {
+		return pageUnit;
+	}
+	public void setPageUnit(int pageUnit) {
+		this.pageUnit = pageUnit;
+	}
+
 	public int getCurrentPage() {
 		return currentPage;
 	}
@@ -58,6 +68,12 @@ public class Search {
 	public int getStartRowNum() {
 		return (getCurrentPage()-1)*getPageSize()+1;
 	}
+		public String getSearchKeyword2() {
+		return searchKeyword2;
+	}
+	public void setSearchKeyword2(String searchKeyword2) {
+		this.searchKeyword2 = searchKeyword2;
+	}
 
 
 	public String getSortBy() {
@@ -66,6 +82,13 @@ public class Search {
 
 	public void setSortBy(String sortBy) {
 		this.sortBy = sortBy;
+	}
+
+	public boolean isStockView() {
+		return stockView;
+	}
+	public void setStockView(boolean stockView) {
+		this.stockView = stockView;
 	}
 
 	@Override

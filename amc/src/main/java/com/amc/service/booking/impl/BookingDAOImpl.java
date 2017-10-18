@@ -11,7 +11,6 @@ import com.amc.common.Search;
 import com.amc.service.booking.BookingDAO;
 import com.amc.service.domain.Booking;
 import com.amc.service.domain.Movie;
-import com.amc.service.domain.Statistic;
 
 @Repository("bookingDAOImpl")
 public class BookingDAOImpl implements BookingDAO {
@@ -50,11 +49,7 @@ public class BookingDAOImpl implements BookingDAO {
 		
 	}
 
-	@Override
-	public void addStatic(Statistic statistic) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public void deleteBooking(String bookingNo) {
