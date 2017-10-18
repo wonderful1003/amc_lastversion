@@ -104,6 +104,7 @@
 			var previewFlag="N";
 		}
 		
+	
 		$("input:hidden[name='screenOpenTime']").val(screenOpenTime);
 		$("input:hidden[name='screenEndTime']").val(screenEndTime);
 		$("input:hidden[name='previewFlag']").val(previewFlag);
