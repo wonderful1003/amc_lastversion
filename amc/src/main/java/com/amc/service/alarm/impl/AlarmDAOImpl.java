@@ -11,7 +11,7 @@ import com.amc.common.Search;
 import com.amc.service.alarm.AlarmDAO;
 import com.amc.service.domain.Alarm;
 
-@Repository("alarmDaoImpl")
+@Repository("alarmDAOImpl")
 public class AlarmDAOImpl implements AlarmDAO {
 
 	@Autowired

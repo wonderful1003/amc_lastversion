@@ -13,7 +13,7 @@
 ²¥³¢²ó
 <br></br>
 
-<%-- 		<input type="text" value="°Ë»öÇÑ ¿µÈ­" >
+		<input type="text" value="°Ë»öÇÑ ¿µÈ­" >
 	    <c:set var="i" value="0" />
 		  <c:forEach var="movie" items="${unifiedSearch.uniMovieList}">
 			<c:set var="i" value="${ i+1 }" />
@@ -21,12 +21,12 @@
 			  <td align="center">${ i }</td>
 			  <td align="left">${movie.movieNo }</td>
 			  <td align="left"></td>
-			  <td align="left">${movie.movieTitle }</td>
+			  <td align="left">${movie.movieNm }</td>
 			  <td align="left"></td>
-			  <td align="left">${movie.poster }</td>
+			  <td align="left">${movie.postUrl }</td>
 			  <td align="left"></td>
 			</tr>
-          </c:forEach> --%>
+          </c:forEach>
           
           <br></br><br></br><br></br><br></br>
 

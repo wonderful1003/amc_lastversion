@@ -9,8 +9,10 @@ public interface CinemaService {
 
 		public Map<String, Object> unifiedSearch(String searchKeyword);
 		
-		public Map<String, List<Object>> index();
+		public Map<String, Object> index();
 		
 		public String getPanorama(int theaterNo);
+		
+		public String checkPay(String impUid) throws Exception;
 	
 }

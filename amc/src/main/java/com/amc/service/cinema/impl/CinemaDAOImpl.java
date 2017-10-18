@@ -16,7 +16,7 @@ import com.amc.service.domain.Movie;
 import com.amc.service.domain.Product;
 import com.amc.service.domain.ScreenContent;
 
-@Repository("cinemaDaoImpl")
+@Repository("cinemaDAOImpl")
 public class CinemaDAOImpl implements CinemaDAO {
 	
 	@Autowired
@@ -33,17 +33,6 @@ public class CinemaDAOImpl implements CinemaDAO {
 		Map<String,Object> unifiedSearch = new HashMap<String,Object>();
 		
 
-		/*통합검색 영화 리스트 부르기*/
-		List<Movie> uniMovieList = sqlSession.selectList("MovieMapper.uniMovieList","스");
-
-		unifiedSearch.put("uniMovieList", uniMovieList);
-		
-/*		for(int i = 0; i<uniMovieList.size(); i++){
-			System.out.println("DAOImpl : "+((Movie)(uniMovieList.get(i))).getMovieTitle());
-		}*/
-		
-
-		
 		/*통합검색 시사회 리스트 부르기*/
 		List<ScreenContent> uniPreviewList = sqlSession.selectList("ScreenContentMapper.uniPreviewList","시사회");
 		
@@ -75,8 +64,10 @@ public class CinemaDAOImpl implements CinemaDAO {
 	}
 
 	@Override
-	public Map<String, List<Object>> index() {
-		// TODO Auto-generated method stub
+	public Map<String, Object> index() {
+		
+		
+		
 		return null;
 	}
 

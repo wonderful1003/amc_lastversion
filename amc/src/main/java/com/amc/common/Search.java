@@ -2,57 +2,77 @@ package com.amc.common;
 
 
 public class Search {
-	
-	private int currentPage;
-	private String searchCondition;
-	private String searchKeyword;
-	private int pageSize;
-	private String searchSortPrice;
-	
-	public Search(){
-	}
-	
-	public int getPageUnit() {
-		return pageSize;
-	}
-	public void setPageUnit(int pageSize) {
-		this.pageSize = pageSize;
-	}
-	
-	public int getCurrentPage() {
-		return currentPage;
-	}
+   
+   ///Field
+   private int currentPage;
+   private String searchCondition;
+   private String searchKeyword;
+   private int pageSize;
+   private String sortBy;
+   //==> 리스트화면 currentPage에 해당하는 회원정보를 ROWNUM 사용 SELECT 위해 추가된 Field 
+   //==> UserMapper.xml 의 
+   //==> <select  id="getUserList"  parameterType="search"   resultMap="userSelectMap">
+   //==> 참조
+   
+   private int endRowNum;
+   private int startRowNum;
+   
+   ///Constructor
+   public Search() {
+   }
+   
+   ///Method
+   public int getPageSize() {
+      return pageSize;
+   }
+   public void setPageSize(int paseSize) {
+      this.pageSize = paseSize;
+   }
+   
+   public int getCurrentPage() {
+      return currentPage;
+   }
+   public void setCurrentPage(int currentPage) {
+      this.currentPage = currentPage;
+   }
 
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
-	}
+   public String getSearchCondition() {
+      return searchCondition;
+   }
+   public void setSearchCondition(String searchCondition) {
+      this.searchCondition = searchCondition;
+   }
+   
+   public String getSearchKeyword() {
+      return searchKeyword;
+   }
+   public void setSearchKeyword(String searchKeyword) {
+      this.searchKeyword = searchKeyword;
+   }
+   
+   //==> Select Query 시 ROWNUM 마지막 값 
+   public int getEndRowNum() {
+      return getCurrentPage()*getPageSize();
+   }
+   //==> Select Query 시 ROWNUM 시작 값
+   public int getStartRowNum() {
+      return (getCurrentPage()-1)*getPageSize()+1;
+   }
 
-	public String getSearchCondition() {
-		return searchCondition;
-	}
-	public void setSearchCondition(String searchCondition) {
-		this.searchCondition = searchCondition;
-	}
-	public String getSearchKeyword() {
-		return searchKeyword;
-	}
-	public void setSearchKeyword(String searchKeyword) {
-		this.searchKeyword = searchKeyword;
-	}
 
-	public String getSearchSortPrice() {
-		return searchSortPrice;
-	}
+   public String getSortBy() {
+      return sortBy;
+   }
 
-	public void setSearchSortPrice(String searchSortPrice) {
-		this.searchSortPrice = searchSortPrice;
-	}
+   public void setSortBy(String sortBy) {
+      this.sortBy = sortBy;
+   }
 
-	@Override
-	public String toString() {
-		return "Search [currentPage=" + currentPage + ", searchCondition=" + searchCondition + ", searchKeyword="
-				+ searchKeyword + ", pageSize=" + pageSize + ", searchSortPrice=" + searchSortPrice + "]";
-	}
-	
-	
+   @Override
+   public String toString() {
+      return "Search [currentPage=" + currentPage + ", searchCondition="
+            + searchCondition + ", searchKeyword=" + searchKeyword
+            + ", pageSize=" + pageSize + ", endRowNum=" + endRowNum
+            + ", startRowNum=" + startRowNum + "]";
+   }
 }

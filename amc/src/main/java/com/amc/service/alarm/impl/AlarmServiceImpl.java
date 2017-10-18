@@ -15,7 +15,7 @@ import com.amc.service.domain.Alarm;
 public class AlarmServiceImpl implements AlarmService {
 
 	@Autowired
-	@Qualifier("alarmDaoImpl")
+	@Qualifier("alarmDAOImpl")
 	AlarmDAO alarmDAO;
 	
 	@Override

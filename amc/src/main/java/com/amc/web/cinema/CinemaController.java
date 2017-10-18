@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.amc.common.Search;
 import com.amc.service.cinema.CinemaService;
+import com.amc.service.movie.MovieService;
 
 @Controller
 @RequestMapping("/cinema/*")
@@ -23,7 +24,7 @@ public class CinemaController {
 	private CinemaService cinemaService;
 	
 	public CinemaController(){
-		System.out.println("alarmController() default Constructor");
+		System.out.println("cinemaController() default Constructor");
 	}
 	
 	
@@ -32,21 +33,17 @@ public class CinemaController {
 		
 		search.setSearchKeyword("ถา");
 		
+		search.setSearchCondition(null);
+		
 		String searchKeyword = search.getSearchKeyword();
 		
-		Map<String,Object> unifiedSearch = new HashMap<String,Object>();
-		
-		unifiedSearch = cinemaService.unifiedSearch(searchKeyword);
-		
-		System.out.println("Controller" + unifiedSearch.get("uniProdctList"));
-		
-		model.addAttribute("unifiedSearch",unifiedSearch);
+		model.addAttribute("unifiedSearch",cinemaService.unifiedSearch(searchKeyword));
 		
 		return "forward:/cinema/unifiedSearch.jsp";
 	}
 	
 	@RequestMapping(value="index", method=RequestMethod.GET)
-	public String index() throws Exception{
+	public String index(Model model) throws Exception{
 		
 		return "forward:/index.jsp";
 	}
