@@ -5,7 +5,6 @@ import java.util.List;
 import com.amc.common.Search;
 import com.amc.service.domain.Booking;
 import com.amc.service.domain.Movie;
-import com.amc.service.domain.Statistic;
 
 public interface BookingDAO {
 
@@ -17,7 +16,6 @@ public interface BookingDAO {
 	
 	public void getSeatView(int screenContentNo);
 	
-	public void addStatic(Statistic statistic);
 	
 	public void deleteBooking(String bookingNo);
 	
