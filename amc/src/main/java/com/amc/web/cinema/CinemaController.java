@@ -26,7 +26,8 @@ public class CinemaController {
 		System.out.println("alarmController() default Constructor");
 	}
 	
-	@RequestMapping(value="unifiedSearch", method=RequestMethod.GET)
+	
+	@RequestMapping(value="unifiedSearch", method=RequestMethod.GET) //POST·Î ¹Ù²î¾î¾ßÇÔ
 	public String unifiedSearch(@ModelAttribute("Search")Search search, Model model) throws Exception{
 		
 		search.setSearchKeyword("¶Ò");
@@ -42,6 +43,12 @@ public class CinemaController {
 		model.addAttribute("unifiedSearch",unifiedSearch);
 		
 		return "forward:/cinema/unifiedSearch.jsp";
+	}
+	
+	@RequestMapping(value="index", method=RequestMethod.GET)
+	public String index() throws Exception{
+		
+		return "forward:/index.jsp";
 	}
 	
 }
