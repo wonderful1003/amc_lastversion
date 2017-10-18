@@ -8,28 +8,160 @@
 <mapper namespace="ProductMapper">
   	
   	<resultMap id="productSelectMap" type="com.amc.service.domain.Product">
-  			<result property="prodNo" column="prod_no" jdbcType="NUMERIC"/>
-  			<result property="prodPrice" column="prod_price" jdbcType="NUMERIC"/>
-  			<result property="totalStock" column="total_stock" jdbcType="NUMERIC"/>
-  			<result property="salesStock" column="sales_stock" jdbcType="NUMERIC"/>
-  			<result property="stock" column="stock" jdbcType="NUMERIC"/>
-  			<result property="expiryDate" column="expiry_date" jdbcType="DATE"/>
-  			<result property="prodImage" column="prod_image" jdbcType="VARCHAR"/>
-  			<result property="prodName" column="prod_name" jdbcType="VARCHAR"/>
-  			<result property="prodDetail" column="prod_detail" jdbcType="VARCHAR"/>
-  			<result property="prodSetInfo" column="prod_set_info" jdbcType="VARCHAR"/>
-  			<result property="salesOpenDate" column="sales_opendate" jdbcType="DATE"/>
-  			<result property="salesEndDate" column="sales_enddate" jdbcType="DATE"/>
-  			<result property="prodRegDate" column="prod_regdate" jdbcType="DATE"/>
-  			<result property="prodType" column="prod_type" jdbcType="CHAR"/>
+  			<result property="prodNo" 			column="prod_no" 		jdbcType="NUMERIC"/>
+  			<result property="prodPrice" 		column="prod_price" 	jdbcType="NUMERIC"/>
+  			<result property="totalStock" 		column="total_stock" 	jdbcType="NUMERIC"/>
+  			<result property="salesStock" 		column="sales_stock" 	jdbcType="NUMERIC"/>
+  			<result property="stock" 			column="stock" 			jdbcType="NUMERIC"/>
+  			<result property="expiryDate" 		column="expiry_date" 	jdbcType="NUMERIC"/>
+  			<result property="prodImage" 		column="prod_image" 	jdbcType="VARCHAR"/>
+  			<result property="prodName" 		column="prod_name" 		jdbcType="VARCHAR"/>
+  			<result property="prodDetail" 		column="prod_detail" 	jdbcType="VARCHAR"/>
+  			<result property="prodSetInfo" 		column="prod_set_info" 	jdbcType="VARCHAR"/>
+  			<result property="salesOpenDate" 	column="sales_opendate" jdbcType="DATE"/>
+  			<result property="salesEndDate" 	column="sales_enddate" 	jdbcType="DATE"/>
+  			<result property="prodRegDate" 		column="prod_regdate" 	jdbcType="DATE"/>
+  			<result property="prodType" 		column="prod_type" 		jdbcType="CHAR"/>
 	</resultMap>
 	
+	<!-- SQL : SELECT LIST -->
   	<select id="uniProductList" parameterType="string" resultMap="productSelectMap">
-		
 		SELECT prod_no, prod_regdate, prod_type, prod_name, prod_price, prod_image
 		FROM Product
 		WHERE prod_name LIKE '%${value}%'
-		
 	</select>
+	
+	<!-- SQL : SELECT LIST -->
+  	<select id="mainProductList" parameterType="search" resultMap="productSelectMap">
+		<if test="search == null">
+			SELECT outer.* 
+			FROM	(SELECT inner.*, ROWNUM rn
+				 			FROM(SELECT prod_no, prod_type, prod_name, prod_price, prod_image
+								 FROM product
+			ORDER BY sales_stock DESC, prod_regdate DESC)inner)outer
+			WHERE outer.rn BETWEEN '1' AND '3'
+		</if>
+		<if test="search != null">
+			SELECT outer.* 
+			FROM	(SELECT inner.*, ROWNUM rn
+				 			FROM(SELECT prod_no, prod_type, prod_name, prod_price, prod_image
+								 FROM product
+			ORDER BY prod_regdate DESC)inner)outer
+			WHERE outer.rn BETWEEN '1' AND '3'
+		</if>
+	</select>
+  
+  	<!-- SQL : INSERT -->
+	<insert id="addProduct" parameterType="product">
+		INSERT
+		INTO product ( prod_no, prod_type, prod_image, prod_name, prod_detail, prod_set_info, sales_opendate, 
+						sales_enddate, prod_price, total_stock,	prod_regdate, expiry_date )
+		VALUES ( seq_product_prod_no.nextval, #{prodType}, #{prodImage}, #{prodName}, #{prodDetail}, #{prodSetInfo}, 
+					#{salesOpenDate}, #{salesEndDate}, #{prodPrice}, #{totalStock}, #{expiryDate}, SYSDATE )
+	</insert>
+	
+	<!-- SQL : SELECT ONE -->	
+	<select id="getProduct" parameterType="string" resultMap="productSelectMap">
+		SELECT	prod_no, prod_name, prod_detail, prod_regdate, prod_price, prod_image
+		FROM product
+		WHERE prod_no = #{value}
+	</select>
+ 	
+ 	<!-- SQL : UPDATE -->		
+	<update id="updateProduct" parameterType="product">
+		UPDATE Product
+		<set>
+				prod_name	= #{prodName},
+				prod_image 	= #{prodImage} ,
+				expiry_date = #{expiryDate}, 
+				prod_detail = #{prodDetail} ,
+				prod_price  = #{prodPrice}						
+		</set>
+		WHERE prod_no = #{prodNo}
+	</update>
+	
+	<!-- SQL : DELETE -->	
+	<delete id="deleteProduct" parameterType="String">
+		DELETE
+		FROM product
+		WHERE prod_No = #{prodNo}
+	</delete>
+
+	<!-- SQL : SELECT LIST -->
+	<select id="getProductList" parameterType="search" resultMap="productSelectMap">
+		SELECT *
+		FROM	(	SELECT inner_table.* , ROWNUM AS row_seq
+					FROM	(	SELECT p.*, t.tran_code
+								FROM  product p, transaction t				
+									<where>
+										p.prod_no = t.prod_no(+)
+											<if test="searchCondition!=null " >
+												<if test="searchCondition==0  and searchKeyword !=''  and searchKeyword != null">
+													AND p.prod_name	like '%${searchKeyword}%'
+												</if> 
+												
+												<if test="searchCondition==1   and searchKeyword !=''  and searchKeyword != null ">
+													AND p.prod_no = #{searchKeyword}
+												</if>  					
+												
+												<if test="searchCondition==2  and searchKeyword !=''  and searchKeyword != null">
+													AND p.prod_price = #{searchKeyword}
+												</if>
+											</if>
+						  		    </where> 												 
+									ORDER BY p.prod_no ) inner_table
+					WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+ 	</select>
+ 
+ 	<!-- SQL : SELECT ROW Count -->	 
+	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
+		SELECT COUNT(*)
+	  	FROM	(	SELECT 
+	  					p.prod_no as prod_no, 
+	  					p.prod_name as prod_name, 
+	  					p.prod_detail as prod_detail, 
+	  					p.expiry_date as expiry_date, 
+	  					p.prod_price as prod_price, 
+	  					p.prod_image as prod_image, 
+	  					p.prod_regdate as prod_regdate, 
+	  					t.tran_code as tran_code 
+					FROM product p, transaction t 
+					<where>
+						p.prod_no = t.prod_no(+)
+							<if test="searchCondition!=null " >
+								<if test="searchCondition==0  and searchKeyword !=''  and searchKeyword != null">
+									AND p.prod_name	=	#{searchKeyword}
+								</if> 
+								
+								<if test="searchCondition==1   and searchKeyword !=''  and searchKeyword != null ">
+									AND p.prod_no like #{searchKeyword}
+								</if>  					
+								
+								<if test="searchCondition==2  and searchKeyword !=''  and searchKeyword != null">
+									AND p.prod_price = #{searchKeyword}
+								</if>
+							</if>
+				  	</where>	)	countTable											 
+					
+	 </select>   
+
+<!-- <sql id="select-product">
+		SELECT
+		prod_no, 
+		prod_name, 
+		prod_detail, 
+		manufacture_day, 
+		price, 
+		image_file, 
+		reg_date
+		FROM product
+	</sql>
+	
+	<sql id="orderby-prodNo-desc">
+		ORDER BY prod_No DESC
+	</sql>
+ -->			 
+
   
 </mapper>

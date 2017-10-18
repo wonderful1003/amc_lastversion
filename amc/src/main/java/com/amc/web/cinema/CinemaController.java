@@ -45,6 +45,9 @@ public class CinemaController {
 	@RequestMapping(value="index", method=RequestMethod.GET)
 	public String index(Model model) throws Exception{
 		
+		
+		model.addAttribute("indexList",cinemaService.index());
+		
 		return "forward:/index.jsp";
 	}
 	

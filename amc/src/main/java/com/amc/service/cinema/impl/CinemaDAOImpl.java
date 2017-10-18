@@ -66,7 +66,17 @@ public class CinemaDAOImpl implements CinemaDAO {
 	@Override
 	public Map<String, Object> index() {
 		
+		List<Product> newProductList = sqlSession.selectList("ProductMapper.mainProductList");
 		
+		for (Product abc : newProductList) {
+			System.out.println("¡á¡á¡á¡á"+abc.getProdName());
+		}
+		Search search = new Search();
+/*		List<Product> topProductList = sqlSession.selectList("ProductMapper.mainProductList",search);
+		
+		for (Product eft : topProductList) {
+			System.out.println("¡Ù¡Ù¡Ù¡Ù"+eft.getProdName());
+		}*/
 		
 		return null;
 	}
