@@ -10,10 +10,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-꺄끼뀨
 <br></br>
 
-		<input type="text" value="검색한 영화" >
+		<div style="background:yellow;border:1px solid #cccccc;">
+		<p>검색한 영화</p>
+		</div>
 	    <c:set var="i" value="0" />
 		  <c:forEach var="movie" items="${unifiedSearch.uniMovieList}">
 			<c:set var="i" value="${ i+1 }" />
@@ -30,7 +31,9 @@
           
           <br></br><br></br><br></br><br></br>
 
-		<input type="text" value="검색한 굿즈" >
+		<div style="background:yellow;border:1px solid #cccccc;">
+		<p>검색한 굿즈</p>
+		</div>
 	    <c:set var="i" value="0" />
 		  <c:forEach var="goods" items="${unifiedSearch.uniGoodsList}">
 			<c:set var="i" value="${ i+1 }" />
@@ -54,7 +57,9 @@
           
           <br></br><br></br><br></br><br></br><br></br>
           
-     		<input type="text" value="검색한 굿즈" >
+     	<div style="background:yellow;border:1px solid #cccccc;">
+		<p>검색한 스낵</p>
+		</div>
 		    <c:set var="i" value="0" />
 			  <c:forEach var="snack" items="${unifiedSearch.uniSnackList}">
 				<c:set var="i" value="${ i+1 }" />
@@ -78,7 +83,9 @@
           
           <br></br><br></br><br></br><br></br>
           
-        <input type="text" value="검색한 시사회" >
+        <div style="background:yellow;border:1px solid #cccccc;">
+		<p>검색한 시사회</p>
+		</div>
 	    <c:set var="i" value="0" />
 		  <c:forEach var="screenContent" items="${unifiedSearch.uniPreviewList}">
 			<c:set var="i" value="${ i+1 }" />

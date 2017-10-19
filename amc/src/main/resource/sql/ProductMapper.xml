@@ -32,21 +32,25 @@
 	</select>
 	
 	<!-- SQL : SELECT LIST -->
-  	<select id="mainProductList" parameterType="search" resultMap="productSelectMap">
-		<if test="search == null">
-			SELECT outer.* 
-			FROM	(SELECT inner.*, ROWNUM rn
-				 			FROM(SELECT prod_no, prod_type, prod_name, prod_price, prod_image
-								 FROM product
-			ORDER BY sales_stock DESC, prod_regdate DESC)inner)outer
-			WHERE outer.rn BETWEEN '1' AND '3'
-		</if>
-		<if test="search != null">
+  	<select id="mainProductList" parameterType="_int" resultMap="productSelectMap">
+
+		<!-- 최근등록 상품 가지고오기 (들어오는 int값이 1이면 신상품) -->
+		<if test='(value == 1)'> 
 			SELECT outer.* 
 			FROM	(SELECT inner.*, ROWNUM rn
 				 			FROM(SELECT prod_no, prod_type, prod_name, prod_price, prod_image
 								 FROM product
 			ORDER BY prod_regdate DESC)inner)outer
+			WHERE outer.rn BETWEEN '1' AND '3'
+		</if>
+		
+		<!-- 탑3 상품 가지고오기 (들어오는 int값이 2면 탑3 상품) -->
+		<if test='(value == 2)'>
+			SELECT outer.* 
+			FROM	(SELECT inner.*, ROWNUM rn
+				 			FROM(SELECT prod_no, prod_type, prod_name, prod_price, prod_image
+								 FROM product
+			ORDER BY sales_stock DESC, prod_regdate DESC)inner)outer
 			WHERE outer.rn BETWEEN '1' AND '3'
 		</if>
 	</select>

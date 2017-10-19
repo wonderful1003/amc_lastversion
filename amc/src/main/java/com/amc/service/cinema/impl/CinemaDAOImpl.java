@@ -66,19 +66,26 @@ public class CinemaDAOImpl implements CinemaDAO {
 	@Override
 	public Map<String, Object> index() {
 		
-		List<Product> newProductList = sqlSession.selectList("ProductMapper.mainProductList");
+		Map<String,Object> indexList = new HashMap<String,Object>(); 
 		
-		for (Product abc : newProductList) {
-			System.out.println("■■■■"+abc.getProdName());
+		//신상품
+		List<Product> newProductList = sqlSession.selectList("ProductMapper.mainProductList",1);
+		
+		for (Product newProduct : newProductList) {
+			System.out.println("■■newProduct■■"+newProduct.getProdName());
 		}
-		Search search = new Search();
-/*		List<Product> topProductList = sqlSession.selectList("ProductMapper.mainProductList",search);
 		
-		for (Product eft : topProductList) {
-			System.out.println("☆☆☆☆"+eft.getProdName());
-		}*/
+		//탑3
+		List<Product> topProductList = sqlSession.selectList("ProductMapper.mainProductList",2);
 		
-		return null;
+		for (Product topProduct : topProductList) {
+			System.out.println("☆☆topProduct☆☆"+topProduct.getProdName());
+		}
+		
+		indexList.put("newProductList", newProductList);
+		indexList.put("topProductList", topProductList);
+		
+		return indexList;
 	}
 
 }

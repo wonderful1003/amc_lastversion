@@ -5,9 +5,9 @@
 
 
 
-<%--  <c:if test="${ indexList eq null }">
+<c:if test="${ indexList eq null }">
  	<jsp:forward page="/cinema/index"/>
- </c:if> --%>
+</c:if>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="ko">
 <head> 
@@ -119,5 +119,70 @@
 	    </div><!-- /.carousel -->
     </div>
     <a href='/screen/getScreenContentList/10000'>영화 번호 10000의 상영정보보기</a>
+    
+    	<div style="background:yellow;border:1px solid #cccccc;">
+		<p>현재 상영중인 영화</p>
+		</div>
+	    <c:set var="i" value="0" />
+		  <c:forEach var="mainMovieList" items="${indexList.mainMovieList}">
+			<c:set var="i" value="${ i+1 }" />
+			<tr>
+			  <td align="center">${ i }</td>
+			  <td align="left">${mainMovieList.movieNo }</td>
+			  <td align="left"></td>
+			  <td align="left">${mainMovieList.movieNm }</td>
+			  <td align="left"></td>
+			  <td align="left">${mainMovieList.postUrl }</td>
+			  <td align="left"></td>
+			</tr>
+          </c:forEach>
+          
+          <br></br><br></br><br></br><br></br>
+    	
+    	<div style="background:yellow;border:1px solid #cccccc;">
+		<p>신상품</p>
+		</div>
+	    <c:set var="i" value="0" />
+		  <c:forEach var="newProductList" items="${indexList.newProductList}">
+			<c:set var="i" value="${ i+1 }" />
+			<tr>
+			  <td align="center">${ i }</td>
+			  <td align="left">${newProductList.prodNo }</td>
+			  <td align="left"></td>
+			  <td align="left">${newProductList.prodType }</td>
+			  <td align="left"></td>
+			  <td align="left">${newProductList.prodName }</td>
+			  <td align="left"></td>
+  			  <td align="left">${newProductList.prodPrice }</td>
+			  <td align="left"></td>
+			  <td align="left">${newProductList.prodImage }</td>
+			  <td align="left"></td>
+			</tr>
+          </c:forEach>
+          
+          <br></br><br></br><br></br><br></br>
+          
+        <div style="background:yellow;border:1px solid #cccccc;">
+		<p>베스트 상품</p>
+		</div>
+	    <c:set var="i" value="0" />
+		  <c:forEach var="topProductList" items="${indexList.topProductList}">
+			<c:set var="i" value="${ i+1 }" />
+			<tr>
+			  <td align="center">${ i }</td>
+			  <td align="left">${topProductList.prodNo }</td>
+			  <td align="left"></td>
+			  <td align="left">${topProductList.prodType }</td>
+			  <td align="left"></td>
+			  <td align="left">${topProductList.prodName }</td>
+			  <td align="left"></td>
+  			  <td align="left">${topProductList.prodPrice }</td>
+			  <td align="left"></td>
+			  <td align="left">${topProductList.prodImage }</td>
+			  <td align="left"></td>
+			</tr>
+          </c:forEach>
+          
+          <br></br><br></br><br></br><br></br>
 	</body>
 </html>

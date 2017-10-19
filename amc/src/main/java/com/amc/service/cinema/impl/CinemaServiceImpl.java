@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ public class CinemaServiceImpl implements CinemaService {
 		// TODO Auto-generated constructor stub
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Object> unifiedSearch(String searchKeyword) {
 		
@@ -81,8 +83,23 @@ public class CinemaServiceImpl implements CinemaService {
 	@Override
 	public Map<String, Object> index() {
 		Map<String, Object> index = new HashMap<String,Object>();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        Calendar calendar = Calendar.getInstance();
+        
+		Search search = new Search();
+		search.setSearchCondition("4"); //MovieMapper에서 조건(if문을 위한) 현재 상영중인 영화
+		search.setSearchKeyword(simpleDateFormat.format(calendar.getTime())); //MovieMapper에서 조건(날짜) 현재 상영중인 영화
+	
+		
 		index = cinemaDAO.index();
-		return null;
+		index.put("mainMovieList", movieDAO.uniMovieList(search)); //MovieDAO에서 가지고 온 현재 상영중인 영화 List<Movie>를 풋 
+
+		//MovieDAO 에서 잘 가지고 왔나 확인용
+		for (Movie movie : movieDAO.uniMovieList(search)) {
+			System.out.println(movie.getMovieNm());
+		}
+		
+		return index;
 	}
 
 	@Override
