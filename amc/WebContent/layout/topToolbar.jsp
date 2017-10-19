@@ -144,7 +144,8 @@
  --%>	             	
 	 			<c:if test="${empty user}">					
 						<form class="navbar-form navbar-right">
-						<a data-toggle="modal" href="../user/loginUser" data-target="#modal-testNew" role="button" data-backdrop="static">
+						<!-- <a data-toggle="modal" href="../user/loginUser" data-target="#modal-testNew" role="button" data-backdrop="static"> -->
+						<a data-toggle="modal" href="/user/loginUser" data-target="#modal-testNew" role="button" data-backdrop="static">
 							<button type="button" class="btn btn-primary">Log in</button>
 						</a>
 							<button type="button" class="btn btn-primary">Sign in</button>

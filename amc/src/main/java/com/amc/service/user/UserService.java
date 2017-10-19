@@ -52,7 +52,7 @@ public interface UserService {
 	
 	public String getAllList(String access_token) throws Exception;
 	
-	
+	/*public String getConn(String accesstoken) throws Exception;*/
 	
 	
 

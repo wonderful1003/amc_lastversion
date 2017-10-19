@@ -27,6 +27,8 @@
 	<!-- 다음 주소 CDN -->
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	
+	
+	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
        body{
@@ -54,9 +56,26 @@
 		    	alert("이메일 형식이 아닙니다.");
 		    	return;
 		     }
-			
+			alert("메일을 성공적으로 보냈습니다.");
 			$("form").attr("method" , "POST").attr("action" , "/user/auth").submit();
 		}
+		
+		
+
+/* 		$('#kakao').on("click" , function(){
+			alert("kakao 이미지 클릭");
+			$(self.location).attr("href","/user/kakaoGetCode");
+		});
+		
+		$('#naver').on("click" , function(){
+			$(self.location).attr("href","/movie/getMovieList");
+		});
+		
+		$('#google').on("click" , function(){
+			$(self.location).attr("href","/movie/getMovieList");
+		});
+ */		 
+		
 		
 	</script>		
     
@@ -70,11 +89,18 @@
 
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
+		
+		
+		
 	
 		<!-- <form action="/sendMail/auth" id="findForm" method="post"> -->
 		<form id="findForm">
+		
+			
+		
+		
 		    <fieldset>
-		        <legend class="screen_out">인증코드</legend>
+		        <legend class="screen_in">이메일 인증 방법</legend>
 		 
 		        <div class="box email">
 		            <label for="email">이메일</label>
@@ -90,8 +116,31 @@
 		        </div>        
 	
 		    </fieldset>
+		
+		
+		 <br/><br/><br/>
+ 		    
+ 		    <fieldset>
+		        <legend class="screen_out">이메일 인증 방법</legend>
+		    
+			<div>		
+				<span class="col-md-4">
+					<!-- <img src="../images/user/kakao_account.png" id = "kakao" class="img-rounded" width="70%" /> -->
+					<a href="/user/kakaoGetCode" ><img src="../images/user/kakao_account.png" class="img-rounded" width="70%"> </a>
+			<br/><br/>
+					<!-- <img src="../images/user/naver.account.PNG" id = "naver" class="img-rounded" width="70%" /> -->
+					<a href="/user/kakaoGetCode" ><img src="../images/user/naver.account.PNG" class="img-rounded" width="70%"> </a>
+			<br/><br/>
+					<!-- <img src="../images/user/google_account.png" id = "google" class="img-rounded" width="70%" /> -->
+					<a href="/user/kakaoGetCode" ><img src="../images/user/google_account.png" class="img-rounded" width="70%"> </a>
+				</span>
+		    
+		    </div>
+		    
 		</form> 
 	</div>	    
+	
+	
 	
 	<!-- Modal 화면 tool bar로 부터 받아오기	 --> 
 	<div id="modal-testNew" class="modal fade" tabindex="-1" role="dialog" 
