@@ -36,6 +36,10 @@ public class AlarmRestController {
 		
 		alarm.setAlarmFlag("O");
 		
+		System.out.println(this.getClass().getResource("").getPath()); // 현재 자신의 절대 경로
+
+		System.out.println(this.getClass().getResource("/").getPath()); // classes 폴더의 최상위 경로
+		
 		if(this.checkOpenAlarm(alarm).equals("0")){
 			alarmService.addOpenAlarm(alarm);
 			return "add";
@@ -43,6 +47,8 @@ public class AlarmRestController {
 			alarmService.deleteOpenAlarm(alarm);
 			return "delete";
 		}
+		
+		
 		
 	}
 	
