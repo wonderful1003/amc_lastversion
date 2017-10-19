@@ -10,8 +10,6 @@
 		
 		<h2></h2>
 	</body>
-<<<<<<< HEAD
-	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -111,13 +109,30 @@ IMP.init('imp41659269');
 							}    
 						};
 					}); */
-
+	function addBooking(){
+						
+		$("form").attr("method" , "POST").attr("action" , "/booking/addBooking").submit();	
+		
+	}
 
 	
 </script>
 
 	<input type="button" value="결제하기" onClick="javascript:kakaoPay()"/>
+	
+	<form>
+	<!--  !!!!!!!!!!!!!!!!!!!!!!!!!input type hidden으로 나중에 바꾸기 -->
+		<input type="text" name="userId" value="${session.user.userId}"/>
+		<input type="text" name="screenContentNo" value="${screenContent.screenContentNo}"/>
+		<input type="text" name="bookingSeatNo" value="${seats}"/>
+		
+	</form>
 
-=======
->>>>>>> refs/remotes/origin/master
+	<div>
+		<div>여기는 상영넘버 : ${screenContent.screenContentNo}</div>
+		<div>여기는 상영시간 : ${screenContent.screenOpenTime}</div>
+		<div>여기는 상영가격 : ${screenContent.ticketPrice}</div>
+		<div>여기는 좌석번호 : ${seats}</div>
+	</div>
+
 </html>

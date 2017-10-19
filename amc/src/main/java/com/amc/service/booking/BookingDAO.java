@@ -2,6 +2,7 @@ package com.amc.service.booking;
 
 
 import java.util.List;
+import java.util.Map;
 
 import com.amc.common.Search;
 import com.amc.service.domain.Booking;
@@ -17,6 +18,7 @@ public interface BookingDAO {
 	
 	public void getSeatView(int screenContentNo);
 	
+	public Booking getBookingByInfo(Map<String, Object> map);
 	
 	public void deleteBooking(String bookingNo);
 	

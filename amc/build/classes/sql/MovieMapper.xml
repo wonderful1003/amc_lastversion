@@ -29,6 +29,29 @@
   		<result property="synopsis" 		column="synopsis" 			jdbcType="VARCHAR"/>  	
   		<result property="trailer" 			column="trailer" 			jdbcType="VARCHAR"/>
   	</resultMap>
+  	
+  	<select id="uniMovieList" parameterType="search" resultMap="movieSelectMap">
+      SELECT *
+           FROM (   SELECT inner_table.* , ROWNUM AS row_seq
+                       FROM      (   SELECT movie_no, movie_title, poster
+                                     FROM   movie 
+                                      <if test="searchCondition != null">
+                                       <where>
+                                          <if test="searchCondition == 3 and searchKeyword !='' ">
+                                              movie_opendate <![CDATA[<=]]> (to_date(#{searchKeyword}, 'yy/mm/dd')+6) 
+                                              AND movie_enddate <![CDATA[>=]]> to_date(#{searchKeyword}, 'yy/mm/dd')
+                                          </if>                                       
+                                       </where>
+                                      </if>
+                                      <if test="searchCondition == null">
+                                       <where>
+                                                movie_title LIKE '%${searchKeyword}%'                      
+                                       </where>
+                                      </if>
+                                    ORDER BY movie_no DESC ) inner_table
+                 ) ORDER BY row_seq
+   </select>
+  	
  
    	<insert 	id="addMovie" 	 parameterType="movie">
   		INSERT
@@ -178,12 +201,6 @@
 						</if> ) countTable						
 	 </select>
 	 
-	<select id="uniMovieList" parameterType="string" resultMap="movieSelectMap">
-		
-		SELECT movie_no, movie_title, poster
-		FROM movie
-		WHERE movie_title LIKE '%${value}%'
-		
-	</select>
+
 	  
  </mapper>
