@@ -119,34 +119,8 @@
 		WHERE prod_no = #{prodNo}	
   	</update>
  			 	
-	
-	<select id="getMovieList" parameterType="search" resultMap="movieSelectMap">
-		SELECT *
-		FROM ( SELECT inner_table.*, ROWNUM AS row_seq
-		FROM (SELECT movie_no, movie_regdate, movie_opendate,movie_enddate,movie_title,
-		             poster,director,actor,genre,rating,runningtime,synopsis,steelcut,
-	  			     trailer FROM   movie 
-		
-		<if test="searchCondition != null">
-			
-				<if test="searchCondition == 1 and searchKeyword != '' ">
-					WHERE movie_title LIKE '%'||#{searchKeyword}||'%'
-				</if>
-				<if test="searchCondition == 2 and searchKeyword != '' ">
-					WHERE director LIKE '%${searchKeyword}%'
-				</if>
-			
-		</if>
 
-		ORDER BY movie_no ) inner_table
-		WHERE ROWNUM &lt;= #{endRowNum})
-		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
-
-	</select>
-	
-	
-
-		<!-- SQL : SELECT LIST -->
+	<!-- SQL : SELECT LIST -->
 	<select  id="getMovieList"  parameterType="search"	resultMap="movieSelectMap">
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
