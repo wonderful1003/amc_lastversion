@@ -301,9 +301,24 @@ public class MovieController {
         return modelAndView;
   }
 
-	
-	
-	
-}
-	
+	@RequestMapping( value="deleteMovie", method=RequestMethod.POST)
+	public ModelAndView deleteMovie(@RequestParam(value="movieNo", required=true) Integer movieNo , 
+								    Model model ) throws Exception {
+		
+		ModelAndView modelAndView = new ModelAndView();
+		
+		System.out.println("/deleteMovie : GET");
+		//Business Logic
+		System.out.println("movieNo ::" + movieNo);
+			
+		int rtn = movieService.deleteMovie(movieNo);
+		
+		System.out.println("return value :" + rtn);
+		
+		modelAndView.setViewName("/movie/listMovieManage.jsp");
+			
+		return modelAndView;
+		}
+	}
+
 	

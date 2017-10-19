@@ -3,10 +3,10 @@
 <!DOCTYPE html >
 <html>
 <head> 
-<title>selectScreenMovie.jsp</title>
+<title>예매상세보기</title>
 </head>
 	<body>
-		<h2>예매1단계입니다.</h2>
+		<h2></h2>
 		
 		<h2></h2>
 	</body>

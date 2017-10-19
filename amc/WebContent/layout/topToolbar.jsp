@@ -144,6 +144,32 @@
 		             	<input type="button" value="로그인">
 	             	</c:if>
 	            </ul>
+	           	 <!-- 유저가 비로그인 상태일 시 -->	
+             	<c:if test="${sessionScope.user eq null }">
+	             	<li>
+	             		<input type="text" name="userId" placeholder="아이디" width="300px">
+	             		<input type="text" name="password" placeholder="비밀번호" width="300px">
+	             	</li>
+	             	<input type="button" value="로그인">
+             	</c:if>
+ --%>	             	
+	 			<c:if test="${empty user}">					
+						<form class="navbar-form navbar-right">
+						<!-- <a data-toggle="modal" href="../user/loginUser" data-target="#modal-testNew" role="button" data-backdrop="static"> -->
+						<a data-toggle="modal" href="/user/loginUser" data-target="#modal-testNew" role="button" data-backdrop="static">
+							<button type="button" class="btn btn-primary">Log in</button>
+						</a>
+							<button type="button" class="btn btn-primary">Sign in</button>
+						</form>
+					</li>	
+				</c:if>	
+				
+				<c:if test="${!empty user}">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#" class="user-info">${sessionScope.user.userName}</a>
+						<li><a href="#">로그아웃</a></li>
+					</ul>
+				</c:if>           
 		</div>
 		<!-- dropdown hover END -->	       
 	</div>

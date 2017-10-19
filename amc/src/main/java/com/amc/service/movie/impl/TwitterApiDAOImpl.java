@@ -141,4 +141,11 @@ public class TwitterApiDAOImpl implements MovieDAO {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	
+	@Override
+	public List<Movie> uniMovieList(Search search) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

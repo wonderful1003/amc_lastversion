@@ -16,7 +16,7 @@ import com.amc.service.domain.Movie;
 import com.amc.service.domain.Product;
 import com.amc.service.domain.ScreenContent;
 
-@Repository("cinemaDaoImpl")
+@Repository("cinemaDAOImpl")
 public class CinemaDAOImpl implements CinemaDAO {
 	
 	@Autowired
@@ -33,17 +33,6 @@ public class CinemaDAOImpl implements CinemaDAO {
 		Map<String,Object> unifiedSearch = new HashMap<String,Object>();
 		
 
-		/*통합검색 영화 리스트 부르기*/
-		List<Movie> uniMovieList = sqlSession.selectList("MovieMapper.uniMovieList","스");
-
-		unifiedSearch.put("uniMovieList", uniMovieList);
-		
-/*		for(int i = 0; i<uniMovieList.size(); i++){
-			System.out.println("DAOImpl : "+((Movie)(uniMovieList.get(i))).getMovieTitle());
-		}*/
-		
-
-		
 		/*통합검색 시사회 리스트 부르기*/
 		List<ScreenContent> uniPreviewList = sqlSession.selectList("ScreenContentMapper.uniPreviewList","시사회");
 		
@@ -75,9 +64,28 @@ public class CinemaDAOImpl implements CinemaDAO {
 	}
 
 	@Override
-	public Map<String, List<Object>> index() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, Object> index() {
+		
+		Map<String,Object> indexList = new HashMap<String,Object>(); 
+		
+		//신상품
+		List<Product> newProductList = sqlSession.selectList("ProductMapper.mainProductList",1);
+		
+		for (Product newProduct : newProductList) {
+			System.out.println("■■newProduct■■"+newProduct.getProdName());
+		}
+		
+		//탑3
+		List<Product> topProductList = sqlSession.selectList("ProductMapper.mainProductList",2);
+		
+		for (Product topProduct : topProductList) {
+			System.out.println("☆☆topProduct☆☆"+topProduct.getProdName());
+		}
+		
+		indexList.put("newProductList", newProductList);
+		indexList.put("topProductList", topProductList);
+		
+		return indexList;
 	}
 
 }

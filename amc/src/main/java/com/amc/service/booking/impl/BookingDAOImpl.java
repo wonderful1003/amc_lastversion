@@ -25,11 +25,11 @@ public class BookingDAOImpl implements BookingDAO {
 		this.sqlSession = sqlSession;
 	}
 	
-	@Override
-	public List<Movie> getScreenMovieList() {
+/*	@Override
+	public List<Movie> getScreenMovieList(Search search) {
 		// TODO Auto-generated method stub
-		return null;
-	}
+		return sqlSession.selectList("MovieMapper.getMovieList", search);
+	}*/
 
 	@Override
 	public List<Movie> getPreviewList() {
@@ -59,6 +59,7 @@ public class BookingDAOImpl implements BookingDAO {
 
 	@Override
 	public Booking getBooking(String bookingNo) {
+		System.out.println("BookingDAOImpl ¾È, bookingNo : "+bookingNo);
 		
 		return sqlSession.selectOne("BookingMapper.getBooking", bookingNo);
 	}

@@ -225,4 +225,8 @@ public class MovieDAOImpl implements MovieDAO {
 	}
 
 	
+	@Override
+	public List<Movie> uniMovieList(Search search) {
+		return sqlSession.selectList("MovieMapper.uniMovieList",search);
+	}
 }

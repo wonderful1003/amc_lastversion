@@ -1,16 +1,15 @@
 <%@ page contentType="text/html; charset=EUC-KR" %>
 <%@ page pageEncoding="EUC-KR"%>
+
+<!-- /////////////JSTL/////////////-->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html >
 <html>
 <head> 
 <title>selectScreenMovie.jsp</title>
 </head>
-	<body>
-		<h2>[예매3단계] 결제를 위한 창입니다.</h2>
-		
-		<h2></h2>
-	</body>
-<<<<<<< HEAD
+	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
@@ -35,26 +34,31 @@ IMP.init('imp41659269');
 				    buyer_postcode : '123-456'
 				}, function(rsp) {
 				    if ( rsp.success ){
-
-				    	jQuery.ajax({
-				    		url: "https://api.iamport.kr/payments/complete", //cross-domain error가 발생하지 않도록 동일한 도메인으로 전송
-				    		type: 'POST',
-				    		dataType: 'json',
-				    		data: {
-					    		imp_uid : rsp.imp_uid
-					    		//기타 필요한 데이터가 있으면 추가 전달
-				    		}
+						
+				    	alert("impuid : " + rsp.imp_uid); //결제되서 여기는 뜸
+				    	console.log("impuid : "+rsp.imp_uid);
+				    	var impUid = rsp.imp_uid; 
+				    	
+				    	$.ajax({
+				    		url: "/cinema/json/checkPay/"+impUid, //cross-domain error가 발생하지 않도록 동일한 도메인으로 전송
+				    		type: 'GET',
 				    	}).done(function(data) {
+				    		alert("data : " + data);
 				    		//[2] 서버에서 REST API로 결제정보확인 및 서비스루틴이 정상적인 경우
-				    		if ( everythings_fine ) {
+				    		if ( data == 'paid' ) {
 				    			var msg = '결제가 완료되었습니다.';
 				    			msg += '\n고유ID : ' + rsp.imp_uid;
 				    			msg += '\n상점 거래ID : ' + rsp.merchant_uid;
-				    			msg += '\결제 금액 : ' + rsp.paid_amount;
-				    			msg += '카드 승인번호 : ' + rsp.apply_num;
+				    			msg += '\n결제 금액 : ' + rsp.paid_amount;
+				    			msg += '\n카드 승인번호 : ' + rsp.apply_num;
 
-				    			alert(msg);
+				    			alert("아작스 후 결제완료 후 "+"\n"+msg);
+				    			
+				    			location.href="/index.jsp"
+				    			//location.href="/#"
+				    			
 				    		} else {
+				    			alert("결제 금액이 요청한 금액과 달라 결제를 자동취소처리 하였습니다");
 				    			//[3] 아직 제대로 결제가 되지 않았습니다.
 				    			//[4] 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
 				    		}
@@ -63,61 +67,47 @@ IMP.init('imp41659269');
 				    } else {
 				        var msg = '결제에 실패하였습니다.';
 				        var errorMsg = '실패사유 : ' + rsp.error_msg;
+				        alert("아작스도 안들어간 실패"+"\n"+msg+"\n"+errorMsg);
 				    }//end of rsp.success else 
-				    alert(msg+"\n"+errorMsg);
 				}); //end of Imp.request_pay
 			}//end of kakaoPay function
-				 
-		
-				
-						/* 
-				    IMP.request_pay({
-					    pg : 'kakao',
-					    pay_method : 'kapy',
-					    merchant_uid : '1' + new Date().getTime(),
-					    name : 'order:test',
-					    amount : 1000,
-					    buyer_email : 'iamport@siot.do',
-					    buyer_name : 'purchaseName',
-					    buyer_tel : '010-1234-5678',
-					    buyer_addr : 'Seoul',
-					    buyer_postcode : '123-456'
-						}, function(rsp) {
-						    if ( rsp.success ) {
-						    	jQuery.ajax({
-						    		url : "/payments/complete",
-						    		type : 'POST',
-						    		dataType : 'json',
-						    		data : {
-						    			imp_uid : rsp.imp_uid
-						    		}
-						    	}).done(function(data){
-						    		if(everythings_fine){
-							    		var msg = 'pay ok.';
-								        msg += 'ID : ' + rsp.imp_uid; 
-								        msg += 'rjfo ID : ' + rsp.merchant_uid;
-								        msg += 'price : ' + rsp.paid_amount;
-								        msg += 'card accept : ' + rsp.apply_num;
-								        alert(msg);
-								    } else {
-								        
-								    }
-						    	});
-						    }
-							else{
-								var msg = 'pay fail.';
-						        msg += 'error : ' + rsp.error_msg;
-						        alert(msg);
-							}    
-						};
-					}); */
-
-
+			
+			
+	function kakaoPayCacnel(){
+		    		$.ajax({
+					    		url: "/cinema/json/cancelPay/"+impUid, //cross-domain error가 발생하지 않도록 동일한 도메인으로 전송
+					    		type: 'GET',
+					    	}).done(function(data) {
+					    		alert("data : " + data);
+					    		//[2] 서버에서 REST API로 결제정보확인 및 서비스루틴이 정상적인 경우
+					    		if ( data == 'cancelled' ) {
+					    			var msg = '취소가 성공적으로 처리되었습니다.';
+					    			/* msg += '\n고유ID : ' + rsp.imp_uid;
+					    			msg += '\n상점 거래ID : ' + rsp.merchant_uid;
+					    			msg += '\n결제 금액 : ' + rsp.paid_amount;
+					    			msg += '\n카드 승인번호 : ' + rsp.apply_num; */
 	
+					    			alert("아작스 취소 후 "+"\n"+msg);
+					    			
+					    			//location.href="/index.jsp"
+					    			location.href="/#"
+					    			
+					    		} else {
+					    			alert("취소가 실패하였습니다.");
+					    			//[3] 아직 제대로 결제가 되지 않았습니다.
+					    			//[4] 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
+					    		}
+					    	});
+			}//end of kakaoPayCancel function	
 </script>
-
-	<input type="button" value="결제하기" onClick="javascript:kakaoPay()"/>
-
-=======
->>>>>>> refs/remotes/origin/master
+	<body>
+		<h2>[예매3단계] 결제를 위한 창입니다.</h2>
+		
+		<h2></h2>
+		
+		<input type="button" value="결제하기" onClick="javascript:kakaoPay()"/>
+	
+		<input type="button" value="결제취소" onClick="javascript:kakaoPayCancel()"/>
+	
+	</body>
 </html>

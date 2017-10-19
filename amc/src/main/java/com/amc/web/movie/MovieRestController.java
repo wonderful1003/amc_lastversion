@@ -199,13 +199,13 @@ public class MovieRestController {
 			return 0;		
 		} else
 			
+
 		return  rtn = movieService.addMovie(movie);
 	}
 	
 
 	private final String PATH = "C:/amcPoster/";
 
-	
 	@Autowired
 	MappingJackson2JsonView jsonView;	
 	

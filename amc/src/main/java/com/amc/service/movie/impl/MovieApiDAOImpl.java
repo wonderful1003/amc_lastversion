@@ -219,7 +219,10 @@ public class MovieApiDAOImpl implements MovieDAO {
 	}
 	
 	// 관리목록에서 클릭한경우는 수정화면으로, 영화목록에서 클릭한경우는 상세정보화면으로
-
 	
-
+	@Override
+	public List<Movie> uniMovieList(Search search) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

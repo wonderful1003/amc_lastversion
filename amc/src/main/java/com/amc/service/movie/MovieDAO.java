@@ -89,5 +89,7 @@ public interface MovieDAO {
 	// 트위터 가져오기
 	public List<Twitter> getTwitterList(String movieName);
 	
+	// 모든 영화 가져오기(통합검생, 예매1단계)
+	public List<Movie>	uniMovieList(Search search);
 
 }

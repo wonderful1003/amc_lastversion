@@ -97,10 +97,12 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 
+
 	@Override
 	public Movie getMovie(int movieNo) throws Exception {
 		return movieDAO.getMovie(movieNo);
 	}
+
 	
 
 	
