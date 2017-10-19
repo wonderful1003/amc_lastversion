@@ -60,7 +60,9 @@ public class ScreenServiceImpl implements ScreenService {
 
 	@Override
 	public ScreenContent getScreenContent(int screenContentNo) {
-		return null;
+		System.out.println("ScreenServiceImpl의 getScreenContent 메소드 시작..");
+
+		return screenDAO.getScreenContent(screenContentNo);
 	}
 
 	@Override

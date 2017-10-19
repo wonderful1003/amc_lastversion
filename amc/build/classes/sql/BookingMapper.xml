@@ -8,7 +8,7 @@
  	
  	<!-- Purpose of resultMap is mapping resultSet of SQL -->
 
-  	 <resultMap id ="bookingSelectMap" type="booking">
+   	 <resultMap id ="bookingSelectMap" type="booking">
   	
   		<result property="bookingNo" 		column="booking_no" 		jdbcType="CHAR"/>
   		<result property="impId" 			column="imp_id" 			jdbcType="VARCHAR"/>
@@ -19,15 +19,22 @@
   		<result property="totalTicketPrice" column="total_ticketprice"	jdbcType="NUMERIC"/>
 		<result property="bookingSeatNo" 	column="bookingseat_no"		jdbcType="VARCHAR"/>		
   		<result property="qrUrl" 			column="qr_url" 			jdbcType="VARCHAR"/>
-		
-		<association property="buyer"			resultMap="MovieMapper.movieSelectMap"/>
-		<association property="purchaseProd"	resultMap="ScreenContentMapper.screenContentSelectMap"/>
+  		
+  		<result property="movie.movieTitle"    			column="movie_title" 	 jdbcType="VARCHAR"/>
+  		<result property="screenContent.screenDate"  	column="screen_date" 	 jdbcType="VARCHAR"/>
+  		<result property="screenContent.screenOpenTime" column="screen_opentime" jdbcType="VARCHAR"/>
+  		<result property="screenContent.previewFlag"    column="preview_flag" 	 jdbcType="VARCHAR"/>
+  		<result property="screenContent.previewTitle"   column="preview_title" 	 jdbcType="VARCHAR"/>
+  		<result property="screenContent.inviteActor"    column="invite_actor" 	 jdbcType="VARCHAR"/>
+
   	</resultMap>
   		
-  	<select id="getBooking" parameterType="java.lang.String" resultMap="bookingSelectMap" >
-  		SELECT *	 		
-		FROM booking   
-		WHERE booking_no = #{bookingNo}											
+  	<select id="getBooking" parameterType="string" resultMap="bookingSelectMap" >
+  		SELECT b.*, m.movie_title, s.screen_date, s.screen_opentime, s.preview_flag, s.preview_title, s.invite_actor 
+		FROM booking b, screencontent s, movie m
+		WHERE b.booking_no = #{bookinNo}
+		AND b.screencontent_no = s. screencontent_no 
+		AND s.movie_no = m.movie_no									
   	</select>
   	
   	<select id="getBookingList" parameterType="search" resultMap="bookingSelectMap">

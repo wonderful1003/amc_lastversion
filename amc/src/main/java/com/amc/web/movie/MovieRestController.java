@@ -189,7 +189,7 @@ public class MovieRestController {
 			return 0;		
 		} else
 			
-		return  rtn = movieService.addMovie(screen);
+		return  rtn = movieService.addMovie(null);
 	}
 
 }

@@ -7,16 +7,18 @@ import com.amc.service.domain.Alarm;
 
 public interface AlarmDAO {
 
-public void addCancelAlarm(Alarm cancelAlarm);
+public int addCancelAlarm(Alarm alarm);
 
-	public void addOpenAlarm(Alarm openAlarm);
+	public int addOpenAlarm(Alarm alarm);
 	
 	public List<Alarm> getCancelAlarmList(Search search);
 	
 	public List<Alarm> getOpenAlarmList(Search search);
 	
-	public void deleteCancelAlarm(int cancelAlarmNo);
+	public int deleteCancelAlarm(Alarm alarm);
 	
-	public void deleteOpenAlarm(int openAlarmNo); 
+	public int deleteOpenAlarm(Alarm alarm);
+	
+	public String checkOpenAlarm(Alarm alarm);
 	
 }

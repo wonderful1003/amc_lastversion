@@ -25,10 +25,34 @@
 	</resultMap>
 	
 	<!-- SQL : SELECT LIST -->
-  	<select id="getUniProductList" parameterType="string" resultMap="productSelectMap">		
+  	<select id="uniProductList" parameterType="string" resultMap="productSelectMap">
 		SELECT prod_no, prod_regdate, prod_type, prod_name, prod_price, prod_image
 		FROM Product
-		WHERE prod_name LIKE '%${value}%'	
+		WHERE prod_name LIKE '%${value}%'
+	</select>
+	
+	<!-- SQL : SELECT LIST -->
+  	<select id="mainProductList" parameterType="_int" resultMap="productSelectMap">
+
+		<!-- 최근등록 상품 가지고오기 (들어오는 int값이 1이면 신상품) -->
+		<if test='(value == 1)'> 
+			SELECT outer.* 
+			FROM	(SELECT inner.*, ROWNUM rn
+				 			FROM(SELECT prod_no, prod_type, prod_name, prod_price, prod_image
+								 FROM product
+			ORDER BY prod_regdate DESC)inner)outer
+			WHERE outer.rn BETWEEN '1' AND '3'
+		</if>
+		
+		<!-- 탑3 상품 가지고오기 (들어오는 int값이 2면 탑3 상품) -->
+		<if test='(value == 2)'>
+			SELECT outer.* 
+			FROM	(SELECT inner.*, ROWNUM rn
+				 			FROM(SELECT prod_no, prod_type, prod_name, prod_price, prod_image
+								 FROM product
+			ORDER BY sales_stock DESC, prod_regdate DESC)inner)outer
+			WHERE outer.rn BETWEEN '1' AND '3'
+		</if>
 	</select>
   
   	<!-- SQL : INSERT -->
@@ -143,4 +167,5 @@
 	</sql>
  -->			 
 
+  
 </mapper>
