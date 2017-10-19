@@ -5,12 +5,12 @@
 <!--  ///////////////////////// JSTL  ////////////////////////// -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%-- <%
+<%
 	User user = new User();
 	user.setUserId("testAdmin");
 	user.setRole("admin");
 	session.setAttribute("user", user);
-%> --%>
+%>
 
 <head>
 <meta charset="EUC-KR">
@@ -124,40 +124,26 @@
 	                 </c:if>
 	                 
 	             </ul>
-	            
 	             
+	             
+	             
+	             <ul class="nav navbar-nav navbar-right">
 	             <!-- 유저가 로그인 상태일 시 -->
-<%--               	<c:if test="${sessionScope.user ne null }">
-	             	<li title="Click : 개인정보 수정"><a href="#">ID : [${sessionScope.user.userId }]</a></li>
-	             	<li><a href="#">로그아웃</a></li>
-	             	<li><a href="#">마이페이지</a></li>
-             	</c:if>
+	             	<c:if test="${sessionScope.user ne null }">
+		             	<li title="Click : 개인정보 수정"><a href="#">ID : [${sessionScope.user.userId }]</a></li>
+		             	<li><a href="#">로그아웃</a></li>
+		             	<li><a href="#">마이페이지</a></li>
+	             	</c:if>
 	             	
-	           	 <!-- 유저가 비로그인 상태일 시 -->	
-             	<c:if test="${sessionScope.user eq null }">
-	             	<li>
-	             		<input type="text" name="userId" placeholder="아이디" width="300px">
-	             		<input type="text" name="password" placeholder="비밀번호" width="300px">
-	             	</li>
-	             	<input type="button" value="로그인">
-             	</c:if>
- --%>	             	
-	 			<c:if test="${empty user}">					
-						<form class="navbar-form navbar-right">
-						<a data-toggle="modal" href="../user/loginUser" data-target="#modal-testNew" role="button" data-backdrop="static">
-							<button type="button" class="btn btn-primary">Log in</button>
-						</a>
-							<button type="button" class="btn btn-primary">Sign in</button>
-						</form>
-					</li>	
-				</c:if>	
-				
-				<c:if test="${!empty user}">
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#" class="user-info">${sessionScope.user.userName}</a>
-						<li><a href="#">로그아웃</a></li>
-					</ul>
-				</c:if>           
+	             <!-- 유저가 비로그인 상태일 시 -->	
+	             	<c:if test="${sessionScope.user eq null }">
+		             	<li>
+		             		<input type="text" name="userId" placeholder="아이디" width="300px">
+		             		<input type="text" name="password" placeholder="비밀번호" width="300px">
+		             	</li>
+		             	<input type="button" value="로그인">
+	             	</c:if>
+	            </ul>
 		</div>
 		<!-- dropdown hover END -->	       
 	</div>
@@ -175,19 +161,20 @@
    	
 		
 		//============= 영화 Event  처리 =============	
-		 $(function() {
+		/*  $(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 		 	$("a:contains('영화')").on("click" , function() {
 				//$(self.location).attr("href","/user/logout");
 				self.location = "/movie/getMovieList"
 			}); 
-		 });
+		 }); */
 		
 		//=============  현재 상영영화 Event  처리 =============	
 	 	$( "a:contains('현재 상영영화'),a:contains('ID')" ).on("click" , function() {
 	 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$(self.location).attr("href","/movie/getMovieList");
-		});		
+		});
+		
 		
 	 	//=============  상영 예정영화 Event  처리 =============	
 	 	$( "a:contains('상영 예정영화')" ).on("click" , function() {
@@ -196,7 +183,7 @@
 	 	
 	 	//=============  시사회 Event  처리 =============	
 	 	$( "a:contains('시사회')" ).on("click" , function() {
-			$(self.location).attr("href","/movie/getMovieList");
+			$(self.location).attr("href","/movie/getMovieList?menu=manage");
 		});
 	 	
 	 	//=============  예매 Event  처리 =============	
@@ -223,10 +210,40 @@
 	 	$( "a:contains('커뮤니티')" ).on("click" , function() {
 			$(self.location).attr("href","/community/getFreeBoardList");
 		});
-	 		 	 	
+	 	
+	 	//============= 스토어 Event 처리 =============	
+	 	$( "a:contains('스토어')" ).on("click" , function() {
+			$(self.location).attr("href","/product/getGoodsList");
+		});
+	 	
+	 	//=============  굿즈 Event 처리 =============	
+	 	$( "a:contains('굿즈')" ).on("click" , function() {
+			$(self.location).attr("href","/product/getGoodsList");
+		});
+	 	
+	 	//=============  스낵바 Event 처리 =============	
+	 	$( "a:contains('스낵바')" ).on("click" , function() {
+			$(self.location).attr("href","/product/getSnackList");
+		});
+	 	
+	 	//=============  회원관리 Event  처리 =============	
+	 	$( "a:contains('회원관리')" ).on("click" , function() {
+			$(self.location).attr("href","/user/getUserList");
+		});
+	 	
+	 	//=============  상품관리 Event  처리 =============	
+	 	$( "a:contains('상품관리')" ).on("click" , function() {
+			$(self.location).attr("href","/product/getGoodsList");
+		});
+	 	
+	 	//=============  판매관리 Event  처리 =============	
+	 	$( "a:contains('판매관리')" ).on("click" , function() {
+			$(self.location).attr("href","/purchase/getSaleList");
+		});
+	 	
 	 	//=============  영화관리 Event  처리 =============	
 	 	$( "a:contains('영화관리')" ).on("click" , function() {
-			$(self.location).attr("href","/movie/getMovieList");
+			$(self.location).attr("href","/movie/getMovieList?menu=manage");
 		});
 	 	
 	 	//=============  상영관리 Event  처리 =============	
@@ -235,71 +252,27 @@
 		});
 	 	
 	 	//=============  예매관리 Event  처리 =============	
-	 	$( "a:contains('예매관리')" ).on("click" , function() {
+	 	$( "a:contains('예매관리')" ).on("click" , function() {ss
 			$(self.location).attr("href","/booking/getAdminBookingList");
 		});
 	 	
-	
-		//============= 회원 관리 부분 시작 ======================================================================================================
-			
-			//============= login Event  처리 =============	
-			 $(function() {
-				//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			 	$("input:contains('로그인')").on("click" , function() {
-					$(self.location).attr("href","/user/loginUser");
-				}); 
-			 });
-		 	
-		 	//============= logout Event  처리 =============	
-			 $(function() {
-				//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			 	$("a:contains('로그아웃')").on("click" , function() {
-					$(self.location).attr("href","/user/logoutUser");
-				}); 
-			 });
-		 	
-		 	//=============  회원관리 Event  처리 =============	
-		 	$( "a:contains('회원관리')" ).on("click" , function() {
-				$(self.location).attr("href","/user/listUser");
-			});
-		 	
-		 	//=============  회원가입 Event  처리 =============	
-			$(".navbar-form button:contains('Sign in')").bind("click",function(){			
-				self.location = "/user/authForm.jsp"
-			});
-
-	 	//============= 회원 관리 부분 끝 ======================================================================================================
 	 	
-		//============= 상품 관리 부분 시작 ======================================================================================================
-		 	//=============  상품관리 Event  처리 =============	
-		 	$( "a:contains('상품관리')" ).on("click" , function() {
-				$(self.location).attr("href","/product/getGoodsList");
-			});
-		 	
-		 	//============= 스토어 Event 처리 =============	
-		 	$( "a:contains('스토어')" ).on("click" , function() {
-				$(self.location).attr("href","/product/getGoodsList");
-			});
-		 	
-		 	//=============  굿즈 Event 처리 =============	
-		 	$( "a:contains('굿즈')" ).on("click" , function() {
-				$(self.location).attr("href","/product/getGoodsList");
-			});
-		 	
-		 	//=============  스낵바 Event 처리 =============	
-		 	$( "a:contains('스낵바')" ).on("click" , function() {
-				$(self.location).attr("href","/product/getSnackList");
-			});
-		 	
-		 	//=============  판매관리 Event  처리 =============	
-		 	$( "a:contains('판매관리')" ).on("click" , function() {
-				$(self.location).attr("href","/purchase/getSaleList");
-			});
-				
-	 	//============= 상품 관리 부분 끝 ======================================================================================================	
-	 		
-	 		
-	 		
+	 	//============= login Event  처리 =============	
+		 $(function() {
+			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+		 	$("input:contains('로그인')").on("click" , function() {
+				$(self.location).attr("href","/user/loginUser");
+			}); 
+		 });
+	 	
+	 	//============= logout Event  처리 =============	
+		 $(function() {
+			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+		 	$("a:contains('로그아웃')").on("click" , function() {
+				$(self.location).attr("href","/user/logoutUser");
+			}); 
+		 });
+	 	
 		//=============  최근 본 상품  처리 =============	
 		 	$( "a:contains('최근 본 상품')" ).on("click" , function() {
 		 		openHistory();

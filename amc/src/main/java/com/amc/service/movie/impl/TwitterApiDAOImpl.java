@@ -11,7 +11,6 @@ import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
-import com.amc.service.domain.onetime.Screen;
 import com.amc.service.domain.onetime.Twitter;
 import com.amc.service.movie.MovieDAO;
 
@@ -53,15 +52,14 @@ public class TwitterApiDAOImpl implements MovieDAO {
 	}
 
 	@Override
-	public void updateMovie(Movie movie) {
-		// TODO Auto-generated method stub
+	public int updateMovie(Movie movie) throws Exception {
 		
+		return 0;
 	}
 
 	@Override
-	public void deleteMovie(int movieNo) {
-		// TODO Auto-generated method stub
-		
+	public int deleteMovie(int movieNo) {
+		return 0;
 	}
 
 	@Override
@@ -72,7 +70,7 @@ public class TwitterApiDAOImpl implements MovieDAO {
 
 	
 	@Override
-	public int addMovie(Screen	screen) {
+	public int addMovie(Movie	screen) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -136,5 +134,11 @@ public class TwitterApiDAOImpl implements MovieDAO {
 	public List<MovieList> getAPIMoiveList() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int getTotalCount(Search search) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
