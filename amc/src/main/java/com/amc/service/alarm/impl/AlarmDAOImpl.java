@@ -19,15 +19,15 @@ public class AlarmDAOImpl implements AlarmDAO {
 	SqlSession sqlSession;
 	
 	@Override
-	public void addCancelAlarm(Alarm cancelAlarm) {
-		// TODO Auto-generated method stub
+	public int addCancelAlarm(Alarm alarm) {
 		
+		return 0;
 	}
 
 	@Override
-	public void addOpenAlarm(Alarm openAlarm) {
-		// TODO Auto-generated method stub
+	public int addOpenAlarm(Alarm alarm) {
 		
+		return sqlSession.insert("AlarmMapper.addAlarm", alarm);
 	}
 
 	@Override
@@ -43,17 +43,19 @@ public class AlarmDAOImpl implements AlarmDAO {
 	}
 
 	@Override
-	public void deleteCancelAlarm(int cancelAlarmNo) {
+	public int deleteCancelAlarm(Alarm alarm) {
 		// TODO Auto-generated method stub
-		
+		return 0;
 	}
 
 	@Override
-	public void deleteOpenAlarm(int openAlarmNo) {
-		// TODO Auto-generated method stub
-		
+	public int deleteOpenAlarm(Alarm alarm) {
+		return sqlSession.delete("AlarmMapper.deleteOpenAlarm", alarm);
+	}
+
+	@Override
+	public String checkOpenAlarm(Alarm alarm) {
+		return sqlSession.selectOne("AlarmMapper.checkOpenAlarm",alarm);
 	}
 	
-	
-
 }

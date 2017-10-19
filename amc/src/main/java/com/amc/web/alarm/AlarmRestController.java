@@ -2,14 +2,15 @@ package com.amc.web.alarm;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.amc.service.alarm.AlarmService;
+import com.amc.service.domain.Alarm;
 
 
-@Controller
+@RestController
 @RequestMapping("/alarm/*")
 public class AlarmRestController {
 	
@@ -23,13 +24,28 @@ public class AlarmRestController {
 		System.out.println("PurchaseController() default Constructor");
 		
 	}
-
-	@RequestMapping("/json/alarm/deleteCancelAlarm")
-	public String deleteCancelAlarm(@RequestParam("CancelAlarmNo")int cancelAlarmNo){
+	
+	public String checkOpenAlarm(@ModelAttribute("alarm")Alarm alarm){
 		
-		return null;
+		return alarmService.checkOpenAlarm(alarm);
 		
 	}
-
+	
+	@RequestMapping("/json/switchOpenAlarm")
+	public String switchOpenAlarm(@ModelAttribute("alarm")Alarm alarm){
+		
+		alarm.setAlarmFlag("O");
+		
+		if(this.checkOpenAlarm(alarm).equals("0")){
+			alarmService.addOpenAlarm(alarm);
+			return "add";
+		}else{
+			alarmService.deleteOpenAlarm(alarm);
+			return "delete";
+		}
+		
+	}
+	
+	
 	
 }

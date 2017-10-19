@@ -27,5 +27,11 @@ public class CinemaRestController {
 		
 		return cinemaService.checkPay(impUid);
 	}
+	
+	@RequestMapping(value="/json/cancelPay/{impUid}", method=RequestMethod.GET)
+	public String cancelPay(@PathVariable("impUid")String impUid) throws Exception{
+		
+		return cinemaService.cancelPay(impUid);
+	}
 
 }

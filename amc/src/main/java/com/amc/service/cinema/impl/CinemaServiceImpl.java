@@ -37,7 +37,7 @@ public class CinemaServiceImpl implements CinemaService {
 	@Qualifier("movieDAOImpl")
 	MovieDAO movieDAO;
 	
-	static String access_token;
+	Map<String, Object> addInfo = new HashMap<String,Object>();
 	
 	public CinemaServiceImpl() {
 		// TODO Auto-generated constructor stub
@@ -111,57 +111,71 @@ public class CinemaServiceImpl implements CinemaService {
 	@Override
 	public String checkPay(String impUid) throws Exception{
 		
-		//token 받기
-		JSONObject tokenObj = CinemaServiceImpl.getImportResponseJSONObject("https://api.iamport.kr/users/getToken", "POST");
-		//token 설정
-		CinemaServiceImpl.access_token = tokenObj.get("access_token").toString();
+		//addInfo에 token 추가
+		addInfo.put("access_token", this.getToken());
 		
 		//결제정보 확인
-		JSONObject checkObj = CinemaServiceImpl.getImportResponseJSONObject("https://api.iamport.kr/payments/"+impUid, "GET");
+		JSONObject checkObj = 
+				this.getImportResponseJSONObject(this.getConAndBody("https://api.iamport.kr/payments/"+impUid, "confirmPay",addInfo));
 		
 		return checkObj.get("status").toString();
 	}
 	
-	static public JSONObject getImportResponseJSONObject(String inputUrl, String requestType) throws Exception{
+	@Override
+	public String cancelPay(String impUid) throws Exception {
 		
-		URL url = new URL(inputUrl);
-		StringBuffer body = new StringBuffer();
+		String result = "";
+		
+		if((this.checkPay(impUid)).equals("paid")){
 			
-		HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
-				
-		con.setDoInput(true);
-        con.setDoOutput(true);
-        con.setUseCaches(false);
+			//addInfo에 token 추가
+			addInfo.put("access_token", this.getToken());
+			addInfo.put("impUid", impUid);
+			JSONObject cancelObj = 
+					this.getImportResponseJSONObject(this.getConAndBody("https://api.iamport.kr/payments/cancel", "cancelPay",addInfo));
+			
+			return cancelObj.get("status").toString();
+			
+		}
+		
+		return result;
+	}
+	
+	public String getToken() throws Exception{
+		
+		//token 받기
+		JSONObject tokenObj = 
+				this.getImportResponseJSONObject(this.getConAndBody("https://api.iamport.kr/users/getToken/", "getAccessToken"));
+		
+		//token 리턴
+		return (tokenObj.get("access_token").toString());
+		
+	}
 
-        if(requestType.equals("POST")){
-
-        	con.setRequestMethod(requestType);
-			con.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-					
-	        body.append( "imp_key=0683462591653622");
-	        body.append( "&imp_secret=ayIf8zscfkAHWOeVVPukrMxUX9sUr9RBIzRQ9j2oED6Askwoa0IBNgwKpYFR7wtQ6kGfDJDinKTP4pde" );
-	        
-        }else{
-        	con.setRequestMethod("GET");
-    		con.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-    		con.setRequestProperty("Authorization", access_token);
-        }
+	public JSONObject getImportResponseJSONObject(Map<String,Object> conAndBody) throws Exception{
+		
+		HttpsURLConnection con = (HttpsURLConnection)conAndBody.get("con");
+		
+		String body = (String)conAndBody.get("body");
         
         OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
-        String bodyString = body.toString();
-	    writer.write(bodyString);
+                
+	    writer.write(body);
 	    writer.flush();
 	    writer.close();
+	    
+	    System.out.println("con : "+con.toString());
+	    System.out.println("body : "+body);
 	    
 	    int responseCode = con.getResponseCode();
         
         BufferedReader br = null;
         
         if(responseCode==200) {
-        	System.out.println("200!");
+        	System.out.println("송수신 성공 : 200");
             br = new BufferedReader(new InputStreamReader(con.getInputStream()));
         } else {  // 에러 발생
-        	System.out.println("NOT 200!");
+        	System.out.println("송수신 실패 : " + responseCode);
             br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
         }
         
@@ -180,11 +194,78 @@ public class CinemaServiceImpl implements CinemaService {
         
         JSONObject jsonobj = (JSONObject)JSONValue.parse(firstJsonData);
         
-        
         //jsonData중에 response내용 추출(response가 json형식임)
         String res = jsonobj.get("response").toString();
         System.out.println("res : " + res);
                 
 		return (JSONObject)JSONValue.parse(res);
+	}
+	
+	public Map<String,Object> getConAndBody(String inputUrl, String behavior) throws Exception{
+		
+		Map<String,Object> conAndBody = new HashMap<String, Object>();
+		
+		URL url = new URL(inputUrl);
+		StringBuffer body = new StringBuffer();
+		
+			
+		HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
+				
+		con.setDoInput(true);
+        con.setDoOutput(true);
+        con.setUseCaches(false);
+
+        if(behavior.equals("getAccessToken")){
+
+        	con.setRequestMethod("POST");
+			con.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+					
+	        body.append( "imp_key=0683462591653622");
+	        body.append( "&imp_secret=ayIf8zscfkAHWOeVVPukrMxUX9sUr9RBIzRQ9j2oED6Askwoa0IBNgwKpYFR7wtQ6kGfDJDinKTP4pde" );
+	        
+        }
+        
+        conAndBody.put("con", con);
+        conAndBody.put("body", body.toString());
+        
+        con.disconnect();
+        
+        return conAndBody;
+	}
+	
+	public Map<String,Object> getConAndBody(String inputUrl, String behavior, Map<String,Object> addInfo) throws Exception{
+		
+		Map<String,Object> conAndBody = new HashMap<String, Object>();
+		
+		URL url = new URL(inputUrl);
+		StringBuffer body = new StringBuffer();
+			
+		HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
+				
+		con.setDoInput(true);
+        con.setDoOutput(true);
+        con.setUseCaches(false);
+
+        if(behavior.equals("confirmPay")){
+        	
+        	con.setRequestMethod("GET");
+    		con.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+    		con.setRequestProperty("Authorization", (String)addInfo.get("access_token"));
+        	
+        }else if(behavior.equals("cancelPay")){
+        	
+        	con.setRequestMethod("POST");
+			con.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+			con.setRequestProperty("Authorization", (String)addInfo.get("access_token"));
+					
+	        body.append( "imp_uid="+(String)addInfo.get("impUid"));
+        }
+
+        conAndBody.put("con", con);
+        conAndBody.put("body", body.toString());
+        
+        con.disconnect();
+        
+		return conAndBody;
 	}
 }
