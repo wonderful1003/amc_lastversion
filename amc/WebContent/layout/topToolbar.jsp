@@ -198,18 +198,18 @@
 		//=============  현재 상영영화 Event  처리 =============	
 	 	$( "a:contains('현재 상영영화'),a:contains('ID')" ).on("click" , function() {
 	 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$(self.location).attr("href","/movie/getMovieList");
+			$(self.location).attr("href","/movie/getMovieList?menu=movie");
 		});
 		
 		
 	 	//=============  상영 예정영화 Event  처리 =============	
 	 	$( "a:contains('상영 예정영화')" ).on("click" , function() {
-			$(self.location).attr("href","/movie/getMovieList");
+			$(self.location).attr("href","/movie/getMovieList?menu=commingsoon");
 		});
 	 	
 	 	//=============  시사회 Event  처리 =============	
 	 	$( "a:contains('시사회')" ).on("click" , function() {
-			$(self.location).attr("href","/movie/getMovieList?menu=manage");
+			$(self.location).attr("href","/movie/getMovieList?menu=preview");
 		});
 	 	
 	 	//=============  예매 Event  처리 =============	

@@ -121,7 +121,7 @@
 	<div class="container">
 	
 		<div class="page-header text-info">
-	       <h3>현재 상영 영화</h3>
+	       <h3>시사회 목록</h3>
 	    </div>
 	    
 	    <!-- table 위쪽 검색 Start //////F///////////////////////////////-->
