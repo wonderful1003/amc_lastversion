@@ -10,52 +10,78 @@ import org.springframework.stereotype.Repository;
 import com.amc.common.Search;
 import com.amc.service.domain.Movie;
 import com.amc.service.domain.ScreenContent;
+import com.amc.service.domain.onetime.MovieList;
 import com.amc.service.screen.ScreenDAO;
 import com.amc.service.screen.ScreenService;
 
 @Repository("screenServiceImpl")
 public class ScreenServiceImpl implements ScreenService {
-	
+
 	@Autowired
 	@Qualifier("screenDAOImpl")
 	private ScreenDAO screenDAO;
-	
-	public void setScreenDAO(ScreenDAO screenDAO){
+
+	public void setScreenDAO(ScreenDAO screenDAO) {
 		this.screenDAO = screenDAO;
 	}
-	
+
 	public ScreenServiceImpl() {
-		System.out.println(this.getClass());	
+		System.out.println(this.getClass());
 	}
 
 	@Override
-	public List<Movie> getMovieList(Search search) {
-		return null;
+	public Map<String, Object> getMovieList(Search search) {
+		
+		System.out.println("ScreenServiceImpl의 getMovieList 메소드 시작..");
+		
+	
+		return screenDAO.getMovieList(search);
 	}
 
 	@Override
 	public Movie getMovie(int movieNo) {
-		return null;
+		
+		System.out.println("ScreenServiceImpl의 getMovie 메소드 시작..");
+		
+		return screenDAO.getMovie(movieNo);
 	}
 
 	@Override
 	public Map<String, Object> getScreenContentList(Search search, int movieNo) {
 		System.out.println("ScreenServiceImpl의 getScreenContentList 메소드 시작..");
-		
+
 		return screenDAO.getScreenContentList(search, movieNo);
 	}
 
 	@Override
 	public int addScreenContent(ScreenContent screenContent) {
 		System.out.println("ScreenServiceImpl의 addScreenContent 메소드 시작..");
-		
-		
-		return screenDAO.addScreenContent(screenContent);
+
+		boolean checkScreenDupTime = checkScreenDupTime(screenContent);
+
+		if (checkScreenDupTime) {
+			return screenDAO.addScreenContent(screenContent);
+		} else {
+			System.out.println("중복임중복");
+			return -1;
+		}
+
 	}
 
 	@Override
-	public boolean checkScreenDupTime(String screenOpenTime, String screenEndTime) {
-		return false;
+	public boolean checkScreenDupTime(ScreenContent screenContent) {
+
+		System.out.println("ScreenServiceImpl의 checkScreenDupTime 메소드 시작..");
+
+		System.out.println("뭘까 이값은" + screenDAO.checkScreenDupTime(screenContent));
+		int checkScreenDupTime = screenDAO.checkScreenDupTime(screenContent);
+
+		if (checkScreenDupTime == 0) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	@Override
@@ -67,12 +93,32 @@ public class ScreenServiceImpl implements ScreenService {
 
 	@Override
 	public int updateScreenContent(ScreenContent screenContent) {
-		return 0;
+		System.out.println("ScreenServiceImpl의 updateScreenContent 메소드 시작..");
+
+		System.out.println("screenContent의 값을보자요" +screenContent);
+		boolean checkScreenDupTime = checkScreenDupTime(screenContent);
+
+		if (checkScreenDupTime) {
+			return screenDAO.updateScreenContent(screenContent);
+		} else {
+			System.out.println("중복임중복");
+			return -1;
+		}
+
 	}
 
 	@Override
 	public int deleteScreenContent(int screenContentNo) {
-		return 0;
+		System.out.println("ScreenServiceImpl의 deleteScreenContent 메소드 시작..");
+
+		return screenDAO.deleteScreenContent(screenContentNo);
 	}
+
+	@Override
+	// 선택한 상영날짜, 상영관에 등록되어있는 시간 목록 가져오기
+	public List<ScreenContent> notEmptyScreenContent(ScreenContent screenContent) {
+
+		return screenDAO.notEmptyScreenContent(screenContent);
+	};
 
 }

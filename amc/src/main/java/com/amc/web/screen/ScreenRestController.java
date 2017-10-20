@@ -3,12 +3,9 @@ package com.amc.web.screen;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.plaf.synth.SynthSplitPaneUI;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,7 +38,7 @@ public class ScreenRestController {
 	
 	
 	@RequestMapping(value = "json/getScreenContentList/{movieNo}", method = RequestMethod.GET)
-	public List<ScreenContent> getScreenContentList(@ModelAttribute("search") Search search, @PathVariable int movieNo, Model model) {
+	public List<ScreenContent> getScreenContentList(@ModelAttribute("search") Search search, @PathVariable int movieNo) {
 		System.out.println("json/screen/getScreenContentList :: GET");
 		
 		System.out.println("movieNo ===>" +movieNo);
@@ -70,7 +67,7 @@ public class ScreenRestController {
 		System.out.println("screen/json/addScreenContent :: POST");
 		//System.out.println("movieNo값있니"+movieNo);
 		screenContent.setMovie(new Movie());
-		screenContent.getMovie().setMovieNo(10000);
+		screenContent.getMovie().setMovieNo(movieNo);
 		System.out.println("screenContent값 확인해볼까"+screenContent);
 		///screenService.addScreenContent(screenContent);
 		System.out.println("screen/json/addScreenContent :: POST 끝.....");
@@ -92,20 +89,35 @@ public class ScreenRestController {
 	};
 
 	@RequestMapping(value = "json/updateScreenContent", method = RequestMethod.POST)
-	public String updateScreenContent(ScreenContent screenContent) {
+	public int updateScreenContent(@RequestBody ScreenContent screenContent) {
 		System.out.println("screen/json/updateScreenContent :: POST");
-		screenService.updateScreenContent(screenContent);
+		
+		System.out.println("sCreenContent 잘들어오는지 확인 ......... --> " +  screenContent);
 
-		return null;
+		return screenService.updateScreenContent(screenContent);
 	};
 
 	// 상영 내용 삭제
 	@RequestMapping(value = "json/deleteScreenContent/{screenContentNo}", method = RequestMethod.GET)
-	public String deleteScreenContent(@PathVariable int screenContentNo) {
-		System.out.println("screen/json/updateScreenContent :: GET");
-		screenService.deleteScreenContent(screenContentNo);
+	public int deleteScreenContent(@PathVariable int screenContentNo) {
+		System.out.println("screen/json/deleteScreenContent :: GET");
 		
-		return null;
+		
+		return screenService.deleteScreenContent(screenContentNo);
 	};
+	
+	
+	
+	// 등록되어있는 시간가져오기
+	@RequestMapping(value = "json/notEmptyScreenContent", method = RequestMethod.POST)
+	public List<ScreenContent> notEmptyScreenContent(@RequestBody ScreenContent screenContent) {
+		System.out.println("screen/json/notEmptyScreenContent :: POST");
+		List<ScreenContent> list = screenService.notEmptyScreenContent(screenContent);
+		System.out.println("여기List는?" + list);
+		
+		return list;
+	};
+
+	
 
 }

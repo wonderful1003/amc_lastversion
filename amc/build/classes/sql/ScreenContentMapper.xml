@@ -42,7 +42,7 @@
 				screen_endtime = TO_DATE(#{screenEndTime},'YYYY/MM/DD HH24:MI'),
 				screen_theater = #{screenTheater},
 				ticket_price = #{ticketPrice},
-				<if test='(previewFlag == "Y")'> preview_flag = #{previewFlag}, preview_title = #{previewTitle}, ticket_opendate = TO_DATE(#{ticketOpentDate}, 
+				<if test='(previewFlag == "Y")'> preview_flag = #{previewFlag}, preview_title = #{previewTitle}, ticket_opendate = TO_DATE(#{ticketOpenDate}, 
 				'YYYY/MM/DD HH24:MI:SS'),  invite_actor =  #{inviteActor}</if>
 				<if test='(previewFlag == "N")'>preview_flag = #{previewFlag}, preview_title = NULL, ticket_opendate = NULL, invite_actor = NULL </if>
 		</set>
@@ -86,15 +86,21 @@
 	</select> 
 
 	<!-- 대관되어있는 영화시간 -->
-	<select id="notEmptyScreenContent" parameterType="map" resultMap='screenContentSelectMap'>
-		SELECT screen_opentime, screen_endtime FROM	screencontent WHERE screen_theater = #{screenTheater} AND screen_date = #{screenDate}
+	<select id="notEmptyScreenContent" parameterType="screenContent" resultMap='screenContentSelectMap'>
+		SELECT  TO_CHAR(screen_opentime,'YYYY/MM/DD HH24:MI') screen_opentime, TO_CHAR(screen_endtime,'YYYY/MM/DD HH24:MI') screen_endtime 
+		FROM	screencontent WHERE screen_theater = #{screenTheater} AND screen_date = #{screenDate}
+		ORDER BY screen_opentime
 	</select>
 	
 	<!-- 시간이 중복되어있는지 -->
-	<select id="checkScreenDupTime" parameterType="map" resultType="int">
-		SELECT COUNT(*) FROM screencontent WHERE  screen_theater = '1' AND screen_date = #{screenDate}
-		AND screen_endtime > TO_CHAR(#{screenOpenTime},'YYYY/MM/DD HH24:MI') AND TO_CHAR(#{screenEndTime},'YYYY/MM/DD HH24:MI') > screen_opentime
+	<select id="checkScreenDupTime" parameterType="screenContent" resultType="int">
+		SELECT COUNT(*) FROM screencontent WHERE  
+		<if test="screenContentNo != 0">screencontent_no != #{screenContentNo} AND</if>
+		screen_theater = #{screenTheater} AND screen_date = #{screenDate}
+		AND screen_endtime > TO_DATE(#{screenOpenTime},'YYYY/MM/DD HH24:MI') AND TO_DATE(#{screenEndTime},'YYYY/MM/DD HH24:MI') > screen_opentime
 	</select>
+	
+	
 	
 	
     <select id="uniPreviewList" parameterType="string" resultMap="screenContentSelectMap">
