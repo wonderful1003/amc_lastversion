@@ -97,16 +97,15 @@ public class BookingController {
 						Model model) throws Exception{	
 		System.out.println("/booking/addBooking : POST");
 		
-		bookingService.addBooking(booking);
+		//bookingService.addBooking(booking);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
+		booking.setScreenContentNo("10000");
+		booking.setImpId("aaa111");
 		
-		map.put("userId", booking.getUserId());
-		map.put("screenContentNo", booking.getScreenContentNo());
-		map.put("bookingSeatNo", booking.getBookingSeatNo());
+		booking = bookingService.getBookingByInfo(booking);
 		
-		//이거해야됨
-		//Booking booking = bookingService.getBookingByInfo(map); 
+		System.out.println("add 후 no까지 포함된 booking : " + booking);
+		
 		model.addAttribute("booking",booking);
 
 		return "forward:/booking/addBookingConfirm.jsp";

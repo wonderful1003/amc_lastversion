@@ -50,9 +50,9 @@ public class BookingDAOImpl implements BookingDAO {
 	}
 	
 	@Override
-	public Booking getBookingByInfo(Map<String, Object> map) {
+	public Booking getBookingByInfo(Booking booking) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("BookingMapper.getBookingByInfo", map);
+		return sqlSession.selectOne("BookingMapper.getBookingByInfo", booking);
 	}
 
 	@Override

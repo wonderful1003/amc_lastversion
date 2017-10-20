@@ -1,8 +1,5 @@
 package com.amc.service.domain;
 
-import java.sql.Date;
-import java.util.List;
-
 public class Movie {
 
 	private String movieCd;
@@ -270,15 +267,22 @@ public class Movie {
 	public void setPostUrl(String postUrl) {
 		this.postUrl = postUrl;
 	}
-	@Override
+
+	
+	//toString 해림수정
+
 	public String toString() {
-		return "Movie [movieCd=" + movieCd + ", movieNm=" + movieNm + ", movieNmEn=" + movieNmEn + ", prdtYear="
-				+ prdtYear + ", openDt=" + openDt + ", endDt=" + endDt + ", synopsis=" + synopsis + ", trailer="
-				+ trailer + ", typeNm=" + typeNm + ", prdtStatNm=" + prdtStatNm + ", nationAlt=" + nationAlt
-				+ ", genres=" + genres + ", repNationNm=" + repNationNm + ", repGenreNm=" + repGenreNm + ", directors="
-				+ directors + ", showTm=" + showTm + ", watchGradeNm=" + watchGradeNm + ", postUrl=" + postUrl
-				+ ", actors=" + actors + ", steelCut=" + steelCut + "]";
+
+		return "Movie [movieCd=" + movieCd + ", movieNo=" + movieNo + ", movieRegDate=" + movieRegDate + ", movieNm="
+				+ movieNm + ", movieNmEn=" + movieNmEn + ", prdtYear=" + prdtYear + ", openDt=" + openDt + ", endDt="
+				+ endDt + ", synopsis=" + synopsis + ", trailer=" + trailer + ", typeNm=" + typeNm + ", prdtStatNm="
+				+ prdtStatNm + ", nationAlt=" + nationAlt + ", genres=" + genres + ", repNationNm=" + repNationNm
+				+ ", repGenreNm=" + repGenreNm + ", directors=" + directors + ", showTm=" + showTm + ", watchGradeNm="
+				+ watchGradeNm + ", postUrl=" + postUrl + ", actors=" + actors + ", steelCut=" + steelCut
+				+ ", steelCut1=" + steelCut1 + ", steelCut2=" + steelCut2 + ", steelCut3=" + steelCut3 + ", maleCnt="
+				+ maleCnt + ", femaleCnt=" + femaleCnt + ", age10s=" + age10s + ", age20s=" + age20s + ", age30s="
+				+ age30s + ", age40s=" + age40s + ", age50s=" + age50s + ", age60s=" + age60s + ", age60sMore="
+				+ age60sMore + "]";
+
 	}
-	
-	
 }

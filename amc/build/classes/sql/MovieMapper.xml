@@ -11,7 +11,7 @@
 	  (SQL은 xml 을 통해 적절히 캡슐화 되어 애플리케이선 외부로 분리함)
 	- SQL문의 입력(?) / 출력(?)을 매핑한다.  <== 아래의 select element 참조
  -->		
-
+ 
 <mapper namespace = "MovieMapper" >
 
 	<resultMap id="movieSelectMap" 			type="movie">
@@ -85,12 +85,13 @@
 			   )
  	</insert>
   	
+  	<!-- 해림수정 -->
   	<select 	id="getMovie" 	parameterType="java.lang.String" resultMap="movieSelectMap" >
   		SELECT
 		movie_no, 	
-		movie_regdate,	
-		movie_opendate, 	
-		movie_enddate, 		 
+		TO_CHAR(movie_regdate, 'YYYY/MM/DD') movie_regdate,	
+		TO_CHAR(movie_opendate, 'YYYY/MM/DD') movie_opendate, 	
+		TO_CHAR(movie_enddate, 'YYYY/MM/DD') movie_enddate, 		 
 		movie_title, 				
 		director,				
 		poster,
@@ -215,5 +216,6 @@
 	</select>
 	 
 
-	  
+	 
+		   
  </mapper>
