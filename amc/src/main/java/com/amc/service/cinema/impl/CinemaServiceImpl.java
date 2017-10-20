@@ -118,7 +118,7 @@ public class CinemaServiceImpl implements CinemaService {
 		JSONObject checkObj = 
 				this.getImportResponseJSONObject(this.getConAndBody("https://api.iamport.kr/payments/"+impUid, "confirmPay",addInfo));
 		
-		return checkObj.get("status").toString();
+		return checkObj.get("status").toString()+","+checkObj.get("amount").toString();
 	}
 	
 	@Override
@@ -126,7 +126,7 @@ public class CinemaServiceImpl implements CinemaService {
 		
 		String result = "";
 		
-		if((this.checkPay(impUid)).equals("paid")){
+		if(((this.checkPay(impUid)).split(","))[0].equals("paid")){
 			
 			//addInfo¿¡ token Ãß°¡
 			addInfo.put("access_token", this.getToken());

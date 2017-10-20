@@ -37,6 +37,12 @@
 		AND s.movie_no = m.movie_no									
   	</select>
   	
+  	 <select id="getBookingByInfo" parameterType="booking" resultMap="bookingSelectMap" >
+  		SELECT * 
+  		FROM booking 
+  		WHERE screencontent_no = #{screenContentNo} AND imp_id = #{impId}							
+  	</select>
+  	
   	<select id="getBookingList" parameterType="search" resultMap="bookingSelectMap">
 		SELECT *
   		FROM ( SELECT inner_table.* , ROWNUM AS row_seq

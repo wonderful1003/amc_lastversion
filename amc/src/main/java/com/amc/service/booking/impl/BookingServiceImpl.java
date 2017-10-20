@@ -1,9 +1,8 @@
 package com.amc.service.booking.impl;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,6 +13,11 @@ import com.amc.service.booking.BookingDAO;
 import com.amc.service.booking.BookingService;
 import com.amc.service.domain.Booking;
 import com.amc.service.domain.Movie;
+import com.amc.service.domain.ScreenContent;
+import com.amc.service.movie.MovieDAO;
+import com.amc.service.screen.ScreenDAO;
+
+import java.util.Calendar;
 
 @Service("bookingServiceImpl")
 public class BookingServiceImpl implements BookingService {
@@ -22,27 +26,40 @@ public class BookingServiceImpl implements BookingService {
 	@Qualifier("bookingDAOImpl")
 	private BookingDAO bookingDAO;
 	
+	@Autowired
+	@Qualifier("movieDAOImpl")
+	private MovieDAO movieDAO;
+	
+	@Autowired
+	@Qualifier("screenDAOImpl")
+	private ScreenDAO screenDAO;
+	
 	public void setBookingDAO(BookingDAO bookingDAO) {
 		this.bookingDAO = bookingDAO;
 	}
-	
+
+	public void setMovieDAO(MovieDAO movieDAO) {
+		this.movieDAO = movieDAO;
+	}
 
 	@Override
 	public List<Movie> getScreenMovieList() {
 		
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy/MM/dd");
         Calendar calendar = Calendar.getInstance();
 
-        String dateToday = simpleDateFormat.format(calendar.getTime());
-        System.out.println("Today : " + dateToday);
+        String today = simpleDateFormat.format(calendar.getTime());
+        System.out.println("Today : " + today);
+        Search search = new Search();
+        search.setSearchCondition("3");
+        search.setSearchKeyword(today);
         
-	    //List<Movie> todayMovieList = movieDAO.
-         
+	    List<Movie> todayMovieList = movieDAO.uniMovieList(search);
+	    System.out.println("todayMovieList : "+todayMovieList);
 
-        List<Movie> list = new ArrayList<Movie>();
-		
-		return list;
+		return todayMovieList;
 	}
+	
 
 	@Override
 	public List<Movie> getPreviewList() {
@@ -57,12 +74,22 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
+	public Booking getBookingByInfo(Booking booking) {
+		
+		return bookingDAO.getBookingByInfo(booking);
+	}
+
+	@Override
 	public void getSeatView(int screenContentNo) {
 		// TODO Auto-generated method stub
 		
 	}
 
-
+	@Override
+	public void addStatic() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public void deleteBooking(String bookingNo) {
@@ -72,6 +99,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public Booking getBooking(String bookingNo) {
+		System.out.println("BookingServicempl ¾È, bookingNo : "+bookingNo);
 
 		return bookingDAO.getBooking(bookingNo);
 	}
@@ -100,17 +128,7 @@ public class BookingServiceImpl implements BookingService {
 		
 	}
 
-	@Override
-	public List<Movie> getScreenDateList(int selectScreenNo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Movie> getScreenTimeList(String selectScreenDate) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public void sendEmailQR(String bookinNo, String email) {
@@ -123,6 +141,13 @@ public class BookingServiceImpl implements BookingService {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public List<ScreenContent> getScreenTimeList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	
 }

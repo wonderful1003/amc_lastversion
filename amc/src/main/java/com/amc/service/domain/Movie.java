@@ -9,7 +9,7 @@ public class Movie {
 	
 	private String movieNmEn;
 	
-	private String prdtYear; //제작년도
+	private String prdtYear;
 	private String openDt;
 	private String endDt;
 	private String synopsis;
@@ -30,6 +30,30 @@ public class Movie {
 	private String postUrl;
 	private String actors;
 	private String steelCut;
+	private String steelCut1;
+	private String steelCut2;
+	private String steelCut3;
+	
+	public String getSteelCut1() {
+		return steelCut1;
+	}
+	public void setSteelCut1(String steelCut1) {
+		this.steelCut1 = steelCut1;
+	}
+	public String getSteelCut2() {
+		return steelCut2;
+	}
+	public void setSteelCut2(String steelCut2) {
+		this.steelCut2 = steelCut2;
+	}
+	public String getSteelCut3() {
+		return steelCut3;
+	}
+	public void setSteelCut3(String steelCut3) {
+		this.steelCut3 = steelCut3;
+	}
+
+	
 	
 	
 	//additional filed for statistics 
@@ -243,17 +267,22 @@ public class Movie {
 	public void setPostUrl(String postUrl) {
 		this.postUrl = postUrl;
 	}
-	@Override
+
+	
+	//toString 해림수정
+
 	public String toString() {
-		return "Movie [movieCd=" + movieCd + ", movieNm=" + movieNm + ", movieNmEn=" + movieNmEn + ", prdtYear="
-				+ prdtYear + ", openDt=" + openDt + ", endDt=" + endDt + ", synopsis=" + synopsis + ", trailer="
-				+ trailer + ", typeNm=" + typeNm + ", prdtStatNm=" + prdtStatNm + ", nationAlt=" + nationAlt
-				+ ", genres=" + genres + ", repNationNm=" + repNationNm + ", repGenreNm=" + repGenreNm + ", directors="
-				+ directors + ", showTm=" + showTm + ", watchGradeNm=" + watchGradeNm + ", postUrl=" + postUrl
-				+ ", actors=" + actors + ", steelCut=" + steelCut + "]";
+
+		return "Movie [movieCd=" + movieCd + ", movieNo=" + movieNo + ", movieRegDate=" + movieRegDate + ", movieNm="
+				+ movieNm + ", movieNmEn=" + movieNmEn + ", prdtYear=" + prdtYear + ", openDt=" + openDt + ", endDt="
+				+ endDt + ", synopsis=" + synopsis + ", trailer=" + trailer + ", typeNm=" + typeNm + ", prdtStatNm="
+				+ prdtStatNm + ", nationAlt=" + nationAlt + ", genres=" + genres + ", repNationNm=" + repNationNm
+				+ ", repGenreNm=" + repGenreNm + ", directors=" + directors + ", showTm=" + showTm + ", watchGradeNm="
+				+ watchGradeNm + ", postUrl=" + postUrl + ", actors=" + actors + ", steelCut=" + steelCut
+				+ ", steelCut1=" + steelCut1 + ", steelCut2=" + steelCut2 + ", steelCut3=" + steelCut3 + ", maleCnt="
+				+ maleCnt + ", femaleCnt=" + femaleCnt + ", age10s=" + age10s + ", age20s=" + age20s + ", age30s="
+				+ age30s + ", age40s=" + age40s + ", age50s=" + age50s + ", age60s=" + age60s + ", age60sMore="
+				+ age60sMore + "]";
+
 	}
-	
-	
-	
-	
 }
