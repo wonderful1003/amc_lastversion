@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.amc.common.Page;
 import com.amc.common.Search;
+import com.amc.service.domain.Movie;
 import com.amc.service.screen.ScreenService;
 
 @Controller
@@ -23,6 +24,8 @@ public class ScreenController {
 	@Autowired
 	@Qualifier("screenServiceImpl")
 	private ScreenService screenService;
+	
+	
 
 	public ScreenController() {
 
@@ -36,35 +39,70 @@ public class ScreenController {
 	
 	
 	
+	
 
 	// @RequestMapping("/getMoiveList")
-	@RequestMapping(value = "getMoiveList", method = RequestMethod.GET)
-	public String getMovieList(@ModelAttribute("search") Search search, Model model) throws Exception {
-		System.out.println("/screen/getMovieList :: GET");
-		screenService.getMovieList(search);
-
-		return null;
+	@RequestMapping(value = "getScreenList")
+	public String getScreenList(@ModelAttribute("search") Search search, Model model) throws Exception {
+		System.out.println("/screen/getScreenList :: POST");
+		
+		if(search.getCurrentPage() == 0){
+			search.setCurrentPage(1);
+		}
+		
+		search.setPageSize(pageSize);
+		
+		System.out.println("search값 확인" + search);
+		
+		
+		
+		Map<String, Object> map = screenService.getMovieList(search);
+		
+		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(),pageUnit,pageSize);
+		
+		model.addAttribute("search",map.get("search"));
+		model.addAttribute("list",map.get("list"));
+		model.addAttribute("resultPage", resultPage);
+		
+		System.out.println("search"+map.get("search"));
+		System.out.println("list"+map.get("list"));
+		System.out.println("totalCount" + map.get("totalCount") );
+		System.out.println("resultPage"+ resultPage);
+		
+		System.out.println("/screen/getScreenList :: POST 끝");
+		return "forward:/screen/listScreenManage.jsp";
 	};
+	
+
 
 	// @RequestMapping("/getScreenContentList")
 	@RequestMapping(value = "getScreenContentList/{movieNo}", method = RequestMethod.GET)
-	public String getScreenContentList(@ModelAttribute("search") Search search, @PathVariable int movieNo, Model model) {
-		System.out.println("json/screen/getScreenContentList :: GET");
-		
-		System.out.println("movieNo ===>" +movieNo);
-		
+	public String getScreenContentList(@ModelAttribute("search") Search search, @PathVariable(value="movieNo") int movieNo, Model model) throws Exception {
+		System.out.println("screen/getScreenContentList :: GET 시이작");
+	
+		//System.out.println("movie값확인" + movie);
+		//Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+	//	movieNo = movie.getMovieNo();
+		//System.out.println(resultPage);
 		Map<String, Object> map = screenService.getScreenContentList(search, movieNo);
 		
+	
 		
-		System.out.println("왜안돼동나몬ㅇ리ㅗㄴㅁ이ㅏ러;미낭러");
+		Movie movie = screenService.getMovie(movieNo);
 		
-		//Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
-		
-		//System.out.println(resultPage);
-		
+
 		model.addAttribute("list",map.get("list"));
+		model.addAttribute("movie", movie);
+		
+		System.out.println("33333333333333333"+map.get("list"));
+		System.out.println("4444444444444444"+movie);
+		System.out.println("screen/getScreenContentList :: GET 끄읏");
 		//model.addAttribute("resultPage", resultPage);
-		model.addAttribute("search", search);
+		/*model.addAttribute("search", search);
+		System.out.println("■■■■■■■■■"+search);*/
+
+		
+		//model.addAttribute("movie", movie);
 
 		return "forward:/screen/listScreenContent.jsp";
 	}

@@ -32,6 +32,10 @@
   	
   		
   	</resultMap>
+
+  	
+  	
+  	
  
    	<insert 	id="addMovie" 	 parameterType="movie">
   		INSERT
@@ -81,12 +85,13 @@
 			   )
  	</insert>
   	
+  	<!-- 해림수정 -->
   	<select 	id="getMovie" 	parameterType="java.lang.String" resultMap="movieSelectMap" >
   		SELECT
 		movie_no, 	
-		movie_regdate,	
-		movie_opendate, 	
-		movie_enddate, 		 
+		TO_CHAR(movie_regdate, 'YYYY/MM/DD') movie_regdate,	
+		TO_CHAR(movie_opendate, 'YYYY/MM/DD') movie_opendate, 	
+		TO_CHAR(movie_enddate, 'YYYY/MM/DD') movie_enddate, 		 
 		movie_title, 				
 		director,				
 		poster,
@@ -210,7 +215,7 @@
 	              ) ORDER BY row_seq
 	</select>
 	 
-	  
+
 	 
 		   
  </mapper>

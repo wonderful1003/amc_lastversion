@@ -60,7 +60,7 @@ public class UserController {
 		System.out.println(user.getBirth());
 		
 		userService.addUser(user);
-		return "forward:/index.jsp";
+		return "redirect:/index.jsp";
 	}
 	
 	@RequestMapping( value="loginUser", method=RequestMethod.GET )
@@ -266,18 +266,4 @@ public class UserController {
 		/*return map.get("access_token");*/
 	}
 	
-/*	@RequestMapping(value="/getConn", method=RequestMethod.GET)
-	public String getConn(@RequestParam("access_token") String accesstoken) throws Exception{
-		
-		System.out.println("accesstoken : "+accesstoken);
-		System.out.println("앱연결 해보자~!");
-		
-		String user = (String)userService.getConn(userService.getAccessToken(accesstoken));
-		//사용자 토큰 받기 메서드 불러오기 성공
-		
-		System.out.println(user);
-		
-		return "redirect:/user/addUser";
-	}
-*/	
 }

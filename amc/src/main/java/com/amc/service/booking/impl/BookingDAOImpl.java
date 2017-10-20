@@ -1,6 +1,7 @@
 package com.amc.service.booking.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,7 @@ public class BookingDAOImpl implements BookingDAO {
 
 	@Override
 	public void addBooking(Booking booking) {
-		// TODO Auto-generated method stub
-		
+		sqlSession.insert("BookingMapper.addBooking", booking);		
 	}
 
 	@Override
@@ -48,8 +48,12 @@ public class BookingDAOImpl implements BookingDAO {
 		// TODO Auto-generated method stub
 		
 	}
-
-
+	
+	@Override
+	public Booking getBookingByInfo(Booking booking) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("BookingMapper.getBookingByInfo", booking);
+	}
 
 	@Override
 	public void deleteBooking(String bookingNo) {
@@ -111,5 +115,6 @@ public class BookingDAOImpl implements BookingDAO {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

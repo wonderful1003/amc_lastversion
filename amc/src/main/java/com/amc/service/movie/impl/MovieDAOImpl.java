@@ -224,7 +224,7 @@ public class MovieDAOImpl implements MovieDAO {
 		return sqlSession.selectOne("MovieMapper.getTotalCount",search);
 	}
 
-	
+
 	@Override
 	public List<Movie> uniMovieList(Search search) {
 		return sqlSession.selectList("MovieMapper.uniMovieList",search);
