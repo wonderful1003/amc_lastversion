@@ -110,6 +110,7 @@
 					$.ajax({
 						url : 'json/checkDuplication/'+userId,
 						method : 'get',
+						async : 'true',
 						dataType : 'json',
 						headers : {
 							'Accept' : 'application/json',

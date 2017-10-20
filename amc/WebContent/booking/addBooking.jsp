@@ -115,15 +115,34 @@ IMP.init('imp41659269');
 					    		}
 					    	});
 			}//end of kakaoPayCancel function	
+
+	function addBooking(){
+						
+		$("form").attr("method" , "POST").attr("action" , "/booking/addBooking").submit();	
+		
+	}
+
+	
 </script>
-	<body>
-		<h2>[예매3단계] 결제를 위한 창입니다.</h2>
-		
-		<h2></h2>
-		
-		<input type="button" value="결제하기" onClick="javascript:kakaoPay()"/>
+<body>
+<h2>[예매3단계] 결제를 위한 창입니다.</h2>
+
+	<input type="button" value="결제하기" onClick="javascript:kakaoPay()"/>
+	<input type="button" value="결제취소" onClick="javascript:kakaoPayCancel()"/>
 	
-		<input type="button" value="결제취소" onClick="javascript:kakaoPayCancel()"/>
-	
+	<form>
+	<!--  !!!!!!!!!!!!!!!!!!!!!!!!!input type hidden으로 나중에 바꾸기 -->
+		<input type="text" name="userId" value="${session.user.userId}"/>
+		<input type="text" name="screenContentNo" value="${screenContent.screenContentNo}"/>
+		<input type="text" name="bookingSeatNo" value="${seats}"/>
+		
+	</form>
+
+	<div>
+		<div>여기는 상영넘버 : ${screenContent.screenContentNo}</div>
+		<div>여기는 상영시간 : ${screenContent.screenOpenTime}</div>
+		<div>여기는 상영가격 : ${screenContent.ticketPrice}</div>
+		<div>여기는 좌석번호 : ${seats}</div>
+	</div>
 	</body>
 </html>

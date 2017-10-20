@@ -1,5 +1,8 @@
 package com.amc.service.domain;
 
+import java.sql.Date;
+import java.util.List;
+
 public class Movie {
 
 	private String movieCd;
@@ -9,7 +12,7 @@ public class Movie {
 	
 	private String movieNmEn;
 	
-	private String prdtYear; //제작년도
+	private String prdtYear;
 	private String openDt;
 	private String endDt;
 	private String synopsis;
@@ -30,6 +33,30 @@ public class Movie {
 	private String postUrl;
 	private String actors;
 	private String steelCut;
+	private String steelCut1;
+	private String steelCut2;
+	private String steelCut3;
+	
+	public String getSteelCut1() {
+		return steelCut1;
+	}
+	public void setSteelCut1(String steelCut1) {
+		this.steelCut1 = steelCut1;
+	}
+	public String getSteelCut2() {
+		return steelCut2;
+	}
+	public void setSteelCut2(String steelCut2) {
+		this.steelCut2 = steelCut2;
+	}
+	public String getSteelCut3() {
+		return steelCut3;
+	}
+	public void setSteelCut3(String steelCut3) {
+		this.steelCut3 = steelCut3;
+	}
+
+	
 	
 	
 	//additional filed for statistics 
@@ -252,8 +279,6 @@ public class Movie {
 				+ directors + ", showTm=" + showTm + ", watchGradeNm=" + watchGradeNm + ", postUrl=" + postUrl
 				+ ", actors=" + actors + ", steelCut=" + steelCut + "]";
 	}
-	
-	
 	
 	
 }

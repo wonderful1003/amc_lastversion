@@ -33,7 +33,6 @@ import com.amc.service.movie.MovieDAO;
 import com.amc.service.movie.MovieDAOAdapter;
 import com.amc.service.movie.MovieService;
 
-
 import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
 import kr.or.kobis.kobisopenapi.consumer.rest.exception.OpenAPIFault;
 import kr.or.kobis.kobisopenapi.consumer.soap.movie.MovieListResult;
@@ -98,20 +97,24 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 
+
 	@Override
 	public Movie getMovie(int movieNo) throws Exception {
 		return movieDAO.getMovie(movieNo);
 	}
 
+	
+
+	
 	@Override
-	public void updateMovie(Movie movie) {
-		// TODO Auto-generated method stub
+	public int updateMovie(Movie movie) throws Exception {
+		return movieDAO.updateMovie(movie);
 		
 	}
 
 	@Override
-	public void deleteMovie(int movieNo) {
-		// TODO Auto-generated method stub
+	public int deleteMovie(int movieNo) throws Exception {
+		return movieDAO.deleteMovie(movieNo);
 		
 	}
 

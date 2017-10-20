@@ -6,6 +6,7 @@ import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -75,10 +76,14 @@ public class UserController {
 		System.out.println("/user/loginUser : POST");
 		//Business Logic
 		User dbUser=userService.getUser(user.getUserId());
-		if( user.getPassword().equals(dbUser.getPassword())){
-			session.setAttribute("user", dbUser);
-		}
 		
+		if(dbUser==null){
+			System.out.println("널 값이다");
+		}else{
+			if(user.getPassword().equals(dbUser.getPassword())){
+				session.setAttribute("user", dbUser);
+			}
+		}
 		return "redirect:/index.jsp";
 	}
 	
@@ -163,25 +168,35 @@ public class UserController {
     @RequestMapping(value = "auth", method = RequestMethod.POST, produces = "application/json")
     public String sendMailAuth(HttpSession session, @RequestParam String email) throws Exception  {
     	
-    	String joinCode  = "<a href=//192.168.0.6:8080/user/addUser>";
-        session.setAttribute("joinCode", joinCode);
-        String subject = "회원가입 인증 발급 안내 입니다. ";
-        StringBuilder sb = new StringBuilder();        
-        String img = "http://192.168.0.17:8080/images/uploadFiles/1.jpg";
-        sb.append("<a href=http://192.168.0.17:8080/user/addUser>");
+    	String subject = "회원가입 인증 발급 안내 입니다. ";
+    	
+    	System.out.println(subject);
+        
+    	StringBuilder sb = new StringBuilder();        
+        String img = "http://127.0.0.1:8080/images/uploadFiles/1.jpg";
+        
+        System.out.println(img);
+        sb.append("밑에 이미지를 클릭 하시면 회원가입 화면으로 이동합니다. <br/>" );
+        sb.append("<a href=http://127.0.0.1:8080/user/addUser>");
         sb.append("<img src='"+img+"'/></a>");
+        
+        System.out.println(sb);
+        
         userService.send(subject, sb.toString(), "bitcampamc@gmail.com", email, null);
+        
+        System.out.println("메일 보내기 성공");
+        
         return "redirect:/user/authForm.jsp";
     }
     
     // 비밀번호 찾기    
     @RequestMapping(value = "sendPassword", method = RequestMethod.POST)
-    public String sendMailPassword(HttpSession session, 
+    public String sendPassword(HttpSession session, 
     									RedirectAttributes ra,
     									@RequestParam String userId, 		
     									@RequestParam String userName ) throws Exception {
-    	System.out.println("sendPassword Controller : POST ");
     	
+    	System.out.println("sendPassword Controller : POST ");
     	User user = userService.getUser(userId);
         if (user != null) {
             if (!user.getUserId().equals(userId)) {
@@ -203,5 +218,66 @@ public class UserController {
         }
         return "redirect:/index.jsp";
     }
+    
+	@RequestMapping(value="/kakaoGetCode", method=RequestMethod.GET)
+	public String kakaoGetCode() throws Exception{
+		
+		System.out.println("kakao.getCode() : "+userService.getCode());
 	
+		return "redirect:"+userService.getCode();
+	}
+
+	@RequestMapping(value="/kakaologin", method=RequestMethod.GET)
+	public String kakaoLogin(@RequestParam("code") String code) throws Exception{
+		
+		System.out.println("code : "+code);
+		
+		userService.getAccessToken(code);
+		//사용자 토큰 받기 메서드 불러오기 성공
+		
+		String data = (String)userService.getHtml((userService.getAccessToken(code)));
+		System.out.println("data :"+data);
+		
+		Map<String, String> map = userService.JsonStringMap(data);
+		System.out.println("map : "+map);
+		System.out.println("access_token :"+map.get("access_token"));
+		System.out.println("refresh_token :"+map.get("refresh_token"));
+		System.out.println("scope :"+map.get("scope"));
+		System.out.println("token_type :"+map.get("token_type"));
+		System.out.println("expires_in :"+map.get("expires_in"));
+		
+		//사용자 전체 정보받아오기를 시작합니다.
+		String list = userService.getAllList((String)map.get("access_token"));
+		System.out.println("list :"+list);
+		//JSON데이터 변환!
+		/*Map<String, String> getAllListMap = userService.JsonStringMap(list);*/
+		
+		System.out.println(list.substring(4,20));
+		
+/*		System.out.println("getAllListMap :"+getAllListMap);
+		System.out.println("id :"+(String)getAllListMap.get("kaccount_email"));
+		System.out.println("nickName :"+(String)getAllListMap.get("nickName"));
+		System.out.println("profileImageURL :"+(String)getAllListMap.get("profileImageURL"));
+		System.out.println("thumbnailURL :"+(String)getAllListMap.get("thumbnailURL"));
+		System.out.println("countryISO"+(String)getAllListMap.get("countryISO"));
+*/		
+		/*return "redirect:/user/getConn";*/
+		return "redirect:/user/addUser";
+		/*return map.get("access_token");*/
+	}
+	
+/*	@RequestMapping(value="/getConn", method=RequestMethod.GET)
+	public String getConn(@RequestParam("access_token") String accesstoken) throws Exception{
+		
+		System.out.println("accesstoken : "+accesstoken);
+		System.out.println("앱연결 해보자~!");
+		
+		String user = (String)userService.getConn(userService.getAccessToken(accesstoken));
+		//사용자 토큰 받기 메서드 불러오기 성공
+		
+		System.out.println(user);
+		
+		return "redirect:/user/addUser";
+	}
+*/	
 }

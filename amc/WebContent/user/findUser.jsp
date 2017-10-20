@@ -141,7 +141,7 @@
         	<h1>아이디 / 패스워드 찾기</h1>
         </div>
         
-     	 <form class="form-horizontal" id="findId">	
+     	 <form class="form-horizontal">	
      	 		
 			<div class="form-group">
 			  <label for="userName" class="col-sm-4 control-label">이 름</label>
@@ -186,11 +186,7 @@
 			</div>
 			
 		</form>
-		
-		
-<%-- 		  	<i class="glyphicon glyphicon-ok"></i>
-		  	<input type="text" id= "userId" value="${user.userId}">
- --%>		  
+			  
 		  <div class="form-group">
 			  	<div class="col-sm-offset-4  col-sm-4 text-center">
 			  	<i class="glyphicon glyphicon-ok" id= "userId"></i>

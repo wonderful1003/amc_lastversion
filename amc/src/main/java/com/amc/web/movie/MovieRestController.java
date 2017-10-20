@@ -1,25 +1,32 @@
 package com.amc.web.movie;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import com.amc.common.util.CommonUtil;
 import com.amc.service.domain.Movie;
 import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.onetime.MovieJson;
 import com.amc.service.domain.onetime.MovieList;
 import com.amc.service.domain.onetime.MovieListResult;
-import com.amc.service.domain.onetime.Screen;
 import com.amc.service.movie.MovieService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,13 +35,16 @@ import com.google.gson.GsonBuilder;
 
 //==> MovieAPI RestController
 @RestController
+
 @RequestMapping("/movie/*")
 public class MovieRestController {
 	
 	///Field
 	@Autowired
 	@Qualifier("movieServiceImpl")
-	private MovieService movieService;
+	private MovieService movieService;	
+	private String dbFileNames;
+	
 	//setter Method 구현 않음
 
 	public MovieRestController() {		
@@ -172,11 +182,11 @@ public class MovieRestController {
   	
 	    //movieListResult.setMovieList((List<MovieList>) movieList);
 	    
-	    Screen screen = new Screen();
-	    screen.setMovieCd(movieCd);
-	    screen.setEndDt(movieEndDate);
-	    screen.setSynopsis(syonpsis);
-	    screen.setTrailer(trailer);
+	    Movie movie = new Movie();
+	    movie.setMovieCd(movieCd);
+	    movie.setEndDt(movieEndDate);
+	    movie.setSynopsis(syonpsis);
+	    movie.setTrailer(trailer);
 	    
 	    
 		if (oper.equals("del")) {
@@ -189,7 +199,87 @@ public class MovieRestController {
 			return 0;		
 		} else
 			
-		return  rtn = movieService.addMovie(null);
+
+		return  rtn = movieService.addMovie(movie);
+	}
+	
+
+	private final String PATH = "C:/amcPoster/";
+
+	@Autowired
+	MappingJackson2JsonView jsonView;	
+	
+	@RequestMapping(value="json/upload", method=RequestMethod.POST, produces="text/plain")
+	public ModelAndView upload(MultipartHttpServletRequest request,
+							  final HttpServletRequest req) throws Exception {
+		
+		System.out.println("json/upload called RestControl ");
+		
+		ModelAndView model = new ModelAndView();
+		model.setView(jsonView);
+		
+		Iterator<String> itr =  request.getFileNames();
+		String movieNo		 =	req.getParameter("movieNo");
+	
+		System.out.println("request.getFileNames() :" + request.getFileNames().toString());
+		
+        if(itr.hasNext()) {
+        	List<MultipartFile> mpf = request.getFiles(itr.next());
+        	
+                       
+            for(int i = 0; i < mpf.size(); i++) {
+            	
+            	System.out.println("mpf.size()" + mpf.size());
+            	
+            	String fileNames = mpf.get(i).getOriginalFilename();
+            	String delimeter = ",";
+            	
+
+            	fileNames = new String(fileNames.getBytes("8859_1"),"utf-8");
+            	
+            	        	
+            	dbFileNames += fileNames + delimeter;
+            	          	
+                // File file = new File(PATH + mpf.get(i).getOriginalFilename());
+                
+            	//한글꺠짐 방지
+               	File file = new File(PATH + fileNames);
+                
+                if(file.exists())
+                {
+                	System.out.println("file delete execute...");
+                    file.delete();
+
+                } else {
+                
+                // logger.info(file.getAbsolutePath());
+                mpf.get(i).transferTo(file);
+                
+                System.out.println("fileName :: " + fileNames);
+                }
+            }
+            
+            JSONObject json = new JSONObject();
+            json.put("code", "true");
+            model.addObject("result", json);
+            
+            System.out.println("dbFileNames testing....  " + dbFileNames);
+            
+            
+            
+            System.out.println("json value true ::" + json);
+            return model;
+            
+        } else {
+        	
+            JSONObject json = new JSONObject();
+            json.put("code", "false");
+            model.addObject("result", json);
+            
+            System.out.println("json value false ::" + json);
+            return model;
+            
+        }
 	}
 
 }

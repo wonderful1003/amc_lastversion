@@ -21,7 +21,6 @@ import com.amc.service.domain.onetime.Twitter;
 import com.amc.service.movie.MovieDAO;
 import com.amc.service.movie.MovieDAOAdapter;
 
-
 import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
 import kr.or.kobis.kobisopenapi.consumer.rest.exception.OpenAPIFault;
 
@@ -78,15 +77,21 @@ public class MovieDAOImpl implements MovieDAO {
 
 		
 	public Movie getMovie(int movieNo) throws Exception {
-		return sqlSession.selectOne("MovieMapper.getProduct",movieNo);
+		return sqlSession.selectOne("MovieMapper.getMovie",movieNo);
 	}
 
+	
 	// 영화 수정
-	public void updateMovie(Movie movie) {
+	public int updateMovie(Movie movie) throws Exception{
+		System.out.println("MovieDAOImpl updateMovie Movie ===>>>>"  + movie);
+		return sqlSession.insert("MovieMapper.updateMovie",movie);	
+		
 	}
 
 	// 영화 삭제
-	public void deleteMovie(int movieNo) {
+	public int deleteMovie(int movieNo) throws Exception{
+		System.out.println("MovieDAOImpl deleteMovie movieNo ===>>>>"  + movieNo);
+		return sqlSession.insert("MovieMapper.deleteMovie",movieNo);
 	}
 
 	// 마이페이지에서 위시리스트 불러오기
@@ -218,6 +223,7 @@ public class MovieDAOImpl implements MovieDAO {
 	public int getTotalCount(Search search) throws Exception {		
 		return sqlSession.selectOne("MovieMapper.getTotalCount",search);
 	}
+
 
 	@Override
 	public List<Movie> uniMovieList(Search search) {

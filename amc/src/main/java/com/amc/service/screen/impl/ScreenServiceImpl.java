@@ -44,6 +44,14 @@ public class ScreenServiceImpl implements ScreenService {
 		
 		return screenDAO.getScreenContentList(search, movieNo);
 	}
+	
+	//[예매1단계용]
+	@Override
+	public List<ScreenContent> getScreenContentList2(Search search, int movieNo) {
+		System.out.println("ScreenServiceImpl의 getScreenContentList 메소드 시작..");
+		
+		return screenDAO.getScreenContentList2(search, movieNo);
+	}
 
 	@Override
 	public int addScreenContent(ScreenContent screenContent) {
