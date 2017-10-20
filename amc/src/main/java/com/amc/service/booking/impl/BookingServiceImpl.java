@@ -69,8 +69,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public void addBooking(Booking booking) {
-		// TODO Auto-generated method stub
-		
+		bookingDAO.addBooking(booking);
 	}
 
 	@Override

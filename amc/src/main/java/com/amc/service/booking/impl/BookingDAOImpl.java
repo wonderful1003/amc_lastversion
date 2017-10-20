@@ -40,8 +40,7 @@ public class BookingDAOImpl implements BookingDAO {
 
 	@Override
 	public void addBooking(Booking booking) {
-		// TODO Auto-generated method stub
-		
+		sqlSession.insert("BookingMapper.addBooking", booking);		
 	}
 
 	@Override

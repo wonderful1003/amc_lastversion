@@ -54,8 +54,7 @@ IMP.init('imp41659269');
 
 				    			alert("아작스 후 결제완료 후 "+"\n"+msg);
 				    			
-				    			location.href="/index.jsp"
-				    			//location.href="/#"
+				    			addBooking();
 				    			
 				    		} else {
 				    			alert("결제 금액이 요청한 금액과 달라 결제를 자동취소처리 하였습니다");
@@ -117,16 +116,20 @@ IMP.init('imp41659269');
 	<form>
 	<!--  !!!!!!!!!!!!!!!!!!!!!!!!!input type hidden으로 나중에 바꾸기 -->
 		<input type="text" name="userId" value="${session.user.userId}"/>
-		<input type="text" name="screenContentNo" value="${screenContent.screenContentNo}"/>
-		<input type="text" name="bookingSeatNo" value="${seats}"/>
+		<input type="text" name="screenContentNo" value="${booking.screenContent.screenContentNo}"/>
+		<input type="text" name="bookingSeatNo" value="${booking.bookingSeatNo}"/>
+		<input type="text" name="impId" value=""/>
+		<input type="text" name="headCount" value="${booking.headCount}"/>
+		<input type="text" name="totalTicketPrice" value="${booking.totalTicketPrice}"/>
+		<input type="text" name="qrUrl" value=""/>
 		
 	</form>
 
 	<div>
-		<div>여기는 상영넘버 : ${screenContent.screenContentNo}</div>
-		<div>여기는 상영시간 : ${screenContent.screenOpenTime}</div>
-		<div>여기는 상영가격 : ${screenContent.ticketPrice}</div>
-		<div>여기는 좌석번호 : ${seats}</div>
+		<div>여기는 상영넘버 : ${booking.screenContent.screenContentNo}</div>
+		<div>선택하신 상영시간 : ${booking.screenContent.screenOpenTime}</div>
+		<div>이 영화(시사회)의 좌석당 가격 : ${screenContent.ticketPrice}</div>
+		<div>선택한 좌석번호 : ${booking.bookingSeatNo}</div>
 	</div>
 	</body>
 </html>
