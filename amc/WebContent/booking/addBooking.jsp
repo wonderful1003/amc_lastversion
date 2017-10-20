@@ -1,8 +1,24 @@
+<%@page import="com.amc.service.domain.User"%>
 <%@ page contentType="text/html; charset=EUC-KR" %>
 <%@ page pageEncoding="EUC-KR"%>
 
 <!-- /////////////JSTL/////////////-->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%
+	User user = new User();
+	user.setUserId("sadf@naver.com");
+	user.setRole("user");
+	user.setUserName("제이슨");
+	user.setAddr("경기도 성남시 분당구");
+	user.setAddrDetail("대왕판교로 477 서초구");
+	user.setPhone1("010");
+	user.setPhone2("7777");
+	user.setPhone3("8888");
+	session.setAttribute("user", user);
+	
+	
+%>
 
 <!DOCTYPE html >
 <html>
@@ -20,18 +36,18 @@
 //imp초기화는 페이지 첫단에 해주는게 좋음
 IMP.init('imp41659269');
 	
+	var things = "티켓";
 	function kakaoPay(){
 				IMP.request_pay({
 				    pg : 'kakao',
 				    pay_method : 'kapy',
 				    merchant_uid : 'merchant_' + new Date().getTime(),
-				    name : 'AMC:예매',
-				    amount : 1000,
-				    buyer_email : 'iamport@siot.do',
-				    buyer_name : '구매자이름',
-				    buyer_tel : '010-1234-5678',
-				    buyer_addr : '서울특별시 강남구 삼성동',
-				    buyer_postcode : '123-456'
+				    name : 'AMC:'+things,
+				    amount : 1000, //ticket or product price
+				    buyer_email : "${user.userId}",
+				    buyer_name : "${user.userName}",
+				    buyer_tel : "${user.phone1}-${user.phone2}-${user.phone3}",
+				    buyer_addr : "${user.addr}+${user.addrDetail}"
 				}, function(rsp) {
 				    if ( rsp.success ){
 						
