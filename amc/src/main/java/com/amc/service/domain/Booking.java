@@ -1,7 +1,5 @@
 package com.amc.service.domain;
 
-import java.util.List;
-
 public class Booking {
 	
 	private String bookingNo;
@@ -11,9 +9,8 @@ public class Booking {
 	private String bookingRegDate;
 	private int headCount;
 	private int totalTicketPrice;
-	private List<String> bookingSeatNo; 
+	private String bookingSeatNo; 
 	private String qrUrl;
-	private String movieNo;
 	
 	private Movie movie;
 	private ScreenContent screenContent;
@@ -80,11 +77,11 @@ public class Booking {
 		this.totalTicketPrice = totalTicketPrice;
 	}
 	
-	public List<String> getBookingSeatNo() {
+	public String getBookingSeatNo() {
 		return bookingSeatNo;
 	}
 	
-	public void setBookingSeatNo(List<String> bookingSeatNo) {
+	public void setBookingSeatNo(String bookingSeatNo) {
 		this.bookingSeatNo = bookingSeatNo;
 	}
 	
@@ -96,13 +93,6 @@ public class Booking {
 		this.qrUrl = qrUrl;
 	}
 	
-	public String getMovieNo() {
-		return movieNo;
-	}
-	
-	public void setMovieNo(String movieNo) {
-		this.movieNo = movieNo;
-	}
 	
 	public Movie getMovie() {
 		return movie;
@@ -125,7 +115,7 @@ public class Booking {
 		return "Booking [bookingNo=" + bookingNo + ", impId=" + impId + ", userId=" + userId + ", screenContentNo="
 				+ screenContentNo + ", bookingRegDate=" + bookingRegDate + ", headCount=" + headCount
 				+ ", totalTicketPrice=" + totalTicketPrice + ", bookingSeatNo=" + bookingSeatNo + ", qrUrl=" + qrUrl
-				+ ", movieNo=" + movieNo + ", movie=" + movie + ", screenContent=" + screenContent + "]";
+				+ ", movie=" + movie + ", screenContent=" + screenContent + "]";
 	}
 
 

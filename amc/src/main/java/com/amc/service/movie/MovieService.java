@@ -1,6 +1,7 @@
 package com.amc.service.movie;
 
 import java.util.List;
+import java.util.Map;
 
 import com.amc.common.Search;
 import com.amc.service.domain.Movie;
@@ -8,8 +9,8 @@ import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
-import com.amc.service.domain.onetime.Screen;
 import com.amc.service.domain.onetime.Twitter;
+
 
 public interface MovieService {
 
@@ -17,21 +18,21 @@ public interface MovieService {
 	public List<Movie> getMoiveAdminList(Search search);
 
 	// 현재 상영 영화 목록 불러오기
-	public List<Movie> getMovieList(Search search);
+	public Map<String, Object> getMovieList(Search search) throws Exception;
 
 	// 상영 예정 영화 목록 불러오기
 	public List<Movie> getMoviePreviewList(Search search);
 
 	// 시사회 영화 목록 불러오기
 	public List<Movie> getCommingSoonList(Search search);
-
-	public Movie getMovie(int movieNo);
+	
+	public Movie getMovie(int movieNo) throws Exception;
 
 	// 영화 수정
-	public void updateMovie(Movie movie);
+	public int updateMovie(Movie movie) throws Exception;
 
 	// 영화 삭제
-	public void deleteMovie(int movieNo);
+	public int deleteMovie(int movieNo) throws Exception;
 
 	// 마이페이지에서 위시리스트 불러오기
 	public List<WishList> getWishList(Search search, String userId);
@@ -42,7 +43,7 @@ public interface MovieService {
 	public List<MovieList> getAPIMoiveList() throws Exception;
 
 	// submit을 누른후 외부 영화 API 상세 + 네이버 영화 포스터 API를 가져온 후 DB등록
-	public int addMovie(Screen screen);
+	public int addMovie(Movie movie);
 	// 관리목록에서 클릭한경우는 수정화면으로, 영화목록에서 클릭한경우는 상세정보화면으로
 
 	// 회원이 하트를 눌렀을때 위시리스트에 존재 하는지 안하는지 확인(Count로), 존재하면 delete 존재하지않으면 add

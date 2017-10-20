@@ -15,42 +15,49 @@ import com.amc.service.domain.Alarm;
 public class AlarmServiceImpl implements AlarmService {
 
 	@Autowired
-	@Qualifier("alarmDaoImpl")
+	@Qualifier("alarmDAOImpl")
 	AlarmDAO alarmDAO;
 	
 	@Override
-	public void addCancelAlarm(Alarm cancelAlarm) {
-		// TODO Auto-generated method stub
-		
+	public int addCancelAlarm(Alarm alarm) {
+
+		return 0;
 	}
 
 	@Override
-	public void addOpenAlarm(Alarm openAlarm) {
-		// TODO Auto-generated method stub
-		
+	public int addOpenAlarm(Alarm alarm) {
+
+		return alarmDAO.addOpenAlarm(alarm);
 	}
 
 	@Override
 	public List<Alarm> getCancelAlarmList(Search search) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public List<Alarm> getOpenAlarmList(Search search) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
-	public void deleteCancelAlarm(int cancelAlarmNo) {
-		// TODO Auto-generated method stub
-		
+	public int deleteCancelAlarm(Alarm alarm) {
+
+		return 0;
 	}
 
 	@Override
-	public void deleteOpenAlarm(int openAlarmNo) {
-		// TODO Auto-generated method stub
+	public int deleteOpenAlarm(Alarm alarm) {
+
+		return alarmDAO.deleteOpenAlarm(alarm);
+	}
+
+	@Override
+	public String checkOpenAlarm(Alarm alarm) {
+		
+		return alarmDAO.checkOpenAlarm(alarm);
 		
 	}
 

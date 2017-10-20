@@ -73,6 +73,20 @@ public class ScreenDAOImpl implements ScreenDAO {
 		System.out.println("ScreenDAOImpl의 getScreenContentList 메소드 끝...");
 		return map;
 	}
+	
+	
+	//[예매1단계용]
+	@Override
+	public List<ScreenContent> getScreenContentList2(Search search, int movieNo) {
+		System.out.println("ScreenDAOImpl의 getScreenContentList 2222222");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("search", search);
+		map.put("movieNo", movieNo);
+		
+		List<ScreenContent> list = sqlSession.selectList("ScreenContentMapper.getScreenContentList2", map);
+
+		return list;
+	}
 
 	@Override
 	public int addScreenContent(ScreenContent screenContent) {

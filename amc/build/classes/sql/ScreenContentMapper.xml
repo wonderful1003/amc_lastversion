@@ -22,6 +22,25 @@
       <result property="screenContentRegDate" column="screencontent_regdate" jdbcType="DATE" />
    </resultMap>
    
+   
+   <select id="getScreenContentList2" parameterType="map" resultMap="screenContentSelectMap">
+		SELECT screencontent_no, movie_no, screencontent_regdate, screen_date, TO_CHAR(screen_opentime,'HH24:MI') screen_opentime, screen_endtime, screen_theater, ticket_price, preview_flag, preview_title, ticket_opendate,invite_actor
+		FROM (
+		SELECT* 
+		FROM screencontent 
+		WHERE movie_no = #{movieNo}
+		<if test="search.searchKeyword !='' and search.searchKeyword != null"> 
+			AND screen_date between (to_date(#{search.searchKeyword}, 'yy/mm/dd')) AND (to_date(#{search.searchKeyword}, 'yy/mm/dd')+7)  	
+		</if> 
+		<if test='search.searchCondition ==null or search.searchCondition== 1'> 
+			AND preview_flag = 'N'
+		</if>
+		<if test="search.searchCondition==2 or search.searchCondition== 2"> 
+			AND preview_flag = 'Y'
+		</if>
+		ORDER BY screen_opentime) innertable
+     			   
+   </select> 
 
 	
 	<insert id="addScreenContent" parameterType="screenContent">

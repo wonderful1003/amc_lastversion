@@ -267,10 +267,12 @@ public class Movie {
 	public void setPostUrl(String postUrl) {
 		this.postUrl = postUrl;
 	}
+
 	
 	//toString 해림수정
-	@Override
+
 	public String toString() {
+
 		return "Movie [movieCd=" + movieCd + ", movieNo=" + movieNo + ", movieRegDate=" + movieRegDate + ", movieNm="
 				+ movieNm + ", movieNmEn=" + movieNmEn + ", prdtYear=" + prdtYear + ", openDt=" + openDt + ", endDt="
 				+ endDt + ", synopsis=" + synopsis + ", trailer=" + trailer + ", typeNm=" + typeNm + ", prdtStatNm="
@@ -281,9 +283,6 @@ public class Movie {
 				+ maleCnt + ", femaleCnt=" + femaleCnt + ", age10s=" + age10s + ", age20s=" + age20s + ", age30s="
 				+ age30s + ", age40s=" + age40s + ", age50s=" + age50s + ", age60s=" + age60s + ", age60sMore="
 				+ age60sMore + "]";
+
 	}
-	
-	
-	
-	
 }

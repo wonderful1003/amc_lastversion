@@ -14,5 +14,29 @@
   			<result property="alarmSeatNo" column="alarmseat_no" jdbcType="VARCHAR"/>
   			<result property="alarmFlag" column="alarm_flag" jdbcType="CHAR"/>
 	</resultMap>
+	
+	<insert 	id="addAlarm"	parameterType="alarm" >
+	 	INSERT
+		INTO alarm	( alarm_no, screencontent_no, user_id, alarm_regdate,
+					<if test="alarmSeatNo != null"> 
+					alarmseat_no, 
+					</if>
+					alarm_flag)
+		VALUES	 	( seq_alarm_no.nextval, #{screenContentNo}, #{userId}, SYSDATE, 
+					<if test="alarmSeatNo != null">	
+					#{alarmSeatNo},
+					</if> 
+					#{alarmFlag} )
+	</insert>
+	 
+	<delete id="deleteOpenAlarm" parameterType="alarm">
+		DELETE
+		FROM alarm
+		WHERE screencontent_no = #{screenContentNo} AND user_id = #{userId}
+	</delete>
+	 
+	<select id="checkOpenAlarm"	parameterType="alarm" resultType="string">
+	 	SELECT count(*) FROM alarm WHERE screencontent_no = #{screenContentNo} AND user_id = #{userId}
+	</select>
 
 </mapper>

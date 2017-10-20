@@ -6,7 +6,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,12 +28,10 @@ import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
-import com.amc.service.domain.onetime.Screen;
 import com.amc.service.domain.onetime.Twitter;
 import com.amc.service.movie.MovieDAO;
 import com.amc.service.movie.MovieDAOAdapter;
 import com.amc.service.movie.MovieService;
-
 
 import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
 import kr.or.kobis.kobisopenapi.consumer.rest.exception.OpenAPIFault;
@@ -41,8 +41,7 @@ import kr.or.kobis.kobisopenapi.consumer.soap.movie.MovieListResult;
 @Service("movieServiceImpl")
 public class MovieServiceImpl implements MovieService {
 	
-	///Field
-	
+	///Field	
 	
 	@Autowired
 	@Qualifier("movieDAOImpl")
@@ -67,10 +66,23 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	public List<Movie> getMovieList(Search search) {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String , Object > getMovieList(Search search) throws Exception {
+		
+		System.out.println("Search ::" + search);		
+		
+		List<Movie> list= movieDAO.getMovieList(search);
+		
+		System.out.println("list ::" + list);		
+		
+		int totalCount = movieDAO.getTotalCount(search);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list );
+		map.put("totalCount", new Integer(totalCount));
+		
+		return map;
 	}
+	
 
 	@Override
 	public List<Movie> getMoviePreviewList(Search search) {
@@ -84,21 +96,25 @@ public class MovieServiceImpl implements MovieService {
 		return null;
 	}
 
-	@Override
-	public Movie getMovie(int movieNo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
-	public void updateMovie(Movie movie) {
-		// TODO Auto-generated method stub
+	public Movie getMovie(int movieNo) throws Exception {
+		return movieDAO.getMovie(movieNo);
+	}
+
+	
+
+	
+	@Override
+	public int updateMovie(Movie movie) throws Exception {
+		return movieDAO.updateMovie(movie);
 		
 	}
 
 	@Override
-	public void deleteMovie(int movieNo) {
-		// TODO Auto-generated method stub
+	public int deleteMovie(int movieNo) throws Exception {
+		return movieDAO.deleteMovie(movieNo);
 		
 	}
 
@@ -118,7 +134,7 @@ public class MovieServiceImpl implements MovieService {
 
 	
 	@Override
-	public int addMovie(Screen screen) {
+	public int addMovie(Movie movie) {
 		// 발급키
 		
 		System.out.println("MovieServiceImp addMovie called....");
@@ -146,13 +162,13 @@ public class MovieServiceImpl implements MovieService {
 		        // split()은 지정한 문자를 기준으로 문자열을 잘라 배열로 반환한다.
 				
 			
-				String movieCd = screen.getMovieCd();
+				String movieCd = movie.getMovieCd();
 				
 				System.out.println("MovieServiceImp addMovie :: movieCd " + movieCd);
 	     
-	            movieEndDate = screen.getEndDt();
-	            syonpsis = screen.getSteelCut();
-	            trailer = screen.getTrailer();
+	            movieEndDate = movie.getEndDt();
+	            syonpsis = movie.getSynopsis();
+	            trailer = movie.getTrailer();
 		     
 		        
 		        System.out.println("movieEndDate" + movieEndDate);
@@ -412,31 +428,31 @@ public class MovieServiceImpl implements MovieService {
 			    //Screen Domain loading 			
 			    
 			  
-			    screen.setOpenDt(openDt);
-			    screen.setActors(actorNms);
-		    	screen.setDirector(directorNms);	
-		    	screen.setGenres(genreNms);
-			    screen.setWatchGradeNm(watchGradeNm);
-			    screen.setMovieNm(movieNm);
-			    screen.setPostUrl(postUrl);	  
-			    screen.setShowTm(showTm);
-			    screen.setEndDt(movieEndDate);
-			    screen.setSynopsis(syonpsis);
-			    screen.setTrailer(trailer);
+			    movie.setOpenDt(openDt);
+			    movie.setActors(actorNms);
+			    movie.setDirector(directorNms);	
+			    movie.setGenres(genreNms);
+			    movie.setWatchGradeNm(watchGradeNm);
+			    movie.setMovieNm(movieNm);
+			    movie.setPostUrl(postUrl);	  
+			    movie.setShowTm(showTm);
+			    movie.setEndDt(movieEndDate);
+			    movie.setSynopsis(syonpsis);
+			    movie.setTrailer(trailer);
 			    
-			    System.out.println("actorNms     ::" + screen.getActors());
-			    System.out.println("directorNms  ::" + screen.getDirector());
-			    System.out.println("genreNms     ::" + screen.getGenres());
-			    System.out.println("movieNm      ::" + screen.getMovieNm());
-			    System.out.println("postUrl      ::" + screen.getPostUrl());
-			    System.out.println("watchGradeNm ::" + screen.getWatchGradeNm());
-			    System.out.println("showTm       ::" + screen.getShowTm());
-			    System.out.println("openDt       ::" + screen.getOpenDt());
-			    System.out.println("movieEndDate ::" + screen.getEndDt());
-			    System.out.println("syonpsis     ::" + screen.getSynopsis());
-			    System.out.println("trailer      ::" + screen.getTrailer());
+			    System.out.println("actorNms     ::" + movie.getActors());
+			    System.out.println("directorNms  ::" + movie.getDirector());
+			    System.out.println("genreNms     ::" + movie.getGenres());
+			    System.out.println("movieNm      ::" + movie.getMovieNm());
+			    System.out.println("postUrl      ::" + movie.getPostUrl());
+			    System.out.println("watchGradeNm ::" + movie.getWatchGradeNm());
+			    System.out.println("showTm       ::" + movie.getShowTm());
+			    System.out.println("openDt       ::" + movie.getOpenDt());
+			    System.out.println("movieEndDate ::" + movie.getEndDt());
+			    System.out.println("syonpsis     ::" + movie.getSynopsis());
+			    System.out.println("trailer      ::" + movie.getTrailer());
 		    
-				return   movieDAO.addMovie(screen);
+				return   movieDAO.addMovie(movie);
 
 	
 	}

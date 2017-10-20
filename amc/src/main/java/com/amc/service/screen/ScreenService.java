@@ -17,6 +17,9 @@ public interface ScreenService {
 
 	// 상영 내용 리스트 불러오기
 	public Map<String, Object> getScreenContentList(Search search, int movieNo);
+	
+	// [예매1단계] 상영 내용 리스트 불러오기
+	public List<ScreenContent> getScreenContentList2(Search search, int movieNo);
 
 	// 상영 내용 등록
 	public int addScreenContent(ScreenContent screenContent);
