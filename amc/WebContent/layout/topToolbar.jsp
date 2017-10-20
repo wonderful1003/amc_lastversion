@@ -153,7 +153,8 @@
 	             	<input type="button" value="로그인">
              	</c:if>
  --%>	             	
-	 			<c:if test="${empty user}">					
+	 			<c:if test="${empty user}">	
+	 				<li>				
 						<form class="navbar-form navbar-right">
 						<!-- <a data-toggle="modal" href="../user/loginUser" data-target="#modal-testNew" role="button" data-backdrop="static"> -->
 						<a data-toggle="modal" href="/user/loginUser" data-target="#modal-testNew" role="button" data-backdrop="static">
@@ -169,7 +170,11 @@
 						<li><a href="#" class="user-info">${sessionScope.user.userName}</a>
 						<li><a href="#">로그아웃</a></li>
 					</ul>
-				</c:if>           
+				</c:if> 
+				<form>
+					<input type="text" name="searchKeyword" placeholder="통합검색">
+					<input type="button" value="검색!" onClick="javascript:unifiedSearch()">
+				</form>          
 		</div>
 		<!-- dropdown hover END -->	       
 	</div>
@@ -183,6 +188,12 @@
    	
 	   	function openHistory(){
 	   		popWin = window.open("../openHistory.jsp","popWin","left=300, top=200, width=300, height=200, marginwidth=0, marginheight=0, scrollbars=no, scrolling=no, menubar=no, resizable=no");
+	   	}
+	   	
+	   	function unifiedSearch(){
+	   		//POST로 바꿔야함
+	   		$("form").attr("method" , "POST").attr("action" , "/cinema/unifiedSearch").submit();
+	   		/* $(self.location).attr("href","/cinema/unifiedSearch"); */
 	   	}
    	
 		
