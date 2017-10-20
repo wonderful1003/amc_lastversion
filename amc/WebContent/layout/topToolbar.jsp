@@ -37,9 +37,9 @@
 <div class="navbar  navbar-inverse navbar-fixed-top">
 	
 	<div class="container">
-	       
+	       <!-- 절대경로로 변경  -->
 		<a class="navbar-brand" href="/index.jsp">
-			<img src="../images/common/AMC_Logo.png" width="80px" height="30px"/>
+			<img src="/images/common/AMC_Logo.png" width="80px" height="30px"/>
 		</a>
 		
 		<!-- toolBar Button Start //////////////////////// -->

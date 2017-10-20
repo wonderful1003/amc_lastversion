@@ -125,11 +125,11 @@ public class MovieController {
 			
 		Movie movie = movieService.getMovie(movieNo);	
 		
-		System.out.println("Date format before :: openDate :: " + movie.getOpenDt());
+		//System.out.println("Date format before :: openDate :: " + movie.getOpenDt());
 		
-		SimpleDateFormat dt = new SimpleDateFormat("yyyyy-mm-dd"); 
-		Date opendate = dt.parse(movie.getOpenDt().toString()); 
-		Date enddate = dt.parse(movie.getEndDt().toString()); 
+		//SimpleDateFormat dt = new SimpleDateFormat("yyyyy-mm-dd"); 
+		//Date opendate = dt.parse(movie.getOpenDt().toString()); 
+		//Date enddate = dt.parse(movie.getEndDt().toString()); 
 		
 		String steelCuts = movie.getSteelCut();
 		System.out.println("steelCut" + steelCuts);
@@ -158,11 +158,11 @@ public class MovieController {
 			}
 		}
 		
-		String convertOpenDate =  dt.format(opendate).substring(1,11);
-		String convertEndDate =   dt.format(enddate).substring(1,11);
+		//String convertOpenDate =  dt.format(opendate).substring(1,11);
+		//String convertEndDate =   dt.format(enddate).substring(1,11);
 		
-		movie.setOpenDt(convertOpenDate);
-		movie.setEndDt(convertEndDate);		
+		//movie.setOpenDt(convertOpenDate);
+		//movie.setEndDt(convertEndDate);		
 		
 		System.out.println("Date format check :: openDate :: "  + movie.getOpenDt());
 				
