@@ -75,8 +75,7 @@ public class LogonCheckInterceptor extends HandlerInterceptorAdapter {
 					uri.indexOf("checkDuplication") != -1 || uri.indexOf("auth") != -1	||  
 					uri.indexOf("getId") != -1	|| uri.indexOf("sendPassword") != -1	||		
 					uri.indexOf("kakaoGetCode") != -1 || uri.indexOf("getConn") != -1	||
-					uri.indexOf("kakaologin") != -1
-					
+					uri.indexOf("kakaologin") != -1 || uri.indexOf("kakaoLogin") != -1	
 			 ){
 				System.out.println("[ 로그 시도 상태 .... ]");
 				System.out.println("[ LogonCheckInterceptor end........]\n");

@@ -18,7 +18,7 @@ public interface BookingDAO {
 	
 	public void getSeatView(int screenContentNo);
 	
-	public Booking getBookingByInfo(Map<String, Object> map);
+	public Booking getBookingByInfo(Booking booking);
 	
 	public void deleteBooking(String bookingNo);
 	
