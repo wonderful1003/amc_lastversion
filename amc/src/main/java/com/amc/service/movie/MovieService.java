@@ -27,13 +27,12 @@ public interface MovieService {
 	public List<Movie> getCommingSoonList(Search search);
 	
 	public Movie getMovie(int movieNo) throws Exception;
-	
 
 	// 영화 수정
-	public void updateMovie(Movie movie);
+	public int updateMovie(Movie movie) throws Exception;
 
 	// 영화 삭제
-	public void deleteMovie(int movieNo);
+	public int deleteMovie(int movieNo) throws Exception;
 
 	// 마이페이지에서 위시리스트 불러오기
 	public List<WishList> getWishList(Search search, String userId);

@@ -120,14 +120,14 @@ public class MovieApiDAOImpl implements MovieDAO {
 	}
 
 	@Override
-	public void updateMovie(Movie movie) {
-		// TODO Auto-generated method stub
+	public int updateMovie(Movie movie) throws Exception {
 		
+		return 0;
 	}
 
 	@Override
-	public void deleteMovie(int movieNo) {
-		// TODO Auto-generated method stub
+	public int deleteMovie(int movieNo) {
+		return 0;
 		
 	}
 

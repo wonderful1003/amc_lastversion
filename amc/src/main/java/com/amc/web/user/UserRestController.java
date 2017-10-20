@@ -35,7 +35,7 @@ public class UserRestController {
 	}
 
 	@RequestMapping( value="loginUser", method=RequestMethod.POST )
-	public User login(	@RequestBody User user,
+	public User loginUser(	@RequestBody User user,
 									HttpSession session ) throws Exception{
 	
 		System.out.println("/user/json/login : POST");
@@ -43,16 +43,22 @@ public class UserRestController {
 		System.out.println("::"+user);
 		User dbUser=userService.getUser(user.getUserId());
 		
-		if( user.getPassword().equals(dbUser.getPassword())){
-			session.setAttribute("user", dbUser);
+		if(dbUser==null){
+			System.out.println("널 값이다");
+		}else{
+			if(user.getPassword().equals(dbUser.getPassword())){
+				session.setAttribute("user", dbUser);
+			}
 		}
+		
+		System.out.println("dbUser : " + dbUser);
 		
 		return dbUser;
 	}
 
 	@RequestMapping( value="checkDuplication/{userId}", method=RequestMethod.GET )
 	public boolean checkDuplication( @PathVariable String userId ) throws Exception{
-
+		System.out.println("중복확인 체크");
 		return userService.checkDuplication(userId);
 	}
 	

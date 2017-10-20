@@ -9,6 +9,6 @@ public interface CinemaDAO {
 	
 	public Map<String, Object> unifiedSearch(String searchKeyword);
 	
-	public Map<String, List<Object>> index();
+	public Map<String, Object> index();
 
 }

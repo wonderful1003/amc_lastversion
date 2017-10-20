@@ -59,7 +59,7 @@
 
         			   var form = new FormData(document.getElementById('uploadForm'));
         			    $.ajax({
-        				      url: "/product/json/upload", //컨트롤러 URL
+        				      url: "/movie/json/upload", //컨트롤러 URL
         				      data: form,
         				      dataType: 'json',
         				      processData: false,
@@ -114,7 +114,30 @@
 
         		    return [data.success, data.message, data.id];
 
-        		}
+        	}
+        	
+        	
+        	function Result_From_Server(resp, postdata)
+			{
+				// you should return from server OK in sucess, any other message on error
+				if(resp.responseText == "OK")
+				{
+					console.log("test");
+				alert("Update is succefully")
+				return [true,"",""]
+				}
+				else {
+					console.log("test2");
+				alert("Update failed")
+				return [true,"",""]
+				}
+			}
+        	
+        	
+        	
+        	
+        	
+        	
 
         	function ajaxFileUpload(id) 	{
         	
@@ -258,7 +281,7 @@
                           {name:'trailer', index:'trailer',align:"left", width:90,editable:true}
                           ],
                           
-                          afterSubmit: function (response, postdata) {
+                          /* afterSubmit: function (response, postdata) {
                               var json = $.parseJSON(response.responseText);
 
                               if (json) {
@@ -267,7 +290,7 @@
                               }
 
                               return [false, "Failed to get result from server.", null];
-                          },
+                          }, */
                           
                         
                           //{name:'갈 젤레즈니악', jsonmap: function (obj) { return getVaueByName(obj.directors, "갈 젤레즈니악");}}],
@@ -310,17 +333,16 @@
                     return;
                 },
                 
-                afterSubmit: UploadImage, 
+                //afterSubmit: UploadImage, 
                 
-               
-                
+                afterSubmit : Result_From_Server,
+
                 mtype       : "POST",
                 addParams: {addRowParams: {keys: true}, },
                
                 //sortable: true 
                 sortorder: "desc",
                 loadonce : true,
-
                 
                 jSonReader : {
                 	root:"rows",
