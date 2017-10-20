@@ -1,25 +1,30 @@
 <%@ page contentType="text/html; charset=EUC-KR" %>
 <%@ page pageEncoding="EUC-KR"%>
 
-
 <!DOCTYPE html>
 
 <html lang="ko">
 	
 <head>
-	<meta charset="EUC-KR">
+	<meta charset="utf-8"/>
 	
 	<!-- 참조 : http://getbootstrap.com/css/   참조 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	
 	<!-- 카카오 로그인 -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"/>
 	<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+	<!-- 카카오 로그인 -->
+	
 	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+	
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
@@ -55,16 +60,12 @@
 				}
 				
 		/* $("form").attr("method","POST").attr("action","/user/loginUser").attr("target","_parent").submit(); */
-	
-			
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				$.ajax( 
 						{	
 							url : "/user/json/loginUser",
-							/* method : "POST" , */
 							method : "POST" ,
 							async : "false",
-							/* dataType : "json" , */
 							headers : {
 								"Accept" : "application/json",
 								"Content-Type" : "application/json"
@@ -82,11 +83,6 @@
 								alert("JSONData : "+ JSONData );
 								alert("status : "+ status );
 								
-							/* 	if(JSONData == ''){
-									alert("비어있다");
-								}
-								 */
-								/* if( JSONData != null || JSONData !=''){ */
 									if( JSONData !=''){
 									//[방법1]
 									alert("login ajax success");
@@ -108,126 +104,79 @@
 							error:function(request,status,error){
 								alert(error);
 								alert("아이디 , 패스워드를 확인하시고 다시 로그인2...");
-						       }
+						    }
 					}); 
-					////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
 			});
 		});	
 		
-		
 		//============= 회원원가입화면이동 =============
 		$( function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$("a[href='#' ]").on("click" , function() {
-				/* self.location = "/user/addUser" */
 				self.location = "/user/authForm.jsp"
 			});
 		});
 		
 		//============= ID/PW 찾기 =============
 		$( function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$("#findUser").on("click" , function() {
-				/* self.location = "/user/addUser" */
 				self.location = "/user/findUser.jsp"
 			});
 		});
 		
 		//============= 카카오 로그인 =============
-		
-			
-		$("#kakao").on("click" , function(){
-			$(document).ready(function(){
-			Kakao.init("cb07b923496fc037b5450da00da1428a");
-			
-			
-			function getKakaoUserProfile(){
-				Kakao.API.request({
-					url: '/v1/user/me',
-					success: function(res) {
-						console.log("ressssss :: " + res);
-						var userId = res.kaccount_email;       
-		           		var tempId = userId.replace(".", ",");
-		           		console.log("userId :: " + userId);
-		           		console.log("tempId :: " + tempId);
-		           		$.ajax({
-		           					/* url : "/user/checkUserId/"+tempId, */
-		           					url : "/user/checkUserId",
+		function loginWithKakao() {
+			Kakao.init('fc5658887af25f840e94144f6722b228');
+			// 로그인 창을 띄웁니다.
+			Kakao.Auth.login({
+		 		success: function(authObj) {
+		   			var accessToken = Kakao.Auth.getAccessToken();
+		    		Kakao.Auth.setAccessToken(accessToken);
+		    
+		    		Kakao.API.request({
+		    			url: '/v1/user/me',
+		       			success: function(res) {
+			        		console.log("response 확인 :: " + res);
+			           		var userId = res.kaccount_email;       
+			           		/* var tempId = userId.replace(".", ","); */
+			           		console.log("userId :: " + userId);
+			           		/* console.log("tempId :: " + tempId); */
+			           		$.ajax(
+			            		{
+			                   		/* url : "/user/json/loginUser/"+tempId, */
+			                   		url : "/user/json/kakaoLogin", 
 			                      	method : "POST",
 			                      	dataType : "json",
 			                      	headers : {
 			                       		"Accept" : "application/json",
 			                       		"Content-Type" : "application/json"
 			                      	},
+									data : JSON.stringify({
+										userId : userId
+										/* password : pw */
+									}),
+
 			                      	success : function(JSONData, status) {     
-			                       		if(JSONData.user ==null ) {
-			                       			alert("계정이 없습니다. 회원가입을 해주시기 바랍니다.");
-			                       			self.location="/user/addUser.jsp?userId="+userId;                 
-			                         	}else if(JSONData.user.role == 4){
-			                       			alert("탈퇴한 계정입니다.");  
-			                       			$(self.location).attr("href","/user/logout");
+			                       		if(JSONData.user == null ) {
+			                       			alert("반갑습네다.");
+			                       			self.location="/user/addUser";                 
+			                         	}else if(JSONData.user == ''){
+			                         		alert("계정이 없습니다. 회원가입을 해주시기 바랍니다.");  
+			                       			$(self.location).attr("href","/user/addUser");
 			
-			                       			self.location="/user/login"
+			                       	  		location.reload();
 			                         	}else{
-			                       	  		self.location="/user/login"
+			                       	  		location.reload();
 			                         	}
-			                      	}//sucess
-			           });//ajax
-			           					
-						$("#kakao-profile").append(res.properties.nickname);
-						$("#kakao-profile").append(res.kaccount_email);
-		          	},//sucess                  
-					
-					fail: function(error) {
-						console.log(error);
-					}
-				});
-			}
-		});
-			
-			function createKakaotalkLogin(){
-				$("#kakao-logged-group .kakao-logout-btn,#kakao-logged-group .kakao-login-btn").remove();
-				var loginBtn = $("<a/>",{"class":"kakao-login-btn","text":"로그인"});
-				loginBtn.click(function(){
-					Kakao.Auth.login({
-						persistAccessToken: true,
-						persistRefreshToken: true,
-						success: function(authObj) {
-							//논스톱 추가
-							var accessToken = Kakao.Auth.getAccessToken();
-		    				Kakao.Auth.setAccessToken(accessToken);						
-							///////////////////////////
-							getKakaoUserProfile();
-							createKakaotalkLogout();
-						},
-						fail: function(err) {
-							console.log(err);
-						}
-					});
-				});
-				$("#kakao-logged-group").prepend(loginBtn)
-			}
-			
-			
-			function createKakaotalkLogout(){
-				$("#kakao-logged-group .kakao-logout-btn,#kakao-logged-group .kakao-login-btn").remove();
-				var logoutBtn = $("<a/>",{"class":"kakao-logout-btn","text":"로그아웃"});
-				logoutBtn.click(function(){
-					Kakao.Auth.logout();
-					createKakaotalkLogin();
-					$("#kakao-profile").text("");
-				});
-				$("#kakao-logged-group").prepend(logoutBtn);
-			}
-			if(Kakao.Auth.getRefreshToken()!=undefined&&Kakao.Auth.getRefreshToken().replace(/ /gi,"")!=""){
-				createKakaotalkLogout();
-				getKakaotalkUserProfile();
-			}else{
-				createKakaotalkLogin();
-			}
-		});
-		
+			                      	}
+			                });
+		          		}                  
+		      		});
+			  	},
+			   	fail: function(err) {
+			   		alert(JSON.stringify(err));
+			   	}
+		  	});
+		}
 		
 	</script>		
 	
@@ -279,8 +228,10 @@
 					      <a class="btn btn-primary btn" href="#" role="button">회 &nbsp;원 &nbsp;가 &nbsp;입</a>					      					    
 					  
 					<!-- <a href="/user/kakaoGetCode" ><img src="../images/user/kakaobtn.png" class="img-rounded" width="20%"> </a> &nbsp; -->
-					<img id = "kakao" src="../images/user/kakaobtn.png" class="img-rounded" width="20%">  &nbsp;
-		
+				
+					<a id="custom-login-btn" href="javascript:loginWithKakao()">
+					<img src="../images/user/kakaobtn.png" class="img-rounded" width="20%">  &nbsp;
+					</a>
 					
 					<a href="/user/kakaoGetCode" ><img src="../images/user/naverbtn.PNG" class="img-rounded" width="20%"> </a> &nbsp;
 		
