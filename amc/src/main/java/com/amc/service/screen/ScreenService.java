@@ -10,7 +10,7 @@ import com.amc.service.domain.ScreenContent;
 public interface ScreenService {
 
 	// 상영관리를 위한 영화목록 가져오기
-	public Map<String, Object> getMovieList(Search search);
+	public Map<String, Object> getMovieList(Search search) throws Exception;
 
 	// 상영관리를 위한 영화 가져오기
 	public Movie getMovie(int movieNo);

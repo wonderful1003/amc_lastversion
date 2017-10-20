@@ -359,7 +359,7 @@
                                     success: function(JSONData, status) {
                                     	
                                     	
-                                    	var displayValue = "<b>"+screenDate +" "+screenTheater+"상영관에 예약되어있는 시간입니다. 다른 시간을 선택해주세요<br> </sb> "
+                                    	var displayValue = "<b>현재 "+screenDate +" "+screenTheater+"상영관에 예약되어있는 시간입니다. <br> </b> "
                                     	var result = JSONData;
                                     	$.each(result, function(idx, val) {
                                     		displayValue += "["+val.screenOpenTime + " - " +val.screenEndTime + "] "
@@ -473,18 +473,31 @@
                       
                       $("select[name='screenTheater']").on("click", function () {
                     	  fncNotEmptyScreenContent();
-                    })
+                    })	
+                    
+                     $("input[name='screenContentOpenTime").on("change", function () {
+                    	  fncNotEmptyScreenContent();
+                    	
+                      })
 
 
                 })
                 
+
                 
             </script>
 
-
+	<style>
+        body {
+            padding-top : 70px;
+        }
+   	</style>
+   	
         </head>
 
         <body>
+
+<jsp:include page="/layout/topToolbar.jsp" />
 
 <div class="container">
 <h1>여기는 영화관리 시스템</h1>
@@ -523,15 +536,23 @@
 		</dl>
 	</div>
 	</div>
-
+            <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             <br>
+           <br>
+             <br>
+             <br>
+             <br>
 	
 	
             
           
-             <br>
-             <br>
-             <br>
-             <br>
+ 
+           
            
 
             <form name='screenContent' method="post">
@@ -602,7 +623,7 @@
                 <input type="hidden" name='showTm' value='${movie.showTm }'>
 			
                 <button type="button" id="addScreenContent">등록행</button>
-                <div id="checkDupTime"></div>
+                <div id="checkDupTime" style="background-color:lightgray; margin-top:20px"> </div>
          
             </form>
 </div>
