@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import com.amc.common.Page;
 import com.amc.common.Search;
 import com.amc.service.domain.Movie;
 import com.amc.service.domain.ScreenContent;
@@ -30,12 +31,20 @@ public class ScreenServiceImpl implements ScreenService {
 	}
 
 	@Override
-	public Map<String, Object> getMovieList(Search search) {
+	public Map<String, Object> getMovieList(Search search) throws Exception {
 		
 		System.out.println("ScreenServiceImpl의 getMovieList 메소드 시작..");
+		int totalCount = screenDAO.getTotalCount(search);
+		Map<String,Object> map = screenDAO.getMovieList(search);
+		map.put("totalCount", new Integer(totalCount));
+		//Page resultPage = new Page(search.getCurrentPage(),)
+		
+		
+		
+		System.out.println("ScreenServiceImpl의 getMovieList 메소드 끝..");
 		
 	
-		return screenDAO.getMovieList(search);
+		return map ;
 	}
 
 	@Override

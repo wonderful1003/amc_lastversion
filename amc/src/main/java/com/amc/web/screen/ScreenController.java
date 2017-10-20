@@ -42,9 +42,9 @@ public class ScreenController {
 	
 
 	// @RequestMapping("/getMoiveList")
-	@RequestMapping(value = "getMoiveList", method = RequestMethod.GET)
-	public String getMovieList(@ModelAttribute("search") Search search, Model model) throws Exception {
-		System.out.println("/screen/getMovieList :: GET");
+	@RequestMapping(value = "getScreenList")
+	public String getScreenList(@ModelAttribute("search") Search search, Model model) throws Exception {
+		System.out.println("/screen/getScreenList :: POST");
 		
 		if(search.getCurrentPage() == 0){
 			search.setCurrentPage(1);
@@ -54,9 +54,23 @@ public class ScreenController {
 		
 		System.out.println("search값 확인" + search);
 		
+		
+		
 		Map<String, Object> map = screenService.getMovieList(search);
-
-		return null;
+		
+		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(),pageUnit,pageSize);
+		
+		model.addAttribute("search",map.get("search"));
+		model.addAttribute("list",map.get("list"));
+		model.addAttribute("resultPage", resultPage);
+		
+		System.out.println("search"+map.get("search"));
+		System.out.println("list"+map.get("list"));
+		System.out.println("totalCount" + map.get("totalCount") );
+		System.out.println("resultPage"+ resultPage);
+		
+		System.out.println("/screen/getScreenList :: POST 끝");
+		return "forward:/screen/listScreenManage.jsp";
 	};
 	
 

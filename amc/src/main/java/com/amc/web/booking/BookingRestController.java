@@ -78,17 +78,6 @@ public class BookingRestController {
 	        
 	        }
 	        
-/*	        for(Iterator<String> it = list.iterator() ; it.hasNext() ; )
-	        //for (int i = 0; i < dayList.size(); i++) {
-	                for (int j = 0; j < dayList.size(); j++) {
-	                    if (i == j) {
-	                    } else if (dayList.get(j).equals(dayList.get(i))) {
-	                    	dayList.remove(j);
-	                    }
-	                }
-	         }*/
-
-	        
 	        LinkedHashSet hs = new LinkedHashSet(dayList);
 	        dayList = new ArrayList<String>(hs);
 	        for (String st : dayList) {

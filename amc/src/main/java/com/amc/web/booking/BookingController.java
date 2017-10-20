@@ -4,26 +4,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.view.InternalResourceView;
 
+import com.amc.common.Search;
 import com.amc.service.booking.BookingService;
 import com.amc.service.domain.Booking;
 import com.amc.service.domain.Movie;
 import com.amc.service.domain.ScreenContent;
-import com.amc.service.domain.User;
 import com.amc.service.screen.ScreenService;
 
 @Controller
@@ -62,19 +58,20 @@ public class BookingController {
 		return "forward:/booking/selectScreenMoive.jsp";
 	}
 	
+	//예매1단계(영화)
 	@RequestMapping( value="selectSeat", method=RequestMethod.GET)
 	public String selectSeat(@RequestParam("screenContentNo") String screenContentNo, Model model) throws Exception{
 		
-		///////////////
-		screenContentNo = "1021";		
-		///////////////	
-
 		System.out.println("/booking/selectSeat : GET");
 		model.addAttribute("screenContentNo",screenContentNo);
 
 		return "forward:/booking/selectSeat.jsp";
 	}
 	
+	//예매1단계(시사회)
+	
+	
+	//예매2단계
 	@RequestMapping( value="requestPay", method=RequestMethod.POST)
 	public String requestPay(@RequestParam("screenContentNo") String screenContentNo,
 			@RequestParam("seats") String seats, Model model) throws Exception{	
@@ -82,16 +79,19 @@ public class BookingController {
 		
 		//ScreenContent screenContent = screenService.getScreenContent(Integer.parseInt(screenContentNo));
 		ScreenContent screenContent = screenService.getScreenContent(10000);
-		model.addAttribute("screenContent",screenContent);
-		model.addAttribute("seats",seats);
-		
-		/*int headCount = (seats.안의 콤마의 개수+1)/2
-		model.addAttribute("headCount", headCount);
-		model.addAttribute("totalTicketPrice", screenContent.getTicketPrice()*headCount);*/
+				
+		Booking booking = new Booking();
+		booking.setScreenContent(screenContent);
+		booking.setBookingSeatNo(seats);	
+		int headCount = (StringUtils.countOccurrencesOf(seats, ",")+1)/2;
+		booking.setHeadCount(headCount);
+		booking.setTotalTicketPrice(screenContent.getTicketPrice()*headCount);
+		model.addAttribute(booking);
 		
 		return "forward:/booking/addBooking.jsp";
 	}
 	
+	//예매3단계
 	@RequestMapping( value="addBooking", method=RequestMethod.POST)
 	public String addBooking(@ModelAttribute("booking") Booking booking,
 						Model model) throws Exception{	
@@ -111,7 +111,7 @@ public class BookingController {
 		return "forward:/booking/addBookingConfirm.jsp";
 	}
 	
-	
+	//예매상세조회
 	@RequestMapping( value="getBooking", method=RequestMethod.GET)
 	public String getBooking(@RequestParam("bookingNo") String bookingNo, 
 												Model model) throws Exception{
@@ -128,6 +128,20 @@ public class BookingController {
 		return "forward:/booking/getBooking.jsp";
 	}
 	
+	//관리자 예매목록조회
+	@RequestMapping( value="getAdminBookingList", method=RequestMethod.GET)
+	public String getAdminBookingList(@ModelAttribute("Search") Search search,
+												Model model) throws Exception{
+
+		System.out.println("/booking/getAdminBookingList : GET");
+		
+		List<Booking> bookingList = bookingService.getAdminBookingList(search); 
+		
+		System.out.println("bookingList : "+bookingList);
+		model.addAttribute("list", bookingList);
+	
+		return "forward:/booking/listBookingAdmin.jsp";
+	}
 	
 	
 	

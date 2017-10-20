@@ -5,7 +5,6 @@
 
 <!-- /////////////JSTL/////////////-->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <%
 	User user = new User();
 	user.setUserId("sadf@naver.com");
@@ -23,7 +22,7 @@
 	session.setAttribute("booking",booking);
 %>
 
-<!DOCTYPE html >
+z<!DOCTYPE html >
 <html>
 <head> 
 <title>selectScreenMovie.jsp</title>
@@ -85,6 +84,7 @@ IMP.init('imp41659269');
 				    			msg += '\n카드 승인번호 : ' + rsp.apply_num;
 
 				    			$("input[name='qrUrl']").val("https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl="+impUid);
+				    			$("input[name='impId']").val(impUid);
 				    			
 				    			alert("AJAX 후 결제완료 후 "+"\n"+msg);
 				    			
@@ -153,21 +153,23 @@ IMP.init('imp41659269');
 	<input type="button" value="결제하기" onClick="javascript:kakaoPay()"/>
 	<input type="button" value="결제취소" onClick="javascript:kakaoPayCancel()"/>
 	
-	<input type="button" value="a to b" onClick="javascript:a()"/>
-	
 	<form>
 	<!--  !!!!!!!!!!!!!!!!!!!!!!!!!input type hidden으로 나중에 바꾸기 -->
 		<input type="text" name="userId" value="${session.user.userId}"/>
-		<input type="text" name="screenContentNo" value="${screenContent.screenContentNo}"/>
-		<input type="text" name="bookingSeatNo" value="${seats}"/>
+		<input type="text" name="screenContentNo" value="${booking.screenContent.screenContentNo}"/>
+		<input type="text" name="bookingSeatNo" value="${booking.bookingSeatNo}"/>
+		<input type="text" name="impId" value=""/>
+		<input type="text" name="headCount" value="${booking.headCount}"/>
+		<input type="text" name="totalTicketPrice" value="${booking.totalTicketPrice}"/>
 		<input type="hidden" name="qrUrl" value=""/>
+		
 	</form>
 
 	<div>
-		<div>여기는 상영넘버 : ${screenContent.screenContentNo}</div>
-		<div>여기는 상영시간 : ${screenContent.screenOpenTime}</div>
-		<div>여기는 상영가격 : ${screenContent.ticketPrice}</div>
-		<div>여기는 좌석번호 : ${seats}</div>
+		<div>여기는 상영넘버 : ${booking.screenContent.screenContentNo}</div>
+		<div>선택하신 상영시간 : ${booking.screenContent.screenOpenTime}</div>
+		<div>이 영화(시사회)의 좌석당 가격 : ${screenContent.ticketPrice}</div>
+		<div>선택한 좌석번호 : ${booking.bookingSeatNo}</div>
 	</div>
 	</body>
 </html>

@@ -27,22 +27,23 @@ public class ScreenDAOImpl implements ScreenDAO {
 
 	@Override
 	public Map<String, Object> getMovieList(Search search) {
-		System.out.println("ScreenDAOImpl의 getScreenContentList 메소드 시작...");
+		System.out.println("ScreenDAOImpl의 getMovieList 메소드 시작...");
+		
+	
+		List<ScreenContent> list = sqlSession.selectList("MovieMapper.getMovieList", search);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("search", search);
-	//	map.put("movieNo", movieNo);
-		//System.out.println("searchd와 movieNo" + search + "  " + movieNo);
-
-		List<ScreenContent> list = sqlSession.selectList("ScreenContentMapper.getScreenContentList", map);
+		
 		map.put("list", list);
 
 		System.out.println("List 값이 뭐게 " + list);
 
-		System.out.println("ScreenDAOImpl의 getScreenContentList 메소드 끝...");
+		System.out.println("ScreenDAOImpl의 getMovieList 메소드 끝...");
 		
 		
 		
-		return null;
+		return map;
 	}
 
 	@Override
@@ -145,5 +146,10 @@ public class ScreenDAOImpl implements ScreenDAO {
 		
 		return list;
 	};
+	
+	@Override
+	public int getTotalCount(Search search) throws Exception {		
+		return sqlSession.selectOne("MovieMapper.getTotalCount",search);
+	}
 
 }

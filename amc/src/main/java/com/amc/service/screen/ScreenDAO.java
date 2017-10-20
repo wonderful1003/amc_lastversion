@@ -39,4 +39,6 @@ public interface ScreenDAO {
 	// 선택한 상영날짜, 상영관에 등록되어있는 시간 목록 가져오기
 		public List<ScreenContent> notEmptyScreenContent(ScreenContent screenContent);
 
+		int getTotalCount(Search search) throws Exception;
+
 }
