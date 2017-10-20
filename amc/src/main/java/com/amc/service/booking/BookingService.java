@@ -18,7 +18,7 @@ public interface BookingService {
 	
 	public void addBooking(Booking booking);
 	
-	public Booking getBookingByInfo(Map<String, Object> map);
+	public Booking getBookingByInfo(Booking booking);
 	
 	public void getSeatView(int screenContentNo);
 	

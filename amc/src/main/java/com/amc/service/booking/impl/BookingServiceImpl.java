@@ -74,9 +74,9 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public Booking getBookingByInfo(Map<String, Object> map) {
+	public Booking getBookingByInfo(Booking booking) {
 		
-		return bookingDAO.getBookingByInfo(map);
+		return bookingDAO.getBookingByInfo(booking);
 	}
 
 	@Override
