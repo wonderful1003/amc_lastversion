@@ -88,13 +88,11 @@ public class MovieController {
 		model.addAttribute("search", search);
 		
 		System.out.println("list show ::"  + map.get("list"));
+	
 		
-		//String mn = request.getParameter("menu");
-		//System.out.println("parameter " + mn);
-
-		if(request.getParameter("menu").equals("search")) {
-			System.out.println("listProduct.jsp called");
-			modelAndView.setViewName("/product/listProduct.jsp"); 
+		if(request.getParameter("menu").equals("movie")) {
+			System.out.println("listMovie.jsp called");
+			modelAndView.setViewName("/movie/listMovie.jsp"); 
 			return modelAndView;
 		}
 		else  if(request.getParameter("menu").equals("manage")) {
@@ -102,8 +100,12 @@ public class MovieController {
 			modelAndView.setViewName("/movie/listMovieManage.jsp");
 			return modelAndView;
 		}
-		else if (request.getParameter("menu").equals("manage2")) {
-			modelAndView.setViewName("/product/manageProduct_batch.jsp");
+		else if (request.getParameter("menu").equals("commingsoon")) {
+			modelAndView.setViewName("/movie/listCommingSoon.jsp");
+			return modelAndView;
+		}
+		else if (request.getParameter("menu").equals("preview")) {
+			modelAndView.setViewName("/movie/listMoviePreview.jsp");
 			return modelAndView;
 		}
 	   
@@ -137,25 +139,31 @@ public class MovieController {
 		steelCuts = CommonUtil.null2str(steelCuts);
 		System.out.println("steelCuts null converted :: what ??" + steelCuts);
 		
+	
+		
 		if (!steelCuts.isEmpty()) {
 			List<String> steelCutList = Arrays.asList(steelCuts.split(","));
 			
 			System.out.println("steelCutList length :: " + steelCutList.size());
 			System.out.println("steelCutList isEmpty() :: " + steelCutList.isEmpty());
-
+			
 			if(!steelCutList.isEmpty()) {			
-				String steelCut1 = steelCutList.get(0).toString();
-		        String steelCut2 = steelCutList.get(1).toString();
-		        String steelCut3 = steelCutList.get(2).toString();        
-		      
-		        movie.setSteelCut1(steelCut1);
-		        movie.setSteelCut2(steelCut2);
-		        movie.setSteelCut3(steelCut3);
-		        
+				if (steelCutList.size() == 1) {
+					String steelCut1 = steelCutList.get(0).toString();
+					movie.setSteelCut1(steelCut1);
+				} else if (steelCutList.size() == 2) {
+					 String steelCut2 = steelCutList.get(1).toString();
+					 movie.setSteelCut2(steelCut2);
+				} else if  (steelCutList.size() == 3) {
+					 String steelCut3 = steelCutList.get(2).toString(); 
+					 movie.setSteelCut3(steelCut3);
+				}
+			}
+			
 		        System.out.println("Movie domain steelCut1 :"  + movie.getSteelCut1());
 		        System.out.println("Movie domain steelCut2 :"  + movie.getSteelCut2());
 		        System.out.println("Movie domain steelCut3 :"  + movie.getSteelCut3());
-			}
+		
 		}
 		
 		//String convertOpenDate =  dt.format(opendate).substring(1,11);

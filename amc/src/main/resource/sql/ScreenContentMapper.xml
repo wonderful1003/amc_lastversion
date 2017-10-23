@@ -9,7 +9,7 @@
    <resultMap type="screenContent" id="screenContentSelectMap">
       <result property="screenContentNo" column="screencontent_no" jdbcType="INTEGER"/>
       <result property="movie.movieNo" column="movie_no" jdbcType="INTEGER"/>
-      <result property="movie.poster" column="poster" jdbcType="VARCHAR"/>
+      <result property="movie.postUrl" column="poster" jdbcType="VARCHAR"/>
       <result property="screenDate" column="screen_date" jdbcType="DATE"/>
       <result property="screenOpenTime" column="screen_openTime" jdbcType="DATE" />
       <result property="screenEndTime" column="screen_endTime" jdbcType="DATE" />
