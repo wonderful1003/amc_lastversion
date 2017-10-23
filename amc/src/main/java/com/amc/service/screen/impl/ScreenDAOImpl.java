@@ -152,4 +152,12 @@ public class ScreenDAOImpl implements ScreenDAO {
 		return sqlSession.selectOne("MovieMapper.getTotalCount",search);
 	}
 
+	@Override
+	// 오늘 티켓 오픈하는 리스트 불러오기
+	public List<ScreenContent> getTodayTicketOpenList(Search search) {
+		return sqlSession.selectList("ScreenContentMapper.todayTicketOpenList",search);
+	}
+	
+	
+
 }

@@ -136,6 +136,13 @@ public class ScreenServiceImpl implements ScreenService {
 	public List<ScreenContent> notEmptyScreenContent(ScreenContent screenContent) {
 
 		return screenDAO.notEmptyScreenContent(screenContent);
+	}
+
+	@Override
+	// 오늘 티켓 오픈하는 리스트 불러오기
+	public List<ScreenContent> getTodayTicketOpenList(Search search) {
+		
+		return screenDAO.getTodayTicketOpenList(search);
 	};
 
 }

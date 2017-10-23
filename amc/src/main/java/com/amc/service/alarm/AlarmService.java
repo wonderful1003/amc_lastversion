@@ -20,5 +20,7 @@ public interface AlarmService {
 	public int deleteOpenAlarm(Alarm alarm);
 	
 	public String checkOpenAlarm(Alarm alarm);
+	
+	public String smsPush() throws Exception;
 
 }

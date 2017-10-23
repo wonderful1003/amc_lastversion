@@ -40,5 +40,8 @@ public interface ScreenDAO {
 		public List<ScreenContent> notEmptyScreenContent(ScreenContent screenContent);
 
 		int getTotalCount(Search search) throws Exception;
+		
+	// 오늘 티켓 오픈하는 리스트 불러오기
+	public List<ScreenContent> getTodayTicketOpenList(Search search);
 
 }
