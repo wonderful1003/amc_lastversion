@@ -45,19 +45,24 @@
 	  body {
             padding-top : 50px;
         }
-    </style>
+    </style>   
+    
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
 	
+	
+	
+	
 		//=============    검색 / page 두가지 경우 모두  Event  처리 =============	
 		function fncGetPageList(currentPage) {
 			$("#currentPage").val(currentPage)
-			$("form").attr("method","POST").attr("action", "/movie/getMovieList?menu=search").submit();
+			$("form").attr("method","POST").attr("action", "/movie/getMovieList?menu=search").submit();			
 			//$("form").attr("method","POST").attr("action", "/movie/getMovieList").submit();
 			
 		}
-			
+		
+	
 		
 		//============= "검색"  Event  처리 =============	
 		 $(function() {
@@ -68,8 +73,25 @@
 			
 		 });
 		
-				
+			
+		//============= "캘린더로 보기"  Event  처리 =============	
+		$(function() {
+			 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$( "button.btn.btn-calendar" ).on("click" , function() {	
+				 self.location = "/movie/getMovieList?menu=calendar";	
+			});	
+		});
 		
+		//============= "썸네일로 보기"  Event  처리 =============	
+		$(function() {
+			 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$( "button.btn.btn-thumnail" ).on("click" , function() {	
+				 self.location = "/movie/getMovieList?menu=commingsoon";	
+			});	
+		});
+		
+		
+			
 		//============= prodNo 에 상품정보보기  Event  처리(Click) =============	
 		 $(function() {
 					
@@ -136,11 +158,21 @@
                     
                 </div>
                 </div>
-            </div>
-	    	
+            </div>	    	
 		</div>
 	
 	  <br/>   <br/>   <br/>
+	  
+	  <div class="widget" align="center">	
+		  <button type="button" class="btn btn-thumnail">썸네일로 보기</button>
+		  <button type="button" class="btn btn-calendar">캘린더로 보기</button>
+		 
+		  <!-- <input type="submit" value="캘린더로">   -->
+		
+	  </div>
+	  
+	  <br/>   <br/>   <br/>
+  
 	
 	 <div>
 		<div class="row">
@@ -149,7 +181,7 @@
 				<c:forEach var="movie" items="${list}">
 					<c:set var="i" value="${i+1 }"/>
 						<div class="col-xs-6 col-md-4" >
-						<a class='thumbnail' href="/movie/getMovie?movieNo=${movie.movieNo}&menu=search" style="text-decoration:none;">
+						<a class='thumbnail' href="/movie/getMovie?movieNo=${movie.movieNo}&menu=commingsoon" style="text-decoration:none;">
 							<img src="${movie.postUrl }">
 							<span>${movie.movieNm }</span>
 						</a>

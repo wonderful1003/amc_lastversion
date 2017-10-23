@@ -15,7 +15,7 @@
 	<typeAlias alias="booking" 		 type="com.amc.service.domain.Booking" />
 	<typeAlias alias="comment" 		 type="com.amc.service.domain.Comment" />
 	<typeAlias alias="freeBoard" 	 type="com.amc.service.domain.FreeBoard" />
-	<typeAlias alias="movie" 		 type="com.amc.service.domain.Movie" />
+	<typeAlias alias="movie" 		 type="com.amc.service.domain.Movie" />	
 	<typeAlias alias="movieAPI" 	 type="com.amc.service.domain.MovieAPI" />
 	<typeAlias alias="alarm" 		 type="com.amc.service.domain.Alarm" />
 	<typeAlias alias="product" 		 type="com.amc.service.domain.Product" />
@@ -23,13 +23,14 @@
 	<typeAlias alias="screenContent" type="com.amc.service.domain.ScreenContent" />	
 	<typeAlias alias="user" 		 type="com.amc.service.domain.User" />
 	<typeAlias alias="wishList" 	 type="com.amc.service.domain.WishList" />
+	
 </typeAliases>
 	
   <mappers>
     <mapper resource="sql/BookingMapper.xml"/>
     <mapper resource="sql/CommentMapper.xml"/>
     <mapper resource="sql/FreeBoardMapper.xml"/>
-    <mapper resource="sql/MovieMapper.xml"/>
+    <mapper resource="sql/MovieMapper.xml"/>   
     <mapper resource="sql/MovieApiMapper.xml"/>
     <mapper resource="sql/AlarmMapper.xml"/>
     <mapper resource="sql/ProductMapper.xml"/>

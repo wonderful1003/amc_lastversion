@@ -28,6 +28,7 @@ import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
+import com.amc.service.domain.onetime.MovieOnScheule;
 import com.amc.service.domain.onetime.Twitter;
 import com.amc.service.movie.MovieDAO;
 import com.amc.service.movie.MovieDAOAdapter;
@@ -94,6 +95,11 @@ public class MovieServiceImpl implements MovieService {
 	public List<Movie> getCommingSoonList(Search search) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public List<MovieOnScheule> getScreenCalendar(Search search) throws Exception {		
+		return movieDAO.getScreenCalendar(search);
 	}
 
 

@@ -1,5 +1,6 @@
 package com.amc.service.movie;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import com.amc.service.domain.Movie;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
+import com.amc.service.domain.onetime.MovieOnScheule;
 import com.amc.service.domain.onetime.Twitter;
 
 
@@ -30,8 +32,11 @@ public interface MovieDAO {
 	// 시사회 영화 목록 불러오기
 	public List<Movie> getCommingSoonList(Search search);
 	
+	public List<MovieOnScheule> getScreenCalendar(Search search) throws Exception;
+		
 	// 영화 목록 총 검색 수 
-	public int getTotalCount(Search search) throws Exception;	
+	public int getTotalCount(Search search) throws Exception;
+	
 	
 	
 	// 영화 가져오기

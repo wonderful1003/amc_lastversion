@@ -1,5 +1,6 @@
 package com.amc.service.movie.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
+import com.amc.service.domain.onetime.MovieOnScheule;
 import com.amc.service.domain.onetime.Twitter;
 import com.amc.service.movie.MovieDAO;
 import com.amc.service.movie.MovieDAOAdapter;
@@ -47,6 +49,16 @@ public class MovieDAOImpl implements MovieDAO {
 	public List<Movie> getMoiveAdminList(Search search) {
 		return null;
 	}
+	
+	// 상영 영화 스케줄 달력에 불러오기 
+	public List<MovieOnScheule> getScreenCalendar(Search search) {
+		List<MovieOnScheule> list = sqlSession.selectList("MovieOnScheduleMapper.getScreenCalendar",search);
+		System.out.println("list value show :: " + ((MovieOnScheule)list.get(0)).toString());
+		
+		
+		return (sqlSession.selectList("MovieOnScheduleMapper.getScreenCalendar"));
+	}
+
 
 	// 현재 상영 영화 목록 불러오기
 	

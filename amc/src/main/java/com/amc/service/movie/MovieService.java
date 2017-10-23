@@ -1,5 +1,6 @@
 package com.amc.service.movie;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
+import com.amc.service.domain.onetime.MovieOnScheule;
 import com.amc.service.domain.onetime.Twitter;
 
 
@@ -26,6 +28,8 @@ public interface MovieService {
 	// 시사회 영화 목록 불러오기
 	public List<Movie> getCommingSoonList(Search search);
 	
+	public List<MovieOnScheule> getScreenCalendar(Search search) throws Exception;
+		
 	public Movie getMovie(int movieNo) throws Exception;
 
 	// 영화 수정

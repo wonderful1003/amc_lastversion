@@ -100,6 +100,11 @@ public class MovieController {
 			modelAndView.setViewName("/movie/listMovieManage.jsp");
 			return modelAndView;
 		}
+		else  if(request.getParameter("menu").equals("calendar")) {
+			System.out.println("manageProduct.jsp called");
+			modelAndView.setViewName("/movie/calendar.jsp");
+			return modelAndView;
+		}
 		else if (request.getParameter("menu").equals("commingsoon")) {
 			modelAndView.setViewName("/movie/listCommingSoon.jsp");
 			return modelAndView;
