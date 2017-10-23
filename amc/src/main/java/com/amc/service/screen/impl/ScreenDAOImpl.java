@@ -30,7 +30,7 @@ public class ScreenDAOImpl implements ScreenDAO {
 		System.out.println("ScreenDAOImpl의 getMovieList 메소드 시작...");
 		
 	
-		List<ScreenContent> list = sqlSession.selectList("MovieMapper.getMovieList", search);
+		List<ScreenContent> list = sqlSession.selectList("MovieMapper.getMovieList2", search);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("search", search);
@@ -118,6 +118,19 @@ public class ScreenDAOImpl implements ScreenDAO {
 
 		return sqlSession.selectOne("ScreenContentMapper.checkScreenDupTime", screenContent);
 	}
+	
+	@Override
+	public int checkScreenDupPreview(ScreenContent screenContent) {
+
+		System.out.println("screenDate와 screenOpenTime와 screenEndTime" + screenContent);
+
+		// System.out.println("List 값이 뭐게 " + list);
+
+		System.out.println("ScreenDAOImpl의 checkScreenDupPreview 메소드 끝...");
+
+		return sqlSession.selectOne("ScreenContentMapper.checkScreenDupPreview", screenContent);
+	}
+	
 
 	@Override
 	public int updateScreenContent(ScreenContent screenContent) {
@@ -128,7 +141,8 @@ public class ScreenDAOImpl implements ScreenDAO {
 	@Override
 	public int deleteScreenContent(int screenContentNo) {
 		System.out.println("ScreenDAOImpl의 deleteScreenContent 메소드 시작...");
-
+		
+		
 		return sqlSession.delete("ScreenContentMapper.deleteScreenContent", screenContentNo);
 	}
 
@@ -149,7 +163,11 @@ public class ScreenDAOImpl implements ScreenDAO {
 	
 	@Override
 	public int getTotalCount(Search search) throws Exception {		
-		return sqlSession.selectOne("MovieMapper.getTotalCount",search);
+		return sqlSession.selectOne("MovieMapper.getTotalCount2",search);
+	}
+	@Override
+	public int getTotalCount(int movieNo) throws Exception {		
+		return sqlSession.selectOne("ScreenContentMapper.getTotalCount",movieNo);
 	}
 
 }

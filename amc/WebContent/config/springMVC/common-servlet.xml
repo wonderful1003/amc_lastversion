@@ -51,6 +51,8 @@
 	<mvc:resources mapping="/css/**" location="/css/" />
    	<mvc:resources mapping="/images/**" location="/images/" />
    	<mvc:resources mapping="/javascript/**" location="/javascript/" />
+   	
+   	<mvc:resources mapping="/cinema/**" location="/cinema/" />
 	 
 	<bean id="viewResolver"
 	 		class="org.springframework.web.servlet.view.InternalResourceViewResolver"/> 
