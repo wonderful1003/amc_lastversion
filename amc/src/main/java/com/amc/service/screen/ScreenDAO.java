@@ -41,4 +41,8 @@ public interface ScreenDAO {
 
 		int getTotalCount(Search search) throws Exception;
 
+		int getTotalCount(int movieNo) throws Exception;
+
+		int checkScreenDupPreview(ScreenContent screenContent);
+
 }
