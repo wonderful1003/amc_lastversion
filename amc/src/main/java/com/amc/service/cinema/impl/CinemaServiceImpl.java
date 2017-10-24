@@ -49,25 +49,21 @@ public class CinemaServiceImpl implements CinemaService {
 		
 		Map<String, Object> unifiedSearch = new HashMap<String,Object>();
 		
+		//무비리스트 파라미터용 search
+		Search search = new Search();
+		search.setSearchKeyword(searchKeyword);
+		
+		
+		
+		//cinemaDAO 를 이용한 시사회,굿즈,스낵 리스트 데이터 가지고오기
 		unifiedSearch = cinemaDAO.unifiedSearch(searchKeyword);
 		
-		Search search = new Search();
-		search.setSearchCondition(null);
-		search.setSearchKeyword("스");
-		
-		List<ScreenContent> pc = (List<ScreenContent>)(unifiedSearch.get("uniPreviewList"));
+		List<ScreenContent> pv = (List<ScreenContent>)(unifiedSearch.get("uniPreviewList"));
 		List<Product> goods = (List<Product>)(unifiedSearch.get("uniGoodsList"));
 		List<Product> snack = (List<Product>)(unifiedSearch.get("uniSnackList"));
-		List<Movie> movie = movieDAO.uniMovieList(search);
-		unifiedSearch.put("uniMovieList", movie);
 		
-		
-		for (ScreenContent screenContent : pc) {
+		for (ScreenContent screenContent : pv) {
 			System.out.println("serviceImpl"+screenContent.getPreviewTitle());
-		}
-		
-		for (Movie mv : movie) {
-			System.out.println("serviceImpl"+mv.getMovieNm());
 		}
 		
 		for (Product product : goods) {
@@ -75,6 +71,17 @@ public class CinemaServiceImpl implements CinemaService {
 		}
 		for (Product product : snack) {
 			System.out.println("serviceImpl"+product.getProdName());
+		}
+		
+		
+		
+		
+		//movieDAO 를 이용한 영화 리스트 데이터 가지고오기
+		List<Movie> movie = movieDAO.uniMovieList(search);
+		unifiedSearch.put("uniMovieList", movie);
+		
+		for (Movie mv : movie) {
+			System.out.println("serviceImpl"+mv.getMovieNm());
 		}
 			
 		return unifiedSearch;
@@ -192,10 +199,10 @@ public class CinemaServiceImpl implements CinemaService {
         
         String firstJsonData = response.toString();
         
-        JSONObject jsonobj = (JSONObject)JSONValue.parse(firstJsonData);
+        JSONObject jsonObj = (JSONObject)JSONValue.parse(firstJsonData);
         
         //jsonData중에 response내용 추출(response가 json형식임)
-        String res = jsonobj.get("response").toString();
+        String res = jsonObj.get("response").toString();
         System.out.println("res : " + res);
                 
 		return (JSONObject)JSONValue.parse(res);

@@ -2,14 +2,12 @@ package com.amc.service.movie;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.amc.common.Search;
 import com.amc.service.domain.Movie;
+import com.amc.service.domain.MovieComment;
 import com.amc.service.domain.WishList;
-import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
+import com.amc.service.domain.onetime.MovieOnScheule;
 import com.amc.service.domain.onetime.Twitter;
 
 
@@ -30,8 +28,11 @@ public interface MovieDAO {
 	// 시사회 영화 목록 불러오기
 	public List<Movie> getCommingSoonList(Search search);
 	
+	public List<MovieOnScheule> getScreenCalendar(Search search) throws Exception;
+		
 	// 영화 목록 총 검색 수 
-	public int getTotalCount(Search search) throws Exception;	
+	public int getTotalCount(Search search) throws Exception;
+	
 	
 	
 	// 영화 가져오기
@@ -66,10 +67,10 @@ public interface MovieDAO {
 	public int addMoiveComment(MovieComment movieComment);
 
 	// 부적절한 감상평 블라인드 처리 유무
-	public int blindMoiveComment(int movieCommentNo);
+	public int blindMoiveComment(MovieComment movieComment);
 
 	// 감상평 수정
-	public int updateMovieCommnet(MovieComment movieComment);
+	public int updateMovieComment(MovieComment movieComment);
 
 	// 감상평 삭제
 	public int deleteMovieComment(int movieCommentNo);
@@ -91,5 +92,9 @@ public interface MovieDAO {
 	
 	// 모든 영화 가져오기(통합검생, 예매1단계)
 	public List<Movie>	uniMovieList(Search search);
+
+	int getTotalCount(int movieNo) throws Exception;
+
+	public MovieComment getMovieComment(int movieCommentNo);
 
 }

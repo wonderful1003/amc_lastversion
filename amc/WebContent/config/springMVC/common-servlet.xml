@@ -18,7 +18,7 @@
 								 http://www.springframework.org/schema/task
 								 http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-
+  
 	<context:component-scan base-package="com.amc.web">
 		<context:include-filter type="annotation"
 								expression="org.springframework.stereotype.Controller"/>
@@ -27,6 +27,12 @@
 		<context:exclude-filter type="annotation"
 								expression="org.springframework.stereotype.Repository"/>
 	</context:component-scan>
+	
+	<!-- 스프링 스케줄러 -->
+	<task:annotation-driven />
+	
+	<task:scheduler id="scheduler" pool-size="10"/>
+	<task:executor id="executor" pool-size="10"/>
 
 	
 	 <!-- <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" >
@@ -47,10 +53,13 @@
 
    	</mvc:interceptors>
 
-	 
+	<!-- 홈페이지 메인 인덱스가 / 이기때문에 각 폴더가 URL로 주소가 아닌 폴더로 인식해서 들어가기 위해서 설정 -->
 	<mvc:resources mapping="/css/**" location="/css/" />
    	<mvc:resources mapping="/images/**" location="/images/" />
    	<mvc:resources mapping="/javascript/**" location="/javascript/" />
+   	
+   	<!-- z_YJ : 부트스트랩테마 적용을 위해서 설정 -->
+   	<mvc:resources mapping="/cinema/**" location="/cinema/" />
 	 
 	<bean id="viewResolver"
 	 		class="org.springframework.web.servlet.view.InternalResourceViewResolver"/> 
@@ -92,6 +101,4 @@
 	</bean>
     -->
     
-    <task:annotation-driven />
-
 </beans>

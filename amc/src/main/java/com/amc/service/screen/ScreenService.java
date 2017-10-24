@@ -16,7 +16,7 @@ public interface ScreenService {
 	public Movie getMovie(int movieNo);
 
 	// 상영 내용 리스트 불러오기
-	public Map<String, Object> getScreenContentList(Search search, int movieNo);
+	public Map<String, Object> getScreenContentList(Search search, int movieNo) throws Exception;
 	
 	// [예매1단계] 상영 내용 리스트 불러오기
 	public List<ScreenContent> getScreenContentList2(Search search, int movieNo);
@@ -38,5 +38,10 @@ public interface ScreenService {
 	
 	// 선택한 상영날짜, 상영관에 등록되어있는 시간 목록 가져오기
 	public List<ScreenContent> notEmptyScreenContent(ScreenContent screenContent);
+	
+	// 오늘 티켓 오픈하는 리스트 불러오기
+	public List<ScreenContent> getTodayTicketOpenList(Search search);
+
+	int checkScreenDupPreview(ScreenContent screenContent);
 
 }
