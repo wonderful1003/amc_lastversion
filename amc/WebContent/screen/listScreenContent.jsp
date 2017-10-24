@@ -8,15 +8,24 @@
             <meta charset="EUC-KR">
 
             <!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-            <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!--             <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-            <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
             <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+            
+     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+	
+	
 
             <script type="text/javascript">
                 function fncGetScreenContent() { // 수정을 위한 영화 상영 정보 가져오기
@@ -49,8 +58,9 @@
                                 $("input:hidden[name='screenContentNo']").val(JSONData.screenContentNo);
 
                                 if (JSONData.previewFlag == 'Y') {
-                                    $("input[name='previewChecked' ]").attr("checked", true);
-
+                                   // $("input[name='previewChecked' ]").attr("checked", true);
+									 $("#previewChecked").prop("checked", true);
+									 console.log("음");
                                     var previewOpenDate = JSONData.ticketOpenDate;
                                     previewOpenDate = previewOpenDate.substr(0, 10);
                                     previewOpenDate = previewOpenDate.replace(/\//gi, "-");
@@ -62,6 +72,25 @@
                                     $("input[name='previewOpenDate' ]").val(previewOpenDate);
                                     $("input[name='previewOpenTime' ]").val(previewOpenTime);
                                     $("input[name='inviteActor' ]").val(JSONData.inviteActor);
+                                    
+                                    $("input[name='previewTitle' ]").removeAttr("readonly");
+                                    $("input[name='previewOpenDate' ]").removeAttr("readonly");
+                                    $("input[name='previewOpenTime' ]").removeAttr("readonly");
+                                    $("input[name='inviteActor' ]").removeAttr("readonly");
+                                    
+                                    console.log("8.++++++");
+
+                                    
+                                }else{
+                                	
+                                	   console.log("9.++++++");
+
+                                	   
+                                	   
+                                	$("input[name='previewTitle' ]").attr("readonly", true);
+                                    $("input[name='previewOpenDate' ]").attr("readonly", true);
+                                    $("input[name='previewOpenTime' ]").attr("readonly", true);
+                                    $("input[name='inviteActor' ]").attr("readonly", true);
                                 }
 
                                 $("#addScreenContent").remove();
@@ -70,9 +99,12 @@
                                 var displayValue = "<button type='button' class='btn btn-primary' id='updateScreenContent'>수정</button>"
 
                                 $("#button").html(displayValue);
+                                
+                                console.log("1.++++++");
 
-                                console.log("여긴나온다냐");
+                             
                                 $("#updateScreenContent").on("click", function() {
+                                	 console.log("2.++++++");
                                     fncUpdateScreenContent();
                                 })
                             }
@@ -132,11 +164,16 @@
                             $("#previewChecked").prop("checked", false);
                             $("input[type !='hidden']").val(null);
                             $("#screenTheater").val('1');
+                            $("input[name='previewTitle' ]").attr("readonly", true);
+                            $("input[name='previewOpenDate' ]").attr("readonly", true);
+                            $("input[name='previewOpenTime' ]").attr("readonly", true);
+                            $("input[name='inviteActor' ]").attr("readonly", true);
 
                             if (JSONData == -1) {
                                 alert("상영시간이 중복되었습니다. 다시 선택해주세요");
                             } else if (JSONData == -2) {
                                 alert("이미 이영화에 시사회가 등록되어 있습니다.");
+                                
                             } else {
                                 fncGetScreenContentList();
                             }
@@ -160,7 +197,7 @@
                         success: function(JSONData, status) {
 
                             //  $("input[name='screenContentTable']").remove();
-                            /*                             $("#screenContentTBody").remove();
+                                                        $("#screenContentTBody").remove();
                                                         
 
                                                         var result = JSONData;
@@ -194,35 +231,14 @@
                                                             	"</tr>"
                                                             	
                                                         })
-                                                        displayValue +=
-                                                          "<tr>"+
-                                                                 "<td></td>"+
-                                                                 "<td><input type='date' class='form-control input-sm' name='screenDate' id='screenDate'></td>"+
-                                                                 "<td>"+
-                                                                    " <select class='form-control input-sm' name='screenTheater' id='screenTheater'>"+
-                                    								"<option value='1'>1상영관</option>"+						
-                                    								"<option value='2'>2상영관</option>	"+			
-                                    								"</select>"+
-                                                                 "</td>"+
-                                                                 "<td><input type='time' class='form-control input-sm' name='screenContentOpenTime'></td>"+
-                                                                 "<td><input type='time' class='form-control input-sm' name='screenContentEndTime' readonly='readonly'></td>"+
-                                                                "<td><input type='text' class='form-control input-sm' placeholder='가격' name='ticketPrice'></td>"+
-                                                                 "<td><input type='checkbox' class='checkbox '  name='previewChecked' id='previewChecked'></td>"+
-                                                                 "<td><input type='text' class='form-control input-sm' placeholder='시사회제목' name='previewTitle' readonly='readonly'></td>"+
-                                                                 "<td><input type='date' class='form-control input-sm' name='previewOpenDate' id='previewOpenDate' readonly='readonly'>"+
-                                                                 "<input type='time' class='form-control input-sm' name='previewOpenTime' readonly='readonly'></td>"+
-                                                                 "<td><input type='text' class='form-control input-sm' placeholder='초대배우' name='inviteActor' readonly='readonly'></td>"+
-                                                                 "<td> <div id ='button'><button type='button' class='btn btn-primary' id='addScreenContent'>등록</button></div></td>"+
-                                                                " <td></td>"+
-                                                             "</tr>"+
-                                                         "</tbody>"
+                                                        displayValue +=  "</tbody>"
                                
                                                         $("#screenContentTHead").after(displayValue);
                                                      
-                                                     
-                                                      */
+                                                        console.log("3.++++++");
+                                                      
 
-                            $("#screenContentAfterTable").remove();
+                           /*  $("#screenContentTBody").remove();
 
                             var result = JSONData;
                             var displayValue =
@@ -299,9 +315,10 @@
                                 "</tbody>" +
                                 "</table>"
 
-                            $("#screenContent").html(displayValue);
+                            $("#screenContentTHead").after(displayValue); */
 
                             $("td:nth-child(11)").on("click", function() {
+                            	 console.log("4.++++++");
                                 fncGetScreenContent();
                             })
 
@@ -319,6 +336,19 @@
                                 fncAddScreenContent();
 
                             });
+                            
+                            $("input[name='screenContentOpenTime']").on("change", function() {
+                                addTime();
+                            })
+                            $("input[name='screenDate").on("change", function() {
+                                fncNotEmptyScreenContent();
+
+                            })
+
+                            $("select[name='screenTheater']").on("click", function() {
+                                fncNotEmptyScreenContent();
+                            })
+                            
 
 
                         }
@@ -389,6 +419,10 @@
                             $("#previewChecked").prop("checked", false);
                             $("input[type !='hidden']").val(null);
                             $("#screenTheater").val('1');
+                            $("input[name='previewTitle' ]").attr("readonly", true);
+                            $("input[name='previewOpenDate' ]").attr("readonly", true);
+                            $("input[name='previewOpenTime' ]").attr("readonly", true);
+                            $("input[name='inviteActor' ]").attr("readonly", true);
 
                             if (JSONData == -1) {
                                 alert("상영시간이 중복되었습니다. 다시 선택해주세요");
@@ -474,98 +508,6 @@
 
 
                 }
-
-/*                 function dateSelect() { // 선택할수 있는 날짜가 한정되어있음
-                    var screenDate = new Date(Date.parse($("input[name='screenDate']").val())); // 회원이 선택하는 날짜
-                    var previewOpenDate = new Date(Date.parse($("input[name='previewOpenDate']").val())); // 시사회 티켓팅날짜
-                    var openDt = new Date(Date.parse($("input[name='openDt']").val())); // 개봉날짜
-                    var endDt = new Date(Date.parse($("input[name='endDt']").val())); // 상영마감 날짜
-                    var today = new Date(); // 오늘 날짜
-                    var todayDate = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-                    todayDate = new Date(today.getFullYear(), (today.getMonth()), today.getDate())
-
-
-                    console.log(openDt + "" + todayDate)
-
-
-                    $("#screenDate").on("change", function() {
-                        screenDate = new Date(Date.parse($("input[name='screenDate']").val())); // 회원이 선택하는 날짜
-                        previewOpenDate = new Date(Date.parse($("input[name='previewOpenDate']").val())); // 시사회 티켓팅날짜
-
-                        $("input[name='previewOpenDate']").val(null);
-
-                        if (openDt.getTime() > todayDate.getTime()) { // 개봉날짜가 오늘날짜 이후인경우
-                            console.log(((openDt.getTime() - todayDate.getTime())) / (1000 * 60 * 60 * 24));
-                            console.log("11111");
-
-                            if (((openDt.getTime() - todayDate.getTime())) / (1000 * 60 * 60 * 24) < 2) {
-                                console.log(todayDate.getTime())
-                                todayDate.setDate(todayDate.getDate() + 2);
-                                if (todayDate.getTime() > screenDate.getTime() - 32400000) {
-                                    console.log("22222");
-
-                                    alert(todayDate.getFullYear() + "/" + (todayDate.getMonth() + 1) + "/" + todayDate.getDate() + "-" + endDt.getFullYear() + "/" + (endDt.getMonth() + 1) + "/" + endDt.getDate() + " 사이의 날짜만 선택 가능합니다.");
-                                    $("input[name='screenDate']").val(null);
-
-                                } else {
-                                    console.log("33333#");
-                                    if (screenDate.getTime() - 32400000 > endDt.getTime()) {
-                                        alert(openDt.getFullYear() + "/" + (openDt.getMonth() + 1) + "/" + openDt.getDate() + "-" + endDt.getFullYear() + "/" + (endDt.getMonth() + 1) + "/" + endDt.getDate() + " 사이의 날짜만 선택 가능합니다.");
-                                        $("input[name='screenDate']").val(null);
-                                    }
-                                }
-                                todayDate.setDate(todayDate.getDate() - 2)
-
-
-                            } else {
-                                if (openDt.getTime() >= screenDate.getTime() || screenDate.getTime() - 32400000 > endDt.getTime()) { // 개봉날짜가 내가 선택한 날짜 이후인 경우
-                                    console.log("333333");
-                                    alert(openDt.getFullYear() + "/" + (openDt.getMonth() + 1) + "/" + openDt.getDate() + "-" + endDt.getFullYear() + "/" + (endDt.getMonth() + 1) + "/" + endDt.getDate() + " 사이의 날짜만 선택 가능합니다.");
-                                    $("input[name='screenDate']").val(null);
-
-                                }
-                            }
-                        } else { // 개봉날짜가 오늘날짜보다 전인경우
-                            todayDate.setDate(todayDate.getDate() + 2);
-                            console.log(todayDate);
-                            if (screenDate.getTime() >= todayDate.getTime() && endDt.getTime() >= screenDate.getTime() - 32400000) {
-                                console.log("?????");
-
-                            } else {
-
-                                console.log(todayDate + "11" + endDt)
-                                if (todayDate.getTime() - 32400000 == endDt.getTime()) {
-                                    alert("더이상 상영등록/수정할수 없는 날짜입니다.");
-                                } else {
-                                    alert(todayDate.getFullYear() + "/" + (todayDate.getMonth() + 1) + "/" + todayDate.getDate() + "-" + endDt.getFullYear() + "/" + (endDt.getMonth() + 1) + "/" + endDt.getDate() + " 사이의 날짜만 선택 가능합니다.");
-                                    $("input[name='screenDate']").val(null);
-                                }
-                            }
-                            todayDate.setDate(todayDate.getDate() - 2)
-                            //if(todayDate.getTime() > screenDate.getTime() || screenDate.getTime()-32400000 > endDt.getTime()){ // 내가 선택한 날짜가 오늘날짜보다 작거나 상영마감일 이후인경우
-								//						console.log(screenDate.getTime()-32400000+"   "+endDt.getTime());
-														
-									//					alert(openDt.getFullYear()+"/"+(openDt.getMonth()+1)+"/"+openDt.getDate()+"-"+endDt.getFullYear()+"/"+(endDt.getMonth()+1)+"/"+endDt.getDate()+" 사이의 날짜만 선택 가능합니다.");
-												
-										//					$("input[name='screenDate']").val(null);
-										//	} 
-
-                        }
-
-                    })
-
-                    $("#previewOpenDate").on("change", function() {
-                        screenDate = new Date(Date.parse($("input[name='screenDate']").val())); // 회원이 선택하는 날짜
-                        previewOpenDate = new Date(Date.parse($("input[name='previewOpenDate']").val())); // 시사회 티켓팅날짜
-
-                        if (previewOpenDate.getTime() > todayDate.getTime() && screenDate.getTime() > previewOpenDate.getTime()) {
-
-                        } else {
-                            alert("시사회 티켓 오픈 시간은 내일부터 상영일 전날 까지만 선택할 수 있습니다.");
-                            $("input[name='previewOpenDate']").val(null);
-                        }
-                    })
-                } */
 
                 function addTime() { // 영화시작시간을 입력하면 러닝타임+30분을 더하여 입력한다.
 
@@ -653,6 +595,13 @@
                     })
 
                 })
+                
+                $(function() {
+    $( "#testDatepicker" ).datepicker({
+    });
+});
+                
+                
             </script>
 
             <style>
@@ -673,6 +622,7 @@
                 <div class="page-header">
                     <h2 class=" text-info">영화 상영 관리</h2>
                 </div>
+                <input type="text" id="testDatepicker">  
                 <div class="row">
 
                     <div class="col-xs-1 col-md-2"></div>
@@ -760,6 +710,8 @@
                                         <td><input type="hidden" name="screenContentNo2" value='${screenContent.screenContentNo }'><i class="glyphicon glyphicon-trash"></i></td>
                                     </tr>
                                 </c:forEach>
+                                </tbody>
+                           <tbody>
                                 <tr>
                                     <td></td>
                                     <td><input type="date" class="form-control input-sm" name='screenDate' id='screenDate'></td>

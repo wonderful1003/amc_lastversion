@@ -2,24 +2,16 @@ package com.amc.service.movie;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.ibatis.session.SqlSession;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Repository;
 
 import com.amc.common.Search;
 import com.amc.service.domain.Movie;
-import com.amc.service.domain.MovieAPI;
+import com.amc.service.domain.MovieComment;
 import com.amc.service.domain.WishList;
-import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
 import com.amc.service.domain.onetime.Twitter;
-
-import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
 
 //@Repository("movieApiDAOImpl")
 public abstract class MovieDAOAdapter implements MovieDAO {
@@ -117,13 +109,13 @@ public abstract class MovieDAOAdapter implements MovieDAO {
 	}
 
 	@Override
-	public int blindMoiveComment(int movieCommentNo) {
+	public int blindMoiveComment(MovieComment movieComment) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int updateMovieCommnet(MovieComment movieComment) {
+	public int updateMovieComment(MovieComment movieComment) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

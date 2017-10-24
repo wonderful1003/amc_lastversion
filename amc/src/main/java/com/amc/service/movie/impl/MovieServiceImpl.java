@@ -10,10 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -24,19 +20,15 @@ import org.springframework.stereotype.Service;
 import com.amc.common.Search;
 import com.amc.common.util.CommonUtil;
 import com.amc.service.domain.Movie;
-import com.amc.service.domain.MovieAPI;
+import com.amc.service.domain.MovieComment;
 import com.amc.service.domain.WishList;
-import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
 import com.amc.service.domain.onetime.MovieOnScheule;
 import com.amc.service.domain.onetime.Twitter;
 import com.amc.service.movie.MovieDAO;
-import com.amc.service.movie.MovieDAOAdapter;
 import com.amc.service.movie.MovieService;
 
 import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
-import kr.or.kobis.kobisopenapi.consumer.rest.exception.OpenAPIFault;
-import kr.or.kobis.kobisopenapi.consumer.soap.movie.MovieListResult;
 
 
 @Service("movieServiceImpl")
@@ -62,7 +54,7 @@ public class MovieServiceImpl implements MovieService {
 
 	@Override
 	public List<Movie> getMoiveAdminList(Search search) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -87,13 +79,13 @@ public class MovieServiceImpl implements MovieService {
 
 	@Override
 	public List<Movie> getMoviePreviewList(Search search) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public List<Movie> getCommingSoonList(Search search) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
@@ -126,7 +118,7 @@ public class MovieServiceImpl implements MovieService {
 
 	@Override
 	public List<WishList> getWishList(Search search, String userId) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -465,49 +457,87 @@ public class MovieServiceImpl implements MovieService {
 	
 	@Override
 	public int addWish(int movieNo) {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
 	@Override
 	public int addMoiveComment(MovieComment movieComment) {
-		// TODO Auto-generated method stub
-		return 0;
+		System.out.println("MovieServieceImpl의 addMoiveComment 시작");
+		System.out.println("1. movieComment ==> "+ movieComment);
+		System.out.println("MovieServieceImpl의 addMoiveComment 끝");
+		
+		return movieDAO.addMoiveComment(movieComment);
 	}
 
 	@Override
-	public int blindMoiveComment(int movieCommentNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int blindMoiveComment(MovieComment movieComment) {
+		System.out.println("MovieServieceImpl의 blindMoiveComment 시작");
+		System.out.println("1. movieComment ==> "+ movieComment);
+		System.out.println("MovieServieceImpl의 blindMoiveComment 끝");
+		
+		
+		return movieDAO.blindMoiveComment(movieComment);
 	}
 
 	@Override
-	public int updateMovieCommnet(MovieComment movieComment) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateMovieComment(MovieComment movieComment) {
+		
+		System.out.println("MovieServieceImpl의 updateMovieComment 시작");
+		System.out.println("1. movieComment ==> "+ movieComment);
+		System.out.println("MovieServieceImpl의 updateMovieComment 끝");
+		
+		return movieDAO.updateMovieComment(movieComment);
+		
 	}
-
+	
+	@Override
+	public MovieComment getMovieComment(int movieCommentNo) {
+		System.out.println("MovieServieceImpl의 addMoiveComment 시작");
+		System.out.println("1. movieCommentNo ==> "+ movieCommentNo);
+		System.out.println("MovieServieceImpl의 addMoiveComment 끝");
+		return movieDAO.getMovieComment(movieCommentNo);
+	}
+	
 	@Override
 	public int deleteMovieComment(int movieCommentNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		System.out.println("MovieServieceImpl의 deleteMovieComment 시작");
+		System.out.println("1. movieCommentNo ==> "+ movieCommentNo);
+		System.out.println("MovieServieceImpl의 deleteMovieComment 끝");
+		
+		return movieDAO.deleteMovieComment(movieCommentNo);
 	}
 
 	@Override
-	public List<MovieComment> getMovieCommentList(Search search, int movieNo) {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, Object> getMovieCommentList(Search search, int movieNo) throws Exception {
+		
+		System.out.println("MovieServieceImpl의 getMovieCommentList 시작");		
+		System.out.println("1. search ==> " + search);
+		System.out.println("2. movieNo ==> " + movieNo);
+		List<MovieComment> list = movieDAO.getMovieCommentList(search, movieNo);
+		int totalCount = movieDAO.getTotalCount(movieNo);
+		System.out.println("3. list ==> "+ list);
+		System.out.println("4. totalCount ==> " + totalCount);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("totalCount", new Integer(totalCount));
+	
+		System.out.println("5. map ==> " + map);		
+		System.out.println("MovieServieceImpl의 getMovieCommentList 끝");		
+		return map;
 	}
 
 	@Override
 	public List<Movie> getChart(int movieNo) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public List<Twitter> getTwitterList(String movieName) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

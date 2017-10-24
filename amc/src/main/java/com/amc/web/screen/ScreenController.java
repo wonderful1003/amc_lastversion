@@ -49,12 +49,11 @@ public class ScreenController {
 		System.out.println("search값 확인" + search);
 
 		Map<String, Object> map = screenService.getMovieList(search);
-
-		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit,
-				pageSize);
-
-		model.addAttribute("search", map.get("search"));
-		model.addAttribute("list", map.get("list"));
+		
+		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(),pageUnit,pageSize);
+		
+		model.addAttribute("search",map.get("search"));
+		model.addAttribute("list",map.get("list"));
 		model.addAttribute("resultPage", resultPage);
 
 		System.out.println("search" + map.get("search"));
@@ -68,10 +67,8 @@ public class ScreenController {
 
 	// @RequestMapping("/getScreenContentList")
 	@RequestMapping(value = "getScreenContentList/{movieNo}")
-	public String getScreenContentList(@ModelAttribute("search") Search search,
-			@PathVariable(value = "movieNo") int movieNo, Model model) throws Exception {
+	public String getScreenContentList(@ModelAttribute("search") Search search, @PathVariable(value="movieNo") int movieNo, Model model) throws Exception {
 		System.out.println("screen/getScreenContentList :: GET 시이작");
-
 		// System.out.println("movie값확인" + movie);
 		// Page resultPage = new Page(search.getCurrentPage(),
 		// ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
@@ -88,6 +85,7 @@ public class ScreenController {
 
 		Map<String, Object> map = screenService.getScreenContentList(search, movieNo);
 
+	
 		//Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit,
 		//		pageSize);
 

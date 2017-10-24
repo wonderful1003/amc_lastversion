@@ -28,10 +28,15 @@
   		<result property="steelCut" 		column="steelcut" 			jdbcType="VARCHAR"/>  		
   		<result property="showTm" 			column="runningtime"		jdbcType="VARCHAR"/>  		
   		<result property="synopsis" 		column="synopsis" 			jdbcType="VARCHAR"/>  	
-  		<result property="trailer" 			column="trailer" 			jdbcType="VARCHAR"/>    		
-   	</resultMap>
-   	
-     
+  		<result property="trailer" 			column="trailer" 			jdbcType="VARCHAR"/>  	
+  	
+  		
+  	</resultMap>
+
+  	
+  	
+  	
+ 
    	<insert 	id="addMovie" 	 parameterType="movie">
   		INSERT
 		INTO movie ( movie_no,  movie_regdate, movie_opendate,movie_enddate,
@@ -164,12 +169,8 @@
 
 	</select>
 	
-	
 	 
 
-	
-	 
-	 
 	<select id="getTotalCount" parameterType="search" resultType="int">
 		SELECT COUNT(*)
 		FROM(SELECT  movie_no, movie_regdate, movie_opendate,movie_enddate,movie_title,

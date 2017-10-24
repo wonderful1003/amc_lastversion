@@ -199,10 +199,10 @@ public class CinemaServiceImpl implements CinemaService {
         
         String firstJsonData = response.toString();
         
-        JSONObject jsonobj = (JSONObject)JSONValue.parse(firstJsonData);
+        JSONObject jsonObj = (JSONObject)JSONValue.parse(firstJsonData);
         
         //jsonData중에 response내용 추출(response가 json형식임)
-        String res = jsonobj.get("response").toString();
+        String res = jsonObj.get("response").toString();
         System.out.println("res : " + res);
                 
 		return (JSONObject)JSONValue.parse(res);

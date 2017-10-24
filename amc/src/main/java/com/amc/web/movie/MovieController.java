@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -120,86 +121,78 @@ public class MovieController {
 	   
 		
 		return modelAndView;
-	} 
-	
-	
-	@RequestMapping( value="getMovie", method=RequestMethod.GET)
-	public ModelAndView getMovie( @RequestParam(value="menu", required=true)  String menu, 
-								    @RequestParam(value="movieNo", required=true) Integer movieNo , 
-								    Model model ) throws Exception {
-		
-		ModelAndView modelAndView = new ModelAndView();
-		
+	}
+
+	@RequestMapping(value = "getMovie")
+	public String getMovie(@RequestParam(value = "menu", required = true) String menu,
+			@RequestParam(value = "movieNo", required = true) Integer movieNo, Model model) throws Exception {
+
 		System.out.println("/getMovie : GET");
-		//Business Logic
+		// Business Logic
 		System.out.println("movieNo ::" + movieNo);
-			
-		Movie movie = movieService.getMovie(movieNo);	
-		
-		//System.out.println("Date format before :: openDate :: " + movie.getOpenDt());
-		
-		//SimpleDateFormat dt = new SimpleDateFormat("yyyyy-mm-dd"); 
-		//Date opendate = dt.parse(movie.getOpenDt().toString()); 
-		//Date enddate = dt.parse(movie.getEndDt().toString()); 
-		
+
+		Movie movie = movieService.getMovie(movieNo);
+
+		// System.out.println("Date format before :: openDate :: " +
+		// movie.getOpenDt());
+
+		// SimpleDateFormat dt = new SimpleDateFormat("yyyyy-mm-dd");
+		// Date opendate = dt.parse(movie.getOpenDt().toString());
+		// Date enddate = dt.parse(movie.getEndDt().toString());
+
 		String steelCuts = movie.getSteelCut();
 		System.out.println("steelCut" + steelCuts);
-		
+
 		steelCuts = CommonUtil.null2str(steelCuts);
 		System.out.println("steelCuts null converted :: what ??" + steelCuts);
-		
-	
-		
+
 		if (!steelCuts.isEmpty()) {
 			List<String> steelCutList = Arrays.asList(steelCuts.split(","));
-			
+
 			System.out.println("steelCutList length :: " + steelCutList.size());
 			System.out.println("steelCutList isEmpty() :: " + steelCutList.isEmpty());
-			
-			if(!steelCutList.isEmpty()) {			
+
+			if (!steelCutList.isEmpty()) {
 				if (steelCutList.size() == 1) {
 					String steelCut1 = steelCutList.get(0).toString();
 					movie.setSteelCut1(steelCut1);
 				} else if (steelCutList.size() == 2) {
-					 String steelCut2 = steelCutList.get(1).toString();
-					 movie.setSteelCut2(steelCut2);
-				} else if  (steelCutList.size() == 3) {
-					 String steelCut3 = steelCutList.get(2).toString(); 
-					 movie.setSteelCut3(steelCut3);
+					String steelCut2 = steelCutList.get(1).toString();
+					movie.setSteelCut2(steelCut2);
+				} else if (steelCutList.size() == 3) {
+					String steelCut3 = steelCutList.get(2).toString();
+					movie.setSteelCut3(steelCut3);
 				}
 			}
-			
-		        System.out.println("Movie domain steelCut1 :"  + movie.getSteelCut1());
-		        System.out.println("Movie domain steelCut2 :"  + movie.getSteelCut2());
-		        System.out.println("Movie domain steelCut3 :"  + movie.getSteelCut3());
-		
+
+			System.out.println("Movie domain steelCut1 :" + movie.getSteelCut1());
+			System.out.println("Movie domain steelCut2 :" + movie.getSteelCut2());
+			System.out.println("Movie domain steelCut3 :" + movie.getSteelCut3());
+
 		}
-		
-		//String convertOpenDate =  dt.format(opendate).substring(1,11);
-		//String convertEndDate =   dt.format(enddate).substring(1,11);
-		
-		//movie.setOpenDt(convertOpenDate);
-		//movie.setEndDt(convertEndDate);		
-		
-		System.out.println("Date format check :: openDate :: "  + movie.getOpenDt());
-				
+
+		// String convertOpenDate = dt.format(opendate).substring(1,11);
+		// String convertEndDate = dt.format(enddate).substring(1,11);
+
+		// movie.setOpenDt(convertOpenDate);
+		// movie.setEndDt(convertEndDate);
+
+		System.out.println("Date format check :: openDate :: " + movie.getOpenDt());
+
 		// Model 과 View 연결
 		model.addAttribute("movie", movie);
-		
+
 		if (menu.equals("managed")) {
 			System.out.println("updateMovie.jsp called");
-			System.out.println(movie+"겟무비액션");
-			modelAndView.setViewName("/movie/updateMovie.jsp");
-			
-			return modelAndView;
+			System.out.println(movie + "겟무비액션");
+			return "forward:/movie/updateMovie.jsp";
 		} else {
-			System.out.println(movie+"겟무비액션");
-			modelAndView.setViewName("/movie/updateMovie.jsp");
-			
-			return modelAndView;
+			System.out.println(movie + "겟무비액션");
+			// modelAndView.setViewName("/movie/getMovie.jsp");
+
+			return "forward:/movie/getMovieCommentList/" + movieNo;
 		}
 	}
-	
 
 	private final String PATH = "C:/Users/jeung/git/amc/amc/WebContent/images/movie/";
 	//private final String PATH = "C:/amcPoster/";
@@ -333,9 +326,47 @@ public class MovieController {
 		System.out.println("return value :" + rtn);
 		
 		modelAndView.setViewName("/movie/listMovieManage.jsp");
-			
+
 		return modelAndView;
-		}
 	}
+
+	// 해림
+	@RequestMapping(value = "getMovieCommentList/{movieNo}")
+	public String getMovieCommentList(@ModelAttribute("search") Search search,
+			@PathVariable(value = "movieNo") int movieNo, Model model) throws Exception {
+
+		System.out.println("MovieController의 getMovieCommentList메소드 시작");
+
+		System.out.println("1. movieNo ==> " + movieNo);
+		System.out.println("2. search ==> " + search);
+
+		if (search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
+
+		search.setPageSize(pageSize);
+
+		System.out.println("2-1. search ==> " + search);
+
+		Map<String, Object> map = movieService.getMovieCommentList(search, movieNo);
+
+		System.out.println("3. map ==> " + map);
+
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit,
+				pageSize);
+
+		System.out.println("4. resultPage ==> " + resultPage);
+		
+		model.addAttribute("search", map.get("search"));
+		model.addAttribute("list", map.get("list"));
+		model.addAttribute("totalCount", map.get("totalCount"));
+		model.addAttribute("resultPage", resultPage);
+
+		System.out.println("MovieController의 getMovieCommentList메소드 끝");
+
+		return "forward:/movie/getMovie.jsp";
+	}
+
+}
 
 	

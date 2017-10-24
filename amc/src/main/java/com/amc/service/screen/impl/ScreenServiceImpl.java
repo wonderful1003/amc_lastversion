@@ -7,11 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import com.amc.common.Page;
 import com.amc.common.Search;
 import com.amc.service.domain.Movie;
 import com.amc.service.domain.ScreenContent;
-import com.amc.service.domain.onetime.MovieList;
 import com.amc.service.screen.ScreenDAO;
 import com.amc.service.screen.ScreenService;
 
@@ -189,6 +187,13 @@ public class ScreenServiceImpl implements ScreenService {
 	public List<ScreenContent> notEmptyScreenContent(ScreenContent screenContent) {
 
 		return screenDAO.notEmptyScreenContent(screenContent);
+	}
+
+	@Override
+	// 오늘 티켓 오픈하는 리스트 불러오기
+	public List<ScreenContent> getTodayTicketOpenList(Search search) {
+		
+		return screenDAO.getTodayTicketOpenList(search);
 	};
 
 }
