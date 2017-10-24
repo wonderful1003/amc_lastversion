@@ -113,6 +113,10 @@ public class MovieController {
 			modelAndView.setViewName("/movie/listMoviePreview.jsp");
 			return modelAndView;
 		}
+		else if (request.getParameter("menu").equals("search")) {
+			modelAndView.setViewName("/movie/listMovie.jsp");
+			return modelAndView;
+		}
 	   
 		
 		return modelAndView;

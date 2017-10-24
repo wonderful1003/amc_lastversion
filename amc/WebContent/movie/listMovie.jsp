@@ -42,9 +42,14 @@
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
-	  body {
-            padding-top : 50px;
-        }
+	 body {
+            padding-top: 70px;
+            }
+            .thumbnail {
+            width: 300px;
+            height: 250px;
+            overflow: auto;
+      }	
     </style>
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
@@ -126,7 +131,40 @@
 	    
 	    <!-- table 위쪽 검색 Start //////F///////////////////////////////-->
 	    <div class="row">
-  			<!--센터정렬-->
+	    
+	       <div class="col-md-6 text-left">
+		    	<p class="text-primary">
+		    		전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지
+		    	</p>
+		    </div>
+	    
+	       <div class="col-md-6 text-right">
+			    <form class="form-inline" name="detailForm">
+			    
+				  <div class="form-group">
+				    <select class="form-control" name="searchCondition" >
+						<option value="1"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>영화제목</option>
+						<option value="2"  ${ ! empty search.searchCondition && search.searchCondition==2 ? "selected" : "" }>감독</option>
+					</select>
+				  </div>
+				  
+				  <div class="form-group">
+				    <label class="sr-only" for="searchKeyword">검색어</label>
+				    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword"  placeholder="검색어"
+				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
+				  </div>
+				  
+				  <button type="button" class="btn btn-default">검색</button>
+				  
+				  <!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+				  <input type="hidden" id="currentPage" name="currentPage" value=""/>
+				  
+				</form>
+	    	</div>
+	    	
+		</div>
+    
+  	<!-- 		
             <div class="container">
             <div class="container-fluid full-width">
                 <div class="row-fluid">                   
@@ -138,7 +176,7 @@
                 </div>
             </div>
 	    	
-		</div>
+		</div> -->
 	
 	  <br/>   <br/>   <br/>
 	
@@ -162,7 +200,10 @@
  	</div>
  	<!--  화면구성 div End /////////////////////////////////////-->
  	
- 	
+ 	<!-- PageNavigation Start... -->
+	<jsp:include page="../common/pageNavigator.jsp"/>
+	<!-- PageNavigation End... -->
+	
 </body>
 
 

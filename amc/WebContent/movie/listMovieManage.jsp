@@ -43,8 +43,13 @@
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
 	  body {
-            padding-top : 50px;
-        }
+            padding-top: 70px;
+            }
+            .thumbnail {
+            width: 300px;
+            height: 250px;
+            overflow: auto;
+      }	
     </style>
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->

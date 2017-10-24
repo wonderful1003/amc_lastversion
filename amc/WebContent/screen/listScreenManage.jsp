@@ -65,7 +65,6 @@
                 <jsp:include page="/layout/topToolbar.jsp" />
 
 
-
                 <div class="container">
                     <div class="page-header text-info">
                         <h3>상영 관리</h3>
@@ -104,9 +103,6 @@
                     <div>
                     </div>
                     <br>
-
-
-
 
 
                     <div>

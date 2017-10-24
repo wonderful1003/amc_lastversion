@@ -96,7 +96,7 @@ public class MovieRestController {
 		
 		movieJson.setPage(1);
 		movieJson.setTotal(12);
-		movieJson.setRecords(5);
+		movieJson.setRecords(10);
 		movieJson.setRows(list);
 	
 		
