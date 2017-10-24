@@ -214,8 +214,41 @@
 	                                 ORDER BY movie_no DESC ) inner_table
 	              ) ORDER BY row_seq
 	</select>
-	 
-
-	 
+	
+	<update  id="updateStatistic" parameterType="search">
+  		UPDATE movie
+  		<set>
+  			<if test='searchKeyword == "1"'> male_count= (SELECT (nvl(male_count,0)+${currentPage})</if>
+  			<if test='searchKeyword == "2"'> female_count= (SELECT (nvl(female_count,0)+${currentPage})</if>
+  			FROM movie WHERE movie_no =  #{searchCondition}),
+  			<if test='searchKeyword2 == "1"'> age10s= (SELECT (nvl(age10s,0)+ ${currentPage}) </if>
+ 			<if test='searchKeyword2 == "2"'> age20s= (SELECT (nvl(age20s,0)+ ${currentPage}) </if>
+ 			<if test='searchKeyword2 == "3"'> age30s= (SELECT (nvl(age30s,0)+ ${currentPage}) </if>
+ 			<if test='searchKeyword2 == "4"'> age40s= (SELECT (nvl(age40s,0)+ ${currentPage}) </if>
+ 			<if test='searchKeyword2 == "5"'> age50s= (SELECT (nvl(age50s,0)+ ${currentPage}) </if>
+ 			<if test='searchKeyword2 == "6"'> age60s= (SELECT (nvl(age60s,0)+ ${currentPage}) </if>
+ 			<if test='searchKeyword2 == "7"'> age60more= (SELECT (nvl(age60more,0)+${currentPage})  </if>
+		</set>
+		FROM movie WHERE movie_no =  #{searchCondition})
+		WHERE movie_no = #{searchCondition}	
+  	</update>
+  	
+  	<update  id="rollbackStatistic" parameterType="search">
+  		UPDATE movie
+  		<set>
+  			<if test='searchKeyword == "1"'> male_count= GREATEST ((SELECT (nvl(male_count,0)-${currentPage})</if>
+  			<if test='searchKeyword == "2"'> female_count=  GREATEST ((SELECT (nvl(female_count,0)-${currentPage})</if>
+  			FROM movie WHERE movie_no =  #{searchCondition}),0),
+  			<if test='searchKeyword2 == "1"'> age10s= GREATEST ((SELECT (nvl(age10s,0)- ${currentPage}) </if>
+ 			<if test='searchKeyword2 == "2"'> age20s= GREATEST ((SELECT (nvl(age20s,0)- ${currentPage}) </if>
+ 			<if test='searchKeyword2 == "3"'> age30s= GREATEST ((SELECT (nvl(age30s,0)- ${currentPage}) </if>
+ 			<if test='searchKeyword2 == "4"'> age40s= GREATEST ((SELECT (nvl(age40s,0)- ${currentPage}) </if>
+ 			<if test='searchKeyword2 == "5"'> age50s= GREATEST ((SELECT (nvl(age50s,0)- ${currentPage}) </if>
+ 			<if test='searchKeyword2 == "6"'> age60s= GREATEST ((SELECT (nvl(age60s,0)- ${currentPage}) </if>
+ 			<if test='searchKeyword2 == "7"'> age60more= GREATEST (SELECT (nvl(age60more,0)-${currentPage})  </if>
+		</set>
+		FROM movie WHERE movie_no =  #{searchCondition}), 0)
+		WHERE movie_no = #{searchCondition}	
+  	</update>
 		   
  </mapper>

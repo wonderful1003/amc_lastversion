@@ -5,7 +5,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="ko">
 <head> 
-	<meta charset="EUC-KR">
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
@@ -30,7 +29,15 @@
             padding-top : 70px;
         }
    	</style>
-   	
+   	<!--  not sure about this part -->
+   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="jumbotron.css" rel="stylesheet">
+   <!-- ------------------------------>
 	<script type="text/javascript">
 		
 		//1. 영화제목 클릭시
@@ -39,10 +46,11 @@
 			$("td.movieName").on("click" , function() {
 				
 				var movieNo =  $($(this).find("input[name='movieNo']")).val();
+				var flag = $("input:hidden[name='flag']").val();
 				
 				$.ajax(
 						{
-							url : "/booking/json/getScreenDate/"+movieNo,						
+							url : "/booking/json/getScreenDate/"+movieNo+"/"+flag,						
 							method : "GET" ,
 							dataType : "json" ,
 							headers : {
@@ -121,8 +129,8 @@
 			
 		$(document).on("click", "#gotoSeat",  function(){
 			
-			var scNo = $("#display").text();	
-			self.location = "/booking/selectSeat?screenContentNo="+scNo;
+			var screenContentNo = $("#display").text();	
+			self.location = "/booking/selectSeat?screenContentNo="+"10000";
 
 		});
 	
@@ -131,38 +139,40 @@
 <title>selectScreenMovie.jsp</title>
 </head>
 	<body>
-	<div class="container">
-		<h2>[예매1단계]영화 상영정보를 선택해 주세요.</h2>
-			
-	<table class="table table-hover table-striped" >
-      
-        <thead>
-          <tr>
-            <th align="center">영화번호</th>
-            <th align="center">영화제목</th>
-          </tr>
-        </thead>
-       
-		<tbody>
-		
-		  <c:set var="i" value="0" />
-		   <c:forEach var="movie" items="${movieList}">
-			<c:set var="i" value="${ i+1 }" />
-			<tr>
 
-			  <td align="center">${ i } </td>			  
-			  <td align="left" class="movieName">${movie.movieNm} 
-			  	<input type="hidden" name="movieNo" value="${movie.movieNo}">
-			  </td>
-			  <td align="left">${movie.movieNo} </td>
-			</tr>
-          </c:forEach>
-        
-        </tbody>
-      </table>
-      <div id="display" >여기에 상영번호 setting해보기/ 나중에는 hidden으로</div>
-	</div>	
-		<!-- <h2>&nbsp;&nbsp;<a href="http://127.0.0.1:52273/yenakoh/3?screenNo=1020">▶좌석선택하기</a></h2> -->
-		 <div id="gotoSeat"><h2>▶좌석선택하기</h2></div>
-	</body>
+	 <div class="container">
+	 <h2>[예매1단계]영화 상영정보를 선택해 주세요.</h2>
+	 <input type="hidden" name="flag" value="1">
+      <div class="row">
+        <div class="col-md-4">
+          <h2>영화 제목</h2>
+          <table>
+	          <c:set var="i" value="0" />
+			  <c:forEach var="movie" items="${movieList}">
+				<c:set var="i" value="${ i+1 }" />
+				<tr>		  
+				  <td align="left" class="movieName"><h5>${movie.movieNm}  ${movie.movieNo}</h5>
+				  	<input type="hidden" name="movieNo" value="${movie.movieNo}">
+				  </td>
+				</tr>
+	          </c:forEach>        
+          </table>
+
+        </div>
+        <div class="col-md-4">
+          <h2>상영 날짜</h2>
+          <div id="display" ></div> 
+        </div>
+        <div class="col-md-4">
+          <h2>상영 시간</h2>
+          <p>상영시간들</p>
+        </div>
+      </div>
+   	  </div> 
+	  <!-- /container -->	
+	
+	<div id="gotoSeat"><h2>▶좌석선택하기</h2></div>
+	
+	
+	</body>	
 </html>

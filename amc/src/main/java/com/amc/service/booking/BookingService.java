@@ -1,43 +1,39 @@
 package com.amc.service.booking;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+
+import org.codehaus.jettison.json.JSONException;
 
 import com.amc.common.Search;
 import com.amc.service.domain.Booking;
 import com.amc.service.domain.Movie;
 import com.amc.service.domain.ScreenContent;
+import com.amc.service.domain.User;
 
 public interface BookingService {
 	
 	public List<Movie> getScreenMovieList(); //다시확인하기
 	
-	public List<Movie> getPreviewList();   //다시확인하기
+	public List<ScreenContent> getPreviewList();   //다시확인하기
 	
-	public List<ScreenContent> getScreenTimeList();
+	public List<String> getScreenDateList(List<ScreenContent> list);
+	
+	public List<ScreenContent> getScreenTimeList(String screenDate);
 	
 	public void addBooking(Booking booking);
 	
 	public Booking getBookingByInfo(Booking booking);
+		
+	public void updateStatistic(User user, Booking booking);
 	
-	public void getSeatView(int screenContentNo);
-	
-	public void addStatic();
-	
-	public void deleteBooking(String bookingNo);
+	public void deleteBooking(String bookingNo) throws IOException, JSONException;
 	
 	public Booking getBooking(String bookingNo);
 	
-	public List<String> selectRandomSeat(int screenContentNo, int count);
-	
-	public List<Booking> getBookingList(String userId);
-	
-	public List<Booking> getAdminBookingList(Search search);
+	public List<Booking> getBookingList(Search search);
 		
 	public void selectCancelAlarm(int screenContentNo);
-	
-	//여기서부터는 restController가 사용
-
 	
 	public void sendEmailQR(String bookinNo, String email);
 	
