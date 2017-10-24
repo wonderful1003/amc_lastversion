@@ -27,16 +27,11 @@
 
 <script>
 		function listener(event){		
-			  document.getElementById('child').contentWindow.postMessage(event.data,"*");
-			  alert("event.data : "+event.data);
-			  if(event.data == 'pay'){
-				  alert('결제요청옴!');
-				  requestPay();	  
+			document.getElementById('cancelAlarm').contentWindow.postMessage(event.data,"*");
+			$("input[name='seats']").val(event.data);
+			alert("event.data[0] : "+event.data[0]);
+			alert("event.data[0][0] : "+event.data[0][0]);
 				  
-			  }else{
-				  $("input[name='seats']").val(event.data);
-			  }
-
 		}
 		
 		
@@ -46,30 +41,24 @@
 			  attachEvent("onmessage", listener)
 		}
 		
-		function requestPay() {
-			
+		function requestPay() {			
 			$("form").attr("method" , "POST").attr("action" , "/booking/requestPay").submit();
 		}
-		
-		
+			
 		
 </script>
 
 </head>
 	<body>
-		<form>
-		<h2>[예매 2단계]좌석선택입니다. 고갱님이 선택하신 상영번호는 :
+	<form>
+		<h2>[취소표 알리미 신청] 고갱님이 선택하신 상영번호는 :
 			<input type="text" name="screenContentNo" value="${screenContentNo}">
 		</h2>
-		
-			<%-- <iframe id="child" src="http://127.0.0.1:52273/yenakoh/3?screenNo=${screenContentNo}" width="400" height="400" > --%>
-			<iframe id="child" src="http://192.168.0.3:52273/yenakoh/3?screenNo=${screenContentNo}" width="600" height="400" >		 
+			<%-- <iframe id="cancelAlarm" src="http://192.168.0.7:52273/cancelAlarm?screenNo=${screenContentNo}" width="600" height="400" > --%>
+			<iframe id="cancelAlarm" src="http://127.0.0.1:52273/cancelAlarm?screenNo=10172" width="600" height="400" >		 
 					  <p>Your browser does not support iframes.</p>
 			</iframe>
-
-			<button onclick="myFunction()">Try it</button>
-			<h2>선택하신 좌석번호는 : <input type="text" name="seats" value=""></h2>
-			JSP Version: <%= JspFactory.getDefaultFactory().getEngineInfo().getSpecificationVersion() %> <br>
-		</form>
+		<h2>취소표알리미를 신청하실 좌석번호는 : <input type="text" name="seats" value=""></h2>
+	</form>
 	</body>
 </html>
