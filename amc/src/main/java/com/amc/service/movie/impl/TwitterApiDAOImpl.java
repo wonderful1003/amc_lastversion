@@ -7,6 +7,7 @@ import com.amc.service.domain.Movie;
 import com.amc.service.domain.MovieComment;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieList;
+import com.amc.service.domain.onetime.MovieOnScheule;
 import com.amc.service.domain.onetime.Twitter;
 import com.amc.service.movie.MovieDAO;
 
@@ -28,6 +29,12 @@ public class TwitterApiDAOImpl implements MovieDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public List<MovieOnScheule> getScreenCalendar(Search search) throws Exception {
+		return null;
+	}
+
 
 	@Override
 	public List<Movie> getMoviePreviewList(Search search) {

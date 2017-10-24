@@ -34,10 +34,9 @@ public class ScreenRestController {
 	int pageUnit;
 	@Value("#{commonProperties['pageSize']}")
 	int pageSize;
-
+		
 	@RequestMapping(value = "json/getScreenContentList/{movieNo}", method = RequestMethod.GET)
-	public List<ScreenContent> getScreenContentList(@ModelAttribute("search") Search search, @PathVariable int movieNo)
-			throws Exception {
+	public List<ScreenContent> getScreenContentList(@ModelAttribute("search") Search search, @PathVariable int movieNo) throws Exception{
 		System.out.println("json/screen/getScreenContentList :: GET");
 
 //		System.out.println("movieNo ===>" + movieNo);
@@ -52,9 +51,9 @@ public class ScreenRestController {
 //				pageSize);
 
 		Map<String, Object> map = screenService.getScreenContentList(search, movieNo);
-
-		List<ScreenContent> list = (List<ScreenContent>) map.get("list");
-
+		
+		List<ScreenContent> list = (List<ScreenContent>)map.get("list");
+		
 		System.out.println("List°ªÀÌ ¹»±î" + list);
 		// Page resultPage = new Page(search.getCurrentPage(),
 		// ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);

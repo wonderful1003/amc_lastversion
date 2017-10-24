@@ -171,9 +171,6 @@
 	
 	 
 
-	
-	 
-	 
 	<select id="getTotalCount" parameterType="search" resultType="int">
 		SELECT COUNT(*)
 		FROM(SELECT  movie_no, movie_regdate, movie_opendate,movie_enddate,movie_title,

@@ -81,12 +81,12 @@
 						 TO_CHAR(screen_endtime,'HH24:MI') screen_endtime, screen_theater, ticket_price, preview_flag, 
 						 preview_title,  TO_CHAR(ticket_opendate,'YYYY/MM/DD HH24:MI')  ticket_opendate,invite_actor
 				FROM screencontent
-		WHERE screencontent_no = #{screenContentNo} 
+		WHERE screencontent_no = #{screenContentNo}
 	</select>
 	
 	
 	<select id="getScreenContentList" parameterType="map" resultMap="screenContentSelectMap">
-				SELECT screencontent_no, movie_no, TO_CHAR(screencontent_regdate,'YYYY/MM/DD') screencontent_regdate , 
+		SELECT screencontent_no, movie_no, TO_CHAR(screencontent_regdate,'YYYY/MM/DD') screencontent_regdate , 
 		TO_CHAR(screen_date,'YYYY/MM/DD') screen_date , TO_CHAR(screen_opentime,'HH24:MI') screen_opentime, 
 		 TO_CHAR(screen_endtime,'HH24:MI') screen_endtime, screen_theater, ticket_price, preview_flag, 
 		 preview_title,  TO_CHAR(ticket_opendate,'YYYY/MM/DD HH24:MI')  ticket_opendate,invite_actor
@@ -139,13 +139,30 @@
 		AND preview_Flag = 'Y'
 	</select>
 	
-	
-    <select id="uniPreviewList" parameterType="string" resultMap="screenContentSelectMap">
+	<select id="uniPreviewList" parameterType="string" resultMap="screenContentSelectMap">
 	SELECT * FROM 
 				(SELECT sc.preview_flag, sc.preview_title, mv.movie_no, mv.poster 
 				FROM screencontent sc, movie mv 
 				WHERE sc.movie_no = mv.movie_no AND sc.preview_title LIKE '%${value}%') 
 			 WHERE preview_flag = 'Y'
+	</select>
+	
+	<select id="todayTicketOpenList" parameterType="search" resultMap="screenContentSelectMap">
+		SELECT 
+		<if test="searchKeyword == 'todayRealAlarmTime'">DISTINCT ticket_opendate</if>
+		<if test="searchKeyword != 'todayRealAlarmTime'">*</if>
+		FROM	(SELECT screencontent_no, movie_no, TO_CHAR(screencontent_regdate,'YYYY/MM/DD') screencontent_regdate , 
+						TO_CHAR(screen_date,'YYYY/MM/DD') screen_date , TO_CHAR(screen_opentime,'HH24:MI') screen_opentime, 
+	  			    	TO_CHAR(screen_endtime,'HH24:MI') screen_endtime, screen_theater, ticket_price, preview_flag, 
+						preview_title,  TO_CHAR(ticket_opendate-1/(24*60)*30,'YYYY/MM/DD HH24:MI')  ticket_opendate,invite_actor 
+				 <if test="searchKeyword == 'todayRealAlarmTime'">
+				 FROM screencontent WHERE ticket_opendate-1/(24*60)*30
+				 <![CDATA[>=]]> sysdate
+				 </if>
+				 <if test="searchKeyword != 'todayRealAlarmTime'">
+				 FROM screencontent WHERE TO_CHAR(ticket_opendate-1/(24*60)*30,'YYYY/MM/DD HH24:MI:SS')
+				 <![CDATA[=]]> '${searchKeyword}'</if> 
+				 )
 	</select>
 	
 </mapper>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"   pageEncoding="UTF-8"%>
+<%@page import="com.amc.service.domain.User"%>
 
 <%@page import="java.util.Arrays"%>
 <%@page import="java.net.URLDecoder"%>
@@ -15,18 +16,28 @@
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+
+<!--  ///////////////////////// JSTL  ////////////////////////// -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%
+	User user = new User();
+	user.setUserId("testAdmin");
+	user.setRole("admin");
+	session.setAttribute("user", user);
+%>
    
    
 <html lang="UTF-8">
 	
 
+<head>
    <meta charset="UTF-8">
    
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/ui-darkness/jquery-ui.css" >  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/sunny/jquery-ui.css">
     <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css" />
     
@@ -38,62 +49,284 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.14.1/jquery.jqgrid.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js"></script>
-    <!--  <script src="<c:url value="/javascript/jqGridCommon.js"/>"></script>  	-->
-	<!--  <script src="<c:url value="/javascript/jquery-3.1.0.min.js"/>"></script>  -->
-	<!--  <script src="<c:url value="/javascript/jquery.form.min.js"/>"></script>  	-->
+  
+ 
+ 
+<!-- ToolBar Start /////////////////////////////////////-->
+<div class="navbar  navbar-inverse navbar-fixed-top">
+	
+	<div class="container">
+	       <!-- 절대경로로 변경  -->
+		<a class="navbar-brand" href="/index.jsp">
+			<img src="/images/common/AMC_Logo.png" width="80px" height="30px"/>
+		</a>
+		
+		<!-- toolBar Button Start //////////////////////// -->
+		<div class="navbar-header">
+		    <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#target">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		    </button>
+		</div>
+		<!-- toolBar Button End //////////////////////// -->
+		
+	    <!--  dropdown hover Start -->
+		<div 	class="collapse navbar-collapse" id="target" 
+	       			data-hover="dropdown" data-animations="fadeInDownNew fadeInRightNew fadeInUpNew fadeInLeftNew">
+	         
+	         	<!-- Tool Bar 를 다양하게 사용하면.... -->
+	             <ul class="nav navbar-nav">
+	             
+	              <!-- 영화 DrowDown -->
+	              <li class="dropdown">
+	                     <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+	                         <span>영화</span>
+	                         <span class="caret"></span>
+	                     </a>
+	                     <ul class="dropdown-menu">
+	                         <li><a href="#">현재 상영영화</a></li>
+	                         <li><a href="#">상영 예정영화</a></li>
+	                         <li class="divider"></li>
+	                         <li><a href="#">시사회</a></li>
+	                     </ul>
+	                 </li>
+	                 
+	              <!-- 예매 DrowDown  -->
+		              <li class="dropdown">
+		                     <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		                         <span>예매</span>
+		                         <span class="caret"></span>
+		                     </a>
+		                     <ul class="dropdown-menu">
+		                         <li><a href="#">영화 예매</a></li>
+		                         <li><a href="#">시사회 예매</a></li>
+		                     </ul>
+		                </li>
+		                
+	              <!-- 영화관  -->
+					  <li><a href="#">영화관</a></li>
+				
+				  <!-- 커뮤니티  -->  
+					  <li><a href="#">커뮤니티</a></li>
+		                
+	              <!-- 스토어 DrowDown  -->
+		              <li class="dropdown">
+		                     <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		                         <span>스토어</span>
+		                         <span class="caret"></span>
+		                     </a>
+		                     <ul class="dropdown-menu">
+		                         <li><a href="#">굿즈</a></li>
+		                         <li><a href="#">스낵바</a></li>
+		                     </ul>
+		                </li>
+	                 
+	             <!-- 관리자메뉴 DrowDown  -->
+	             
+	               <c:if test="${sessionScope.user.role == 'admin'}">
+		              <li class="dropdown">
+		                     <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		                         <span >[관리자 메뉴]</span>
+		                         <span class="caret"></span>
+		                     </a>
+		                     <ul class="dropdown-menu">
+		                         <li><a href="#">회원관리</a></li>
+		                         <li><a href="#">상품관리</a></li>
+		                         <li><a href="#">판매관리</a></li>
+		                         <li><a href="#">영화관리</a></li>
+		                         <li><a href="#">상영관리</a></li>
+		                         <li><a href="#">예매관리</a></li>
+		                     </ul>
+		                </li>
+	                 </c:if>
+	                 
+	             </ul>
+	             
+	             
+	             
+	             <ul class="nav navbar-nav navbar-right">
+	             <!-- 유저가 로그인 상태일 시 -->
+	             	<c:if test="${sessionScope.user ne null }">
+		             	<li title="Click : 개인정보 수정"><a href="#">ID : [${sessionScope.user.userId }]</a></li>
+		             	<li><a href="#">로그아웃</a></li>
+		             	<li><a href="#">마이페이지</a></li>
+	             	</c:if>
+	             	
+	             <!-- 유저가 비로그인 상태일 시 -->	
+	             	<c:if test="${sessionScope.user eq null }">
+		             	<li>
+		             		<input type="text" name="userId" placeholder="아이디" width="300px">
+		             		<input type="text" name="password" placeholder="비밀번호" width="300px">
+		             	</li>
+		             	<input type="button" value="로그인">
+	             	</c:if>
+	            </ul>
+	           	 <!-- 유저가 비로그인 상태일 시 -->	
+             	<c:if test="${sessionScope.user eq null }">
+	             	<li>
+	             		<input type="text" name="userId" placeholder="아이디" width="300px">
+	             		<input type="text" name="password" placeholder="비밀번호" width="300px">
+	             	</li>
+	             	<input type="button" value="로그인">
+             	</c:if>
+ --%>	             	
+	 			<c:if test="${empty user}">					
+						<form class="navbar-form navbar-right">
+						<!-- <a data-toggle="modal" href="../user/loginUser" data-target="#modal-testNew" role="button" data-backdrop="static"> -->
+						<a data-toggle="modal" href="/user/loginUser" data-target="#modal-testNew" role="button" data-backdrop="static">
+							<button type="button" class="btn btn-primary">Log in</button>
+						</a>
+							<button type="button" class="btn btn-primary">Sign in</button>
+						</form>
+					</li>	
+				</c:if>	
+				
+				<c:if test="${!empty user}">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#" class="user-info">${sessionScope.user.userName}</a>
+						<li><a href="#">로그아웃</a></li>
+					</ul>
+				</c:if>     
+		
+		</div>
+		<!-- dropdown hover END -->	       
+	</div>
+</div>
+ 
+ </head>
+ 
+   
+ 
  
 
    
  <script type="text/javascript">
+ 
+	//============= START TOPTOOL BAR ==========================
+
+	function openHistory(){
+		popWin = window.open("../openHistory.jsp","popWin","left=300, top=200, width=300, height=200, marginwidth=0, marginheight=0, scrollbars=no, scrolling=no, menubar=no, resizable=no");
+	}
+
+		
+	//=============  현재 상영영화 Event  처리 =============	
+	$( "a:contains('현재 상영영화'),a:contains('ID')" ).on("click" , function() {
+		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+		$(self.location).attr("href","/movie/getMovieList?menu=movie");
+	});
+	
+	
+	//=============  상영 예정영화 Event  처리 =============	
+	$( "a:contains('상영 예정영화')" ).on("click" , function() {
+		$(self.location).attr("href","/movie/getMovieList?menu=commingsoon");
+	});
+	
+	//=============  시사회 Event  처리 =============	
+	$( "a:contains('시사회')" ).on("click" , function() {
+		$(self.location).attr("href","/movie/getMovieList?menu=preview");
+	});
+	
+	//=============  예매 Event  처리 =============	
+	$( "a:contains('예매')" ).on("click" , function() {
+		$(self.location).attr("href","/booking/getScreenMovieList");
+	});
+	
+	//=============  영화 예매 Event  처리 =============	
+	$( "a:contains('영화 예매')" ).on("click" , function() {
+		$(self.location).attr("href","/booking/getScreenMovieList");
+	});
+	
+	//=============  시사회 예매 Event  처리 =============	
+	$( "a:contains('시사회 예매')" ).on("click" , function() {
+		$(self.location).attr("href","/booking/getScreenPreviewList");
+	});
+	
+	//=============  영화관 Event  처리 =============	
+	$( "a:contains('영화관')" ).on("click" , function() {
+		$(self.location).attr("href","/cinema/theaterInfo");
+	});
+	
+	//=============  커뮤니티 Event 처리 =============	
+	$( "a:contains('커뮤니티')" ).on("click" , function() {
+		$(self.location).attr("href","/community/getFreeBoardList");
+	});
+	
+	//============= 스토어 Event 처리 =============	
+	$( "a:contains('스토어')" ).on("click" , function() {
+		$(self.location).attr("href","/product/getGoodsList");
+	});
+	
+	//=============  굿즈 Event 처리 =============	
+	$( "a:contains('굿즈')" ).on("click" , function() {
+		$(self.location).attr("href","/product/getGoodsList");
+	});
+	
+	//=============  스낵바 Event 처리 =============	
+	$( "a:contains('스낵바')" ).on("click" , function() {
+		$(self.location).attr("href","/product/getSnackList");
+	});
+	
+	//=============  회원관리 Event  처리 =============	
+	$( "a:contains('회원관리')" ).on("click" , function() {
+		$(self.location).attr("href","/user/getUserList");
+	});
+	
+	//=============  상품관리 Event  처리 =============	
+	$( "a:contains('상품관리')" ).on("click" , function() {
+		$(self.location).attr("href","/product/getGoodsList");
+	});
+	
+	//=============  판매관리 Event  처리 =============	
+	$( "a:contains('판매관리')" ).on("click" , function() {
+		$(self.location).attr("href","/purchase/getSaleList");
+	});
+	
+	//=============  영화관리 Event  처리 =============	
+	$( "a:contains('영화관리')" ).on("click" , function() {
+		$(self.location).attr("href","/movie/getMovieList?menu=manage");
+	});
+	
+	//=============  상영관리 Event  처리 =============	
+	$( "a:contains('상영관리')" ).on("click" , function() {
+		$(self.location).attr("href","/screen/getScreenList");
+	});
+	
+	//=============  예매관리 Event  처리 =============	
+	$( "a:contains('예매관리')" ).on("click" , function() {ss
+		$(self.location).attr("href","/booking/getAdminBookingList");
+	});
+	
+	
+	//============= login Event  처리 =============	
+	 $(function() {
+		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+	 	$("input:contains('로그인')").on("click" , function() {
+			$(self.location).attr("href","/user/loginUser");
+		}); 
+	 });
+	
+	//============= logout Event  처리 =============	
+	 $(function() {
+		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+	 	$("a:contains('로그아웃')").on("click" , function() {
+			$(self.location).attr("href","/user/logoutUser");
+		}); 
+	 });
+	
+	//=============  최근 본 상품  처리 =============	
+	 	$( "a:contains('최근 본 상품')" ).on("click" , function() {
+	 		openHistory();
+		});
+	
+ 
+    //============= END OF TOPTOOL BAR ==========================
+ 
+ 
+ 
         $(document).ready(function(){
-        	
-        	$(function() {
-        		$("#btn-upload").on("click", function(){
-        			if(($("#file1").val() == "" || $("#file1").val() == null)) {
-        			    alert("파일 첫 번째가 없습니다.");
-        			} 
-        			
-        			//else if(($("#file2").val() == "" || $("#file2").val() == null)) {
-        			//    alert("파일 두 번째가 없습니다.");
-        			//} else {
-
-        			   var form = new FormData(document.getElementById('uploadForm'));
-        			    $.ajax({
-        				      url: "/movie/json/upload", //컨트롤러 URL
-        				      data: form,
-        				      dataType: 'json',
-        				      processData: false,
-        				      contentType: false,
-        				      type: 'POST',
-        				      success: function (response) {
-        				    	  alert("성공적으로 파일 업로드되었습니다.");
-        				    	  console.log(response);
-        				      },error: function (jqXHR) {
-        				    	   //alert("성공적으로 파일 업로드되었습니다.");
-        					       alert(jqXHR.responseText);
-        					       console.log(jqXHR.responseText);
-        				      }
-        			   });
-        	/*
-
-        			    $('#uploadForm').ajaxSubmit({
-        				      url: "/pentode/upload.do", //컨트롤러 URL
-        				      dataType: 'json',
-        				      processData: false,
-        				      contentType: false,
-        				      type: 'POST',
-        				      success: function (response) {
-        				    	  alert("success");
-        				    	  console.log(response);
-        				      },error: function (jqXHR) {
-        					      alert(jqXHR.responseText);
-        				      }
-        			   });
-        	*/
-        			//}
-        		});
-        	});
-        	
+         	
         	
         	function delButton (cellvalue, options, rowObject) {
         		   return '<input type="button" onclick="delete('+cellvalue+')" value="DEL"/>'; 
@@ -119,6 +352,8 @@
         	
         	function Result_From_Server(resp, postdata)
 			{
+        		
+        		alert("Update is succefully");
 				// you should return from server OK in sucess, any other message on error
 				if(resp.responseText == "OK")
 				{
@@ -132,10 +367,6 @@
 				return [true,"",""]
 				}
 			}
-        	
-        	
-        	
-        	
         	
         	
 
@@ -192,9 +423,7 @@
         	function pickdates(id){
         		jQuery("#"+id+"_movieEndDate","#movie_list").datepicker({dateFormat:"yy-mm-dd"});
         	}
-
-    	  
-    	
+   	
         	var getVaueByName = function (directors, colName) {
                 var i, count = directors.length, item;
                 
@@ -216,35 +445,21 @@
                 }
                 return '';
             };
-         $("#movie_list").jqGrid({
-            	headers: { 
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json; charset=UTF-8' 
-                 
-              	},
-            	
+        
+            
+        
+        
+         $("#movie_list").jqGrid( 
+        		{         			
+        
             	// ajax 요청주소
                 url:"/movie/json/getAPIMoiveList",
                 caption : "영화 API 등록",
                 // 요청방식
                 mtype:"post",
                 // 결과물 받을 데이터 타입
-                datatype:"json",
-                edit : {
-                	editCaption : "영화 등록",
-                	bSubmit : "등록하기",
-                	bCancel : "취소하기",
-                	bYes : "예",
-                	bNo  : "아니오",
-                },
-                
-                ajaxGridOptions: { contentType: "application/json; charset=UTF-8" },
-                ajaxRowOptions: { contentType: "application/json; charset=UTF-8", async: true },
-                ajaxSelectOptions: { contentType: "application/json; charset=UTF-8", dataType: "JSON" },
-
-                
-                // 그리드 갭션                
-                caption:"영화 API 등록",
+                datatype:"json",   
+          
                 // 그리드 높이
                 height:"auto",
                 // 그리드(페이지)마다 보여줄 행의 수 -> 매개변수이름은 "rows"로 요청된다
@@ -281,23 +496,7 @@
                           {name:'trailer', index:'trailer',align:"left", width:90,editable:true}
                           ],
                           
-                          /* afterSubmit: function (response, postdata) {
-                              var json = $.parseJSON(response.responseText);
-
-                              if (json) {
-                                  $(gridName).jqGrid('setGridParam', { datatype: 'json' });
-                                  return [json.success, json.message, json.id];
-                              }
-
-                              return [false, "Failed to get result from server.", null];
-                          }, */
-                          
-                        
-                          //{name:'갈 젤레즈니악', jsonmap: function (obj) { return getVaueByName(obj.directors, "갈 젤레즈니악");}}],
-                          //{name:'peopleNm', index:'directors', align:"center", editable:true, edittype:"text"}],
-                          
-                   
-                          
+         
            // 네비게이션 도구를 보여줄 div요소
                	sortable: true,
                 sortname: 'movieCd',
@@ -309,40 +508,20 @@
                 viewrecords:true,
                 
                 // 추가, 수정, 삭제 url
-                editurl: "/movie/json/addMovie",
-                contentType: 'multipart/form-data', 
-                
+                editurl: "/movie/json/addMovie",    
+    
                 mtype:"post",
                 // 결과물 받을 데이터 타입
                 datatype:"json",
                 enctype: "multipart/form-data",
                 
-                ajaxGridOptions:   { contentType: "application/json; charset=UTF-8" },
-                ajaxRowOptions:    { contentType: "application/json; charset=UTF-8", async: true },
-                ajaxSelectOptions: { contentType: "application/json; charset=UTF-8", dataType: "JSON" },
-
-                 
-                onclickSubmit: function(params, posdata) {
-                	 uploadJqueryForm();
-                },
-            
-                ondblClickRow: function (rowid, iRow, iCol, e) {
-                    $(this).jqGrid('editRow', rowid, true, function () {
-                        $("input, select", e.target).focus();
-                    });
-                    return;
-                },
-                
-                //afterSubmit: UploadImage, 
-                
-                afterSubmit : Result_From_Server,
-
-                mtype       : "POST",
-                addParams: {addRowParams: {keys: true}, },
-               
+          
                 //sortable: true 
                 sortorder: "desc",
                 loadonce : true,
+                
+                //afterSubmit: Result_From_Server,         
+               
                 
                 jSonReader : {
                 	root:"rows",
@@ -353,98 +532,41 @@
                 	cell:"cell",
                 	id:"movieCd"
                 },
-
-        	});
-            // 네비게시션 도구 설정
-            $("#movie_list").jqGrid(
-                    "navGrid",
-                    "#pager",
-                     {search:true, edit:true, add:true, del:true,refresh:true},                   
-                     {closeAfterEdit: true, reloadAfterSubmit: true},
-                     {closeAfterAdd: true, reloadAfterSubmit: true},
-                     {reloadAfterSubmit: true},            
-                     {closeOnEscape:true} 
+                
+         
+            
+               loadComplete: function(data) {
+          			//alert ("records="+$("#movie_list").getGridParam("records"));
+                }, 
+                 
     
-            );
-   
-	        });   
- 
+        	});
+         
+         // 네비게시션 도구 설정
+	 $("#movie_list").jqGrid(
+	         		"navGrid",
+	                 "#pager"                 
+	     );
+	    });      
+  
     </script>
 
-    <%
-  
-    // 파라메터 설정
-	String curPage = request.getParameter("curPage")==null?"1":request.getParameter("curPage");					    //현재페이지
-	String itemPerPage = request.getParameter("itemPerPage")==null?"100":request.getParameter("itemPerPage");		//결과row수
-	String movieNm = request.getParameter("movieNm")==null?"":request.getParameter("movieNm");						//영화명
-	String directorNm = request.getParameter("directorNm")==null?"":request.getParameter("directorNm");				//감독명
-	String openStartDt = request.getParameter("openStartDt")==null?"":request.getParameter("openStartDt");			//개봉연도 시작조건 ( YYYY )
-	String openEndDt = request.getParameter("openEndDt")==null?"":request.getParameter("openEndDt");				//개봉연도 끝조건 ( YYYY )	
-	String prdtStartYear = request.getParameter("prdtStartYear")==null?"":request.getParameter("prdtStartYear");	//제작연도 시작조건 ( YYYY )
-	String prdtEndYear = request.getParameter("prdtEndYear")==null?"":request.getParameter("prdtEndYear");			//제작연도 끝조건    ( YYYY )
-	String repNationCd = request.getParameter("repNationCd")==null?"":request.getParameter("repNationCd");			//대표국적코드 (공통코드서비스에서 '2204'로 조회된 국가코드)
-	String[] movieTypeCdArr = request.getParameterValues("movieTypeCdArr")==null? null:request.getParameterValues("movieTypeCdArr");	//영화형태코드 배열 (공통코드서비스에서 '2201'로 조회된 영화형태코드)
-	
-	
-	
-	// 발급키
-	String key = "430156241533f1d058c603178cc3ca0e";
-	// KOBIS 오픈 API Rest Client를 통해 호출
-    KobisOpenAPIRestService service = new KobisOpenAPIRestService(key);
-
-	// 영화코드조회 서비스 호출 (boolean isJson, String curPage, String itemPerPage,String directorNm, String movieCd, String movieNm, String openStartDt,String openEndDt, String ordering, String prdtEndYear, String prdtStartYear, String repNationCd, String[] movieTypeCdArr)
-    String movieCdResponse = service.getMovieList(true, curPage, itemPerPage, movieNm, directorNm, openStartDt, openEndDt, prdtStartYear, prdtEndYear, repNationCd, movieTypeCdArr);
-	// Json 라이브러리를 통해 Handling
-	ObjectMapper mapper = new ObjectMapper();
-	HashMap<String,Object> result = mapper.readValue(movieCdResponse, HashMap.class);
-
-	request.setAttribute("result",result);
-
-	// KOBIS 오픈 API Rest Client를 통해 코드 서비스 호출 (boolean isJson, String comCode )
-	String nationCdResponse = service.getComCodeList(true,"2204");
-	HashMap<String,Object> nationCd = mapper.readValue(nationCdResponse, HashMap.class);
-	request.setAttribute("nationCd",nationCd);
-
-	String movieTypeCdResponse = service.getComCodeList(true,"2201");
-	HashMap<String,Object> movieTypeCd = mapper.readValue(movieTypeCdResponse, HashMap.class);
-	request.setAttribute("movieTypeCd",movieTypeCd);
-	
-
-    %>    
-</head>
 
 
 <body>
-<!--  <form id="uploadForm" enctype="multipart/form-data" method="POST" action="/product/json/upload">  -->
+
+
 <form id="uploadForm" enctype="multipart/form-data" method="POST">  
-	<br/> <br/>
+	<br/> <br/>  <br/> <br/> 
+       
+	
+	
 	<table id="movie_list"></table>    
     <div id="pager" class="scroll" style="text-align:center"></div>
     <div id="load_time" class="scroll" style="text-align:center"></div>
-	
-	<p> 스킬컷 파일 업로드 (최대3개 순차적으로 선택가능) </p>
 
-<!-- 	
-	<div><input type="file" id="file1" name="file" required="required" /></div>
-	<div><input type="file" id="file2" name="file" required="required" /></div>
-	<div><input type="file" id="file2" name="file" required="required" /></div>	
-    <br/>
-	&nbsp; <div><button id="btn-upload">파일 업로드</button></div>
- -->
-    <div class="widget" >
 	
-	
-	<div> 추가할 영화 CD : <input class="ui-button ui-widget ui-corner-all"  type="text" id="movieCd" name="movieCd" required="required" /></div>
-	<div><input class="ui-button ui-widget ui-corner-all"  type="file" id="file1" name="file" required="required" /></div>
-	<div><input class="ui-button ui-widget ui-corner-all"  type="file" id="file2" name="file"  /></div>
-	<div><input class="ui-button ui-widget ui-corner-all"  type="file" id="file2" name="file"  /></div>   
-    
-    <br/> 
-  	<div> <button id="btn-upload">파일 업로드</button></div>
-	
-	
-    </div>	
- 
+
 </form>
 </body>
 </html>

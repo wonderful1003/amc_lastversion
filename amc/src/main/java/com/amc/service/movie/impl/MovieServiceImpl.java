@@ -23,6 +23,7 @@ import com.amc.service.domain.Movie;
 import com.amc.service.domain.MovieComment;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieList;
+import com.amc.service.domain.onetime.MovieOnScheule;
 import com.amc.service.domain.onetime.Twitter;
 import com.amc.service.movie.MovieDAO;
 import com.amc.service.movie.MovieService;
@@ -86,6 +87,11 @@ public class MovieServiceImpl implements MovieService {
 	public List<Movie> getCommingSoonList(Search search) {
 		
 		return null;
+	}
+	
+	@Override
+	public List<MovieOnScheule> getScreenCalendar(Search search) throws Exception {		
+		return movieDAO.getScreenCalendar(search);
 	}
 
 
