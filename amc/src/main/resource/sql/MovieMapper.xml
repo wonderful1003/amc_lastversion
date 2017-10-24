@@ -216,6 +216,50 @@
 	</select>
 	 
 
-	 
+
+
+	 	 <!--  해림 사용  sql 생성-->
+	 	<select id="getMovieList2" parameterType="search" resultMap="movieSelectMap">
+		SELECT *
+		FROM ( SELECT inner_table.*, ROWNUM AS row_seq
+		FROM (SELECT movie_no, movie_regdate,TO_CHAR(movie_opendate, 'YYYY/MM/DD') movie_opendate, TO_CHAR(movie_enddate, 'YYYY/MM/DD') movie_enddate, 	movie_title,
+		             poster,director,actor,genre,rating,runningtime,synopsis,steelcut,
+	  			     trailer FROM   movie 		
+	  			     WHERE movie_enddate >= SYSDATE
+		<if test="searchCondition != null">
+				<if test="searchCondition == 1 and searchKeyword != '' ">
+					AND movie_title LIKE '%'||#{searchKeyword}||'%'
+				</if>
+				<if test="searchCondition == 2 and searchKeyword != '' ">
+					AND director LIKE '%${searchKeyword}%'
+				</if>
+			 
+		</if>
+
+		ORDER BY movie_opendate) inner_table
+		WHERE ROWNUM &lt;= #{endRowNum})
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+
+	</select>
+	 <!--  해림 사용  sql 생성-->
+		<select id="getTotalCount2" parameterType="search" resultType="int">
+		SELECT COUNT(*)
+		FROM(SELECT  movie_no, movie_regdate, movie_opendate,movie_enddate,movie_title,
+	  					poster,director,actor,genre,rating,runningtime,synopsis,steelcut, trailer FROM   movie 		
+	  			     WHERE movie_enddate >= SYSDATE
+		
+		<if test="searchCondition !=null">
+		
+				<if test="searchCondition == 1 and searchKeyword !='' ">
+					WHERE movie_title LIKE '%'||#{searchKeyword}||'%'
+				</if>
+				<if test="searchCondition == 2 and searchKeyword !='' ">
+					WHERE director LIKE '%'||#{searchKeyword}||'%'
+				</if>
+			
+		</if>) countTable
+	</select>
+	
+	
 		   
  </mapper>

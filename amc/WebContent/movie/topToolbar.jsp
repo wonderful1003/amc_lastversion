@@ -19,9 +19,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
-	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -155,8 +153,7 @@
 	             	<input type="button" value="로그인">
              	</c:if>
  --%>	             	
-	 			<c:if test="${empty user}">	
-	 				<li>				
+	 			<c:if test="${empty user}">					
 						<form class="navbar-form navbar-right">
 						<!-- <a data-toggle="modal" href="../user/loginUser" data-target="#modal-testNew" role="button" data-backdrop="static"> -->
 						<a data-toggle="modal" href="/user/loginUser" data-target="#modal-testNew" role="button" data-backdrop="static">
@@ -172,11 +169,7 @@
 						<li><a href="#" class="user-info">${sessionScope.user.userName}</a>
 						<li><a href="#">로그아웃</a></li>
 					</ul>
-				</c:if> 
-				<form>
-					<input type="text" name="searchKeyword" placeholder="통합검색">
-					<input type="button" value="검색!" onClick="javascript:unifiedSearch()">
-				</form>          
+				</c:if>           
 		</div>
 		<!-- dropdown hover END -->	       
 	</div>
@@ -190,12 +183,6 @@
    	
 	   	function openHistory(){
 	   		popWin = window.open("../openHistory.jsp","popWin","left=300, top=200, width=300, height=200, marginwidth=0, marginheight=0, scrollbars=no, scrolling=no, menubar=no, resizable=no");
-	   	}
-	   	
-	   	function unifiedSearch(){
-	   		//POST로 바꿔야함
-	   		$("form").attr("method" , "POST").attr("action" , "/cinema/unifiedSearch").submit();
-	   		/* $(self.location).attr("href","/cinema/unifiedSearch"); */
 	   	}
    	
 		

@@ -38,7 +38,7 @@ public class ScreenRestController {
 	
 	
 	@RequestMapping(value = "json/getScreenContentList/{movieNo}", method = RequestMethod.GET)
-	public List<ScreenContent> getScreenContentList(@ModelAttribute("search") Search search, @PathVariable int movieNo) {
+	public List<ScreenContent> getScreenContentList(@ModelAttribute("search") Search search, @PathVariable int movieNo) throws Exception{
 		System.out.println("json/screen/getScreenContentList :: GET");
 		
 		System.out.println("movieNo ===>" +movieNo);

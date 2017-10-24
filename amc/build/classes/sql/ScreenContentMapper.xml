@@ -48,9 +48,10 @@
 														screen_theater, ticket_price, preview_flag, preview_title, ticket_opendate,invite_actor)
 	VALUES(seq_screencontent_no.nextval, #{movie.movieNo}, TO_CHAR(SYSDATE,'YYYY/MM/DD'), TO_DATE(#{screenDate}, 'YYYY/MM/DD'), 
 					TO_DATE(#{screenOpenTime},'YYYY/MM/DD HH24:MI'),  TO_DATE(#{screenEndTime},'YYYY/MM/DD HH24:MI'), #{screenTheater}, #{ticketPrice},
-					<if test='(previewFlag == "Y")'> #{previewFlag}, #{previewTitle}, TO_DATE(#{ticketOpenDate}, 'YYYY/MM/DD HH24:MI:SS'), #{inviteActor}</if>
+					<if test='(previewFlag == "Y")'> #{previewFlag}, #{previewTitle}, TO_DATE(#{ticketOpenDate}, 'YYYY/MM/DD HH24:MI:SS'), #{inviteActor}
+					</if>
 					<if test='(previewFlag == "N")'> 'N', NULL, NULL, NULL</if>
-						)	
+						)
 	</insert>
 	
 	<update id="updateScreenContent" parameterType="screenContent">

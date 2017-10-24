@@ -1,5 +1,6 @@
 package com.amc.service.movie.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import com.amc.service.domain.MovieAPI;
 import com.amc.service.domain.WishList;
 import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
+import com.amc.service.domain.onetime.MovieOnScheule;
 import com.amc.service.domain.onetime.Twitter;
 import com.amc.service.movie.MovieDAO;
 import com.amc.service.movie.MovieDAOAdapter;
@@ -112,7 +114,13 @@ public class MovieApiDAOImpl implements MovieDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@Override
+	public ArrayList<MovieOnScheule> getScreenCalendar(Search search) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@Override
 	public Movie getMovie(int movieNo) {
 		// TODO Auto-generated method stub

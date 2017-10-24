@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +52,14 @@ public class MovieRestController {
 			System.out.println("MovieRestController default constructor call");
 			System.out.println(this.getClass());
 	}	
+	
+	@Value("#{commonProperties['pageUnit']}")
+	//@Value("#{commonProperties['pageUnit'] ?: 3}")
+	int pageUnit;
+	
+	@Value("#{commonProperties['pageSize']}")
+	//@Value("#{commonProperties['pageSize'] ?: 2}")
+	int pageSize;
 	
 	@RequestMapping( value="json/getAPIMoiveList", method=RequestMethod.POST )
 	public void getAPIMoiveList(HttpServletRequest request, 
@@ -92,7 +101,7 @@ public class MovieRestController {
 						  ) 
 						  throws Exception{
 		
-		Enumeration em = request.getParameterNames();
+		Enumeration<?> em = request.getParameterNames();
 		List<String> prodList = new ArrayList<String>();
 		String oper = "";
 		int rtn = 0;

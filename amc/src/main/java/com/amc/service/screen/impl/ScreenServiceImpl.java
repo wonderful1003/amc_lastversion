@@ -32,41 +32,46 @@ public class ScreenServiceImpl implements ScreenService {
 
 	@Override
 	public Map<String, Object> getMovieList(Search search) throws Exception {
-		
+
 		System.out.println("ScreenServiceImpl의 getMovieList 메소드 시작..");
 		int totalCount = screenDAO.getTotalCount(search);
-		Map<String,Object> map = screenDAO.getMovieList(search);
+		Map<String, Object> map = screenDAO.getMovieList(search);
 		map.put("totalCount", new Integer(totalCount));
-		//Page resultPage = new Page(search.getCurrentPage(),)
-		
-		
-		
+		// Page resultPage = new Page(search.getCurrentPage(),)
+
 		System.out.println("ScreenServiceImpl의 getMovieList 메소드 끝..");
-		
-	
-		return map ;
+
+		return map;
 	}
 
 	@Override
 	public Movie getMovie(int movieNo) {
-		
+
 		System.out.println("ScreenServiceImpl의 getMovie 메소드 시작..");
-		
+
 		return screenDAO.getMovie(movieNo);
 	}
 
 	@Override
-	public Map<String, Object> getScreenContentList(Search search, int movieNo) {
+	public Map<String, Object> getScreenContentList(Search search, int movieNo) throws Exception {
 		System.out.println("ScreenServiceImpl의 getScreenContentList 메소드 시작..");
 
-		return screenDAO.getScreenContentList(search, movieNo);
+		System.out.println("ScreenServiceImpl의 getMovieList 메소드 시작..");
+		int totalCount = screenDAO.getTotalCount(movieNo);
+		Map<String, Object> map = screenDAO.getScreenContentList(search, movieNo);
+		map.put("totalCount", new Integer(totalCount));
+		// Page resultPage = new Page(search.getCurrentPage(),)
+
+		System.out.println("ScreenServiceImpl의 getMovieList 메소드 끝..");
+
+		return map;
 	}
-	
-	//[예매1단계용]
+
+	// [예매1단계용]
 	@Override
 	public List<ScreenContent> getScreenContentList2(Search search, int movieNo) {
 		System.out.println("ScreenServiceImpl의 getScreenContentList 메소드 시작..");
-		
+
 		return screenDAO.getScreenContentList2(search, movieNo);
 	}
 
@@ -75,12 +80,30 @@ public class ScreenServiceImpl implements ScreenService {
 		System.out.println("ScreenServiceImpl의 addScreenContent 메소드 시작..");
 
 		boolean checkScreenDupTime = checkScreenDupTime(screenContent);
+		int checkScreenDupPreview = checkScreenDupPreview(screenContent);
 
-		if (checkScreenDupTime) {
-			return screenDAO.addScreenContent(screenContent);
+		System.out.println("checkScreenDupPreview++++++++++++++++++++" + checkScreenDupPreview);
+		System.out.println("screenContent.getPreviewFlag()++++++"+screenContent.getPreviewFlag());
+		if (screenContent.getPreviewFlag().equals("Y")) {
+			if (checkScreenDupPreview == 0) {
+				if (checkScreenDupTime) {
+					return screenDAO.addScreenContent(screenContent);
+				} else {
+					System.out.println("중복임중복");
+					return -1;
+				}
+			} else {
+				System.out.println("이미 시사회 등록되어있음");
+				return -2;
+			}
+
 		} else {
-			System.out.println("중복임중복");
-			return -1;
+			if (checkScreenDupTime) {
+				return screenDAO.addScreenContent(screenContent);
+			} else {
+				System.out.println("중복임중복");
+				return -1;
+			}
 		}
 
 	}
@@ -102,6 +125,17 @@ public class ScreenServiceImpl implements ScreenService {
 	}
 
 	@Override
+	public int checkScreenDupPreview(ScreenContent screenContent) {
+
+		System.out.println("ScreenServiceImpl의 checkScreenDupPreview 메소드 시작..");
+
+		System.out.println("뭘까 이값은" + screenDAO.checkScreenDupPreview(screenContent));
+		int checkScreenDupTime = screenDAO.checkScreenDupPreview(screenContent);
+
+		return checkScreenDupTime;
+	}
+
+	@Override
 	public ScreenContent getScreenContent(int screenContentNo) {
 		System.out.println("ScreenServiceImpl의 getScreenContent 메소드 시작..");
 
@@ -112,14 +146,33 @@ public class ScreenServiceImpl implements ScreenService {
 	public int updateScreenContent(ScreenContent screenContent) {
 		System.out.println("ScreenServiceImpl의 updateScreenContent 메소드 시작..");
 
-		System.out.println("screenContent의 값을보자요" +screenContent);
+		System.out.println("screenContent의 값을보자요" + screenContent);
 		boolean checkScreenDupTime = checkScreenDupTime(screenContent);
 
-		if (checkScreenDupTime) {
-			return screenDAO.updateScreenContent(screenContent);
+		int checkScreenDupPreview = checkScreenDupPreview(screenContent);
+		
+		System.out.println("checkScreenDupTime+++"+checkScreenDupTime );
+		System.out.println("checkScreenDupPreview+++"+checkScreenDupPreview);
+		if (screenContent.getPreviewFlag().equals("Y")) {
+			if (checkScreenDupPreview == 0) {
+				if (checkScreenDupTime) {
+					return screenDAO.updateScreenContent(screenContent);
+				} else {
+					System.out.println("중복임중복");
+					return -1;
+				}
+			} else {
+				System.out.println("이미 시사회 등록되어있음");
+				return -2;
+			}
+
 		} else {
-			System.out.println("중복임중복");
-			return -1;
+			if (checkScreenDupTime) {
+				return screenDAO.updateScreenContent(screenContent);
+			} else {
+				System.out.println("중복임중복");
+				return -1;
+			}
 		}
 
 	}
