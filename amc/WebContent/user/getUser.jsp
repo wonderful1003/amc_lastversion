@@ -38,10 +38,21 @@
 		//============= 회원정보수정 Event  처리 =============	
 		 $(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			 $( "button" ).on("click" , function() {
+			 $( "#update" ).on("click" , function() {
 					self.location = "/user/updateUser?userId=${user.userId}"
 				});
 		});
+		
+		//============= 회원탈퇴 Event  처리 =============	
+		 $(function() {
+			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			 $( "#delete" ).on("click" , function() {
+				 alert("getuser 회원탈퇴 고고");
+				 self.location = "/user/deleteUser"
+				 /* $(self.location).attr("method" , "GET").attr("action" , "/user/deleteUser").submit(); */
+			 });
+		 });
+
 		
 	</script>
 	
@@ -106,8 +117,8 @@
 		
 		<div class="row">
 	  		<div class="col-md-12 text-center ">
-	  			<button type="button" class="btn btn-primary">회원정보수정</button>
-	  		</div>
+	  			<button id="update" class="btn pull-center" type="button" class="btn btn-primary">회원정보수정</button>
+	  			<button id="delete" class="btn pull-right" type="button" class="btn btn-primary" float = "right">회원탈퇴</button>
 		</div>
 		
 		<br/>

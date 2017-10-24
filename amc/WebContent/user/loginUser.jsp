@@ -1,3 +1,5 @@
+
+
 <%@ page contentType="text/html; charset=EUC-KR" %>
 <%@ page pageEncoding="EUC-KR"%>
 
@@ -59,6 +61,8 @@
 					return;
 				}
 				
+				
+				
 		/* $("form").attr("method","POST").attr("action","/user/loginUser").attr("target","_parent").submit(); */
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				$.ajax( 
@@ -74,29 +78,29 @@
 								userId : id,
 								password : pw
 							}),
+							dataType : "text",
 							success : function(JSONData , status) {
 
 								//Debug...
 								//alert(status);
 								//alert("JSONData : \n"+JSONData);
 								//alert( "JSON.stringify(JSONData) : \n"+JSON.stringify(JSONData) );
-								alert("JSONData : "+ JSONData );
-								alert("status : "+ status );
+								//alert("JSONData : "+ JSONData );
+								//alert("status : "+ status );
 								
-									if( JSONData !=''){
+								var JSONData = $.parseJSON(JSONData);
+								var displayValue = "유저타입 : "+JSONData.role;
+								
+								//alert( JSONData.role );
+								//console.log(JSONData);
+								
+									if( JSONData.role != 'not' && JSONData !=''){
 									//[방법1]
-									alert("login ajax success");
+									
 									$(window.parent.document.location).attr("href","/index.jsp");
 									
-									//[방법2]
-									//window.parent.document.location.reload();
-									
-									//[방법3]
-									//$(window.parent.frames["topFrame"].document.location).attr("href","/layout/top.jsp");
-									//$(window.parent.frames["leftFrame"].document.location).attr("href","/layout/left.jsp");
-									//$(window.parent.frames["rightFrame"].document.location).attr("href","/user/getUser?userId="+JSONData.userId);
-									
-									//==> 방법 1 , 2 , 3 결과 학인
+								}else if(JSONData.role = 'not'){
+									alert("탈퇴했으면서 어딜들어오려고!");
 								}else{
 									alert("아이디 , 패스워드를 확인하시고 다시 로그인1...");
 								}
