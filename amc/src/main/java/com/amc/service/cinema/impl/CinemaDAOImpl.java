@@ -34,7 +34,7 @@ public class CinemaDAOImpl implements CinemaDAO {
 		
 
 		/*통합검색 시사회 리스트 부르기*/
-		List<ScreenContent> uniPreviewList = sqlSession.selectList("ScreenContentMapper.uniPreviewList","시사회");
+		List<ScreenContent> uniPreviewList = sqlSession.selectList("ScreenContentMapper.uniPreviewList",searchKeyword);
 		
 		unifiedSearch.put("uniPreviewList", uniPreviewList);
 		

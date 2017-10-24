@@ -21,24 +21,17 @@
 	<!-- 여기가 다른 jsp 페이지에 있는 cdn 시작///////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
 	
-	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<!--  해림 CDN 순서변경-->
+	
+	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->	
 	<link rel="stylesheet" href="/resources/demos/style.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	<!-- 여기가 다른 jsp 페이지에 있는 cdn 끝/////////////////////////////////////////////////////////////////////////////////////////////// -->
-	
-	
-	
-	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" > -->
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" > -->
-	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script> -->
-	<!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
-	<!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
 	
 	<!-- Bootstrap Dropdown Hover CSS -->
    <link href="/css/animate.min.css" rel="stylesheet">
@@ -59,9 +52,9 @@
 <div class="navbar  navbar-inverse navbar-fixed-top">
 	
 	<div class="container">
-	       
+	       <!-- 절대경로로 변경  -->
 		<a class="navbar-brand" href="/index.jsp">
-			<img src="../images/common/AMC_Logo.png" width="80px" height="30px"/>
+			<img src="/images/common/AMC_Logo.png" width="80px" height="30px"/>
 		</a>
 		
 		<!-- toolBar Button Start //////////////////////// -->
@@ -167,7 +160,8 @@
 	             	</c:if>
  --%>	            </ul>
 	           	 <!-- 유저가 비로그인 상태일 시 -->	
-	 			<c:if test="${empty user}">					
+	 			<c:if test="${empty user}">		
+	 				<li>			
 						<form class="navbar-form navbar-right">
 						<!-- <a data-toggle="modal" href="../user/loginUser" data-target="#modal-testNew" role="button" data-backdrop="static"> -->
 						<a data-toggle="modal" href="/user/loginUser" data-target="#modal-testNew" role="button" data-backdrop="static">
@@ -184,7 +178,11 @@
 						<li><a href="#">마이페이지</a></li>
 						<li><a href="#">로그아웃</a></li>
 					</ul>
-				</c:if>           
+				</c:if> 
+				<form>
+					<input type="text" name="searchKeyword" placeholder="통합검색">
+					<input type="button" value="검색!" onClick="javascript:unifiedSearch()">
+				</form>          
 		</div>
 		<!-- dropdown hover END -->	       
 	</div>
@@ -198,6 +196,12 @@
    	
 	   	function openHistory(){
 	   		popWin = window.open("../openHistory.jsp","popWin","left=300, top=200, width=300, height=200, marginwidth=0, marginheight=0, scrollbars=no, scrolling=no, menubar=no, resizable=no");
+	   	}
+	   	
+	   	function unifiedSearch(){
+	   		//POST로 바꿔야함
+	   		$("form").attr("method" , "POST").attr("action" , "/cinema/unifiedSearch").submit();
+	   		/* $(self.location).attr("href","/cinema/unifiedSearch"); */
 	   	}
    	
 		
@@ -213,18 +217,18 @@
 		//=============  현재 상영영화 Event  처리 =============	
 	 	$( "a:contains('현재 상영영화'),a:contains('ID')" ).on("click" , function() {
 	 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$(self.location).attr("href","/movie/getMovieList");
+			$(self.location).attr("href","/movie/getMovieList?menu=movie");
 		});
 		
 		
 	 	//=============  상영 예정영화 Event  처리 =============	
 	 	$( "a:contains('상영 예정영화')" ).on("click" , function() {
-			$(self.location).attr("href","/movie/getMovieList");
+			$(self.location).attr("href","/movie/getMovieList?menu=commingsoon");
 		});
 	 	
 	 	//=============  시사회 Event  처리 =============	
 	 	$( "a:contains('시사회')" ).on("click" , function() {
-			$(self.location).attr("href","/movie/getMovieList?menu=manage");
+			$(self.location).attr("href","/movie/getMovieList?menu=preview");
 		});
 	 	
 	 	//=============  예매 Event  처리 =============	

@@ -1,6 +1,8 @@
 package com.amc.service.movie.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,15 +16,15 @@ import org.springframework.stereotype.Repository;
 import com.amc.common.Search;
 import com.amc.service.domain.Movie;
 import com.amc.service.domain.MovieAPI;
+import com.amc.service.domain.MovieComment;
 import com.amc.service.domain.WishList;
-import com.amc.service.domain.onetime.MovieComment;
+
 import com.amc.service.domain.onetime.MovieList;
+import com.amc.service.domain.onetime.MovieOnScheule;
 import com.amc.service.domain.onetime.Twitter;
 import com.amc.service.movie.MovieDAO;
-import com.amc.service.movie.MovieDAOAdapter;
 
 import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
-import kr.or.kobis.kobisopenapi.consumer.rest.exception.OpenAPIFault;
 
 @Repository("movieDAOImpl")
 public class MovieDAOImpl implements MovieDAO {
@@ -47,6 +49,16 @@ public class MovieDAOImpl implements MovieDAO {
 	public List<Movie> getMoiveAdminList(Search search) {
 		return null;
 	}
+	
+	// 상영 영화 스케줄 달력에 불러오기 
+	public List<MovieOnScheule> getScreenCalendar(Search search) {
+		List<MovieOnScheule> list = sqlSession.selectList("MovieOnScheduleMapper.getScreenCalendar",search);
+		System.out.println("list value show :: " + ((MovieOnScheule)list.get(0)).toString());
+		
+		
+		return (sqlSession.selectList("MovieOnScheduleMapper.getScreenCalendar"));
+	}
+
 
 	// 현재 상영 영화 목록 불러오기
 	
@@ -101,7 +113,16 @@ public class MovieDAOImpl implements MovieDAO {
 	
 	// 감상평 보기
 	public List<MovieComment> getMovieCommentList(Search search, int movieNo) {
-		return null;
+		System.out.println("MovieDAOImpl의 getMovieCommentList 시작 ");
+		System.out.println("1. Search ==> "+ search);
+		System.out.println("2. movieNo ==> " + movieNo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("search", search);
+		map.put("movieNo", movieNo);
+		
+		System.out.println("3. map ==> " + map);
+		return sqlSession.selectList("MovieCommentMapper.getMovieCommentList", map);
+		
 	}
 	
 	// 차트목록 가져오기
@@ -121,25 +142,52 @@ public class MovieDAOImpl implements MovieDAO {
 	}
 
 	// 영화에 대한 감상평 입력
+	@Override	
 	public int addMoiveComment(MovieComment movieComment) {
-		return 0;
+		System.out.println("movieDAOImpl의 addMoiveComment 시작 ");
+		System.out.println("1. movieComment ==> " +movieComment);
+		System.out.println("movieDAOImpl의 addMoiveComment 끝 ");
+		return sqlSession.insert("MovieCommentMapper.addMovieComment",movieComment);
 	}
 
 	// 부적절한 감상평 블라인드 처리 유무
-	public int blindMoiveComment(int movieCommentNo) {
-		return 0;
+	@Override	
+	public int blindMoiveComment(MovieComment movieComment) {
+		System.out.println("movieDAOImpl의 blindMoiveComment 시작 ");
+		System.out.println("1. movieComment ==> " +movieComment);
+		System.out.println("movieDAOImpl의 blindMoiveComment 끝 ");
+		return sqlSession.insert("MovieCommentMapper.updateBlindCommentFlag",movieComment);
 	}
 
 	// 감상평 수정
-	public int updateMovieCommnet(MovieComment movieComment) {
-		return 0;
+	@Override	
+	public int updateMovieComment(MovieComment movieComment) {
+		System.out.println("movieDAOImpl의 updateMovieComment 시작 ");
+		System.out.println("1. movieComment ==> " +movieComment);
+		System.out.println("movieDAOImpl의 updateMovieComment 끝 ");
+		return sqlSession.insert("MovieCommentMapper.updateMovieComment",movieComment);
+		
+	}
+	
+	@Override
+	public MovieComment getMovieComment(int movieCommentNo) {
+		System.out.println("movieDAOImpl의 addMoiveComment 시작 ");
+		System.out.println("1. movieCommentNo ==> " +movieCommentNo);
+		System.out.println("movieDAOImpl의 addMoiveComment 끝 ");
+		return sqlSession.selectOne("MovieCommentMapper.getMovieComment",movieCommentNo);
 	}
 
 	// 감상평 삭제
+	@Override	
 	public int deleteMovieComment(int movieCommentNo) {
-		return 0;
+		System.out.println("movieDAOImpl의 deleteMovieComment 시작 ");
+		System.out.println("1. movieCommentNo ==> " +movieCommentNo);
+		System.out.println("movieDAOImpl의 deleteMovieComment 끝 ");
+		return sqlSession.delete("MovieCommentMapper.deleteMovieComment",movieCommentNo);
+		
 	}
 	
+	@Override	
 	public int addMovie(Movie movie) 	 {
 		System.out.println("MovieDAOImpl called ... addMovie...");
 		
@@ -222,6 +270,13 @@ public class MovieDAOImpl implements MovieDAO {
 	@Override
 	public int getTotalCount(Search search) throws Exception {		
 		return sqlSession.selectOne("MovieMapper.getTotalCount",search);
+	}
+	
+	
+// 해림 메소드 추가
+	@Override
+	public int getTotalCount(int movieNo) throws Exception {		
+		return sqlSession.selectOne("MovieCommentMapper.getTotalCount",movieNo);
 	}
 
 

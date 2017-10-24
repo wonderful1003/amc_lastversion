@@ -37,6 +37,15 @@ public interface ScreenDAO {
 	public int deleteScreenContent(int screenContentNo);
 	
 	// 선택한 상영날짜, 상영관에 등록되어있는 시간 목록 가져오기
-		public List<ScreenContent> notEmptyScreenContent(ScreenContent screenContent);
+	public List<ScreenContent> notEmptyScreenContent(ScreenContent screenContent);
+
+	int getTotalCount(Search search) throws Exception;
+	
+	int getTotalCount(int movieNo)throws Exception;
+	
+	public int checkScreenDupPreview(ScreenContent screenContent);
+		
+	// 오늘 티켓 오픈하는 리스트 불러오기
+	public List<ScreenContent> getTodayTicketOpenList(Search search);
 
 }

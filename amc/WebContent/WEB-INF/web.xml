@@ -46,4 +46,9 @@
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
   
+  <!-- WAS가 셧다운시 스케줄도 셧다운을 해주기 위해서 만듬 -->
+  <listener>  
+    <listener-class>com.amc.web.cinema.TodaySchedule</listener-class>
+  </listener>
+
 </web-app>

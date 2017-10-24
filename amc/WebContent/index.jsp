@@ -47,12 +47,12 @@
    	
 		<h2>Hello World!</h2>
 		
-		<iframe width="200" height="200" src="https://www.daum.net" >
+		<!-- <iframe width="200" height="200" src="https://www.daum.net" >
 			<p>not suport</p>
-		</iframe>
+		</iframe> -->
 		<h2>예매</h2>
 		<h2><a href = "/booking/getScreenMovieList">영화 예매 1단계로 가기</a></h2>
-		<h2><a href = "/booking/selectPreview.jsp">시사회 예매 1단계로 가기</a></h2>
+		<h2><a href = "/booking/getPreviewList">시사회 예매 1단계로 가기</a></h2>
 		
 		<!-- Modal 화면 tool bar로 부터 받아오기 시작	 --> 
 		<div id="modal-testNew" class="modal fade" tabindex="-1" role="dialog" 

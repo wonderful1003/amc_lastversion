@@ -28,14 +28,12 @@ public class CinemaController {
 	}
 	
 	
-	@RequestMapping(value="unifiedSearch", method=RequestMethod.GET) //POST로 바뀌어야함
+	@RequestMapping(value="unifiedSearch", method=RequestMethod.POST) //POST로 바뀌어야함
 	public String unifiedSearch(@ModelAttribute("Search")Search search, Model model) throws Exception{
 		
-		search.setSearchKeyword("뚝");
-		
-		search.setSearchCondition(null);
-		
 		String searchKeyword = search.getSearchKeyword();
+		
+		System.out.println("통합검색 서치키워드 : " + search.getSearchKeyword());
 		
 		model.addAttribute("unifiedSearch",cinemaService.unifiedSearch(searchKeyword));
 		

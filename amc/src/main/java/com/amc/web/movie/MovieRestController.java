@@ -1,18 +1,26 @@
 package com.amc.web.movie;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,12 +29,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-import com.amc.common.util.CommonUtil;
+import com.amc.common.Page;
+import com.amc.common.Search;
 import com.amc.service.domain.Movie;
-import com.amc.service.domain.MovieAPI;
+import com.amc.service.domain.MovieComment;
 import com.amc.service.domain.onetime.MovieJson;
 import com.amc.service.domain.onetime.MovieList;
-import com.amc.service.domain.onetime.MovieListResult;
 import com.amc.service.movie.MovieService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -52,6 +60,14 @@ public class MovieRestController {
 			System.out.println(this.getClass());
 	}	
 	
+	@Value("#{commonProperties['pageUnit']}")
+	//@Value("#{commonProperties['pageUnit'] ?: 3}")
+	int pageUnit;
+	
+	@Value("#{commonProperties['pageSize']}")
+	//@Value("#{commonProperties['pageSize'] ?: 2}")
+	int pageSize;
+	
 	@RequestMapping( value="json/getAPIMoiveList", method=RequestMethod.POST )
 	public void getAPIMoiveList(HttpServletRequest request, 
 						  		HttpServletResponse response						 
@@ -65,7 +81,7 @@ public class MovieRestController {
 		
 		movieJson.setPage(1);
 		movieJson.setTotal(12);
-		movieJson.setRecords(5);
+		movieJson.setRecords(10);
 		movieJson.setRows(list);
 	
 		
@@ -92,7 +108,7 @@ public class MovieRestController {
 						  ) 
 						  throws Exception{
 		
-		Enumeration em = request.getParameterNames();
+		Enumeration<?> em = request.getParameterNames();
 		List<String> prodList = new ArrayList<String>();
 		String oper = "";
 		int rtn = 0;
@@ -281,5 +297,249 @@ public class MovieRestController {
             
         }
 	}
+	
+	@RequestMapping(value="json/movieOnSchedule", method=RequestMethod.POST)	
+	public void		 movieOnSchedule
+							   (HttpServletRequest request, 
+								HttpServletResponse response,
+								Model model,
+								@ModelAttribute("search") Search search
+								) throws Exception {
+		
+		System.out.println("json/movieOnSchedule called RestControl ");			
+		
+		
+		if(search.getCurrentPage() ==0 ){			
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		
+		System.out.println("pagesize " + search.getPageSize());
+		System.out.println("search " + search);
+		
+		// Business logic 수행
+		Map<String , Object> map= movieService.getMovieList(search);
+		
+		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		System.out.println(resultPage);	
+		
+		System.out.println("list show ::"  + map.get("list"));
+		
+		String str = "";
+		
+		List<Movie> list = (List<Movie>) map.get("list");
+		
+		
+		//Movie JsonObject 선언(개별)
+		JSONObject movieObject = new JSONObject();	
+        //movie event의 JSON정보를 담을 Array 선언        
+        JSONArray movieArray = new JSONArray();       
+        //monthly 정보가 들어갈 JSONObject 선언
+        JSONObject monthlynfo = new JSONObject();        
+ 		
+		for (int i = 0; i < list.size(); i++) {			
+			movieObject.put("id", list.get(i).getMovieNo());			
+			movieObject.put("name", list.get(i).getMovieNm());				
+			movieObject.put("startdate",list.get(i).getOpenDt());			
+			 
+        	switch (i) {
+			case 0:
+				movieObject.put("color", "red");
+				break;
+			case 1:
+				movieObject.put("color", "orange");
+				break;
+			case 2:
+				movieObject.put("color", "green");
+				break;
+			case 3:
+				movieObject.put("color", "blue");
+				break;
+			case 4:
+				movieObject.put("color", "purple");
+				break;
+			case 5:
+				movieObject.put("color", "skyblue");
+				break;
+			case 6:
+				movieObject.put("color", "brown");
+				break;
+			case 7:
+				movieObject.put("color", "darkred");
+				break;			
+			default:
+				movieObject.put("color", "ivory");
+				break;
+			} 
+	
+        	movieObject.put("url", "getMovie?movieNo="+list.get(i).getMovieNo()+"&menu=commingsoon");
+		
+        	movieArray.add(i, movieObject);		    
+        	movieObject = new JSONObject();	   	    
+		}
+            
+       
+		//*
+		//* Domain 객체에서 받아서 Json으로 넣는 방법 
+		//*
+		/*List <MovieOnScheule> movieOnSchedule = movieService.getScreenCalendar(search);	
+		
+        //Movie JsonObject 선언(개별)
+        JSONObject movieObject = new JSONObject();
+        //movie event의 JSON정보를 담을 Array 선언        
+        JSONArray movieArray = new JSONArray();       
+        //monthly 정보가 들어갈 JSONObject 선언
+        JSONObject monthlynfo = new JSONObject();        
+      
+			
+		for (int i = 0; i < movieOnSchedule.size(); i++) {
+		
+			movieObject.put("id", movieOnSchedule.get(i).getId());	
+			movieObject.put("name", movieOnSchedule.get(i).getName());			
+			movieObject.put("startdate", movieOnSchedule.get(i).getStartdate());
+			
+			switch (i) {
+			case 0:
+				movieObject.put("color", "red");
+				break;
+			case 1:
+				movieObject.put("color", "orange");
+				break;
+			case 2:
+				movieObject.put("color", "green");
+				break;
+			case 3:
+				movieObject.put("color", "blue");
+				break;
+			case 4:
+				movieObject.put("color", "purple");
+				break;
+			case 5:
+				movieObject.put("color", "skyblue");
+				break;
+			case 6:
+				movieObject.put("color", "brown");
+				break;
+			case 7:
+				movieObject.put("color", "darkred");
+				break;			
+			default:
+				movieObject.put("color", "ivory");
+				break;
+			} 
+	
+			movieObject.put("url", "getMovie?movieNo="+movieOnSchedule.get(i).getId()+"&menu=commingsoon");
+				
+		    movieArray.add(i, movieObject);
+		    
+		    movieObject = new JSONObject();	
+		}*/
+		
+		System.out.println("movieArray values : " + movieArray.toString() );
+
+		monthlynfo.put("monthly", movieArray);
+		
+		System.out.println("monthlynfo values " + monthlynfo.toString());
+		String jsonData = monthlynfo.toJSONString();
+
+		System.out.println("json ====>>>>>  " + jsonData);
+		
+		response.setContentType("application/json");
+	    response.setCharacterEncoding("utf-8");
+	    
+	    try {
+	    	PrintWriter out = response.getWriter();
+	  	    out.write(jsonData);
+	  	    out.flush();
+	  	    out.close();		
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }   
+	}
+ 
+	//해림 추가
+	@RequestMapping(value = "json/addMovieComment", method=RequestMethod.POST)
+	public int addMovieComment(@RequestBody MovieComment movieComment) {
+
+		System.out.println("movieRestController의 addScreenContent시작 ");
+		
+		System.out.println("1.screenContent ==> " + movieComment);
+	
+		
+		/// screenService.addScreenContent(screenContent);
+		System.out.println("screen/json/addScreenContent :: POST 끝.....");
+
+		return movieService.addMoiveComment(movieComment);
+
+	};
+	
+	//해림 추가
+	@RequestMapping(value = "json/getMovieComment/{movieCommentNo}", method=RequestMethod.GET)
+	public MovieComment getMovieComment(@PathVariable int movieCommentNo) {
+
+		System.out.println("movieRestController의 getMovieComment시작 ");
+		
+		System.out.println("1.movieCommentNo ==> " + movieCommentNo);
+	
+		
+		/// screenService.addScreenContent(screenContent);
+		System.out.println("screen/json/getMovieComment :: POST 끝.....");
+
+		return movieService.getMovieComment(movieCommentNo);
+
+	};
+	
+	//해림 추가
+	@RequestMapping(value = "json/updateMovieComment", method=RequestMethod.POST)
+	public int updateMovieComment(@RequestBody MovieComment movieComment) {
+
+		System.out.println("movieRestController의 updateMovieComment시작 ");
+		
+		System.out.println("1.movieComment ==> " + movieComment);
+	
+		
+		/// screenService.addScreenContent(screenContent);
+		System.out.println("screen/json/updateMovieComment :: POST 끝.....");
+
+		return movieService.updateMovieComment(movieComment);
+
+	};
+	
+	
+	//해림 추가
+		@RequestMapping(value = "json/deleteMovieComment/{movieCommentNo}", method=RequestMethod.GET)
+		public int deleteMovieComment(@PathVariable int movieCommentNo) {
+
+			System.out.println("movieRestController의 deleteMovieComment시작 ");
+			
+			System.out.println("1.movieCommentNo ==> " + movieCommentNo);
+		
+			
+			/// screenService.addScreenContent(screenContent);
+			System.out.println("screen/json/deleteMovieComment :: POST 끝.....");
+
+			return movieService.deleteMovieComment(movieCommentNo);
+
+		};
+		
+		
+		//해림 추가
+				@RequestMapping(value = "json/blindMoiveComment", method=RequestMethod.POST)
+				public int blindMoiveComment(@RequestBody MovieComment movieComment) {
+
+					System.out.println("movieRestController의 blindMoiveComment시작 ");
+					
+					System.out.println("1.movieCommentNo ==> " + movieComment);
+				
+					
+					/// screenService.addScreenContent(screenContent);
+					System.out.println("screen/json/blindMoiveComment :: POST 끝.....");
+
+					return movieService.blindMoiveComment(movieComment);
+
+				};
+				
+				
+		
 
 }
