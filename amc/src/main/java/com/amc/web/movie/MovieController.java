@@ -61,7 +61,7 @@ public class MovieController {
 	
 
 	@RequestMapping( value="getMovieList")
-	public ModelAndView getMovieList( @ModelAttribute("search") Search search, 
+	public String getMovieList( @ModelAttribute("search") Search search, 
 								  Model model , HttpServletRequest request) 
 								  throws Exception{
 		
@@ -93,34 +93,35 @@ public class MovieController {
 		
 		if(request.getParameter("menu").equals("movie")) {
 			System.out.println("listMovie.jsp called");
-			modelAndView.setViewName("/movie/listMovie.jsp"); 
-			return modelAndView;
+			//modelAndView.setViewName("/movie/listMovie.jsp"); 
+			return "forward:/movie/listMovie.jsp";
+			// return modelAndView;
 		}
 		else  if(request.getParameter("menu").equals("manage")) {
-			System.out.println("manageProduct.jsp called");
-			modelAndView.setViewName("/movie/listMovieManage.jsp");
-			return modelAndView;
+			System.out.println("listMovieManage.jsp called");
+			//modelAndView.setViewName("/movie/listMovieManage.jsp");
+			return "forward:/movie/listMovieManage.jsp";
 		}
 		else  if(request.getParameter("menu").equals("calendar")) {
-			System.out.println("manageProduct.jsp called");
-			modelAndView.setViewName("/movie/calendar.jsp");
-			return modelAndView;
+			System.out.println("calendar.jsp called");
+			//modelAndView.setViewName("/movie/calendar.jsp");
+			return "forward:/movie/calendar.jsp";
 		}
 		else if (request.getParameter("menu").equals("commingsoon")) {
-			modelAndView.setViewName("/movie/listCommingSoon.jsp");
-			return modelAndView;
+			//modelAndView.setViewName("/movie/listCommingSoon.jsp");
+			return "forward:/movie/listCommingSoon.jsp";
 		}
 		else if (request.getParameter("menu").equals("preview")) {
 			modelAndView.setViewName("/movie/listMoviePreview.jsp");
-			return modelAndView;
+			return "forward:/movie/listMoviePreview.jsp";
 		}
 		else if (request.getParameter("menu").equals("search")) {
 			modelAndView.setViewName("/movie/listMovie.jsp");
-			return modelAndView;
+			return "forward:/movie/listMovie.jsp";
 		}
-	   
+	
 		
-		return modelAndView;
+		return "forward:/movie/listMovie.jsp";
 	}
 
 	@RequestMapping(value = "getMovie")
@@ -182,7 +183,7 @@ public class MovieController {
 		// Model 과 View 연결
 		model.addAttribute("movie", movie);
 
-		if (menu.equals("managed")) {
+		if (menu.equals("manage")) {
 			System.out.println("updateMovie.jsp called");
 			System.out.println(movie + "겟무비액션");
 			return "forward:/movie/updateMovie.jsp";
@@ -199,7 +200,7 @@ public class MovieController {
 	
 	
 	@RequestMapping (value ="updateMovie", method=RequestMethod.POST)
-	public ModelAndView updateMovie( 						
+	public String updateMovie( 						
 									 @ModelAttribute("movie") Movie movie,
 									 MultipartHttpServletRequest multiPartRequest,
 									 HttpServletRequest httpReq,												
@@ -303,16 +304,17 @@ public class MovieController {
 					
 		movieService.updateMovie(movie);	
 		
-		modelAndView.setViewName("/movie/updateMovie.jsp");
+		//modelAndView.setViewName("/movie/updateMovie.jsp");
+		//return modelAndView;
 		
-		return modelAndView;
+		return "forward:/movie/updateMovie.jsp";
 		
 	}
-        return modelAndView;
+        return "forward:/movie/updateMovie.jsp";
   }
 
 	@RequestMapping( value="deleteMovie", method=RequestMethod.POST)
-	public ModelAndView deleteMovie(@RequestParam(value="movieNo", required=true) Integer movieNo , 
+	public String deleteMovie(@RequestParam(value="movieNo", required=true) Integer movieNo , 
 								    Model model ) throws Exception {
 		
 		ModelAndView modelAndView = new ModelAndView();
@@ -325,9 +327,11 @@ public class MovieController {
 		
 		System.out.println("return value :" + rtn);
 		
-		modelAndView.setViewName("/movie/listMovieManage.jsp");
-
-		return modelAndView;
+		//modelAndView.setViewName("/movie/listMovieManage.jsp");
+		//return modelAndView;
+		
+		return "/movie/listMovieManage.jsp";
+		
 	}
 
 	// 해림

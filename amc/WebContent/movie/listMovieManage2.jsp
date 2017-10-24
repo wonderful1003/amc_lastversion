@@ -42,7 +42,7 @@
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
-	   body {
+	  body {
             padding-top: 70px;
             }
             .thumbnail {
@@ -58,7 +58,7 @@
 		//=============    검색 / page 두가지 경우 모두  Event  처리 =============	
 		function fncGetPageList(currentPage) {
 			$("#currentPage").val(currentPage)
-			$("form").attr("method","POST").attr("action", "/movie/getMovieList?menu=search").submit();
+			$("form").attr("method","POST").attr("action", "/movie/getMovieList?menu=manage").submit();
 			//$("form").attr("method","POST").attr("action", "/movie/getMovieList").submit();
 			
 		}
@@ -73,22 +73,14 @@
 			
 		 });
 		
-				
-		//============= "캘린더로 보기"  Event  처리 =============	
-		$(function() {
+		//============= "영화등록"  Event  처리 =============	
+		 $(function() {
 			 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$( "button.btn.btn-calendar" ).on("click" , function() {	
-				 self.location = "/movie/getMovieList?menu=calendar";	
-			});	
-		});
-		
-		//============= "썸네일로 보기"  Event  처리 =============	
-		$(function() {
-			 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$( "button.btn.btn-thumnail" ).on("click" , function() {	
-				 self.location = "/movie/getMovieList?menu=commingsoon";	
-			});	
-		});
+			$( "button.btn.btn-register" ).on("click" , function() {
+				 self.location = "/movie/addMovie.jsp";
+			});
+			
+		 });
 		
 		
 		//============= prodNo 에 상품정보보기  Event  처리(Click) =============	
@@ -142,7 +134,7 @@
 	<div class="container">
 	
 		<div class="page-header text-info">
-	       <h3>시사회 목록</h3>
+	       <h3>영화 정보 관리</h3>
 	    </div>
 	    
 	    <!-- table 위쪽 검색 Start //////F///////////////////////////////-->
@@ -180,47 +172,69 @@
 	    	</div>
 	    	
 		</div>
-		
-		<br/>   
-	  
-	  <div class="widget" align="center">	
-		  <button type="button" class="btn btn-thumnail">썸네일로 보기</button>
-		  <button type="button" class="btn btn-calendar">캘린더로 보기</button>
-		 
-		  <!-- <input type="submit" value="캘린더로">   -->
-		
-	  </div>    
-	  
-    <br/>   <br/>   <br/>
+		<!-- table 위쪽 검색 Start /////////////////////////////////////-->
 	
-	 <div>
-		<div class="row">
+	
+	  <br/>
+	  <button type="button" class="btn btn-register">영화등록</button>
+	
+	
+	   <br/> <br/> 
+	  
 		
-			<c:set var="i" value="0"/>
-				<c:forEach var="movie" items="${list}">
-					<c:set var="i" value="${i+1 }"/>
-						<div class="col-xs-6 col-md-4" >
-						<a class='thumbnail' href="/movie/getMovie?movieNo=${movie.movieNo}&menu=search" style="text-decoration:none;">
-						<img src="${movie.postUrl }">
-							<br/>
-								
-								<span><strong>${movie.movieNm }</strong></span>
-							    <span><li> 티켓오픈날짜 : ${movie.openDt }</li></span>	
-							       
-							    <div style="text-align: center;">
-  							    <input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'><i class='glyphicon glyphicon-heart'>찜하기 </i>                                                    
-                                &nbsp;<input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'>
-                                <i class='glyphicon glyphicon-bell'></i> 예매      
-	                         
-   								</span>
-								</div>
-								
-						</a>
-						</div>					
-				</c:forEach>
 		
-	</div>
-
+      <!--  table Start /////////////////////////////////////-->
+      <table class="table table-hover table-striped" >
+      
+        <thead>
+          <tr>
+            <th align="center">No</th>
+            <th align="left" >영화제목</th>
+            <th align="left">감독</th>
+            <th align="left">개봉날자</th>
+            <th align="left">장르</th>
+            <th align="left">상영등급</th>
+			<th align="left">등록날짜</th>
+			 
+          </tr>
+        </thead>
+       
+		<tbody>
+		  <c:set var="i" value="0" />
+		  <c:forEach var="movie" items="${list}">
+			<c:set var="i" value="${ i+1 }" />
+			<tr>
+			  <td align="center">${ i }</td>
+			    <td align="left">
+			    
+				<input name="movieNo" id = "movieNo" value = "${movie.movieNo}" type="hidden"/>	
+			
+			    ${movie.movieNm} 
+		
+			  </td>	
+			  		   		 
+			  <td align="left">${movie.directors}</td>
+			  <td align="left">${movie.openDt}</td>
+			  <td align="left">${movie.genres}</td>			  	  		   		 
+			  <td align="left">${movie.watchGradeNm}</td>			
+			  <td align="left">${movie.movieRegDate}</td>
+		
+			  <td align="left">
+			  
+			   
+			      	<i class="glyphicon glyphicon-ok" id= "${movie.movieNo}"></i>
+			  		<input type="hidden" id="pronNo" value="${movie.movieNo}">
+			
+			  </td>
+			</tr>
+          </c:forEach>
+     
+  
+ 
+        </tbody>
+      
+      </table>
+	  <!--  table End /////////////////////////////////////-->
 	  
  	</div>
  	<!--  화면구성 div End /////////////////////////////////////-->
@@ -229,9 +243,7 @@
  	<!-- PageNavigation Start... -->
 	<jsp:include page="../common/pageNavigator.jsp"/>
 	<!-- PageNavigation End... -->
- 	
- 	
- 	
+	
 </body>
 
 

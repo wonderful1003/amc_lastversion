@@ -524,22 +524,20 @@ public class MovieRestController {
 		
 		
 		//해림 추가
-				@RequestMapping(value = "json/blindMoiveComment", method=RequestMethod.POST)
-				public int blindMoiveComment(@RequestBody MovieComment movieComment) {
+		@RequestMapping(value = "json/blindMoiveComment", method=RequestMethod.POST)
+		public int blindMoiveComment(@RequestBody MovieComment movieComment) {
 
-					System.out.println("movieRestController의 blindMoiveComment시작 ");
-					
-					System.out.println("1.movieCommentNo ==> " + movieComment);
-				
-					
-					/// screenService.addScreenContent(screenContent);
-					System.out.println("screen/json/blindMoiveComment :: POST 끝.....");
+			System.out.println("movieRestController의 blindMoiveComment시작 ");
+			
+			System.out.println("1.movieCommentNo ==> " + movieComment);
+		
+			
+			/// screenService.addScreenContent(screenContent);
+			System.out.println("screen/json/blindMoiveComment :: POST 끝.....");
 
-					return movieService.blindMoiveComment(movieComment);
+			return movieService.blindMoiveComment(movieComment);
 
-				};
-				
-				
+		};
 		
 
 }

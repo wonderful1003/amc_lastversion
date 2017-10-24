@@ -83,7 +83,7 @@
 		 });
 		
 		
-		//============= prodNo 에 상품정보보기  Event  처리(Click) =============	
+		//============= movieNo 에 영화정보보기  Event  처리(Click) =============	
 		 $(function() {
 					
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
@@ -93,33 +93,11 @@
 				 //var prodNoVal=	$("#prodNoValue").val();
 				 //var movieNo=$(this).find("input[name='movieNo']").val();
 				 //alert(movieNo);
-				 self.location = "/movie/getMovie?movieNo="+$($(this).find('input')).val()+"&menu=managed";
+				 self.location = "/movie/getMovie?movieNo="+$($(this).find('input')).val()+"&menu=manage";
 
-			});
-						
-			//==> prodNo LINK Event End User 에게 보일수 있도록 
-			$( "td:nth-child(2)" ).css("color" , "red");
-			
-			//==> prodNo LINK Event End User 에게 보일수 있도록 
-			$( "td:nth-child(6)" ).css("color" , "green");
-			
 			});	
-
-		
-			//==> prodNo LINK Event End User 에게 보일수 있도록 
-			$( ".ct_list_pop td:nth-child(3)" ).css("color" , "red");
-			$("h7").css("color" , "red");
-			
-			//==> 아래와 같이 정의한 이유는 ??
-			$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");
+		 });
 	
-			
-			$('a[data-toggle="tooltip"]').tooltip({
-				    animated: 'fade',
-				    placement: 'bottom',
-				    html: true
-			}); 
-
 	</script>
 	
 </head>
@@ -179,66 +157,27 @@
 	  <button type="button" class="btn btn-register">영화등록</button>
 	
 	
-	   <br/> <br/> 
+	  <br/> <br/>  <br/>
 	  
+	  <div>
+		<div class="row">
 		
+			<c:set var="i" value="0"/>
+				<c:forEach var="movie" items="${list}">
+					<c:set var="i" value="${i+1 }"/>
+						<div class="col-xs-6 col-md-4" >
+						<a class='thumbnail' href="/movie/getMovie?movieNo=${movie.movieNo}&menu=manage" style="text-decoration:none;">
+							<img src="${movie.postUrl }">
+							<br/>
+								
+								<span><strong>${movie.movieNm }</strong></span>
+							    <span><li> 개봉일 : ${movie.openDt }</li></span>						
+						</a>
+						</div>					
+				</c:forEach>
+		</div>
+	</div> 
 		
-      <!--  table Start /////////////////////////////////////-->
-      <table class="table table-hover table-striped" >
-      
-        <thead>
-          <tr>
-            <th align="center">No</th>
-            <th align="left" >영화제목</th>
-            <th align="left">감독</th>
-            <th align="left">개봉날자</th>
-            <th align="left">장르</th>
-            <th align="left">상영등급</th>
-			<th align="left">등록날짜</th>
-			 
-          </tr>
-        </thead>
-       
-		<tbody>
-		  <c:set var="i" value="0" />
-		  <c:forEach var="movie" items="${list}">
-			<c:set var="i" value="${ i+1 }" />
-			<tr>
-			  <td align="center">${ i }</td>
-			    <td align="left">
-			    
-				<input name="movieNo" id = "movieNo" value = "${movie.movieNo}" type="hidden"/>	
-			
-			    ${movie.movieNm} 
-		
-			  </td>	
-			  		   		 
-			  <td align="left">${movie.directors}</td>
-			  <td align="left">${movie.openDt}</td>
-			  <td align="left">${movie.genres}</td>			  	  		   		 
-			  <td align="left">${movie.watchGradeNm}</td>			
-			  <td align="left">${movie.movieRegDate}</td>
-		
-			  <td align="left">
-			  
-			   
-			      	<i class="glyphicon glyphicon-ok" id= "${movie.movieNo}"></i>
-			  		<input type="hidden" id="pronNo" value="${movie.movieNo}">
-			
-			  </td>
-			</tr>
-          </c:forEach>
-     
-  
- 
-        </tbody>
-      
-      </table>
-	  <!--  table End /////////////////////////////////////-->
-	  
- 	</div>
- 	<!--  화면구성 div End /////////////////////////////////////-->
- 	
  	
  	<!-- PageNavigation Start... -->
 	<jsp:include page="../common/pageNavigator.jsp"/>
