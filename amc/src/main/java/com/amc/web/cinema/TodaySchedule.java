@@ -38,7 +38,7 @@ public class TodaySchedule implements ServletContextListener {
 		this.dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	}
 
-	@Scheduled(cron = "0/50 * * * * *")
+	//@Scheduled(cron = "0/50 * * * * *")
 	public void mainTask() throws Exception {
 
 		calendar =  Calendar.getInstance();
@@ -163,10 +163,12 @@ public class TodaySchedule implements ServletContextListener {
 	public void contextDestroyed(ServletContextEvent sce) {
 		try {
 			if (sce != null && sce.getServletContext() != null) {
-				scheduler.shutdown();
-				System.out.println("강제 종료시 스케줄 shutdown");
-				Thread.sleep(1000); // sleep for a bit so that we don't get any
-									// errors
+				if(scheduler != null){
+					scheduler.shutdown();
+					System.out.println("강제 종료시 스케줄 shutdown");
+					Thread.sleep(1000); // sleep for a bit so that we don't get any
+										// errors
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
