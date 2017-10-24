@@ -56,11 +56,12 @@ public class UserRestController {
 		User dbUser=userService.getUser(user.getUserId());
 		
 		System.out.println("*******************************************************");
-		System.out.println("dbUser.roll :" + dbUser.getRole());
+		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+		/*System.out.println("dbUser.roll :" + dbUser.getRole());*/
 
 		
 		/*if(dbUser==null || dbUser.getRole() == "not"){*/
-		if(dbUser.getRole().equals("not")){
+		if(dbUser==null || dbUser.getRole().equals("not")){
 			System.out.println("널 값이다");
 			return dbUser;
 		}else{
@@ -68,8 +69,6 @@ public class UserRestController {
 				session.setAttribute("user", dbUser);
 			}
 		}
-		
-		
 		
 		System.out.println("dbUser : " + dbUser);
 		
