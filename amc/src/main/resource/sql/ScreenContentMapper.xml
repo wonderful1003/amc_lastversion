@@ -7,14 +7,14 @@
 <mapper namespace="ScreenContentMapper">
 
    <resultMap type="screenContent" id="screenContentSelectMap">
-      <result property="screenContentNo" column="screencontent_no" jdbcType="INTEGER"/>
-      <result property="movie.movieNo" column="movie_no" jdbcType="INTEGER"/>
+      <result property="screenContentNo" column="screencontent_no" jdbcType="NUMERIC"/>
+      <result property="movie.movieNo" column="movie_no" jdbcType="NUMERIC"/>
       <result property="movie.postUrl" column="poster" jdbcType="VARCHAR"/>
       <result property="screenDate" column="screen_date" jdbcType="DATE"/>
       <result property="screenOpenTime" column="screen_openTime" jdbcType="DATE" />
       <result property="screenEndTime" column="screen_endTime" jdbcType="DATE" />
       <result property="screenTheater" column="screen_theater" jdbcType="CHAR" />
-      <result property="ticketPrice" column="ticket_price" jdbcType="INTEGER" />
+      <result property="ticketPrice" column="ticket_price" jdbcType="NUMERIC" />
       <result property="previewFlag" column="preview_flag" jdbcType="VARCHAR" />
       <result property="previewTitle" column="preview_title" jdbcType="VARCHAR" />
       <result property="ticketOpenDate" column="ticket_opendate" jdbcType="DATE" />
@@ -91,7 +91,7 @@
 		 TO_CHAR(screen_endtime,'HH24:MI') screen_endtime, screen_theater, ticket_price, preview_flag, 
 		 preview_title,  TO_CHAR(ticket_opendate,'YYYY/MM/DD HH24:MI')  ticket_opendate,invite_actor
 		FROM screencontent
-		WHERE movie_no = #{movieNo} AND screen_date >= SYSDATE ORDER BY screen_date, screen_opentime 
+		WHERE movie_no = #{movieNo} AND screen_date >= TO_CHAR(SYSDATE, 'YYYY/MM/DD') ORDER BY screen_date, screen_opentime 
 
 	<!--  SELECT * FROM (SELECT inner_table.*, ROWNUM AS row_seq
 		 FROM (SELECT screencontent_no, movie_no, TO_CHAR(screencontent_regdate,'YYYY/MM/DD') screencontent_regdate , 
@@ -131,8 +131,13 @@
 	<!-- 시사회중복체크 -->
 	<select id="checkScreenDupPreview" parameterType="screenContent" resultType="int">
 		SELECT COUNT(*)
-		FROM screencontent where movie_no=#{movie.movieNo} AND screencontent_no != #{screenContentNo} AND preview_Flag = 'Y'
-			</select>
+		FROM screencontent 
+		WHERE movie_no=#{movie.movieNo} 
+		<if test="screenContentNo != null">
+		AND screencontent_no != #{screenContentNo} 
+		</if>
+		AND preview_Flag = 'Y'
+	</select>
 	
 	
     <select id="uniPreviewList" parameterType="string" resultMap="screenContentSelectMap">

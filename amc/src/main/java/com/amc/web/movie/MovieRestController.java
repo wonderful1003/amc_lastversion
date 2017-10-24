@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,12 +23,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-import com.amc.common.util.CommonUtil;
 import com.amc.service.domain.Movie;
-import com.amc.service.domain.MovieAPI;
+import com.amc.service.domain.MovieComment;
 import com.amc.service.domain.onetime.MovieJson;
 import com.amc.service.domain.onetime.MovieList;
-import com.amc.service.domain.onetime.MovieListResult;
 import com.amc.service.movie.MovieService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -281,5 +281,93 @@ public class MovieRestController {
             
         }
 	}
+	
+	
+	
+	
+	//해림 추가
+	@RequestMapping(value = "json/addMovieComment", method=RequestMethod.POST)
+	public int addMovieComment(@RequestBody MovieComment movieComment) {
+
+		System.out.println("movieRestController의 addScreenContent시작 ");
+		
+		System.out.println("1.screenContent ==> " + movieComment);
+	
+		
+		/// screenService.addScreenContent(screenContent);
+		System.out.println("screen/json/addScreenContent :: POST 끝.....");
+
+		return movieService.addMoiveComment(movieComment);
+
+	};
+	
+	//해림 추가
+	@RequestMapping(value = "json/getMovieComment/{movieCommentNo}", method=RequestMethod.GET)
+	public MovieComment getMovieComment(@PathVariable int movieCommentNo) {
+
+		System.out.println("movieRestController의 getMovieComment시작 ");
+		
+		System.out.println("1.movieCommentNo ==> " + movieCommentNo);
+	
+		
+		/// screenService.addScreenContent(screenContent);
+		System.out.println("screen/json/getMovieComment :: POST 끝.....");
+
+		return movieService.getMovieComment(movieCommentNo);
+
+	};
+	
+	//해림 추가
+	@RequestMapping(value = "json/updateMovieComment", method=RequestMethod.POST)
+	public int updateMovieComment(@RequestBody MovieComment movieComment) {
+
+		System.out.println("movieRestController의 updateMovieComment시작 ");
+		
+		System.out.println("1.movieComment ==> " + movieComment);
+	
+		
+		/// screenService.addScreenContent(screenContent);
+		System.out.println("screen/json/updateMovieComment :: POST 끝.....");
+
+		return movieService.updateMovieComment(movieComment);
+
+	};
+	
+	
+	//해림 추가
+		@RequestMapping(value = "json/deleteMovieComment/{movieCommentNo}", method=RequestMethod.GET)
+		public int deleteMovieComment(@PathVariable int movieCommentNo) {
+
+			System.out.println("movieRestController의 deleteMovieComment시작 ");
+			
+			System.out.println("1.movieCommentNo ==> " + movieCommentNo);
+		
+			
+			/// screenService.addScreenContent(screenContent);
+			System.out.println("screen/json/deleteMovieComment :: POST 끝.....");
+
+			return movieService.deleteMovieComment(movieCommentNo);
+
+		};
+		
+		
+		//해림 추가
+				@RequestMapping(value = "json/blindMoiveComment", method=RequestMethod.POST)
+				public int blindMoiveComment(@RequestBody MovieComment movieComment) {
+
+					System.out.println("movieRestController의 blindMoiveComment시작 ");
+					
+					System.out.println("1.movieCommentNo ==> " + movieComment);
+				
+					
+					/// screenService.addScreenContent(screenContent);
+					System.out.println("screen/json/blindMoiveComment :: POST 끝.....");
+
+					return movieService.blindMoiveComment(movieComment);
+
+				};
+				
+				
+		
 
 }

@@ -5,9 +5,8 @@ import java.util.Map;
 
 import com.amc.common.Search;
 import com.amc.service.domain.Movie;
-import com.amc.service.domain.MovieAPI;
+import com.amc.service.domain.MovieComment;
 import com.amc.service.domain.WishList;
-import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
 import com.amc.service.domain.onetime.Twitter;
 
@@ -53,22 +52,24 @@ public interface MovieService {
 	public int addMoiveComment(MovieComment movieComment);
 
 	// 부적절한 감상평 블라인드 처리 유무
-	public int blindMoiveComment(int movieCommentNo);
+	public int blindMoiveComment(MovieComment movieComment);
 
 	// 감상평 수정
-	public int updateMovieCommnet(MovieComment movieComment);
+	public int updateMovieComment(MovieComment movieComment);
 
 	// 감상평 삭제
 	public int deleteMovieComment(int movieCommentNo);
 	
 	// 감상평 보기
-	public List<MovieComment> getMovieCommentList(Search search, int movieNo);
+	public Map<String, Object> getMovieCommentList(Search search, int movieNo) throws Exception;
 	
 	// 차트목록 가져오기
 	public List<Movie> getChart(int movieNo);
 	
 	// 트위터 가져오기
 	public List<Twitter> getTwitterList(String movieName);
-	
+
+	public MovieComment getMovieComment(int movieCommentNo);
+
 
 }

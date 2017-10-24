@@ -10,20 +10,15 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.amc.common.Search;
 import com.amc.service.domain.Movie;
 import com.amc.service.domain.MovieAPI;
+import com.amc.service.domain.MovieComment;
 import com.amc.service.domain.WishList;
-import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
 import com.amc.service.domain.onetime.Twitter;
 import com.amc.service.movie.MovieDAO;
-import com.amc.service.movie.MovieDAOAdapter;
-
 
 import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
 
@@ -157,13 +152,13 @@ public class MovieApiDAOImpl implements MovieDAO {
 	}
 
 	@Override
-	public int blindMoiveComment(int movieCommentNo) {
+	public int blindMoiveComment(MovieComment movieComment) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int updateMovieCommnet(MovieComment movieComment) {
+	public int updateMovieComment(MovieComment movieComment) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -222,6 +217,18 @@ public class MovieApiDAOImpl implements MovieDAO {
 	
 	@Override
 	public List<Movie> uniMovieList(Search search) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getTotalCount(int movieNo) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public MovieComment getMovieComment(int movieCommentNo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
