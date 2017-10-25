@@ -46,8 +46,7 @@ body {
 
 <script type="text/javascript">
 	function addOpenAlarm() {
-		$
-				.ajax(
+			$.ajax(
 						{
 							url : "/alarm/json/switchOpenAlarm?screenContentNo=10000&userId="
 									+ "${sessionScope.user.userId}", //서버로 알림 체크 요청
@@ -63,7 +62,7 @@ body {
 						alert("오픈알림이 취소되었습니다.");
 					}
 				});
-	} //end of kakaoPayCancel function
+	} //end of addOpenAlarm function
 
 	function fncAddMovieComment() {
 		var movieNo = $("input[name='movieNo']").val();

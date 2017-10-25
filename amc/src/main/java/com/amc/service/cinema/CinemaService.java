@@ -16,5 +16,5 @@ public interface CinemaService {
 		public String checkPay(String impUid) throws Exception;
 		
 		public String cancelPay(String impUid) throws Exception;
-	
+		
 }

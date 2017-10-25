@@ -22,7 +22,7 @@
 	session.setAttribute("booking",booking);
 %>
 
-z<!DOCTYPE html >
+<!DOCTYPE html >
 <html>
 <head> 
 <title>selectScreenMovie.jsp</title>
@@ -145,7 +145,6 @@ IMP.init('imp41659269');
 	}
 	
 
-	
 </script>
 <body>
 <h2>[예매3단계] 결제를 위한 창입니다.</h2>
