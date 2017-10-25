@@ -4,6 +4,14 @@ import java.sql.Date;
 
 public class Product {
 	
+	@Override
+	public String toString() {
+		return "Product [prodNo=" + prodNo + ", prodPrice=" + prodPrice + ", totalStock=" + totalStock + ", salesStock="
+				+ salesStock + ", stock=" + stock + ", expiryDate=" + expiryDate + ", prodImage=" + prodImage
+				+ ", prodName=" + prodName + ", prodDetail=" + prodDetail + ", prodSetInfo=" + prodSetInfo
+				+ ", salesOpenDate=" + salesOpenDate + ", salesEndDate=" + salesEndDate + ", prodRegDate=" + prodRegDate
+				+ ", prodType=" + prodType + "]";
+	}
 	private int prodNo;
 	private int prodPrice;
 	private int totalStock;

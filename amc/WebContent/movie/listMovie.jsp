@@ -42,9 +42,14 @@
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
-	  body {
-            padding-top : 50px;
-        }
+	 body {
+            padding-top: 70px;
+            }
+            .thumbnail {
+            width: 300px;
+            height: 250px;
+            overflow: auto;
+      }	
     </style>
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
@@ -70,7 +75,7 @@
 		
 				
 		
-		//============= prodNo 에 상품정보보기  Event  처리(Click) =============	
+		//============= movieNo 에 영화정보보기  Event  처리(Click) =============	
 		 $(function() {
 					
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
@@ -83,29 +88,8 @@
 				 self.location = "/movie/getMovie?movieNo="+$($(this).find('input')).val()+"&menu=managed";
 
 			});
-						
-			//==> prodNo LINK Event End User 에게 보일수 있도록 
-			$( "td:nth-child(2)" ).css("color" , "red");
-			
-			//==> prodNo LINK Event End User 에게 보일수 있도록 
-			$( "td:nth-child(6)" ).css("color" , "green");
-			
-			});	
-
 		
-			//==> prodNo LINK Event End User 에게 보일수 있도록 
-			$( ".ct_list_pop td:nth-child(3)" ).css("color" , "red");
-			$("h7").css("color" , "red");
-			
-			//==> 아래와 같이 정의한 이유는 ??
-			$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");
-	
-			
-			$('a[data-toggle="tooltip"]').tooltip({
-				    animated: 'fade',
-				    placement: 'bottom',
-				    html: true
-			}); 
+		 });
 
 	</script>
 	
@@ -126,7 +110,40 @@
 	    
 	    <!-- table 위쪽 검색 Start //////F///////////////////////////////-->
 	    <div class="row">
-  			<!--센터정렬-->
+	    
+	       <div class="col-md-6 text-left">
+		    	<p class="text-primary">
+		    		전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지
+		    	</p>
+		    </div>
+	    
+	       <div class="col-md-6 text-right">
+			    <form class="form-inline" name="detailForm">
+			    
+				  <div class="form-group">
+				    <select class="form-control" name="searchCondition" >
+						<option value="1"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>영화제목</option>
+						<option value="2"  ${ ! empty search.searchCondition && search.searchCondition==2 ? "selected" : "" }>감독</option>
+					</select>
+				  </div>
+				  
+				  <div class="form-group">
+				    <label class="sr-only" for="searchKeyword">검색어</label>
+				    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword"  placeholder="검색어"
+				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
+				  </div>
+				  
+				  <button type="button" class="btn btn-default">검색</button>
+				  
+				  <!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+				  <input type="hidden" id="currentPage" name="currentPage" value=""/>
+				  
+				</form>
+	    	</div>
+	    	
+		</div>
+    
+  		<!-- 		
             <div class="container">
             <div class="container-fluid full-width">
                 <div class="row-fluid">                   
@@ -136,9 +153,8 @@
                     
                 </div>
                 </div>
-            </div>
-	    	
-		</div>
+            </div>	    	
+		</div> -->
 	
 	  <br/>   <br/>   <br/>
 	
@@ -151,7 +167,22 @@
 						<div class="col-xs-6 col-md-4" >
 						<a class='thumbnail' href="/movie/getMovie?movieNo=${movie.movieNo}&menu=search" style="text-decoration:none;">
 							<img src="${movie.postUrl }">
-							<span>${movie.movieNm }</span>
+							<br/>
+								
+								<span><strong>${movie.movieNm }</strong></span>
+							    <span><li> 개봉일 : ${movie.openDt }</li></span>	
+							    
+							    <div style="text-align: center;">
+    						    							
+    							 
+							    <input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'><i class='glyphicon glyphicon-heart'>찜하기 </i>                                                    
+                                &nbsp;<input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'>
+                                <i class='glyphicon glyphicon-phone-alt'></i> 예매      
+	                         
+      
+    							</span>
+								</div>							    
+							    					
 						</a>
 						</div>					
 				</c:forEach>
@@ -162,7 +193,10 @@
  	</div>
  	<!--  화면구성 div End /////////////////////////////////////-->
  	
- 	
+ 	<!-- PageNavigation Start... -->
+	<jsp:include page="../common/pageNavigator.jsp"/>
+	<!-- PageNavigation End... -->
+	
 </body>
 
 

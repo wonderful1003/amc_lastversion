@@ -37,8 +37,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/ui-darkness/jquery-ui.css" >  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/sunny/jquery-ui.css">
     <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css" />
     
@@ -50,11 +49,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.14.1/jquery.jqgrid.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js"></script>
-    <!--  <script src="<c:url value="/javascript/jqGridCommon.js"/>"></script>  	-->
-	<!--  <script src="<c:url value="/javascript/jquery-3.1.0.min.js"/>"></script>  -->
-	<!--  <script src="<c:url value="/javascript/jquery.form.min.js"/>"></script>  	-->
- 
- 
+  
  
  
 <!-- ToolBar Start /////////////////////////////////////-->
@@ -215,16 +210,7 @@
 		popWin = window.open("../openHistory.jsp","popWin","left=300, top=200, width=300, height=200, marginwidth=0, marginheight=0, scrollbars=no, scrolling=no, menubar=no, resizable=no");
 	}
 
-	
-	//============= 영화 Event  처리 =============	
-	/*  $(function() {
-		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-	 	$("a:contains('영화')").on("click" , function() {
-			//$(self.location).attr("href","/user/logout");
-			self.location = "/movie/getMovieList"
-		}); 
-	 }); */
-	
+		
 	//=============  현재 상영영화 Event  처리 =============	
 	$( "a:contains('현재 상영영화'),a:contains('ID')" ).on("click" , function() {
 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
@@ -340,54 +326,7 @@
  
  
         $(document).ready(function(){
-        	
-        	$(function() {
-        		$("#btn-upload").on("click", function(){
-        			if(($("#file1").val() == "" || $("#file1").val() == null)) {
-        			    alert("파일 첫 번째가 없습니다.");
-        			} 
-        			
-        			//else if(($("#file2").val() == "" || $("#file2").val() == null)) {
-        			//    alert("파일 두 번째가 없습니다.");
-        			//} else {
-
-        			   var form = new FormData(document.getElementById('uploadForm'));
-        			    $.ajax({
-        				      url: "/movie/json/upload", //컨트롤러 URL
-        				      data: form,
-        				      dataType: 'json',
-        				      processData: false,
-        				      contentType: false,
-        				      type: 'POST',
-        				      success: function (response) {
-        				    	  alert("성공적으로 파일 업로드되었습니다.");
-        				    	  console.log(response);
-        				      },error: function (jqXHR) {
-        				    	   //alert("성공적으로 파일 업로드되었습니다.");
-        					       alert(jqXHR.responseText);
-        					       console.log(jqXHR.responseText);
-        				      }
-        			   });
-        	/*
-
-        			    $('#uploadForm').ajaxSubmit({
-        				      url: "/pentode/upload.do", //컨트롤러 URL
-        				      dataType: 'json',
-        				      processData: false,
-        				      contentType: false,
-        				      type: 'POST',
-        				      success: function (response) {
-        				    	  alert("success");
-        				    	  console.log(response);
-        				      },error: function (jqXHR) {
-        					      alert(jqXHR.responseText);
-        				      }
-        			   });
-        	*/
-        			//}
-        		});
-        	});
-        	
+         	
         	
         	function delButton (cellvalue, options, rowObject) {
         		   return '<input type="button" onclick="delete('+cellvalue+')" value="DEL"/>'; 
@@ -484,9 +423,7 @@
         	function pickdates(id){
         		jQuery("#"+id+"_movieEndDate","#movie_list").datepicker({dateFormat:"yy-mm-dd"});
         	}
-
-    	  
-    	
+   	
         	var getVaueByName = function (directors, colName) {
                 var i, count = directors.length, item;
                 
@@ -508,52 +445,24 @@
                 }
                 return '';
             };
-         $("#movie_list").jqGrid({
-            	headers: { 
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json; charset=UTF-8' 
-                 
-              	},
-            	
+        
+            
+        
+        
+         $("#movie_list").jqGrid( 
+        		{         			
+        
             	// ajax 요청주소
                 url:"/movie/json/getAPIMoiveList",
                 caption : "영화 API 등록",
                 // 요청방식
                 mtype:"post",
                 // 결과물 받을 데이터 타입
-                datatype:"json",
-                edit : {
-                	editCaption : "영화 등록",
-                	bSubmit : "등록하기",
-                	bCancel : "취소하기",
-                	bYes : "예",
-                	bNo  : "아니오",
-                },
-                
-            
-                afterComplete: function (response) {
-                	alert("1111");
-                    var DialogVars = $.parseJSON(response.responseText); //parse the string that was returned in responseText into an object
-                    //if there was a failure with the update, or there was information to pass to the user
-                    if (!DialogVars.success || DialogVars.showMessage) {
-                        alert(DialogVars.message);
-                    }
-                }, //afterComplete
-                
-                
-                ajaxGridOptions: { contentType: "application/json; charset=UTF-8" },
-                ajaxRowOptions: { contentType: "application/json; charset=UTF-8", async: true },
-                ajaxSelectOptions: { contentType: "application/json; charset=UTF-8", dataType: "JSON" },
-
-                
-                // 그리드 갭션                
-                caption:"영화 API 등록",
+                datatype:"json",   
+          
                 // 그리드 높이
                 height:"auto",
-                // 그리드(페이지)마다 보여줄 행의 수 -> 매개변수이름은 "rows"로 요청된다
-                //rowNum:10,
-                // rowNum변경 옵션
-                //rowList:[10,15,20],
+               
                 // 컬럼명
                 colNames:['영화CD','영화명','제작국가','상영마감','줄거리','트레일러'],
                 // 컬럼 데이터(추가, 삭제, 수정이 가능하게 하려면 autoincrement컬럼을 제외한 모든 컬럼을 editable:true로 지정)
@@ -584,38 +493,13 @@
                           {name:'trailer', index:'trailer',align:"left", width:90,editable:true}
                           ],
                           
-                          aftersavefunc: function (rowid, response, options) {
-                              alert('b');
-                          },
-                          
-                          afterSubmit: function (response, postdata) {
-                        	  
-                        	  alert("afterSubmit");
-                              var json = $.parseJSON(response.responseText);
-
-                              
-                              console.log(json);
-                              
-                              
-                              if (json) {
-                                  $(gridName).jqGrid('setGridParam', { datatype: 'json' });
-                                  return [json.success, json.message, json.id];
-                              }
-
-                              return [false, "Failed to get result from server.", null];
-                          }, 
-                          
-                        
-                          //{name:'갈 젤레즈니악', jsonmap: function (obj) { return getVaueByName(obj.directors, "갈 젤레즈니악");}}],
-                          //{name:'peopleNm', index:'directors', align:"center", editable:true, edittype:"text"}],
-                          
-                   
-                          
+         
            // 네비게이션 도구를 보여줄 div요소
                	sortable: true,
                 sortname: 'movieCd',
                 pager:"#pager",
-                rowNum:5,
+            	rowNum:10,
+               	//rowList:[10,20,30],
                 autowidth:true,
                 // 전체 레코드수, 현재레코드 등을 보여줄지 유무
                 multiselect: true,
@@ -623,45 +507,13 @@
                 
                 // 추가, 수정, 삭제 url
                 editurl: "/movie/json/addMovie",    
-                
-                
-                afterSubmit: function (resp, postdata) 
-                {
-                	alert("submit");
-                   return [true,"",null];
-                }, closeAfterEdit: true,
-
-                
-                
-                //afterSubmit : Result_From_Server,
-                
-                contentType: 'multipart/form-data', 
-                
+    
                 mtype:"post",
                 // 결과물 받을 데이터 타입
                 datatype:"json",
                 enctype: "multipart/form-data",
                 
-                ajaxGridOptions:   { contentType: "application/json; charset=UTF-8" },
-                ajaxRowOptions:    { contentType: "application/json; charset=UTF-8", async: true },
-                ajaxSelectOptions: { contentType: "application/json; charset=UTF-8", dataType: "JSON" },
-               
-
-                 
-                onclickSubmit: function(params, posdata) {
-                	 uploadJqueryForm();
-                },
-            
-                ondblClickRow: function (rowid, iRow, iCol, e) {
-                    $(this).jqGrid('editRow', rowid, true, function () {
-                        $("input, select", e.target).focus();
-                    });
-                    return;
-                },
-                
-                mtype       : "POST",
-                addParams: {addRowParams: {keys: true}, },
-               
+          
                 //sortable: true 
                 sortorder: "desc",
                 loadonce : true,
@@ -679,29 +531,23 @@
                 	id:"movieCd"
                 },
                 
-                
+         
             
                loadComplete: function(data) {
-          			alert ("records="+$("#movie_list").getGridParam("records"));
+          			//alert ("records="+$("#movie_list").getGridParam("records"));
                 }, 
                  
     
         	});
          
-         
-            // 네비게시션 도구 설정
-            $("#movie_list").jqGrid(
- 
-            		"navGrid",
-                    "#pager",                  
-         
-            );
-   
-	        });   
- 
+         // 네비게시션 도구 설정
+	 $("#movie_list").jqGrid(
+	         		"navGrid",
+	                "#pager"                 
+	     );
+	    });      
+  
     </script>
-
-
 
 <body>
 

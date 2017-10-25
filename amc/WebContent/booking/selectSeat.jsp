@@ -66,6 +66,7 @@
 			<iframe id="child" src="http://192.168.0.3:52273/yenakoh/3?screenNo=${screenContentNo}" width="600" height="400" >		 
 					  <p>Your browser does not support iframes.</p>
 			</iframe>
+
 			<button onclick="myFunction()">Try it</button>
 			<h2>선택하신 좌석번호는 : <input type="text" name="seats" value=""></h2>
 			JSP Version: <%= JspFactory.getDefaultFactory().getEngineInfo().getSpecificationVersion() %> <br>

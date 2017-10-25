@@ -18,7 +18,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.json.simple.JSONObject;
 
 
 
@@ -95,6 +94,7 @@ public class RestApiUtil {
 		
 		String result = "";
 		
+		//https일 경우
 		if(this.con != null){
 			//지역변수
 			int count = 0; //buffer 
@@ -166,6 +166,8 @@ public class RestApiUtil {
 	        br.close();
 	        
 	        return result;
+	     
+	     //http의 경우
 		}else{
 			if(this.httpPost != null){
 				for (String mapKey : header.keySet()){
@@ -255,6 +257,4 @@ public class RestApiUtil {
 				+ ", body=" + body + ", httpClient=" + httpClient + ", httpPost=" + httpPost + ", httpGet=" + httpGet
 				+ "]";
 	}
-
-	
 }

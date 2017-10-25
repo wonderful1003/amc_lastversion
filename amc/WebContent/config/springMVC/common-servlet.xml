@@ -102,4 +102,30 @@
 	</bean>
     -->
     
+	<!-- 이메일 관련 -->	
+	<bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	    <property name="host" value="smtp.gmail.com" />
+	    <property name="port" value="587" />
+	    <property name="username" value="bitcampamc@gmail.com" />
+	    <property name="password" value="dkdlxl403" />
+	    <property name="javaMailProperties">
+	        <props>
+	            <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+	            <prop key="mail.smtp.starttls.enable">true</prop>
+	            <prop key="mail.smtp.auth">true</prop>
+	        </props>
+	    </property>
+	</bean>
+ 
+	<bean id="userServiceImpl" class="com.amc.service.user.impl.UserServiceImpl">
+	    <property name="javaMailSender" ref="javaMailSender" />
+	</bean>
+    
+    <bean id="uploadFilePath"
+				class="org.springframework.core.io.FileSystemResource">
+		<constructor-arg>
+			<value>C:\Users\bang\git\amc\amc\WebContent\images\uploadFiles\</value>
+		</constructor-arg>
+	</bean>
+    
 </beans>

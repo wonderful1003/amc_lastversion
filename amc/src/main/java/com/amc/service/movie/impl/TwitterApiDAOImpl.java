@@ -2,14 +2,10 @@ package com.amc.service.movie.impl;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.amc.common.Search;
 import com.amc.service.domain.Movie;
-import com.amc.service.domain.MovieAPI;
+import com.amc.service.domain.MovieComment;
 import com.amc.service.domain.WishList;
-import com.amc.service.domain.onetime.MovieComment;
 import com.amc.service.domain.onetime.MovieList;
 import com.amc.service.domain.onetime.MovieOnScheule;
 import com.amc.service.domain.onetime.Twitter;
@@ -95,13 +91,13 @@ public class TwitterApiDAOImpl implements MovieDAO {
 	}
 
 	@Override
-	public int blindMoiveComment(int movieCommentNo) {
+	public int blindMoiveComment(MovieComment movieComment) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int updateMovieCommnet(MovieComment movieComment) {
+	public int updateMovieComment(MovieComment movieComment)  {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -152,6 +148,18 @@ public class TwitterApiDAOImpl implements MovieDAO {
 	
 	@Override
 	public List<Movie> uniMovieList(Search search) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getTotalCount(int movieNo) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public MovieComment getMovieComment(int movieCommentNo) {
 		// TODO Auto-generated method stub
 		return null;
 	}

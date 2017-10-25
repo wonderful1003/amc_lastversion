@@ -22,7 +22,7 @@
 		<result property="orderRegDate"			column="ORDER_REGDATE" 		jdbcType="DATE"/>
 		<result property="impId"				column="IMP_ID" 			jdbcType="VARCHAR"/>
 		
-		<association property="user"	 	javaType="User">
+ 		<association property="user"	 	javaType="User">
 			<id property="userId" 			column="user_id" 			jdbcType="VARCHAR" />
 			
 			<result property="userId" 			column="user_id" 			jdbcType="VARCHAR"/>
@@ -60,7 +60,7 @@
   			<result property="salesEndDate" 	column="sales_enddate" 	jdbcType="DATE"/>
   			<result property="prodRegDate" 		column="prod_regdate" 	jdbcType="DATE"/>
   			<result property="prodType" 		column="prod_type" 		jdbcType="CHAR"/>
-		</association>
+		</association> 
 	</resultMap>
 		
 		<!-- SQL : INSERT -->

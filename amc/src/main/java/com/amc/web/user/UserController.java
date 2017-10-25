@@ -77,7 +77,10 @@ public class UserController {
 		//Business Logic
 		User dbUser=userService.getUser(user.getUserId());
 		
-		if(dbUser==null){
+		System.out.println("*******************************************************");
+		System.out.println("dbUser.roll :" + dbUser.getRole());
+		
+		if(dbUser==null || dbUser.getRole() == "not"){
 			System.out.println("널 값이다");
 		}else{
 			if(user.getPassword().equals(dbUser.getPassword())){
@@ -108,8 +111,8 @@ public class UserController {
 	}
 
 	
-	@RequestMapping( value="listUser" )
-	public String listUser( @ModelAttribute("search") Search search , Model model , HttpServletRequest request) throws Exception{
+	@RequestMapping( value="getUserList" )
+	public String getUserList( @ModelAttribute("search") Search search , Model model , HttpServletRequest request) throws Exception{
 		
 		System.out.println("/user/listUser : GET / POST");
 		
@@ -163,6 +166,21 @@ public class UserController {
 		
 		return "redirect:/user/getUser?userId="+user.getUserId();
 	}
+	
+	@RequestMapping( value="deleteUser", method=RequestMethod.GET )
+	public String deleteUser(  ) throws Exception{
+		System.out.println("/user/deleteUser : GET");
+		return "redirect:/user/deleteUser.jsp";
+	}
+	
+	@RequestMapping( value="deleteUser", method=RequestMethod.POST )
+	public String deleteUser( @ModelAttribute("user") User user , Model model , HttpSession session) throws Exception{
+
+		System.out.println("/user/deleteUser : POST");
+		userService.deleteUser(user);
+		return "forward:/user/logoutUser";
+	}
+
 	
 	// 이메일 본인 인증
     @RequestMapping(value = "auth", method = RequestMethod.POST, produces = "application/json")
@@ -218,52 +236,4 @@ public class UserController {
         }
         return "redirect:/index.jsp";
     }
-    
-	@RequestMapping(value="/kakaoGetCode", method=RequestMethod.GET)
-	public String kakaoGetCode() throws Exception{
-		
-		System.out.println("kakao.getCode() : "+userService.getCode());
-	
-		return "redirect:"+userService.getCode();
-	}
-
-	@RequestMapping(value="/kakaologin", method=RequestMethod.GET)
-	public String kakaoLogin(@RequestParam("code") String code) throws Exception{
-		
-		System.out.println("code : "+code);
-		
-		userService.getAccessToken(code);
-		//사용자 토큰 받기 메서드 불러오기 성공
-		
-		String data = (String)userService.getHtml((userService.getAccessToken(code)));
-		System.out.println("data :"+data);
-		
-		Map<String, String> map = userService.JsonStringMap(data);
-		System.out.println("map : "+map);
-		System.out.println("access_token :"+map.get("access_token"));
-		System.out.println("refresh_token :"+map.get("refresh_token"));
-		System.out.println("scope :"+map.get("scope"));
-		System.out.println("token_type :"+map.get("token_type"));
-		System.out.println("expires_in :"+map.get("expires_in"));
-		
-		//사용자 전체 정보받아오기를 시작합니다.
-		String list = userService.getAllList((String)map.get("access_token"));
-		System.out.println("list :"+list);
-		//JSON데이터 변환!
-		/*Map<String, String> getAllListMap = userService.JsonStringMap(list);*/
-		
-		System.out.println(list.substring(4,20));
-		
-/*		System.out.println("getAllListMap :"+getAllListMap);
-		System.out.println("id :"+(String)getAllListMap.get("kaccount_email"));
-		System.out.println("nickName :"+(String)getAllListMap.get("nickName"));
-		System.out.println("profileImageURL :"+(String)getAllListMap.get("profileImageURL"));
-		System.out.println("thumbnailURL :"+(String)getAllListMap.get("thumbnailURL"));
-		System.out.println("countryISO"+(String)getAllListMap.get("countryISO"));
-*/		
-		/*return "redirect:/user/getConn";*/
-		return "redirect:/user/addUser";
-		/*return map.get("access_token");*/
-	}
-	
 }

@@ -7,14 +7,14 @@
 <mapper namespace="ScreenContentMapper">
 
    <resultMap type="screenContent" id="screenContentSelectMap">
-      <result property="screenContentNo" column="screencontent_no" jdbcType="INTEGER"/>
-      <result property="movie.movieNo" column="movie_no" jdbcType="INTEGER"/>
+      <result property="screenContentNo" column="screencontent_no" jdbcType="NUMERIC"/>
+      <result property="movie.movieNo" column="movie_no" jdbcType="NUMERIC"/>
       <result property="movie.postUrl" column="poster" jdbcType="VARCHAR"/>
       <result property="screenDate" column="screen_date" jdbcType="DATE"/>
       <result property="screenOpenTime" column="screen_openTime" jdbcType="DATE" />
       <result property="screenEndTime" column="screen_endTime" jdbcType="DATE" />
       <result property="screenTheater" column="screen_theater" jdbcType="CHAR" />
-      <result property="ticketPrice" column="ticket_price" jdbcType="INTEGER" />
+      <result property="ticketPrice" column="ticket_price" jdbcType="NUMERIC" />
       <result property="previewFlag" column="preview_flag" jdbcType="VARCHAR" />
       <result property="previewTitle" column="preview_title" jdbcType="VARCHAR" />
       <result property="ticketOpenDate" column="ticket_opendate" jdbcType="DATE" />
@@ -26,19 +26,22 @@
    <select id="getScreenContentList2" parameterType="map" resultMap="screenContentSelectMap">
 		SELECT screencontent_no, movie_no, screencontent_regdate, screen_date, TO_CHAR(screen_opentime,'HH24:MI') screen_opentime, screen_endtime, screen_theater, ticket_price, preview_flag, preview_title, ticket_opendate,invite_actor
 		FROM (
-		SELECT* 
-		FROM screencontent 
-		WHERE movie_no = #{movieNo}
-		<if test="search.searchKeyword !='' and search.searchKeyword != null"> 
+			SELECT* 
+			FROM screencontent 
+			<if test='search.searchCondition ==1 or search.searchCondition== "1" or search.searchCondition== null or search.searchCondition==""'>
+				WHERE movie_no = #{movieNo}
+				AND preview_flag = 'N'
+			</if>
+			<if test="search.searchCondition==2 or search.searchCondition== '2'"> 
+				WHERE preview_flag = 'Y'
+				<if test='movieNo !="0" or movieNo !=0'>
+					AND screencontent_no = #{movieNo}
+				</if>
+			</if>
 			AND screen_date between (to_date(#{search.searchKeyword}, 'yy/mm/dd')) AND (to_date(#{search.searchKeyword}, 'yy/mm/dd')+7)  	
-		</if> 
-		<if test='search.searchCondition ==null or search.searchCondition== 1'> 
-			AND preview_flag = 'N'
-		</if>
-		<if test="search.searchCondition==2 or search.searchCondition== 2"> 
-			AND preview_flag = 'Y'
-		</if>
-		ORDER BY screen_opentime) innertable
+			ORDER BY screen_opentime
+		) innertable
+		ORDER BY screen_date, screen_opentime
      			   
    </select> 
 
@@ -91,19 +94,28 @@
 		 TO_CHAR(screen_endtime,'HH24:MI') screen_endtime, screen_theater, ticket_price, preview_flag, 
 		 preview_title,  TO_CHAR(ticket_opendate,'YYYY/MM/DD HH24:MI')  ticket_opendate,invite_actor
 		FROM screencontent
-		WHERE movie_no = #{movieNo} ORDER BY screen_date, screen_opentime
-<!-- 		
-	SELECT * FROM (SELECT inner_table.*, ROWWNUM AS row_seq
-		 FROM (SELECT screencontent_no, movie_no, screencontent_regdate, screen_date, screen_opentime, screen_endtime, 
-			screen_theater, ticket_price, preview_flag, preview_title, ticket_opendate,invite_actor
+		WHERE movie_no = #{movieNo} AND screen_date >= TO_CHAR(SYSDATE, 'YYYY/MM/DD') ORDER BY screen_date, screen_opentime 
+
+	<!--  SELECT * FROM (SELECT inner_table.*, ROWNUM AS row_seq
+		 FROM (SELECT screencontent_no, movie_no, TO_CHAR(screencontent_regdate,'YYYY/MM/DD') screencontent_regdate , 
+		TO_CHAR(screen_date,'YYYY/MM/DD') screen_date , TO_CHAR(screen_opentime,'HH24:MI') screen_opentime, 
+		 TO_CHAR(screen_endtime,'HH24:MI') screen_endtime, screen_theater, ticket_price, preview_flag, 
+		 preview_title,  TO_CHAR(ticket_opendate,'YYYY/MM/DD HH24:MI')  ticket_opendate,invite_actor
 		FROM screencontent
-		WHERE moive_no = #{movieNo} ORDER BY screen_opentime )inner_table
+		WHERE movie_no = #{movieNo} ORDER BY screen_date, screen_opentime)inner_table
 		WHERE ROWNUM &lt; = #{search.endRowNum})	
-		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
-		 -->
-		
-		
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}	 -->
+	
+
 	</select> 
+	
+	<select id="getTotalCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM screencontent where movie_no=#{movie.movieNo}
+	</select>
+	
+	
+	
 
 	<!-- 대관되어있는 영화시간 -->
 	<select id="notEmptyScreenContent" parameterType="screenContent" resultMap='screenContentSelectMap'>
@@ -118,6 +130,16 @@
 		<if test="screenContentNo != 0">screencontent_no != #{screenContentNo} AND</if>
 		screen_theater = #{screenTheater} AND screen_date = #{screenDate}
 		AND screen_endtime > TO_DATE(#{screenOpenTime},'YYYY/MM/DD HH24:MI') AND TO_DATE(#{screenEndTime},'YYYY/MM/DD HH24:MI') > screen_opentime
+	</select>
+	<!-- 시사회중복체크 -->
+	<select id="checkScreenDupPreview" parameterType="screenContent" resultType="int">
+		SELECT COUNT(*)
+		FROM screencontent 
+		WHERE movie_no=#{movie.movieNo} 
+		<if test="screenContentNo != null">
+		AND screencontent_no != #{screenContentNo} 
+		</if>
+		AND preview_Flag = 'Y'
 	</select>
 	
 	<select id="uniPreviewList" parameterType="string" resultMap="screenContentSelectMap">
