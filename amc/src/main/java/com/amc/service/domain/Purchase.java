@@ -16,9 +16,18 @@ public class Purchase {
 	private int totalProdPrice;
 	private int tranCode;
 	private Date orderRegDate;
+	private int purchaseCount;
 	
-	private Product prodNo;
-	private User userId;
+	public int getPurchaseCount() {
+		return purchaseCount;
+	}
+
+	public void setPurchaseCount(int purchaseCount) {
+		this.purchaseCount = purchaseCount;
+	}
+
+	private Product product;
+	private User user;
 	
 	public Purchase() {
 	}
@@ -119,20 +128,21 @@ public class Purchase {
 		this.orderRegDate = orderRegDate;
 	}
 
-	public Product getProdNo() {
-		return prodNo;
+	public Product getProduct() {
+		return product;
 	}
 
-	public void setProdNo(Product prodNo) {
-		this.prodNo = prodNo;
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
-	public User getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserId(User userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
+
 	
 }

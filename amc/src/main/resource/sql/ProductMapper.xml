@@ -58,15 +58,38 @@
   	<!-- SQL : INSERT -->
 	<insert id="addProduct" parameterType="product">
 		INSERT
-		INTO product ( prod_no, prod_type, prod_image, prod_name, prod_detail, prod_set_info, sales_opendate, 
-						sales_enddate, prod_price, total_stock,	prod_regdate, expiry_date )
-		VALUES ( seq_product_prod_no.nextval, #{prodType}, #{prodImage}, #{prodName}, #{prodDetail}, #{prodSetInfo}, 
-					#{salesOpenDate}, #{salesEndDate}, #{prodPrice}, #{totalStock}, #{expiryDate}, SYSDATE )
+		INTO product ( 	prod_no, 
+						prod_type, 
+						prod_name,
+						sales_opendate, 
+						sales_enddate, 
+						total_stock,
+						stock,
+						prod_price, 
+						expiry_date,
+						prod_regdate, 
+						prod_detail, 
+						prod_set_info,
+						prod_image 	 )
+		VALUES ( seq_product_prod_no.nextval, 
+					#{prodType}, 
+					#{prodName},
+					#{salesOpenDate}, 
+					#{salesEndDate}, 
+					#{totalStock}, 
+					#{stock}, 
+					#{prodPrice},
+					#{expiryDate}, 
+					SYSDATE,
+					#{prodDetail},
+					#{prodSetInfo}, 
+					#{prodImage} )
 	</insert>
 	
 	<!-- SQL : SELECT ONE -->	
 	<select id="getProduct" parameterType="string" resultMap="productSelectMap">
-		SELECT	prod_no, prod_name, prod_detail, prod_regdate, prod_price, prod_image
+		SELECT	prod_no, prod_name, prod_detail, prod_regdate, prod_price, prod_image,total_stock,prod_type,
+		sales_stock,stock,prod_set_info,sales_opendate,sales_enddate
 		FROM product
 		WHERE prod_no = #{value}
 	</select>
@@ -92,7 +115,7 @@
 	</delete>
 
 	<!-- SQL : SELECT LIST -->
-	<select id="getProductList" parameterType="search" resultMap="productSelectMap">
+	<select id="getGoodsList" parameterType="map" resultMap="productSelectMap">
 		SELECT *
 		FROM	(	SELECT inner_table.* , ROWNUM AS row_seq
 					FROM	(	SELECT p.*, t.tran_code
@@ -101,21 +124,50 @@
 										p.prod_no = t.prod_no(+)
 											<if test="searchCondition!=null " >
 												<if test="searchCondition==0  and searchKeyword !=''  and searchKeyword != null">
-													AND p.prod_name	like '%${searchKeyword}%'
+													AND p.prod_name	like '%${search.searchKeyword}%'
 												</if> 
 												
 												<if test="searchCondition==1   and searchKeyword !=''  and searchKeyword != null ">
-													AND p.prod_no = #{searchKeyword}
+													AND p.prod_no = #{search.searchKeyword}
 												</if>  					
 												
 												<if test="searchCondition==2  and searchKeyword !=''  and searchKeyword != null">
-													AND p.prod_price = #{searchKeyword}
+													AND p.prod_price = #{search.searchKeyword}
 												</if>
 											</if>
-						  		    </where> 												 
+						  		    </where> 		
+						  		    AND p.prod_type = 'G'	 									 
 									ORDER BY p.prod_no ) inner_table
-					WHERE ROWNUM &lt;= #{endRowNum} )
-		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+					WHERE ROWNUM &lt;= #{search.endRowNum} )
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum} 
+ 	</select>
+ 	
+ 		<!-- SQL : SELECT LIST -->
+	<select id="getSnackList" parameterType="map" resultMap="productSelectMap">
+		SELECT *
+		FROM	(	SELECT inner_table.* , ROWNUM AS row_seq
+					FROM	(	SELECT p.*, t.tran_code
+								FROM  product p, transaction t				
+									<where>
+										p.prod_no = t.prod_no(+)
+											<if test="searchCondition!=null " >
+												<if test="searchCondition==0  and searchKeyword !=''  and searchKeyword != null">
+													AND p.prod_name	like '%${search.searchKeyword}%'
+												</if> 
+												
+												<if test="searchCondition==1   and searchKeyword !=''  and searchKeyword != null ">
+													AND p.prod_no = #{search.searchKeyword}
+												</if>  					
+												
+												<if test="searchCondition==2  and searchKeyword !=''  and searchKeyword != null">
+													AND p.prod_price = #{search.searchKeyword}
+												</if>
+											</if>
+						  		    </where> 
+						  		    AND p.prod_type = 'S'													 
+									ORDER BY p.prod_no ) inner_table
+					WHERE ROWNUM &lt;= #{search.endRowNum} )
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum} 
  	</select>
  
  	<!-- SQL : SELECT ROW Count -->	 
