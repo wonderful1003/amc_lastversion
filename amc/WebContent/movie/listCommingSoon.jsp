@@ -106,7 +106,7 @@
 		 $(function() {
 			 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$( "#voidSearchIcon").on("click" , function() {
-				fncGetPageList(1);
+				self.location = "/movie/getMovieList?menu=voiceRegniiton";
 			});
 			
 		 });
@@ -130,9 +130,17 @@
 			});	
 		});
 		
+		//============= "WishList(찜) Event 처리"  Event  처리 =============	
+		$(function() {
+			 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$( "#emty-hear" ).on("click" , function() {	
+				 self.location = "/movie/getMovieList?menu=calendar";	
+			});	
+		});
+		
 		
 			
-		//============= prodNo 에 상품정보보기  Event  처리(Click) =============	
+		//============= movieNo 에 영화정보보기  Event  처리(Click) =============	
 		 $(function() {
 					
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
@@ -264,15 +272,19 @@
 							<span><li> 개봉일 : ${movie.openDt }</li></span>						
 				
 						
-						 	 <div style="text-align: center;">
+						 	<div style="text-align: center;"> 
+						 	 
+					 	
     						    							
+   							 <!-- glyphicon glyphicon-heart -->
    							 
-						     <input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'><i class='glyphicon glyphicon-heart'>찜하기 </i>                                                    
+   							
+						     <input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'><i class='glyphicon glyphicon-heart-empty' id='emty-hear'>찜하기 </i>                                                    
                                &nbsp;<input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'>
                              <i class='glyphicon glyphicon-phone-alt'></i> 예매      
-	                         
+	                       
       
-   							</span>
+   						
 							</div>	
 							
 							</a>						    

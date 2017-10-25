@@ -112,15 +112,18 @@ public class MovieController {
 			return "forward:/movie/listCommingSoon.jsp";
 		}
 		else if (request.getParameter("menu").equals("preview")) {
-			modelAndView.setViewName("/movie/listMoviePreview.jsp");
+			//modelAndView.setViewName("/movie/listMoviePreview.jsp");
 			return "forward:/movie/listMoviePreview.jsp";
 		}
 		else if (request.getParameter("menu").equals("search")) {
-			modelAndView.setViewName("/movie/listMovie.jsp");
+			//modelAndView.setViewName("/movie/listMovie.jsp");
 			return "forward:/movie/listMovie.jsp";
 		}
+		else if (request.getParameter("menu").equals("voiceRegniiton")) {
+			//modelAndView.setViewName("/movie/listMovie.jsp");
+			return "forward:/movie/speechMovie.jsp";
+		}
 	
-		
 		return "forward:/movie/listMovie.jsp";
 	}
 
