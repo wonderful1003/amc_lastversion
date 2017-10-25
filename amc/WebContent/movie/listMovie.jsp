@@ -75,7 +75,7 @@
 		
 				
 		
-		//============= prodNo 에 상품정보보기  Event  처리(Click) =============	
+		//============= movieNo 에 영화정보보기  Event  처리(Click) =============	
 		 $(function() {
 					
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
@@ -88,29 +88,8 @@
 				 self.location = "/movie/getMovie?movieNo="+$($(this).find('input')).val()+"&menu=managed";
 
 			});
-						
-			//==> prodNo LINK Event End User 에게 보일수 있도록 
-			$( "td:nth-child(2)" ).css("color" , "red");
-			
-			//==> prodNo LINK Event End User 에게 보일수 있도록 
-			$( "td:nth-child(6)" ).css("color" , "green");
-			
-			});	
-
 		
-			//==> prodNo LINK Event End User 에게 보일수 있도록 
-			$( ".ct_list_pop td:nth-child(3)" ).css("color" , "red");
-			$("h7").css("color" , "red");
-			
-			//==> 아래와 같이 정의한 이유는 ??
-			$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");
-	
-			
-			$('a[data-toggle="tooltip"]').tooltip({
-				    animated: 'fade',
-				    placement: 'bottom',
-				    html: true
-			}); 
+		 });
 
 	</script>
 	
@@ -164,7 +143,7 @@
 	    	
 		</div>
     
-  	<!-- 		
+  		<!-- 		
             <div class="container">
             <div class="container-fluid full-width">
                 <div class="row-fluid">                   
@@ -174,8 +153,7 @@
                     
                 </div>
                 </div>
-            </div>
-	    	
+            </div>	    	
 		</div> -->
 	
 	  <br/>   <br/>   <br/>
@@ -189,7 +167,22 @@
 						<div class="col-xs-6 col-md-4" >
 						<a class='thumbnail' href="/movie/getMovie?movieNo=${movie.movieNo}&menu=search" style="text-decoration:none;">
 							<img src="${movie.postUrl }">
-							<span>${movie.movieNm }</span>
+							<br/>
+								
+								<span><strong>${movie.movieNm }</strong></span>
+							    <span><li> 개봉일 : ${movie.openDt }</li></span>	
+							    
+							    <div style="text-align: center;">
+    						    							
+    							 
+							    <input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'><i class='glyphicon glyphicon-heart'>찜하기 </i>                                                    
+                                &nbsp;<input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'>
+                                <i class='glyphicon glyphicon-phone-alt'></i> 예매      
+	                         
+      
+    							</span>
+								</div>							    
+							    					
 						</a>
 						</div>					
 				</c:forEach>

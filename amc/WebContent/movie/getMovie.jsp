@@ -29,6 +29,21 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<!--  ///////////////////////// CSS ////////////////////////// -->
+<style>
+body {
+      padding-top: 70px;
+      }
+      .thumbnail {
+      width: 300px;
+      height: 250px;
+      overflow: auto;
+}	
+</style>
+    
+
+<!--  ///////////////////////// JavaScript ////////////////////////// -->
+
 <script type="text/javascript">
 	function addOpenAlarm() {
 		$
@@ -239,9 +254,6 @@
 			}
 		})
 		
-		
-			
-			
 			
 		})
 		
@@ -258,18 +270,6 @@
 
 	})
 </script>
-
-<style>
-body {
-	padding-top: 70px;
-}
-
-textarea {
-	rows: 3;
-	cols: 140;
-	resize: none;
-}
-</style>
 
 <body>
 

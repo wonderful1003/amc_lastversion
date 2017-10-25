@@ -53,7 +53,7 @@ public class PurchaseController {
 		
 		model.addAttribute("product", product);
 		
-		return "forward:addPurchaseView.jsp";
+		return "forward:addPurchase.jsp";
 	}
 	
 	@RequestMapping( value="addPurchase", method=RequestMethod.POST )

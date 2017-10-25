@@ -49,7 +49,8 @@
 			});
 
 			$('a.btn-success:contains("구매하러가기")').bind('click',function(){
-				self.location.href = '../purchase/addPurchase?prodNo='+$('input:hidden[name="prodNo"]').val();
+				self.location.href = '/purchase/addPurchase?prodNo='+$('input:hidden[name="prodNo"]').val();
+				co
 			});
 
 		});
@@ -81,7 +82,8 @@
 				</ul>
 			
 			<div class="row" id="tabs-1">
-				<input type="hidden" value="${product.prodType}"/>
+				<input type="hidden" name="prodType" value="${product.prodType}"/>
+				<input type="hidden" name="prodNo" value="${product.prodNo}"/>
 				<div class="col-xs-5">				
 					<c:if test="${!empty product.prodImage}">
 						<img src="../images/uploadFiles/${product.prodImage}" class="img-responsive"/>

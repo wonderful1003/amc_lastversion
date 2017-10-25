@@ -70,11 +70,13 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="row">
+					<input type="hidden" name="prodType" value="${product.prodType}"/>
+					<input type="hidden" name="prodNo" value="${product.prodNo}"/>
 					<div class="col-xs-4">
-						<c:if test="${!empty product.fileName}">
-							<img src="../images/uploadFiles/${product.fileName}" class="img-responsive"/>
+						<c:if test="${!empty product.prodImage}">
+							<img src="../images/uploadFiles/${product.prodImage}" class="img-responsive"/>
 						</c:if>
-						<c:if test="${empty product.fileName}">
+						<c:if test="${empty product.prodImage}">
 							<img src="../images/uploadFiles/empty<%=index%>.GIF" class="img-responsive"/>
 						</c:if>
 					</div>
@@ -84,24 +86,36 @@
 							<dd>${product.prodName}</dd>
 						</dl>
 						<dl class="dl-horizontal">
-							<dt>남은수량</dt>
+							<dt>총 수량</dt>
+							<dd>${product.totalStock} 개</dd>
+						</dl>
+						<dl class="dl-horizontal">
+							<dt>현재 판매량</dt>
+							<dd>${product.salesStock} 개</dd>
+						</dl>
+						<dl class="dl-horizontal">
+							<dt>현재 재고수량</dt>
 							<dd>${product.stock} 개</dd>
 						</dl>
 						<dl class="dl-horizontal">
-							<dt>제조일자</dt>
-							<dd>${product.manuDate}</dd>
+							<dt>판매시작일</dt>
+							<dd>${product.salesOpenDate}</dd>
+						</dl>
+						<dl class="dl-horizontal">
+							<dt>판매종료일</dt>
+							<dd>${product.salesEndDate}</dd>
 						</dl>
 						<dl class="dl-horizontal">
 							<dt>가격</dt>
-							<dd>${product.price} 원</dd>
+							<dd>${product.prodPrice} 원</dd>
 						</dl>
 						<dl class="dl-horizontal">
 							<dt>상세정보</dt>
 							<dd>${product.prodDetail}</dd>
 						</dl>
 						<dl class="dl-horizontal">
-							<dt>등록일자</dt>
-							<dd>${product.regDate}</dd>
+							<dt>상품구성정보</dt>
+							<dd>${product.prodSetInfo}</dd>
 						</dl>
 					</div>
 				</div>
@@ -143,7 +157,9 @@
 					<div class="row">
 						<label for="inputReceiverPhone" class="col-sm-3 control-label">연락처</label>
 						<div class="col-sm-3">
-							<input type="text" class="form-control" id="inputReceiverPhone" name="receiverPhone" value="${user.phone}">
+							<input type="text" class="form-control" id="inputReceiverPhone" name="receiverPhone" value="${user.phone1}">
+							<input type="text" class="form-control" id="inputReceiverPhone" name="receiverPhone" value="${user.phone1}">
+							<input type="text" class="form-control" id="inputReceiverPhone" name="receiverPhone" value="${user.phone1}">
 						</div>
 						<span class="col-sm-6"></span>
 					</div>
@@ -154,22 +170,6 @@
 							<input type="text" class="form-control" id="inputDlvyAddr" name="dlvyAddr" value="${user.addr}" >
 						</div>
 						<span class="col-sm-6"></span>
-					</div>
-					<br/>
-					<div class="row">
-						<label for="inputDlvyDate" class="col-sm-3 control-label">배송희망일</label>
-						<div class="col-sm-3">
-							<input type="text" class="form-control" id="inputDlvyDate" name="dlvyDate" readonly>
-						</div>
-						<span class="col-sm-6"></span>
-					</div>
-					<br/>
-					<div class="row">
-						<label for="inputDlvyRequest" class="col-sm-3 control-label">요청사항</label>
-						<div class="col-sm-6">
-							<input type="text" class="form-control" id="inputDlvyRequest" name="dlvyRequest">
-						</div>
-						<span class="col-sm-3"></span>
 					</div>
 					<br/>
 					<div class="row">
