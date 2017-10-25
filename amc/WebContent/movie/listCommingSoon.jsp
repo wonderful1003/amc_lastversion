@@ -71,9 +71,6 @@
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
 	
-	
-	
-	
 		//=============    검색 / page 두가지 경우 모두  Event  처리 =============	
 		function fncGetPageList(currentPage) {
 			$("#currentPage").val(currentPage)
@@ -110,9 +107,6 @@
 			});
 			
 		 });
-		
-		
-		
 			
 		//============= "캘린더로 보기"  Event  처리 =============	
 		$(function() {
@@ -133,13 +127,22 @@
 		//============= "WishList(찜) Event 처리"  Event  처리 =============	
 		$(function() {
 			 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$( "#emty-hear" ).on("click" , function() {	
+			$("span:contains('찜하기')" ).on("click" , function() {
 				 self.location = "/movie/getMovieList?menu=calendar";	
 			});	
 		});
 		
-		
 			
+		//============= "예약  Event 처리"  Event  처리 =============	
+		$(function() {
+			 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$("span:contains('예매')" ).on("click" , function() {
+				 self.location = "/booking/getScreenMovieList";	
+			});	
+		});
+		
+	
+		
 		//============= movieNo 에 영화정보보기  Event  처리(Click) =============	
 		 $(function() {
 					
@@ -152,31 +155,9 @@
 				 //alert(movieNo);
 				 self.location = "/movie/getMovie?movieNo="+$($(this).find('input')).val()+"&menu=managed";
 
-			});
-						
-			//==> prodNo LINK Event End User 에게 보일수 있도록 
-			$( "td:nth-child(2)" ).css("color" , "red");
-			
-			//==> prodNo LINK Event End User 에게 보일수 있도록 
-			$( "td:nth-child(6)" ).css("color" , "green");
-			
-			});	
+			});				
 
-		
-			//==> prodNo LINK Event End User 에게 보일수 있도록 
-			$( ".ct_list_pop td:nth-child(3)" ).css("color" , "red");
-			$("h7").css("color" , "red");
-			
-			//==> 아래와 같이 정의한 이유는 ??
-			$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");
-	
-			
-			$('a[data-toggle="tooltip"]').tooltip({
-				    animated: 'fade',
-				    placement: 'bottom',
-				    html: true
-			}); 
-
+		 });
 	</script>
 	
 </head>
@@ -200,24 +181,30 @@
 	       <!-- table 위쪽 검색 Start //////F///////////////////////////////-->
 	    <div class="row">
 	    
-		    <div class="col-md-6 text-left">
+		    <%-- <div class="col-md-6 text-left">
 		    	<p class="text-primary">
-		    		전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지
+		    		전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지 
 		    	</p>
-		    </div>
+		    </div> --%>
+		    
+		    <div class="col-md-6 text-left">
+		    	<p class="text-primary">		    		
+		    	</p>
+		    </div> 
+		    
 		    
 		    <div class="col-md-6 text-right">
 			    <form class="form-inline" name="detailForm">
 			     
 			     <!--  <button type="button" class="btn btn-default">검색</button> -->
 			    
-				  <div class="form-group">
+				<%--   <div class="form-group">
 				    <select class="form-control" name="searchCondition" >
 						<!-- <option value="0"  ${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>상품번호</option>   -->
 						<option value="1"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>영화제목</option>
 						<option value="2"  ${ ! empty search.searchCondition && search.searchCondition==2 ? "selected" : "" }>감독</option>
 					</select>
-				  </div>
+				  </div> --%>
 				  
 				  <div class="form-group">
 				    <label class="sr-only" for="searchKeyword">검색어</label>
@@ -254,45 +241,54 @@
 	  
 	  <br/>   <br/>   <br/>
   
+     
 	
 	 <div>
 		<div class="row">
+	      
 		
 			<c:set var="i" value="0"/>
 				<c:forEach var="movie" items="${list}">
 					<c:set var="i" value="${i+1 }"/>
-						<div class="col-xs-6 col-md-4" >
-						<a class='thumbnail' href="/movie/getMovie?movieNo=${movie.movieNo}&menu=commingsoon" style="text-decoration:none;">
-							<img src="${movie.postUrl}">
-						
-							<br/>
+						<div class="col-xs-6 col-md-4" > 	
+							<a class='thumbnail' href="/movie/getMovie?movieNo=${movie.movieNo}&menu=commingsoon" style="text-decoration:none;">
+							<img src="${movie.postUrl}" height="50" width="150">
+							</a>
 							
-							<span><strong>${movie.movieNm }</strong></span>
+							<hr/>
 							
+							<span><strong>${movie.movieNm }</strong></span>							
 							<span><li> 개봉일 : ${movie.openDt }</li></span>						
 				
 						
-						 	<div style="text-align: center;"> 
-						 	 
-					 	
+						    <div style="text-align: left;" >  
+					
     						    							
    							 <!-- glyphicon glyphicon-heart -->
    							 
-   							
-						     <input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'><i class='glyphicon glyphicon-heart-empty' id='emty-hear'>찜하기 </i>                                                    
-                               &nbsp;<input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'>
-                             <i class='glyphicon glyphicon-phone-alt'></i> 예매      
-	                       
-      
-   						
-							</div>	
+   							</div>	
+ 						
 							
-							</a>						    
+					<!-- 		</a>			 -->			    
+							
+						     <!-- <input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'> -->
+						     <span>
+						     <i class='glyphicon glyphicon-heart-empty' id='emty-hear'>찜하기 </i> 
+						     </span>                                                   
+                               &nbsp;&nbsp;
+                             <span>
+                             <input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'>
+                             <i class='glyphicon glyphicon-phone-alt' id='reserve-ticket'>예매 </i>   
+                             </span>
+                             
+                             <hr/>                           
+	  		    
 						
 						</div>	
 										
 				</c:forEach>
-				
+		
+           
 							
 		
 	</div>

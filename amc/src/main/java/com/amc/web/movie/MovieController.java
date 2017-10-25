@@ -76,12 +76,28 @@ public class MovieController {
 		
 		System.out.println("pagesize " + search.getPageSize());
 		System.out.println("search " + search);
+	
 		
-		// Business logic 수행
-		Map<String , Object> map= movieService.getMovieList(search);
+		Map<String , Object> map= movieService.getMovieList(search);	
 		
 		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
-		System.out.println(resultPage);				
+		System.out.println(resultPage);		
+		
+		
+		// Business logic 수행
+		// 관리자 검색인지 일반인 검색인지 확인하기 위한 조건 
+		// "movieTitleSearch"은 일반인 검색에  해당됨 		
+		
+		if(request.getParameter("menu").equals("manage")) {
+			
+		} else {
+			if (search.getSearchKeyword() != null) {				
+				search.setSearchCondition("movieTitleSearch");	
+			}
+				
+		}
+	
+		System.out.println("search condition :: " + search.getSearchCondition());
 		
 		// Model 과 View 연결
 		model.addAttribute("list", map.get("list"));
