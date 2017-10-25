@@ -21,6 +21,6 @@ public interface AlarmService {
 	
 	public String checkOpenAlarm(Alarm alarm);
 	
-	public String smsPush() throws Exception;
+	public String smsPush(String type, String serialNo, String userId) throws Exception;
 
 }

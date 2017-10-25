@@ -1,6 +1,7 @@
 package com.amc.service.alarm.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +32,14 @@ public class AlarmDAOImpl implements AlarmDAO {
 	}
 
 	@Override
-	public List<Alarm> getCancelAlarmList(Search search) {
-		// TODO Auto-generated method stub
+	public List<Alarm> getCancelAlarmList(Map<String,Object> map) {
 		return null;
 	}
 
 	@Override
-	public List<Alarm> getOpenAlarmList(Search search) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Alarm> getOpenAlarmList(Map<String, Object> map) {
+		Search s = (Search)map.get("search");
+		return sqlSession.selectList("AlarmMapper.getOpenAlarmList",map);
 	}
 
 	@Override

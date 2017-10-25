@@ -1,5 +1,8 @@
 package com.amc.web.cinema;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.amc.common.util.RestApiUtil;
 import com.amc.service.cinema.CinemaService;
 
 @RestController
@@ -33,5 +37,4 @@ public class CinemaRestController {
 		
 		return cinemaService.cancelPay(impUid);
 	}
-
 }

@@ -138,7 +138,10 @@
 						preview_title,  TO_CHAR(ticket_opendate-1/(24*60)*30,'YYYY/MM/DD HH24:MI')  ticket_opendate,invite_actor 
 				 <if test="searchKeyword == 'todayRealAlarmTime'">
 				 FROM screencontent WHERE ticket_opendate-1/(24*60)*30
-				 <![CDATA[>=]]> sysdate
+				 <![CDATA[>=]]> sysdate AND
+				 TO_CHAR(ticket_opendate-1/(24*60)*30, 'YYYY/MM/DD') 
+				 <![CDATA[=]]>
+				 TO_CHAR(sysdate, 'YYYY/MM/DD')
 				 </if>
 				 <if test="searchKeyword != 'todayRealAlarmTime'">
 				 FROM screencontent WHERE TO_CHAR(ticket_opendate-1/(24*60)*30,'YYYY/MM/DD HH24:MI:SS')
