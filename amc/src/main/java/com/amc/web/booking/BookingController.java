@@ -1,6 +1,8 @@
 package com.amc.web.booking;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -191,11 +193,33 @@ public class BookingController {
 		return "forward:/booking/listBookingAdmin.jsp";
 	}
 	
+	@RequestMapping( value="getBookingList", method=RequestMethod.GET)
+	public String getBookingList(HttpSession session,Model model) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String,Object>();
+		Search search = new Search();
+		
+		search.setStartRowNum(1);
+		search.setEndRowNum(4);
+		search.setCurrentPage(1);
+		search.setPageSize(3);
+		
+		map.put("search", search);
+		
+		User user = new User();
+		
+		user.setUserId("manager");
+		
+		map.put("user", user);
+		
+		model.addAttribute("booking", bookingService.getUserBookingList(map));
+		
+	    return "forward:/booking/listBooking";
+	}
+	
 	@RequestMapping( value="testCode", method=RequestMethod.GET)
 	public String testCode(HttpSession session) throws Exception {
 
 	    return "redirect:/booking/getPreviewList";
 	}
-	
-	
 }

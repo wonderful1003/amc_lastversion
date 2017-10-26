@@ -32,7 +32,7 @@ public class AlarmDAOImpl implements AlarmDAO {
 
 	@Override
 	public List<Alarm> getCancelAlarmList(Map<String,Object> map) {
-		return null;
+		return sqlSession.selectList("AlarmMapper.getCancelAlarmList",map);
 	}
 
 	@Override
@@ -42,12 +42,12 @@ public class AlarmDAOImpl implements AlarmDAO {
 
 	@Override
 	public int deleteCancelAlarm(Alarm alarm) {
-		return sqlSession.delete("AlarmMapper.deleteCancelAlarm",alarm);
+		return sqlSession.delete("AlarmMapper.deleteAlarm",alarm);
 	}
 
 	@Override
 	public int deleteOpenAlarm(Alarm alarm) {
-		return sqlSession.delete("AlarmMapper.deleteOpenAlarm", alarm);
+		return sqlSession.delete("AlarmMapper.deleteAlarm", alarm);
 	}
 
 	@Override

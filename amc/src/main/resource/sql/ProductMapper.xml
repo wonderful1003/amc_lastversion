@@ -28,7 +28,7 @@
   	<select id="uniProductList" parameterType="string" resultMap="productSelectMap">
 		SELECT prod_no, prod_regdate, prod_type, prod_name, prod_price, prod_image
 		FROM Product
-		WHERE prod_name LIKE '%${value}%'
+		WHERE prod_name LIKE '%${value}%' AND prod_type != 'D'
 	</select>
 	
 	<!-- SQL : SELECT LIST -->
@@ -40,6 +40,7 @@
 			FROM	(SELECT inner.*, ROWNUM rn
 				 			FROM(SELECT prod_no, prod_type, prod_name, prod_price, prod_image
 								 FROM product
+								 WHERE prod_type != 'D'
 			ORDER BY prod_regdate DESC)inner)outer
 			WHERE outer.rn BETWEEN '1' AND '3'
 		</if>
@@ -50,6 +51,7 @@
 			FROM	(SELECT inner.*, ROWNUM rn
 				 			FROM(SELECT prod_no, prod_type, prod_name, prod_price, prod_image
 								 FROM product
+								 WHERE prod_type != 'D'
 			ORDER BY sales_stock DESC, prod_regdate DESC)inner)outer
 			WHERE outer.rn BETWEEN '1' AND '3'
 		</if>

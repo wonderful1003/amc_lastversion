@@ -2,6 +2,7 @@ package com.amc.service.booking;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.codehaus.jettison.json.JSONException;
 
@@ -39,9 +40,5 @@ public interface BookingService {
 	
 	public void sendPhoneQR(String bookingNo, String phone);
 	
-	
-
-	
-
-
+	public Map<String,Object> getUserBookingList(Map<String,Object> map);
 }

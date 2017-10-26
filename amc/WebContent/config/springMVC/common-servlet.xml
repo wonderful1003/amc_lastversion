@@ -59,6 +59,9 @@
    	<mvc:resources mapping="/images/**" location="/images/" />
    	<mvc:resources mapping="/javascript/**" location="/javascript/" />
    	
+   	<!-- 시멘틱 UI 적용을 위해서 설정 -->
+   	<mvc:resources mapping="/semantic/**" location="/semantic/" />
+   	
    	<!-- z_YJ : 부트스트랩테마 적용을 위해서 설정 -->
    	<mvc:resources mapping="/cinema/**" location="/cinema/" />
 	 

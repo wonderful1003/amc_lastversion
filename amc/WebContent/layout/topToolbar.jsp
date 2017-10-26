@@ -25,7 +25,6 @@
 	<!--  해림 CDN 순서변경-->
 	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->	
-	<link rel="stylesheet" href="/resources/demos/style.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
@@ -144,6 +143,23 @@
 	             
 	             
 	             <ul class="nav navbar-nav navbar-right">
+	             <li>
+	             	<div></div>
+	             </li>
+	             <li>
+	             	<div></div>
+	             </li>
+	             <li>
+	             	<div></div>
+	             </li>
+	             <li>
+	           		<div style = margin:10px>
+						<form class="form-inline" action="/cinema/unifiedSearch" method="post" role="form">
+							<input type="text" class="form-control" name="searchKeyword" placeholder="통합검색">
+							<input type="button" class="form-control" value="검색" onClick="javascript:unifiedSearch()">
+						</form>
+					</div>  
+	          	 </li>
 	             <!-- 유저가 로그인 상태일 시 -->
 <%-- 	             	<c:if test="${sessionScope.user ne null }">
 		             	<li title="Click : 개인정보 수정"><a href="#">ID : [${sessionScope.user.userId }]</a></li>
@@ -159,7 +175,7 @@
 		             	</li>
 		             	<input type="button" value="로그인">
 	             	</c:if>
- --%>	            </ul>
+--%>	         </ul>
 	           	 <!-- 유저가 비로그인 상태일 시 -->	
 	 			<c:if test="${empty user}">		
 	 				<li>			
@@ -176,14 +192,11 @@
 				<c:if test="${!empty user}">
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="#" class="user-info">${sessionScope.user.userName}</a>
-						<li><a href="#">마이페이지</a></li>
+						<li><a href="/cinema/myPage.jsp">마이페이지</a></li>
 						<li><a href="#">로그아웃</a></li>
 					</ul>
 				</c:if> 
-				<form action="/cinema/unifiedSearch" method="post">
-					<input type="text" name="searchKeyword" placeholder="통합검색">
-					<input type="button" value="검색!" onClick="javascript:unifiedSearch()">
-				</form>          
+        
 		</div>
 		<!-- dropdown hover END -->	       
 	</div>

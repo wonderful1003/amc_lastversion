@@ -245,7 +245,7 @@
 	<select id="uniMovieList" parameterType="search" resultMap="movieSelectMap">
 		SELECT *
 	        FROM (   SELECT inner_table.* , ROWNUM AS row_seq
-	                    FROM      (   SELECT movie_no, movie_title, poster
+	                    FROM      (   SELECT movie_no, movie_title, poster, to_char(movie_opendate, 'yy/mm/dd') movie_opendate
 	                                  FROM   movie 
 	                                   <if test="searchCondition != null">
 	                                    <where>

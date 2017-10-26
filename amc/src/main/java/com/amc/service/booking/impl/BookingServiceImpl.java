@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
-
+import java.util.Map;
 
 import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -219,7 +219,10 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public void sendPhoneQR(String bookingNo, String phone) {
 	}
-
-
+	
+	@Override
+	public Map<String, Object> getUserBookingList(Map<String, Object> map) {
+		return bookingDAO.getUserBookingList(map);
+	}
 	
 }
