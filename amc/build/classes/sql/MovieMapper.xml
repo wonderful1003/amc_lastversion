@@ -144,12 +144,24 @@
 	<select id="getMovieList" parameterType="search" resultMap="movieSelectMap">
 		SELECT *
 		FROM ( SELECT inner_table.*, ROWNUM AS row_seq
-		FROM (SELECT movie_no, movie_regdate, movie_opendate,movie_enddate,movie_title,
-		             poster,director,actor,genre,rating,runningtime,synopsis,steelcut,
+		FROM (SELECT movie_no, 
+					 TO_CHAR(movie_regdate, 'YYYY-MM-DD')  movie_regdate, 
+					 TO_CHAR(movie_opendate, 'YYYY-MM-DD') movie_opendate,
+					 TO_CHAR(movie_enddate, 'YYYY-MM-DD') ovie_enddate,
+					 movie_title,
+		             poster,
+		             director,
+		             actor,
+		             genre,
+		             rating,
+		             runningtime,
+		             synopsis,
+		             steelcut,
 	  			     trailer FROM   movie 
 		
-		<if test="searchCondition != null">
-			
+		<if test="searchCondition != null" >
+		
+			    
 				<if test="searchCondition == 1 and searchKeyword != '' ">
 					WHERE movie_title LIKE '%'||#{searchKeyword}||'%'
 				</if>
@@ -169,6 +181,46 @@
 
 	</select>
 	
+	<select id="getMovieList_MovieTitle" parameterType="search" resultMap="movieSelectMap">
+		SELECT *
+		FROM ( SELECT inner_table.*, ROWNUM AS row_seq
+		FROM (SELECT movie_no, 
+					 TO_CHAR(movie_regdate, 'YYYY-MM-DD') movie_regdate, 
+					 TO_CHAR(movie_opendate, 'YYYY-MM-DD') movie_opendate,
+					 TO_CHAR(movie_enddate, 'YYYY-MM-DD') movie_enddate,
+					 movie_title,
+		             poster,
+		             director,
+		             actor,genre,
+		             rating,
+		             runningtime,
+		             synopsis,
+		             steelcut,
+	  			     trailer FROM   movie 
+		
+	 		<if test="searchKeyword != null" >
+				WHERE movie_title LIKE '%'||#{searchKeyword}||'%'
+			</if> 
+
+		ORDER BY movie_no ) inner_table
+		WHERE ROWNUM &lt;= #{endRowNum})
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+
+	</select>
+	
+	 
+	<select id="getMovieList_MovieTitle_Count" parameterType="search" resultType="int">
+		SELECT COUNT(*)
+		FROM(SELECT  movie_no, movie_regdate, movie_opendate,movie_enddate,movie_title,
+	  					poster,director,actor,genre,rating,runningtime,synopsis,steelcut,trailer
+	  					FROM movie
+		
+			<if test="searchKeyword != null" >
+				WHERE movie_title LIKE '%'||#{searchKeyword}||'%'			
+			
+		</if>) countTable
+	</select>
+	 
 	 
 
 	<select id="getTotalCount" parameterType="search" resultType="int">

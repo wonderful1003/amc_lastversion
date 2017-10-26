@@ -22,7 +22,7 @@
 		<result property="calendarType" 	column="sl_yn" 				jdbcType="CHAR"/>
 		<result property="gender" 			column="gender" 			jdbcType="CHAR"/>
 		<result property="deleteUserFlag" 	column="deleteuser_flag" 	jdbcType="CHAR"/>		
-		<result property="uuId" 			column="uuser_id" 			jdbcType="VARCHAR"/>	
+		<result property="uuId" 			column="uuid" 			jdbcType="VARCHAR"/>	
 	</resultMap>
 	
 	<!-- SQL : INSERT -->

@@ -31,8 +31,9 @@
 	<!-- 스프링 스케줄러 -->
 	<task:annotation-driven />
 	
-	<task:scheduler id="scheduler" pool-size="10"/>
-	<task:executor id="executor" pool-size="10"/>
+	
+	<!-- <task:scheduler id="scheduler" pool-size="10"/>
+	<task:executor id="executor" pool-size="10"/> -->
 
 	
 	 <!-- <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" >

@@ -50,6 +50,19 @@
             height: 250px;
             overflow: auto;
       }	
+      
+      #searchIcon
+       {    color: #fff;       		
+    		text-shadow: 1px 1px 1px #ccc;
+    		font-size: 1.5em;
+       }
+       
+     #voidSearchIcon
+       {    color: #fff;       		
+    		text-shadow: 1px 1px 1px #ccc;
+    		font-size: 1.5em;
+       }
+      
     </style>
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
@@ -73,7 +86,41 @@
 			
 		 });
 		
+		//============= "검색 Icon"  Event  처리 =============	
+		 $(function() {
+			 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$( "#searchIcon").on("click" , function() {
+				fncGetPageList(1);
+			});
+			
+		 });
+		
+		//============= "음성 검색 Icon"  Event  처리 =============	
+		 $(function() {
+			 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$( "#voidSearchIcon").on("click" , function() {
+				self.location = "/movie/getMovieList?menu=voiceRegniiton";
+			});
+			
+		 });
+		
+		//============= "WishList(찜) Event 처리"  Event  처리 =============	
+			$(function() {
+				 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+				$("span:contains('찜하기')" ).on("click" , function() {
+					 self.location = "/movie/getMovieList?menu=calendar";	
+				});	
+			});
+			
 				
+			//============= "예약  Event 처리"  Event  처리 =============	
+			$(function() {
+				 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+				$("span:contains('예매')" ).on("click" , function() {
+					 self.location = "/booking/getScreenMovieList";	
+				});	
+			});
+			
 		
 		//============= movieNo 에 영화정보보기  Event  처리(Click) =============	
 		 $(function() {
@@ -111,21 +158,27 @@
 	    <!-- table 위쪽 검색 Start //////F///////////////////////////////-->
 	    <div class="row">
 	    
-	       <div class="col-md-6 text-left">
+	      <%--    <div class="col-md-6 text-left">
 		    	<p class="text-primary">
 		    		전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지
 		    	</p>
-		    </div>
+		    </div> --%>
+		    
+		    <div class="col-md-6 text-left">
+		    	<p class="text-primary">
+		    		
+		    	</p>
+		    </div> 
 	    
 	       <div class="col-md-6 text-right">
 			    <form class="form-inline" name="detailForm">
 			    
-				  <div class="form-group">
+				 <%--   <div class="form-group">
 				    <select class="form-control" name="searchCondition" >
 						<option value="1"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>영화제목</option>
 						<option value="2"  ${ ! empty search.searchCondition && search.searchCondition==2 ? "selected" : "" }>감독</option>
 					</select>
-				  </div>
+				  </div> --%>
 				  
 				  <div class="form-group">
 				    <label class="sr-only" for="searchKeyword">검색어</label>
@@ -133,7 +186,13 @@
 				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
 				  </div>
 				  
-				  <button type="button" class="btn btn-default">검색</button>
+				   		
+				  <i class='glyphicon glyphicon-search' id="searchIcon" style="color:grey"></i>  &nbsp; 	
+				  <i class='glyphicon glyphicon-volume-up' id="voidSearchIcon" style="color:grey"></i>	  
+				
+		
+				  
+				<!--   <button type="button" class="btn btn-default">검색</button> -->
 				  
 				  <!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
 				  <input type="hidden" id="currentPage" name="currentPage" value=""/>
@@ -167,23 +226,30 @@
 						<div class="col-xs-6 col-md-4" >
 						<a class='thumbnail' href="/movie/getMovie?movieNo=${movie.movieNo}&menu=search" style="text-decoration:none;">
 							<img src="${movie.postUrl }">
-							<br/>
+						</a>
+						
+						<hr/>
 								
 								<span><strong>${movie.movieNm }</strong></span>
 							    <span><li> 개봉일 : ${movie.openDt }</li></span>	
 							    
-							    <div style="text-align: center;">
-    						    							
+							    <div style="text-align: left;">
+    						    
+    						    </div>								
     							 
-							    <input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'><i class='glyphicon glyphicon-heart'>찜하기 </i>                                                    
-                                &nbsp;<input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'>
-                                <i class='glyphicon glyphicon-phone-alt'></i> 예매      
-	                         
+							    <span>
+							     <i class='glyphicon glyphicon-heart-empty' id='emty-hear'>찜하기 </i> 
+							     </span>                                                   
+	                               &nbsp;&nbsp;
+	                             <span>
+	                             <input type='hidden' name='screenMovieNo' value='"+val.movieNo+"'>
+	                             <i class='glyphicon glyphicon-phone-alt' id='reserve-ticket'>예매 </i>   
+	                             </span>
+	                             
+                             <hr/>       
       
-    							</span>
-								</div>							    
-							    					
-						</a>
+    						
+					
 						</div>					
 				</c:forEach>
 		

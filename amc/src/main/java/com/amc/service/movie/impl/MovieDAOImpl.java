@@ -70,10 +70,19 @@ public class MovieDAOImpl implements MovieDAO {
 			System.out.println((Movie)m);
 		}*/
 		
-		List<Movie> list = sqlSession.selectList("MovieMapper.getMovieList",search);
+		if (search.getSearchKeyword() != null) {
+			System.out.println("MovieDAOImpl called check 111111111111...");
+			
+			List<Movie> list = sqlSession.selectList("MovieMapper.getMovieList_MovieTitle",search);
+			return (sqlSession.selectList("MovieMapper.getMovieList_MovieTitle",search));
+		} else {
+			List<Movie> list = sqlSession.selectList("MovieMapper.getMovieList",search);
+			return (sqlSession.selectList("MovieMapper.getMovieList",search));
+		}
+		
 		//System.out.println("list value show :: " + ((Movie)list.get(0)).toString());
 		
-		return (sqlSession.selectList("MovieMapper.getMovieList",search));
+		// return (sqlSession.selectList("MovieMapper.getMovieList",search));
 	}
 	
 
@@ -268,8 +277,14 @@ public class MovieDAOImpl implements MovieDAO {
 	}
 
 	@Override
-	public int getTotalCount(Search search) throws Exception {		
-		return sqlSession.selectOne("MovieMapper.getTotalCount",search);
+	public int getTotalCount(Search search) throws Exception {
+		
+		if (search.getSearchKeyword() != null) {
+			return (sqlSession.selectOne("MovieMapper.getMovieList_MovieTitle_Count",search));
+		} else {
+			List<Movie> list = sqlSession.selectList("MovieMapper.getMovieList",search);
+			return (sqlSession.selectOne("MovieMapper.getTotalCount",search));
+		}
 	}
 	
 	

@@ -35,9 +35,6 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 	
-	<!--  ///////////////////////// Sweetalert CDN ////////////////////////// -->
-	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-	
 <script>
 //imp초기화는 페이지 첫단에 해주는게 좋음
 IMP.init('imp41659269');
@@ -145,7 +142,6 @@ IMP.init('imp41659269');
 	}
 	
 
-	
 </script>
 <body>
 <h2>[예매3단계] 결제를 위한 창입니다.</h2>

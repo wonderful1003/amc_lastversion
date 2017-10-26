@@ -180,7 +180,7 @@
 						<li><a href="#">로그아웃</a></li>
 					</ul>
 				</c:if> 
-				<form>
+				<form action="/cinema/unifiedSearch" method="post">
 					<input type="text" name="searchKeyword" placeholder="통합검색">
 					<input type="button" value="검색!" onClick="javascript:unifiedSearch()">
 				</form>          
@@ -200,9 +200,7 @@
 	   	}
 	   	
 	   	function unifiedSearch(){
-	   		//POST로 바꿔야함
 	   		$("form").attr("method" , "POST").attr("action" , "/cinema/unifiedSearch").submit();
-	   		/* $(self.location).attr("href","/cinema/unifiedSearch"); */
 	   	}
    	
 		

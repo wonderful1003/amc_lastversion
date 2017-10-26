@@ -31,22 +31,39 @@
             input[disabled] {
                 cursor: default;
             }
+            
+            #voidSearchOk
+	        {   color: #fff;       		
+	    		text-shadow: 1px 1px 1px #ccc;
+	    		font-size: 4.0em;
+	        }
+	        
+	        #voidSearchNo
+	        {   color: #fff;       		
+	    		text-shadow: 1px 1px 1px #ccc;
+	    		font-size: 2.5em;
+	        }
+	         
         </style>
         
         <script type="text/javascript">
    
         function fncWebSpeech() {
     		// document.addPurchase.submit();
-    		$("form").attr("method","POST").attr("action","/product/json/getOperation").submit();
+    		$("form").attr("method","POST").attr("action","/movie/getMovieList?menu=search").submit();
+    		
+    		
+    		search.searchCondition=1 
+    		search.searchKeyword=$("#voidSearchOk").val(speechTranscript.value);
     	}
     	
     	$(function() {
     			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
     			//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
-    			 $( "#btn-confirm" ).on("click" , function() {
+    			 $( "#voidSearchOk" ).on("click" , function() {
     					//Debug..
     					// <!-- <a href="javascript:history.go(-1)"></a> -->
-    					console.log("value : "+$("#btn-confirm" ).val());
+    					//console.log("value : "+$("#voidSearchOk" ).val());
     					fncWebSpeech()
     			});
     	});	
@@ -78,38 +95,57 @@
         </script>
 </head>
 <body>
+
+	<!-- ToolBar Start /////////////////////////////////////-->
+	<jsp:include page="/layout/topToolbar.jsp" />
+   	<!-- ToolBar End /////////////////////////////////////-->
+
+	<br/> <br/> <br/> <br/> <br/> <br/>
+	
+
     <noscript>Please <a href="http://www.enable-javascript.com/" target="_blank">enable JavaScript</a>. Thank You! :D</noscript>
     <div class="content">
-        <h3 class="yes">영화  예약 시스템 음성 인식 테스팅 중....</h3>
+        <h3 class="yes">영화 음성 검색 중....</h3>
         <h3 class="no">인터넷 익스플로우는 지원되지 않는 Browser 입니다.</h3>
     
     </div>  
       
 <form id="webspeech"  method="POST">  
 	<br/> <br/>
+	
+	   <img src="../images/movie/speechListening2.gif">    
 
 	<div class="widget" >
+	
+	
 	    
         <div class="example">
-                            영화 검색 :
-            <input type="search" name="abc" id="speech-transcript">
-          
+             <!--   영화 검색 : -->
+            <input type="search" name="abc" id="speech-transcript">          
                      
-            <input type="button" value="클릭후 말해주세요 " id="speech-btn">
+            <input type="button" value="클릭후 말해주세요 " id="speech-btn">            
+               
         </div>
-
-  	<div> <button id="btn-confirm"  value="">확인</button></div>
-  	<div> <button id="abc"  value="">확인</button></div>
-      
+        
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  
+    <i class='glyphicon glyphicon-ok' id="voidSearchOk" style="color:green"></i>  &nbsp;&nbsp;&nbsp;&nbsp;	
+   <!--  <i class='glyphicon glyphicon-remove' id="voidSearchNo" style="color:red"></i>	 -->
+    
+	
+  	
+  	<div class="form-group">    
+    	<input type="hidden" class="form-control" id="searchCondition" name="searchCondition"  value="1" > 
+        <input type="hidden" class="form-control" id="searchKeyword" name="searchKeyword"      value="" > 
+    			
     </div>
     
-</form>    
-        
+ </div>
+ </form>
+<script>
     
+    var speech_text ="";   
     
-    <script>
-    var speech_text ="";
-        (function (window, undefined) {
+        (function speechFunction(window, undefined) {
             "use strict";
             var speechBtn = document.getElementById('speech-btn'),
                 SpeechRecognition = window.webkitSpeechRecognition ||
@@ -128,7 +164,8 @@
                 });
                 sr.onaudiostart = function () {
                     speechBtn.setAttribute('disabled', 'disabled');
-                    speechBtn.value = "말해주세요!";
+                    speechBtn.value = "말해주세요!";                             
+                    
                 };
                 sr.onspeechstart = function () {
                     speechBtn.value = "듣고 있습니다....";
@@ -144,8 +181,13 @@
                     speechTranscript.value = event.results[0][0].transcript;
                    
                     console.log("speechTranscript :: " + speechTranscript.value);
-                    $("#btn-confirm").val(speechTranscript.value);
-                    alert("speeach2 : "+$("#btn-confirm").val());
+                    $("#voidSearchOk").val(speechTranscript.value);
+                    //alert("speeach2 : "+$("#voidSearchOk").val()); 
+                    
+                    var voiceSearch = $("#voidSearchOk").val();
+                    $("#searchKeyword").val(voiceSearch);
+                    //alert("speeach2"  + voiceSearch);                  
+                    
                 };
             }
             
@@ -154,5 +196,6 @@
         })(window);
           
     </script>
+    
 </body>
 </html>

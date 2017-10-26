@@ -1,8 +1,11 @@
 package com.amc.web.alarm;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 
 import com.amc.common.Search;
+import com.amc.common.util.RestApiUtil;
 import com.amc.service.domain.ScreenContent;
 import com.amc.service.screen.ScreenService;
 
@@ -24,12 +28,17 @@ public class AlarmPush implements ApplicationContextAware{
 	SimpleDateFormat dateFormat;
 	Calendar calendar;
 	private static ApplicationContext applicationContext;
+	
+	RestApiUtil restApiUtil;
+	Map<String,String> header = new HashMap<String,String>();
+	Map<String,Object> body = new HashMap<String,Object>();
+	
 
 	public AlarmPush() {
 		this.dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	}
 
-	public void run() {
+	public void run() throws IOException {
 
 		calendar = Calendar.getInstance();
 
@@ -37,10 +46,19 @@ public class AlarmPush implements ApplicationContextAware{
 
 		Search search = new Search();
 		search.setSearchKeyword(dateFormat.format(calendar.getTime()));
-		System.out.println(dateFormat.format(calendar.getTime()));
 
 		List<ScreenContent> list = screenService.getTodayTicketOpenList(search);
-		System.out.println(list.get(0).getPreviewTitle());
+		for (ScreenContent screenContent : list) {
+			
+			restApiUtil = new RestApiUtil("http://127.0.0.1:8080/alarm/json/push/openAlarm?serialNo="
+											+screenContent.getScreenContentNo(), "GET");
+			
+			header.put("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+			
+			restApiUtil.restApiResponse(header, body);
+			
+		}
+		restApiUtil.disConnection();
 	}
 
 	@Override
