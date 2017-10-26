@@ -22,6 +22,13 @@
    
     <!-- Bootstrap Dropdown Hover JS -->
    <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
+   
+   	<!--   Sweetalert CDN  -->
+	<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+	
+	<!--   Sweetalert2 CDN  -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.all.min.js"></script>
+	
 
 <title>selectScreenMovie.jsp</title>
 
@@ -31,9 +38,7 @@
 			$("input[name='seats']").val(event.data);
 			alert("event.data[0] : "+event.data[0]);
 			alert("event.data[0][0] : "+event.data[0][0]);
-				  
 		}
-		
 		
 		if (window.addEventListener){
 			  addEventListener("message", listener, false);
@@ -44,6 +49,37 @@
 		function requestPay() {			
 			$("form").attr("method" , "POST").attr("action" , "/booking/requestPay").submit();
 		}
+		
+		function addCancelAlarm(){
+			$.ajax({
+			    		url: "/alarm/json/addCancelAlarm/",
+			    		type: 'POST',
+			    	}).done(function(result) {
+			    		alert("result : " + result);
+			    		if ( result == 'success' ) {
+			    			var msg = '취소표 알림 신청 성공';
+			    			swal({
+			    				  //position: 'top-right',
+			    				  type: 'success',
+			    				  title: '취소표 알림 신청 성공!',
+			    				  showConfirmButton: true,
+			    				  timer: 2000
+			    				})
+			    		} else if( result == 'exceed'){
+			    			swal(
+			    					  '취소표알림 자리 수 초과!',
+			    					  '신청 가능한 취소표알림 수 초과 (최대 4 좌석)',
+			    					  'error'
+			    					)
+			    		} else {
+			    			swal(
+			    					  '중복 좌석 신청!',
+			    					  '신청한 좌석 중 기존에 중복된 좌석이 있습니다.'+"\n"+result,
+			    					  'error'
+			    					)
+			    		}
+			    	});
+		}	
 			
 		
 </script>
@@ -59,6 +95,9 @@
 					  <p>Your browser does not support iframes.</p>
 			</iframe>
 		<h2>취소표알리미를 신청하실 좌석번호는 : <input type="text" name="seats" value=""></h2>
+		
+		<input type="button" value="취소표 알림 신청" onClick="javascript:addCancelAlarm()">
+		
 	</form>
 	</body>
 </html>

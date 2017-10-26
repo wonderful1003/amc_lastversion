@@ -22,6 +22,7 @@ import com.amc.service.alarm.AlarmService;
 import com.amc.service.cinema.CinemaService;
 import com.amc.service.domain.Alarm;
 import com.amc.service.domain.ScreenContent;
+import com.amc.service.domain.User;
 import com.amc.service.screen.ScreenDAO;
 
 @Service("alarmServiceImpl")
@@ -57,15 +58,80 @@ public class AlarmServiceImpl implements AlarmService {
 	ObjectMapper om = new ObjectMapper();
 
 	@Override
-	public int addCancelAlarm(Alarm alarm) {
+	public String addCancelAlarm(Alarm alarm) {
 
-		return 0;
+		alarm.setAlarmSeatNo("1,2,3,4,10,20");
+		
+		///////test User와 screenContentNo//////
+		User user = new User();
+		ScreenContent sc = new ScreenContent();
+		user.setUserId("리신");
+		sc.setScreenContentNo(10260);
+		alarm.setUser(user);
+		alarm.setScreenContent(sc);
+		alarm.setAlarmFlag("C");
+		////////////////////////////////////////
+		
+		//요청한 좌석 리스트
+		List<String> requestSeatList = new ArrayList<String>();
+		//중복된 좌석 리스트
+		List<String> duplicationList = new ArrayList<String>();
+		
+		String[] temp = alarm.getAlarmSeatNo().split(",");
+		for(int i = 1; i<temp.length+1; i++){
+			if(i%2 == 0){
+				requestSeatList.add(temp[i-2]+","+temp[i-1]);
+			}
+		}
+		
+		System.out.println("requestSeatList::"+requestSeatList);
+		
+		//신청+기존의 신청좌석 수가 4개 이상인지 먼저 체크
+		if(requestSeatList.size()+Integer.parseInt(alarmDAO.checkCancelAlarm(alarm)) > 4){
+			System.out.println("4자리 이상 신청하였습니다.");
+			return "exceed";
+		}else{
+			for (String alarmSeatNo : requestSeatList) {
+				alarm.setAlarmSeatNo(alarmSeatNo);
+				if(alarmDAO.checkDuplicationSeat(alarm) != null){
+					duplicationList.add(alarmSeatNo);
+				}
+			}
+			if(duplicationList.size()==0){ //중복된 자석이 하나도 없으면
+				for (String alarmSeatNo : requestSeatList) {
+				alarm.setAlarmSeatNo(alarmSeatNo);
+				alarmDAO.addCancelAlarm(alarm);
+				}
+				return "success";
+				
+			}else{
+				System.out.println("////////중복좌석 리스트/////////");
+				System.out.println(duplicationList.toString());
+				System.out.println("////////중복좌석 리스트/////////");
+				return duplicationList.toString();
+			}
+
+		}
 	}
 
 	@Override
 	public int addOpenAlarm(Alarm alarm) {
 
 		return alarmDAO.addOpenAlarm(alarm);
+	}
+	
+	@Override
+	public String switchOpenAlarm(Alarm alarm) {
+		
+		alarm.setAlarmFlag("O");
+		
+		if(this.checkOpenAlarm(alarm).equals("0")){
+			this.addOpenAlarm(alarm);
+			return "add";
+		}else{
+			this.deleteOpenAlarm(alarm);
+			return "delete";
+		}
 	}
 
 	@Override
@@ -82,13 +148,11 @@ public class AlarmServiceImpl implements AlarmService {
 
 	@Override
 	public int deleteCancelAlarm(Alarm alarm) {
-
-		return 0;
+		return alarmDAO.deleteCancelAlarm(alarm);
 	}
 
 	@Override
 	public int deleteOpenAlarm(Alarm alarm) {
-
 		return alarmDAO.deleteOpenAlarm(alarm);
 	}
 
@@ -223,7 +287,7 @@ public class AlarmServiceImpl implements AlarmService {
 		case "openAlarm":
 			ScreenContent sc = screenDAO.getScreenContent(Integer.parseInt(serialNo));
 			pushValue.put("subject", "티켓 오픈 알림!");
-			pushValue.put("content", "[티켓 오픈 알림]"+sc.getPreviewTitle());
+			pushValue.put("content", "[티켓 오픈 알림]"+sc.getPreviewTitle()+"\n 30분 후 티켓 오픈!");
 			break;
 		case "cancelAlarm":
 

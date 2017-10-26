@@ -62,15 +62,39 @@
 					#{alarmFlag} )
 	</insert>
 	 
-	<delete id="deleteOpenAlarm" parameterType="alarm">
+	<delete id="deleteAlarm" parameterType="alarm">
 		DELETE
 		FROM alarm
 		WHERE screencontent_no = #{screenContent.screenContentNo} AND user_id = #{user.userId}
+		<if test="alarmSeatNo != null">
+			AND alarm_flag = 'C'
+		</if>
+		<if test="alarmSeatNo == null">
+			AND alarm_flag = 'O'
+		</if>
 	</delete>
 	 
 	<select id="checkOpenAlarm"	parameterType="alarm" resultType="string">
-	 	SELECT count(*) FROM alarm WHERE screencontent_no = #{screenContent.screenContentNo} AND user_id = #{user.userId}
+	 	SELECT count(*) 
+	 	FROM alarm 
+	 	WHERE screencontent_no = #{screenContent.screenContentNo} AND 
+	 		  user_id = #{user.userId} AND alarm_flag = 'O'
 	</select>
+	
+	<select id="checkCancelAlarm"	parameterType="alarm" resultType="string">
+	 	SELECT count(*) 
+	 	FROM alarm 
+	 	WHERE screencontent_no = #{screenContent.screenContentNo} AND 
+			  user_id = #{user.userId} AND alarm_flag = 'C'
+	</select>
+	
+	<select id="checkDuplicationSeat"	parameterType="alarm" resultType="string">
+	 	SELECT alarmseat_no 
+	 	FROM alarm 
+	 	WHERE screencontent_no = #{screenContent.screenContentNo} 
+	 	AND user_id = #{user.userId} AND alarm_flag = 'C' AND alarmseat_no = #{alarmSeatNo}
+	</select>
+	
 	
 	<select  id="getOpenAlarmList"  parameterType="map"	 resultMap="alarmSelectMap">
 		
@@ -78,7 +102,7 @@
 		<if test="search.searchCondition == 'openAlarm'">
 			SELECT inner.alarm_no, inner.screencontent_no, inner.user_id, inner.alarm_regdate, inner.alarm_flag, u.phone1, u.phone2, u.phone3, u.uuid
 			FROM (SELECT * 
-				  FROM alarm WHERE screencontent_no = ${search.searchKeyword})inner, users u
+				  FROM alarm WHERE screencontent_no = ${search.searchKeyword} AND alarm_flag = 'O')inner, users u
 			WHERE inner.user_Id = u.user_Id
 		</if>
 		
@@ -88,7 +112,7 @@
 		 	FROM alarm 
 			WHERE 
 			<if test="user.userId != ''">
-				user_id = #{user.userId}
+				user_id = #{user.userId} AND alarm_flag = 'O'
 			</if>
 		</if> 
  	</select>
