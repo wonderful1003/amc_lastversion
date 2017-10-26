@@ -607,6 +607,9 @@
                     $("select[name='screenTheater']").on("click", function() {
                         fncNotEmptyScreenContent();
                     })
+                    $("button[name='contentList']").on("click", function () {
+                    	$(self.location).attr("href","/screen/getScreenList");
+					})
 
                 })
                 
@@ -759,6 +762,8 @@
                         <div id="checkDupTime" style="background-color:lightgray;"> </div>
 
                     </form>
+                   <p align="middle"><button type="button" class="btn btn-primary" name="contentList">상영목록으로 가기</button> </p>
+                    <div></div>
                 </div>
             </div>
         </body>

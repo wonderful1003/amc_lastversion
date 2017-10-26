@@ -42,12 +42,12 @@ public class AlarmDAOImpl implements AlarmDAO {
 
 	@Override
 	public int deleteCancelAlarm(Alarm alarm) {
-		return sqlSession.delete("AlarmMapper.deleteCancelAlarm",alarm);
+		return sqlSession.delete("AlarmMapper.deleteAlarm",alarm);
 	}
 
 	@Override
 	public int deleteOpenAlarm(Alarm alarm) {
-		return sqlSession.delete("AlarmMapper.deleteOpenAlarm", alarm);
+		return sqlSession.delete("AlarmMapper.deleteAlarm", alarm);
 	}
 
 	@Override

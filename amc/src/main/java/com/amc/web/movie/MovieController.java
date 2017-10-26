@@ -31,7 +31,11 @@ import com.amc.common.Page;
 import com.amc.common.Search;
 import com.amc.common.util.CommonUtil;
 import com.amc.service.domain.Movie;
+import com.amc.service.domain.ScreenContent;
 import com.amc.service.movie.MovieService;
+import com.amc.service.screen.ScreenService;
+
+import sun.print.resources.serviceui;
 
 //==> 영화관리  Controller
 @Controller
@@ -42,7 +46,11 @@ public class MovieController {
 	@Autowired
 	@Qualifier("movieServiceImpl")
 	private MovieService movieService;
-
+	/// Field 해림추가
+	@Autowired
+	@Qualifier("screenServiceImpl")
+	private ScreenService screenService;
+	
 	//setter Method 구현 않음
 	
 	public MovieController() {
@@ -370,7 +378,18 @@ public class MovieController {
 
 		System.out.println("1. movieNo ==> " + movieNo);
 		System.out.println("2. search ==> " + search);
-
+		
+		ScreenContent screenContent = new ScreenContent();
+		
+		screenContent.setMovie(new Movie());
+		screenContent.getMovie().setMovieNo(movieNo);
+		
+		System.out.println("#. screenContent --> "+ screenContent);
+		
+		int screenContentNo = screenService.checkScreenDupPreview(screenContent);
+		if(screenContentNo != 0 ){
+			screenContent.setScreenContentNo(screenContentNo);
+		}
 		if (search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
 		}
@@ -387,11 +406,13 @@ public class MovieController {
 				pageSize);
 
 		System.out.println("4. resultPage ==> " + resultPage);
+		System.out.println("5. previewCheck ==> "+ screenContentNo);
 		
 		model.addAttribute("search", map.get("search"));
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("totalCount", map.get("totalCount"));
 		model.addAttribute("resultPage", resultPage);
+		model.addAttribute("screenContent", screenContent);
 
 		System.out.println("MovieController의 getMovieCommentList메소드 끝");
 

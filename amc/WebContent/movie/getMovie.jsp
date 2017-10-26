@@ -5,12 +5,6 @@
 <!--  ///////////////////////// JSTL  ////////////////////////// -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%
-	User user = new User();
-	user.setUserId("sadf@naver.com");
-	user.setRole("admin");
-	session.setAttribute("user", user);
-%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -21,12 +15,14 @@
 </head>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ 
 	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
 	
 	<link rel="stylesheet" type="text/css" href="http://kenwheeler.github.io/slick/slick/slick.css" />
 	<link rel="stylesheet" type="text/css" href="http://kenwheeler.github.io/slick/slick/slick-theme.css" />
-	
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.css" />
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
@@ -40,20 +36,68 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
 
+	
 <script type="text/javascript">
+var movieNo
+var userId 
+var screenContentNo
+var movieNm 
+
+window.fbAsyncInit = function() {
+    FB.init({
+     // appId      : '688547171338913',
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+    FB.AppEvents.logPageView();
+  };
+
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v2.10&appId=688547171338913';
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+  
+  function posting() {
+	  FB.ui({
+		    method: 'share_open_graph',
+		    action_type: 'og.shares',
+		    action_properties: JSON.stringify({
+		    	   object:{
+	                    
+	                    'og:title': 'AMC',
+	                    'og:description': '영화 '+movieNm+'상세보기',
+	                    'og:url':  'http://192.168.0.10:8080/movie/getMovie?movieNo='+movieNo+'&menu=search',
+	              
+	                    'og:image': 'http://192.168.0.10:8080/images/common/AMC_Logo.png'
+	                    
+	                }
+		      }),
+		 
+		    mobile_iframe: true,
+		  
+		  }, function(response){});
+		
+}
+  
+  
 	var targetDiv;
 		function fncGetPageList(currentPage) {
 		    $("#currentPage").val(currentPage)
 		    console.log( "ddd"+ $("#currentPage").val());
-		    $("form").attr("method", "POST").attr("action", "/movie/getMovie?movieNo=10000&menu=search").submit();
+		    $("form").attr("method", "POST").attr("action", "/movie/getMovie?movieNo="+movieNo+"&menu=search").submit();
 		}
 
 
 	function addOpenAlarm() {
 		$.ajax(
 						{
-							url : "/alarm/json/switchOpenAlarm?screenContent.screenContentNo=10000&user.userId="
+							url : "/alarm/json/switchOpenAlarm?screenContent.screenContentNo="+screenContentNo+"&user.userId="
 									+ "${sessionScope.user.userId}", //서버로 알림 체크 요청
+									
 							type : 'GET',
 						}).done(function(data) {
 					//정상 통신인 경우
@@ -69,8 +113,7 @@
 	} //end of addOpenAlarm function
 
 	function fncAddMovieComment() {
-		var movieNo = $("input[name='movieNo']").val();
-		var userId = $("input[name='userId']").val();
+		
 		var movieComment = $("textarea[name='movieComment']").val();
 
 		console.log("adMovieComment()의 movieNo ==> " + movieNo);
@@ -392,6 +435,36 @@
 	}
 
 	$(function() {
+		movieNo = $("input[name='movieNo']").val();
+		userId = $("input[name='userId']").val();
+		screenContentNo = $("input[name='screenContentNo']").val();
+		movieNm = $("input[name='movieNm']").val();
+	
+	
+		console.log(userId);
+		$("button[name='booking']").on("click", function() {
+			
+				$(self.location).attr("href","/booking/getScreenMovieList");
+			
+		})
+		
+		$("button[name='wish']").on("click", function() {
+			if(userId == ""){
+				alert('로그인 후 이용가능합니다')
+			}else{
+				//$(self.location).attr("href","/booking/getScreenMovieList");
+			}
+		})
+		
+ 		$("button[name='ticketOpen']").on("click", function() {
+			if(userId == ""){
+				alert('로그인 후 이용가능합니다')
+			}else{
+				addOpenAlarm()
+			}
+		})  
+		
+		
 		 fncBlindCommentFlag();
 		fncDeleteMovieComment();
 		fncGetMovieComment();
@@ -399,6 +472,7 @@
 			fncAddMovieComment();
 		})
 		targetDiv = null;
+		
 	})
 	
 
@@ -422,19 +496,29 @@ div.img{
 #realTimeSearch{
 width:500px;
 height: 300px;
-
-
+}
+.your-class img{
+	height : calc(50vh - 100px);
+	width : auto;
+	margin : 0 auto;
+}
+.slick-prev:before,
+.slick-next:before{
+	color : #f06060;
+}
+#twitterSearch{
+color:#065a69;
 }
 
 </style>
 
 <body>
 
+
+
+
 	<jsp:include page="/layout/topToolbar.jsp" />
 
-
-	<input type="button" value="오픈 알림 신청"
-		onClick="javascript:addOpenAlarm()">
 
 
 	<div class="container">
@@ -442,7 +526,7 @@ height: 300px;
 			<div class="page-header">
 				<h2 class=" text-info">${movie.movieNm }</h2>
 			</div>
-
+	
 			<div class="row ">
 
 				<!--  <div class="col-xs-1 col-md-2"></div> -->
@@ -482,14 +566,17 @@ height: 300px;
 						<div class="col-md-2">관람등급</div>
 						<div class="col-md-10">${movie.watchGradeNm }</div>
 					</div>
-					<div class="row">
-						<button>하트들어갈곳</button>
-						<button>예매하기들어갈곳</button>
-						<button>링크보내기들어갈곳</button>
+					<br>
+					<div class="row center-block col-md-12" >
+						&emsp;&emsp;
+						<button class="btn btn-link btn-lg" name="wish" ><h3><i class='glyphicon glyphicon-heart'  style="color:#f06060; text-align : center; margin:0 auto;'"></i></h3></button>
+						<button class="btn btn-pinterest" style="width:100px" name="booking">예매하기</button>
+						<button class="btn btn-facebook" style="width:100px"  onClick="javascript:posting()"  ><i class="fa fa-facebook"> &nbsp; </i>공유하기</button>
+						<c:if test="${screenContent.screenContentNo != 0 }">
+							<button  class="btn btn-vimeo"     name = "ticketOpen">티켓오픈알림</button><!-- -->
+						</c:if>						
 					</div>
-					<div>
-						<button>티켓오픈알림</button>
-					</div>
+					
 				</div>
 				<!--  <div class="col-xs-1 col-md-2"></div> -->
 			</div>
@@ -504,26 +591,25 @@ height: 300px;
 				<div>${movie.synopsis }</div>
 			</div>
 			<br>
-			<div
-				style="border: 1px solid black; border-radius: 0.5em; padding: 10px; background-color:lightgray">
+			<div		style="border: 1px solid black; border-radius: 0.5em; padding: 10px;">
 				<h3>스틸컷</h3>
 
 				
 					<c:if test="${movie.steelCut1 !=  null}">
 					
 				
-						<div class="center-block your-class" style="width : 500px">
+						<div class="center-block your-class" style="width:800px">
 			   					<div >
-			 					 	<div class="image center-block"><img  src="/images/movie/${movie.steelCut1 }" style='max-width : 100%; max-height:100%; vertical-align:middl'/></div>
+			 					 	<div class="image center-block "  ><img  src="/images/movie/${movie.steelCut1 }" /></div>
 			 					</div>			 				
 			 				<c:if test="${movie.steelCut2 != null }">
 								<div>
-									<div class="image center-block"><img class="steelCut" src="/images/movie/${movie.steelCut2 }"/></div>
+									<div class="image"><img class="steelCut" src="/images/movie/${movie.steelCut2 }"/></div>
 								</div>
 							</c:if>	
 							<c:if test="${movie.steelCut3 != null }">
 								<div>
-									<div class="image center-block"><img class="steelCut" src="/images/movie/${movie.steelCut3 }"/></div>
+									<div class="image"><img class="steelCut" src="/images/movie/${movie.steelCut3 }"/></div>
 								</div>
 							</c:if>				
 						</div>
@@ -538,7 +624,8 @@ height: 300px;
 			<div
 				style="border: 1px solid black; border-radius: 0.5em; padding: 10px;">
 				<h3>트레일러</h3>
-				<div>${movie.trailer }</div>
+				<div></div>
+			<p align="middle"><iframe  width="960" height="500" src="${movie.trailer }" frameborder="0" allowfullscreen></iframe></p>
 			</div>
 		</div>
 		<div class='row'>
@@ -550,7 +637,7 @@ height: 300px;
 				<h3>예매자 나이 차트</h3>
 				<canvas id="ageChart" width="400" height="400"></canvas>
 			</div>
-			<div class='col-md-6'><h3>${movie.movieNm} 실시간 트위터 검색</h3>
+			<div class='col-md-6'><h3><span class="fa fa-twitter" id='twitterSearch' > </span>  ${movie.movieNm}  실시간 트위터 검색</h3>
 				
 			<iframe id="realTimeSearch" src="http://192.168.0.10:1337/${movie.movieNm }" frameborder = 0 >		 
 					  <p>Your browser does not support iframes.</p>
@@ -573,10 +660,10 @@ height: 300px;
 							</c:if>
 							<c:if test="${user.userId ==null}">
 								<td><textarea class="form-control" name="movieComment"
-										placeholder="로그인 후 이용해주세요" rows=3 cols=140></textarea></td>
+										placeholder="로그인 후 이용해주세요" rows=3 cols=140 readonly="readonly"></textarea></td>
 							</c:if>
-							<td><button class="btn btn-primary" name="addMovieComment"
-									style="width: 70px; height: 75px">등록</button></td>
+							<td><button class="btn btn-primary" name="addMovieComment" <c:if test="${user.userId ==null}">disabled="disabled"</c:if>
+									style="width: 70px; height: 75px"  >등록</button></td>
 						</tr>
 					</table>
 				</div>
@@ -636,10 +723,13 @@ height: 300px;
 			</div>
 
 			<div id="hidden">
+				<input type="hidden" name='movieNm' value="${movie.movieNm }">
 				<input type="hidden" name='movieNo' value="${movie.movieNo }">
 				<input type="hidden" name='userId' value="${user.userId }">
 				<input type="hidden" name='movieComment' value="${movieComment.movieComment }"> 
 				<input type="hidden" name='movieCommentNo' value="${movieComment.movieCommentNo }">
+				<input type="hidden" name='screenContentNo' value="${screenContent.screenContentNo }">
+			
 				<input type="hidden" name='femaleCnt' value="${movie.femaleCnt}">
 				<input type="hidden" name="maleCnt" value="${movie.maleCnt}" />
 				<input type="hidden" name="age10s" value="${movie.age10s}" />
@@ -649,13 +739,14 @@ height: 300px;
 				<input type="hidden" name="age50s" value="${movie.age50s}" />
 				<input type="hidden" name="age60s" value="${movie.age60s}" />
 				<input type="hidden" name="age60sMore" value="${movie.age60sMore}" />
-				
+			
+			
 				<form>
 					<input type="hidden" id="currentPage" name="currentPage" value="" />
 				</form>
 			</div>
 
-	
+
 
 
 	</div>
@@ -760,14 +851,15 @@ var barChart = new Chart(ctx2, {
 $(document).ready(function(){
     $('.your-class').slick({
     	centerMode:true,
-    	centerPadding : '60px',
-    	edgeFriction : 2,
-    	dots: true,
-  	  infinite: true,
-  	  speed: 500,
-  	  fade: true
-  
+    	
+        	edgeFriction : 2,
+        	dots: true,
+      	  infinite: true,
+      	  speed: 500,
+  	  fade: true,
+  	  prevArrow : '<button type="button" class="slick-prev">Previous</button>'
     });
+  
     
   });
 	

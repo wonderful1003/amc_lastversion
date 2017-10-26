@@ -35,7 +35,9 @@ import com.amc.service.domain.Movie;
 import com.amc.service.domain.MovieComment;
 import com.amc.service.domain.onetime.MovieJson;
 import com.amc.service.domain.onetime.MovieList;
+import com.amc.service.domain.onetime.Screen;
 import com.amc.service.movie.MovieService;
+import com.amc.service.screen.ScreenService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -49,6 +51,9 @@ public class MovieRestController {
 	@Autowired
 	@Qualifier("movieServiceImpl")
 	private MovieService movieService;
+	
+
+	
 	private String dbFileNames;
 
 	// setter Method 구현 않음

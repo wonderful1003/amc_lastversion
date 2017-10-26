@@ -133,10 +133,10 @@
 	</select>
 	<!-- 시사회중복체크 -->
 	<select id="checkScreenDupPreview" parameterType="screenContent" resultType="int">
-		SELECT COUNT(*)
+		SELECT screencontent_no
 		FROM screencontent 
 		WHERE movie_no=#{movie.movieNo} 
-		<if test="screenContentNo != null">
+		<if test="screenContentNo != 0">
 		AND screencontent_no != #{screenContentNo} 
 		</if>
 		AND preview_Flag = 'Y'
