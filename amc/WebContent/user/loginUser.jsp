@@ -78,12 +78,12 @@
 								//alert(status);
 								//alert("JSONData : \n"+JSONData);
 								//alert( "JSON.stringify(JSONData) : \n"+JSON.stringify(JSONData) );
-								alert("JSONData : "+ JSONData );
-								alert("status : "+ status );
+								//alert("JSONData : "+ JSONData );
+								//alert("status : "+ status );
 								
 									if( JSONData !=''){
 									//[방법1]
-									alert("login ajax success");
+									//alert("login ajax success");
 									$(window.parent.document.location).attr("href","/index.jsp");
 									
 									//[방법2]
@@ -109,7 +109,10 @@
 		
 		//============= 회원원가입화면이동 =============
 		$( function() {
-			$("a[href='#' ]").on("click" , function() {
+			/* $("a[href='#' ]").on("click" , function() {
+				self.location = "/user/authForm.jsp"
+			}); */
+			$("#addUser").on("click" , function() {
 				self.location = "/user/authForm.jsp"
 			});
 		});
@@ -218,9 +221,9 @@
 					 
 					  <div class="form-group">
 					    <div class="col-sm-offset-4 col-sm-6 text-center">
-					      <button type="button" id="login" class="btn btn-primary"  >로 &nbsp;그 &nbsp;인</button>
-					      <button type="button" id="login" class="btn btn-primary"  >회원가입</button>
-					      <button type="button" id="login" class="btn btn-primary"  >ID/PW찾기</button>
+					      <button type="button" id="login" class="btn btn-primary">로 &nbsp;그 &nbsp;인</button>
+					      <button type="button" id="addUser" class="btn btn-primary">회원가입</button><br/><br/>
+					      <button type="button" id="findUser" class="btn btn-primary">ID/PW찾기</button>
 					 	</div>
 					  </div><br/><br/><br/><br/><br/>  
 					      

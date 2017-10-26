@@ -6,13 +6,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<%--   <%
+<%--    <%
 	User user = new User();
 	user.setUserId("testAdmin");
 	user.setRole("admin");
 	session.setAttribute("user", user);
 %> 
- --%> 
+ --%>
 <head>
 <meta charset="EUC-KR">
 	
@@ -323,7 +323,7 @@
 	 $(function() {
 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 		$("a:contains('로그아웃')").on("click" , function() {
-			alert("카카오로그아웃");
+			//alert("카카오로그아웃");
 			logoutWithKakao();
 			
 		}); 

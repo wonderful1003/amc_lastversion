@@ -22,7 +22,7 @@
 	session.setAttribute("booking",booking);
 %>
 
-z<!DOCTYPE html >
+<!DOCTYPE html >
 <html>
 <head> 
 <title>selectScreenMovie.jsp</title>

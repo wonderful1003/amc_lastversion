@@ -50,7 +50,6 @@
 
 			$('a.btn-success:contains("구매하러가기")').bind('click',function(){
 				self.location.href = '/purchase/addPurchase?prodNo='+$('input:hidden[name="prodNo"]').val();
-				co
 			});
 
 		});

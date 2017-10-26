@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.SystemPropertyUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -60,8 +61,8 @@ public class PurchaseController {
 	public String addPurchase(	@ModelAttribute("purchase") Purchase purchase	) throws Exception{
 
 		purchaseService.addPurchase(purchase);
-		
-		return "forward:addPurchase.jsp";
+		System.out.println("%%%%%%%%%%%%%%%%%%orderRegDate :"+purchase.getOrderRegDate());
+		return "forward:addPurchaseConfirm.jsp";
 	}
 	
 	@RequestMapping( value="getPurchase", method=RequestMethod.GET )
@@ -119,7 +120,7 @@ public class PurchaseController {
 		if(menu.equals("manage")){
 			return "forward:listSale?searchKeyword=saleList";
 		}else{
-			return "forward:listPurchase?searchCondition="+purchase.getUser().getUserId()+"&searchKeyword=purchaseList";
+			return "forward:listPurchase?searchCondition="+purchase.getBuyer().getUserId()+"&searchKeyword=purchaseList";
 		}
 	}
 	
@@ -127,19 +128,27 @@ public class PurchaseController {
 	
 	private void getList(Search search, Model model) throws Exception{
 
+		System.out.println("%%%%%%%%%%%%% ¿©±â´Â get List %%%%%%%%%%%%%%");	
 		if(search.getCurrentPage()==0){
 			search.setCurrentPage(1);
 		}
 		search.setPageSize(pageSize);
 		search.setPageUnit(pageUnit);
 
+		System.out.println("$$$$$$ search :" + search);
+		
 		Map<String, Object> map = purchaseService.getPurchaseList(search);
 		
+		System.out.println(purchaseService.getPurchaseList(search));
+		
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		
+		System.out.println(map.get("list"));
 		
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("resultPage", resultPage);
 		model.addAttribute("search", search);
+		
 		
 	}
 	
