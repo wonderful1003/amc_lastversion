@@ -35,6 +35,25 @@
 				  
 			  }else{
 				  $("input[name='seats']").val(event.data);
+
+				  $.ajax(
+					{
+						url : "/booking/json/getDisplaySeatNo/"+event.data,						
+						method : "GET" ,
+						dataType : "json" ,
+						headers : {
+							"Accept" : "application/json",
+							"Content-Type" : "application/json"
+						},
+						
+						success : function(JSONData, status) {
+							console.log('SeatNo 받아옴 : '+JSONData.str);								
+	                        if(JSONData != ""){
+	                        	$("#display2").val(JSONData.str);
+	                        }//end of if문
+						}
+				});//end of ajax
+				  	  
 			  }
 
 		}
@@ -63,12 +82,14 @@
 		</h2>
 		
 			<%-- <iframe id="child" src="http://127.0.0.1:52273/yenakoh/3?screenNo=${screenContentNo}" width="400" height="400" > --%>
-			<iframe id="child" src="http://192.168.0.3:52273/yenakoh/3?screenNo=${screenContentNo}" width="600" height="400" >		 
+			<iframe id="child" src="http://127.0.0.1:52273/yenakoh/3?screenNo=${screenContentNo}" width="600" height="400" >		 
 					  <p>Your browser does not support iframes.</p>
 			</iframe>
+
 			<button onclick="myFunction()">Try it</button>
-			<h2>선택하신 좌석번호는 : <input type="text" name="seats" value=""></h2>
-			JSP Version: <%= JspFactory.getDefaultFactory().getEngineInfo().getSpecificationVersion() %> <br>
+			<h2>선택하신 좌석번호는 : <input type="text" name="display" value="">
+								<input type="text" id="display2" value=""></h2>
+			<input type="hidden" name="seats" value="">
 		</form>
 	</body>
 </html>

@@ -20,7 +20,7 @@
 		<result property="bookingSeatNo" 	column="bookingseat_no"		jdbcType="VARCHAR"/>		
   		<result property="qrUrl" 			column="qr_url" 			jdbcType="VARCHAR"/>
   		
-  		<result property="movie.movieTitle"    			column="movie_title" 	 jdbcType="VARCHAR"/>
+  		<result property="movie.movieNm"    			column="movie_title" 	 jdbcType="VARCHAR"/>
   		<result property="screenContent.screenDate"  	column="screen_date" 	 jdbcType="VARCHAR"/>
   		<result property="screenContent.screenOpenTime" column="screen_opentime" jdbcType="VARCHAR"/>
   		<result property="screenContent.previewFlag"    column="preview_flag" 	 jdbcType="VARCHAR"/>
@@ -29,7 +29,7 @@
 
   	</resultMap>
   	
-  	 <insert 	id="addBooking" parameterType="booking">
+  	<insert 	id="addBooking" parameterType="booking">
   		INSERT 
   		INTO booking VALUES ('b'||seq_booking_booking_no.nextval, impId, userId, screenContentNo, SYSDATE, headCount,
   		    totalTicketPrice, bookingSeatNo, qrUrl)
@@ -38,9 +38,9 @@
   	<select id="getBooking" parameterType="string" resultMap="bookingSelectMap" >
   		SELECT b.*, m.movie_title, s.screen_date, s.screen_opentime, s.preview_flag, s.preview_title, s.invite_actor 
 		FROM booking b, screencontent s, movie m
-		WHERE b.booking_no = #{bookinNo}
-		AND b.screencontent_no = s. screencontent_no 
-		AND s.movie_no = m.movie_no									
+		WHERE b.booking_no = #{value}
+ 		AND b.screencontent_no = s. screencontent_no 
+		AND s.movie_no = m.movie_no		 							
   	</select>
   	
   	 <select id="getBookingByInfo" parameterType="booking" resultMap="bookingSelectMap" >
@@ -52,11 +52,11 @@
   	<select id="getBookingList" parameterType="search" resultMap="bookingSelectMap">
 		SELECT *
   		FROM ( SELECT inner_table.* , ROWNUM AS row_seq
-  						FROM ( 	b.*, m.movie_title, s.screen_date, s.screen_opentime, s.preview_flag, s.preview_title, 
-  								s.invite_actor 
+  						FROM ( SELECT	b.*, m.movie_title, s.screen_date, s.screen_opentime, s.preview_flag, s.preview_title, s.invite_actor 
   								FROM booking b, screencontent s, movie m
 						  		<where>
-						  			
+						  			b.screencontent_no = s.screencontent_no
+						  			AND s.movie_no = m.movie_no
 						  			<if test="searchCondition!=null " >
 						  				<if test="searchCondition==0  and searchKeyword !=''  and searchKeyword != null">
 						  						AND user_id	=	#{searchKeyword}
@@ -72,11 +72,17 @@
 								ORDER BY
 								<if test="searchKeyword2 == 'asc' ">s.screen_opentime asc</if> 
 								<if test="searchKeyword2 == 'desc' ">s.screen_opentime desc</if> 
-								<if test="searchKeyword2 != 'asc' and  sortBy != 'desc' ">b.booking_no</if> 									
+								<if test="searchKeyword2 != 'asc' and  searchKeyword2 != 'desc' ">b.booking_no</if> 									
 							) inner_table
 
 					WHERE ROWNUM &lt;= #{endRowNum} )
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
   	</select>
+  	
+  	<delete id="deleteBooking" parameterType="java.lang.String">
+  		DELETE
+  	 	FROM booking
+  	 	WHERE booking_no = #{value}
+  	</delete>
   	
 </mapper>

@@ -38,7 +38,7 @@ public class TodaySchedule implements ServletContextListener {
 		this.dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	}
 
-	//@Scheduled(cron = "0/50 * * * * *")
+	//@Scheduled(cron = "50 * * * * *")
 	public void mainTask() throws Exception {
 
 		calendar =  Calendar.getInstance();
@@ -46,21 +46,20 @@ public class TodaySchedule implements ServletContextListener {
 		System.out.println("메인스케줄 작동시간 : " + dateFormat.format(calendar.getTime()));
 		
 		//스케줄러 세부 작동은 아래 주석은 풀면 됨.
-		
-		/*if (scheduler == null) {
+		if (scheduler == null) {
 			System.out.println("스케줄러 is Null");
 			scheduler = new StdSchedulerFactory().getScheduler();
 			scheduler.start();
 		}else{
 			System.out.println("스케줄러 is Not Null");
 			scheduler.shutdown();
-			Thread.sleep(100); //정상종료를 위한
+			Thread.sleep(1000); //정상종료를 위한
 			System.out.println("=>> shutdown complete");
 			scheduler = new StdSchedulerFactory().getScheduler();
 			
 			scheduler.start();
 		}
-		this.subTaskSetting();*/
+		this.subTaskSetting();
 
 	}
 
@@ -74,13 +73,13 @@ public class TodaySchedule implements ServletContextListener {
 		String day;
 		String hour;
 		String minute;
-		//String cron;
+		String cron;
 		
 		Search search = new Search();
 		search.setSearchKeyword("todayRealAlarmTime");
 		
 		List<ScreenContent> todayRealAlarmTimeList = screenService.getTodayTicketOpenList(search);
-		String[] cron = new String[todayRealAlarmTimeList.size()];
+		//String[] cron = new String[todayRealAlarmTimeList.size()];
 		for (int i = 0; i < todayRealAlarmTimeList.size(); i++) {
 			System.out.println("오늘의 알람 실행해야 하는 시간 리스트["+i+"] : " + todayRealAlarmTimeList.get(i).getTicketOpenDate());
 			
@@ -92,15 +91,15 @@ public class TodaySchedule implements ServletContextListener {
 			minute = (todayRealAlarmTimeList.get(i).getTicketOpenDate().split(" "))[1].split(":")[1]; //분
 
 			//cron 표현식 x x x x x x = 초/분/시/월/요일/년
-			//cron = "0 " + minute + " " + hour + " " + day + " " + month + " " + "? " + year;
+			cron = "0 " + minute + " " + hour + " " + day + " " + month + " " + "? " + year;
 			
-			if(i == 0){
-				cron[0] = "0 28 19 23 10 ? 2017";
+/*			if(i == 0){
+				cron[0] = "0 56 09 25 10 ? 2017";
 			}else if(i == 1){
 				cron[1] = "0 29 19 23 10 ? 2017";
 			}else if(i > 1){
 				cron[i] ="22 29 19 24 10 ? 2017";
-			}
+			}*/
 			
 			System.out.println("date :: " + year+"/"+month+"/"+day );
 			System.out.println("hour :: " + hour);
@@ -110,7 +109,8 @@ public class TodaySchedule implements ServletContextListener {
 			try{
 				scheduler.scheduleJob( 
 						 				new JobDetail("job"+i,"openAlarmJobGroup", AdapterJob.class),
-						 				new CronTrigger("trigger"+i,"openAlarmTriggerGroup",cron[i])
+						 				/*new CronTrigger("trigger"+i,"openAlarmTriggerGroup",cron[i])*/
+						 				new CronTrigger("trigger"+i,"openAlarmTriggerGroup",cron)
 									 );
 				System.out.println("TriggerInfo :: "+scheduler.getTrigger("trigger"+i,"openAlarmTriggerGroup"));
 			}catch(SchedulerException se) {

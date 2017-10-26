@@ -21,8 +21,8 @@
 		<result property="phone3" 			column="phone3" 			jdbcType="VARCHAR"/>
 		<result property="calendarType" 	column="sl_yn" 				jdbcType="CHAR"/>
 		<result property="gender" 			column="gender" 			jdbcType="CHAR"/>
-		<result property="deleteUserFlag" 	column="delete_user_flag" 	jdbcType="CHAR"/>		
-		<result property="uuId" 			column="uuser_id" 			jdbcType="VARCHAR"/>	
+		<result property="deleteUserFlag" 	column="deleteuser_flag" 	jdbcType="CHAR"/>		
+		<result property="uuId" 			column="uuid" 			jdbcType="VARCHAR"/>	
 	</resultMap>
 	
 	<!-- SQL : INSERT -->
@@ -33,6 +33,16 @@
 						#{phone1}, #{phone2}, #{phone3}, #{calendarType}, #{gender}, #{addr}, #{addrDetail}, SYSDATE )
 	 </insert>
 	 
+	 <!-- SQL : UPDATE (DeleteUser)-->
+	 <update	id="deleteUser"	parameterType="user" >
+	   	UPDATE users
+	   		<set>
+		   		deleteuser_flag = 'Y',
+		   		role = 'not'
+	   		</set>
+	   	WHERE user_id = #{userId} and user_name = #{userName} and password = #{password}
+	 </update>
+	 
 	 <!-- SQL : SELECT ONE -->
 	 <select 	id="getUser"	parameterType="string"	resultMap="userSelectMap">
 		SELECT
@@ -40,6 +50,7 @@
 		FROM users 
 		WHERE user_id = #{value}
 	 </select>
+	 
  
  	<!-- SQL : SELECT LIST -->
 	<select  id="getUserList"  parameterType="search"	resultMap="userSelectMap">

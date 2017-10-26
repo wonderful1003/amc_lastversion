@@ -1,42 +1,19 @@
-<%@ page contentType="text/html; charset=EUC-KR" %>
-<%@ page pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=euc-kr" %>
+<%@ page pageEncoding="EUC-KR" %>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 
-<html lang="ko">
+<html>
 <head>
 	<title>Model2 MVC Shop</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+	<meta charset="EUC-KR">
 	
-	<!-- ì°¸ì¡° : http://getbootstrap.com/css/   ì°¸ì¡° -->
+	<!-- ÂüÁ¶ : http://getbootstrap.com/css/   -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-<!-- 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-	
-	Bootstrap Dropdown Hover CSS
-   <link href="/css/animate.min.css" rel="stylesheet">
-   <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
-	
-	Favicons
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
-	<link rel="shortcut icon" href="../assets/ico/favicon.png">
-   
-    Bootstrap Dropdown Hover JS
- 	<script src="/javascript/bootstrap-dropdownhover.min.js"></script>
-	
-	  JQUERY Date Picker
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  	<link rel="stylesheet" href="/resources/demos/style.css">
-  	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
- -->	
- 
-	
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="/resources/demos/style.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
@@ -44,165 +21,262 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	
-	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
- 		body {
-            padding-top : 50px;
-        }
-     </style>
-    
-     <!--  ///////////////////////// JavaScript ////////////////////////// -->
+		body{
+			padding-top : 70px;
+		}
+	</style>
 	
-	<title>ìƒí’ˆë“±ë¡</title>
-	
-	<link rel="stylesheet" href="/css/admin.css" type="text/css">
-
 	<script type="text/javascript">
-
-	 function fncAddProduct(){
-		//Form ìœ íš¨ì„± ê²€ì¦
 	
-		var name = $("input[name='prodName']").val();
-		var detail = $("input[name='prodDetail']").val();
-		var manuDate = $("input[name='manuDate']").val();
-		var price = $("input[name='price']").val();
+		function fncAddProduct(){
+			//Form À¯È¿¼º °ËÁõ
+			var type = $('input[name="prodType"]').val();
+			var name = $('input[name="prodName"]').val();
+			var openDate = $('input[name="salesOpenDate"]').val();
+			var endDate = $('input[name="salesEndDate"]').val();
+			var totalStock = $('input[name="totalStock"]').val();
+			var stock = $('input[name="totalStock"]').val();
+			var price = $('input[name="prodPrice"]').val();
+			var expiryDate = $('input[name="expiryDate"]').val();
+			var detail = $('input[name="prodDetail"]').val();
+			var setInfo = $('input[name="prodSetInfo"]').val();
+			
+			var formData = new FormData();
+			formData.append('file',$('input[name="file"]')[0].files[0]);
+			
+			if(name == null || name.length<1){
+				alert("»óÇ°¸íÀº ¹İµå½Ã ÀÔ·ÂÇÏ¿©¾ß ÇÕ´Ï´Ù.");
+				return;
+			}
+			if(openDate == null || openDate.length<1){
+				alert("ÆÇ¸Å½ÃÀÛÀÏÀº ¹İµå½Ã ÀÔ·ÂÇÏ¼Å¾ß ÇÕ´Ï´Ù.");
+				return;
+			}
+			if(endDate == null || endDate.length<1){
+				alert("ÆÇ¸ÅÁ¾·áÀÏÀº ¹İµå½Ã ÀÔ·ÂÇÏ¼Å¾ß ÇÕ´Ï´Ù.");
+				return;
+			}
+			if(totalStock == null || totalStock.length<1){
+				alert("ÃÖ¼Ò ¼ö·®Àº 1°³ ÀÔ´Ï´Ù.")
+				return;
+			}
+			if(price == null || price.length<1){
+				alert("°¡°İÀº ¹İµå½Ã ÀÔ·ÂÇÏ¼Å¾ß ÇÕ´Ï´Ù.");
+				return;
+			}
+			if(detail == null || detail.length<1){
+				alert("»óÇ°»ó¼¼Á¤º¸´Â ¹İµå½Ã ÀÔ·ÂÇÏ¿©¾ß ÇÕ´Ï´Ù.");
+				return;
+			}
+			if(!$.isNumeric(totalStock)){
+				alert('¼ö·®Àº ¼ıÀÚ·Î Àû¾îÁÖ¼¼¿ä.');
+				return;
+			}
+			if(!$.isNumeric(price)){
+				alert('°¡°İÀº ¼ıÀÚ·Î Àû¾îÁÖ¼¼¿ä.');
+				return;
+			}
+			
+			$('#myModal').modal('show');
+			if($('input[name="file"]')[0].files[0] != null){
+				$.ajax({
+					url : 'json/uploadFile',
+					method : 'post',
+					data : formData,
+					contentType:false,
+					processData:false,
+					success : function(){
+						window.setTimeout(modalOut,5000);
+						window.setTimeout(sendForm,5000);						
+					},
+					error : function(jqXHR, status, error){
+						modalOut();
+						alert('µî·Ï¿¡ ½ÇÆĞÇß½À´Ï´Ù. Àá½Ã ÈÄ ´Ù½Ã ½ÃµµÇØ ÁÖ¼¼¿ä..');
+					},
+					statusCode : {
+						404 : function(){
+							alert('404¸Ç');
+						},
+						405 : function(){
+							alert('405¸Ç');
+						},
+						400 : function(){
+							alert('400¸Ç');
+						},
+						415 : function(){
+							alert('415¸Ç');
+						}
+					}
+	
+				});
+			}else{
+				modalOut();
+				sendForm();
+			}
+			
+		}
+	
+	
+		$(function(){
+			$('button:contains("µî·ÏÇÏ±â")').bind('click',function(){
+				fncAddProduct();
+			});
+			
+			$('#salesOpenDate').datepicker({
+				dateFormat : 'yy-mm-dd',
+				defaultDate: "+1w",
+				changeMonth: true,
+					 onClose: function( selectedDate ) {
+					  $("#salesEndDate").datepicker( "option", "minDate", selectedDate );
+				 }
+
+			})//datepicker cdn
+			
+			//³¡ÀÏ. ½ÃÀÛÀÏº¸´Ù´Â ±æ¾î¾ß µÇ°Ô²û
+			$( "#salesEndDate" ).datepicker({
+			 dateFormat: "yy-mm-dd",
+			 defaultDate: "+1w",
+			 changeMonth: true,
+			 	onClose: function( selectedDate ) {
+			 	 $("#salesOpenDate").datepicker( "option", "maxDate", selectedDate );
+			 }
+			});
+
+
+			
+		})//fncAddProduct cdn Æ÷ÇÔ
 		
-		if(name == null || name.length<1){
-			alert("ìƒí’ˆëª…ì€ ë°˜ë“œì‹œ ì…ë ¥í•˜ì—¬ì•¼ í•©ë‹ˆë‹¤.");
-			return;
+		function modalOut(){
+			$('#myModal').modal('hide');
 		}
-		if(detail == null || detail.length<1){
-			alert("ìƒí’ˆìƒì„¸ì •ë³´ëŠ” ë°˜ë“œì‹œ ì…ë ¥í•˜ì—¬ì•¼ í•©ë‹ˆë‹¤.");
-			return;
+		
+		function sendForm(){
+			$('form.add-product').attr('method','post').attr('action','addProduct').attr('enctype','multipart/form-data').submit();
 		}
-		if(manuDate == null || manuDate.length<1){
-			alert("ì œì¡°ì¼ìëŠ” ë°˜ë“œì‹œ ì…ë ¥í•˜ì…”ì•¼ í•©ë‹ˆë‹¤.");
-			return;
-		}
-		if(price == null || price.length<1){
-			alert("ê°€ê²©ì€ ë°˜ë“œì‹œ ì…ë ¥í•˜ì…”ì•¼ í•©ë‹ˆë‹¤.");
-			return;
-		}
-	
-		$("form").attr("method" , "POST").attr("action" , "/product/addProduct").submit();
-	 
-	 }
-
- 
-	//============= "ë“±ë¡"  Event ì—°ê²° =============
-	 $(function() {
-		$( "button.btn.btn-primary" ).on("click" , function() {
-			fncAddProduct();
-		});
-	});	
-	
- 	
-	//==> ì¶”ê°€ëœë¶€ë¶„ : "ì·¨ì†Œ"  Event ì—°ê²° ë° ì²˜ë¦¬
-	 $(function() {
-		 $("a[href='#' ]").on("click" , function() {
-			$("form")[0].reset();
-		});
-	});
-
-	$( function() {
-	  		alert("datepicker");
-	    	$('#manuDate').datepicker({
-				dateFormat : 'yymmdd'
-			})
-	    
-	});
 		
 	</script>
-	
+
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
-	<!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/layout/topToolbar.jsp" />
-   	<!-- ToolBar End /////////////////////////////////////-->
-	
-	<!--  í™”ë©´êµ¬ì„± div Start /////////////////////////////////////-->
-	<div class="container">
-		
-		<h1 class="text-center"><span class="label label-default">ìƒí’ˆë“±ë¡</span></h1>
-		<br/>
-	
-		<!-- form Start /////////////////////////////////////-->
-		<form class="form-horizontal" enctype="multipart/form-data">
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->		
-		  <div class="form-group">
-		    <label for="prodName" class="col-sm-offset-1 col-sm-3 control-label">ìƒí’ˆëª…</label>
-		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="prodName" name="prodName" placeholder="ìƒí’ˆëª…ì„ ì…ë ¥í•˜ì„¸ìš”" >
-		    </div>
-		  </div>
-		  <br/>
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->		  
-		  <div class="form-group">
-		    <label for="prodDetail" class="col-sm-offset-1 col-sm-3 control-label">ìƒí’ˆìƒì„¸ì •ë³´</label>
-		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="prodDetail" name="prodDetail" placeholder="ìƒí’ˆìƒì„¸ì •ë³´">
-		    </div>
-		  </div>
-		  <br/>
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->		  	  
-	 	<div class="row">
-			<label for="inputManuDate" class="col-sm-offset-1 col-sm-3 control-label">ì œì¡°ì¼ì</label>
-			<div class="col-sm-4">
-				<input type="text" class="form-control" id="manuDate" name="manuDate" readonly placeholder="ì œì¡°ì¼ìë¥¼ì„ íƒí•´ì£¼ì„¸ìš”">
-			</div>
-			<span class="col-sm-6"></span>
-		</div>
-		<br/>
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->		  
-		  <div class="form-group">
-		    <label for="price" class="col-sm-offset-1 col-sm-3 control-label">ê°€ê²©</label>&nbsp;ì›				
-		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="price" name="price" placeholder="ê°€ê²©ì„ì…ë ¥í•˜ì„¸ìš”">
-		    </div>
-		  </div>
-		  <br/>
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->		  
-		  <div class="form-group">
-		    <label for="fileName" class="col-sm-offset-1 col-sm-3 control-label" >ìƒí’ˆì´ë¯¸ì§€</label>
-		    <!-- <div class="col-sm-4"> -->
-<!-- 		      <input type="file" class="form-control" id="fileName" 
-		      style="width:400" name="fileName" placeholder="ìƒí’ˆì´ë¯¸ì§€">
- -->		   
-				<p><input name="file" id="fileToUpload" type="file" /></p>  				
-  
-<!-- 			  <div class="fileinput fileinput-new" data-provides="fileinput">
-			  <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
-			  <div class="col-sm-4">
-			  <div>
-			    <span class="btn btn-default btn-file">
-			    <span class="fileinput-new">Select image</span>
-			    <span class="fileinput-exists">Change</span>
-			    <input type="file" name="file" id="fileToUpload"></span>
-			    <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
-			  </div>
-			</div> -->
-  
+	<jsp:include page="../layout/topToolbar.jsp">
+		<jsp:param name="uri" value="../"/>
+	</jsp:include>
 
-  
-		    </div>
-		  </div>
-		  <br/>
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->		  		  
-		  <div class="form-group">
-		    <div class="col-sm-offset-4  col-sm-4 text-center">
-		      <button type="button" class="btn btn-primary"  >ë“± &nbsp;ë¡</button>
-			  <a class="btn btn-primary btn" href="#" role="button">ì·¨&nbsp;ì†Œ</a>
-		    </div>
-		  </div>
-		</form>
-		<!-- form Start /////////////////////////////////////-->
-		
- 	</div>
-	<!--  í™”ë©´êµ¬ì„± div end /////////////////////////////////////-->
-	
+<div class="container">
+
+	<div class="page-header col-sm-offset-2 col-sm-10">
+		<h1>»óÇ° µî·Ï</h1>
+	</div>
+	<form class="add-product form-horizontal">
+		<div class="form-group">
+			<div class="form-group">
+			  <label for="prodType" class="col-sm-3 control-label">»óÇ° ±¸ºĞ</label>
+			 	 <div class="col-sm-3">			  		
+			  	  	<input type='radio' name='prodType' value='G' checked="checked">±ÂÁî&emsp;&emsp;&emsp;&emsp;
+					<input type='radio' name='prodType' value='S'>½º³¼¹Ù
+			  	</div>
+		  	</div>
+			<br/>
+			<div class="row">
+				<label for="inputProdName" class="col-sm-3 control-label">»óÇ°¸í</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" id="inputProdName" name="prodName" placeholder="»óÇ°¸í">
+				</div>
+				<span class="col-sm-6"></span>
+			</div>
+			<br/>
+			<div class="row">
+				<label for="inputProdDetail" class="col-sm-3 control-label">»óÇ°»ó¼¼Á¤º¸</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" id="inputProdDetail" name="prodDetail" placeholder="»ó¼¼Á¤º¸">
+				</div>
+			</div>
+			<br/>
+			<div class="row">
+				<label for="inputProdSetInfo" class="col-sm-3 control-label">»óÇ°±¸¼ºÁ¤º¸</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" id="inputProdDetail" name="prodSetInfo" placeholder="»ó¼¼Á¤º¸">
+				</div>
+			</div>
+			<br/>
+			<div class="row">
+				<label for="inputStock" class="col-sm-3 control-label">»óÇ°¼ö·®</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" id="inputStock" name="totalStock" placeholder="ÃÖ¼Ò ¼ö·®Àº 1°³ ÀÔ´Ï´Ù.">
+<!-- 					<input type="hidden"  class="form-control" id="inputStock" name="stock"> -->
+				</div>
+				<span class="col-sm-6"></span>
+			</div>
+			<br/>
+			<div class="row">
+				<label for="salesOpenDate" class="col-sm-3 control-label">ÆÇ¸Å½ÃÀÛÀÏ</label>
+				<div class="col-sm-3">
+					<input type="date" class="form-control" id="salesOpenDate" name="salesOpenDate" readonly>
+				</div>
+				<label for="salesEndDate" class="col-sm-3 control-label">ÆÇ¸ÅÁ¾·áÀÏ</label>
+				<div class="col-sm-3">
+					<input type="date" class="form-control" id="salesEndDate" name="salesEndDate" readonly>
+				</div>
+				<span class="col-sm-6"></span>
+			</div>
+			<br/>
+			<div class="row">
+				<label for="inputPrice" class="col-sm-3 control-label">°¡°İ</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" id="prodPrice" name="prodPrice" >
+				</div>
+				<span class="col-sm-6"></span>
+			</div>
+			<br/>
+				<div class="row">
+				<label for="inputPrice" class="col-sm-3 control-label">À¯È¿ ±â°£</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" id="expiryDate" name="expiryDate" >
+				</div>
+				<span class="col-sm-6"></span>
+			</div>
+			<br/>
+			<div class="row">
+				<label for="inputFile" class="col-sm-3 control-label">»óÇ°ÀÌ¹ÌÁö</label>
+				<div class="col-sm-6">
+					<input type="file" class="form-control" id="inputFile" name="file" >
+				</div>
+				<span class="col-sm-3"></span>
+			</div>
+			<br/>
+			<div class="row">
+				<div class="col-sm-offset-3 col-sm-9">
+					<button type="button" class="btn btn-success">
+						µî·ÏÇÏ±â
+					</button>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-body">
+									<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+									<h4 class="modal-title" id="myModalLabel">»óÇ° µî·Ï ÁßÀÔ´Ï´Ù..</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+
+
+
+
 </body>
 
 </html>

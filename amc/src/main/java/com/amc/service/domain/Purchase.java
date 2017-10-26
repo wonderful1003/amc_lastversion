@@ -4,6 +4,16 @@ import java.sql.Date;
 
 public class Purchase {
 	
+	@Override
+	public String toString() {
+		return "Purchase [orderNo=" + orderNo + ", receiverName=" + receiverName + ", paymentOption=" + paymentOption
+				+ ", addrDlvy=" + addrDlvy + ", addrDlvyDetail=" + addrDlvyDetail + ", orderStock=" + orderStock
+				+ ", receiverPhone1=" + receiverPhone1 + ", receiverPhone2=" + receiverPhone2 + ", receiverPhone3="
+				+ receiverPhone3 + ", totalProdPrice=" + totalProdPrice + ", tranCode=" + tranCode + ", orderRegDate="
+				+ orderRegDate + ", purchaseCount=" + purchaseCount + ", purchaseProd=" + purchaseProd + ", buyer="
+				+ buyer + "]";
+	}
+
 	private String orderNo;
 	private String receiverName;
 	private String paymentOption;
@@ -16,9 +26,18 @@ public class Purchase {
 	private int totalProdPrice;
 	private int tranCode;
 	private Date orderRegDate;
+	private int purchaseCount;
 	
-	private Product prodNo;
-	private User userId;
+	private Product purchaseProd;
+	private User buyer;
+	
+	public int getPurchaseCount() {
+		return purchaseCount;
+	}
+
+	public void setPurchaseCount(int purchaseCount) {
+		this.purchaseCount = purchaseCount;
+	}
 	
 	public Purchase() {
 	}
@@ -119,20 +138,20 @@ public class Purchase {
 		this.orderRegDate = orderRegDate;
 	}
 
-	public Product getProdNo() {
-		return prodNo;
+	public Product getPurchaseProd() {
+		return purchaseProd;
 	}
 
-	public void setProdNo(Product prodNo) {
-		this.prodNo = prodNo;
+	public void setPurchaseProd(Product purchaseProd) {
+		this.purchaseProd = purchaseProd;
 	}
 
-	public User getUserId() {
-		return userId;
+	public User getBuyer() {
+		return buyer;
 	}
 
-	public void setUserId(User userId) {
-		this.userId = userId;
+	public void setBuyer(User buyer) {
+		this.buyer = buyer;
 	}
 	
 }

@@ -29,7 +29,7 @@
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
     	 body >  div.container{ 
-        	border: 3px solid #D6CDB7;
+        	border: 3px solid #000000;
             margin-top: 10px;
         }
     </style>
@@ -44,7 +44,7 @@
 			
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$("#login").on("click" , function() {
-				var id=$("input:text").val();
+				var id=$("#userId").val();
 				var pw=$("input:password").val();
 				
 				if(id == null || id.length <1) {
@@ -59,8 +59,6 @@
 					return;
 				}
 				
-		/* $("form").attr("method","POST").attr("action","/user/loginUser").attr("target","_parent").submit(); */
-				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				$.ajax( 
 						{	
 							url : "/user/json/loginUser",
@@ -80,12 +78,12 @@
 								//alert(status);
 								//alert("JSONData : \n"+JSONData);
 								//alert( "JSON.stringify(JSONData) : \n"+JSON.stringify(JSONData) );
-								alert("JSONData : "+ JSONData );
-								alert("status : "+ status );
+								//alert("JSONData : "+ JSONData );
+								//alert("status : "+ status );
 								
 									if( JSONData !=''){
 									//[방법1]
-									alert("login ajax success");
+									//alert("login ajax success");
 									$(window.parent.document.location).attr("href","/index.jsp");
 									
 									//[방법2]
@@ -111,7 +109,10 @@
 		
 		//============= 회원원가입화면이동 =============
 		$( function() {
-			$("a[href='#' ]").on("click" , function() {
+			/* $("a[href='#' ]").on("click" , function() {
+				self.location = "/user/authForm.jsp"
+			}); */
+			$("#addUser").on("click" , function() {
 				self.location = "/user/authForm.jsp"
 			});
 		});
@@ -183,17 +184,12 @@
 </head>
 
 <body>
-
-	
-	<!-- ToolBar Start /////////////////////////////////////-->
-	<div class="navbar  navbar-default">
+ 	<div class="navbar  navbar-default">
         <div class="container">
-        	<a class="navbar-brand" href="/index.jsp">Model2 MVC Shop</a>
+        	<a class="navbar-brand" href="/index.jsp">AMC</a>
    		</div>
    	</div> 
-   	<!-- ToolBar End /////////////////////////////////////-->	
 	
-	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
 		<!--  row Start /////////////////////////////////////-->
 		<div class="row">		
@@ -221,47 +217,34 @@
 					      <input type="password" class="form-control" name="password" id="password" placeholder="패스워드" >
 					    </div>
 					  </div>
+					 </form>
 					 
 					  <div class="form-group">
 					    <div class="col-sm-offset-4 col-sm-6 text-center">
-					      <button type="button" id="login" class="btn btn-primary"  >로 &nbsp;그 &nbsp;인</button>
-					      <a class="btn btn-primary btn" href="#" role="button">회 &nbsp;원 &nbsp;가 &nbsp;입</a>					      					    
-					  
-					<!-- <a href="/user/kakaoGetCode" ><img src="../images/user/kakaobtn.png" class="img-rounded" width="20%"> </a> &nbsp; -->
-				
+					      <button type="button" id="login" class="btn btn-primary">로 &nbsp;그 &nbsp;인</button>
+					      <button type="button" id="addUser" class="btn btn-primary">회원가입</button><br/><br/>
+					      <button type="button" id="findUser" class="btn btn-primary">ID/PW찾기</button>
+					 	</div>
+					  </div><br/><br/><br/><br/><br/>  
+					      
+					      
+					     <!--  <a class="btn btn-primary btn" href="#" role="button">회 &nbsp;원 &nbsp;가 &nbsp;입</a>
+					      <a class="btn btn-primary btn" href="#" role="button">회 &nbsp;원 &nbsp;가 &nbsp;입</a>		 -->			      					    
+						
+				<!-- 		<div class="col-sm-offset-4 col-sm-6 text-center">
+					<button id="findUser" class="btn btn-primary"  >ID &nbsp;/ &nbsp;PW &nbsp;찾기</button>					      					      					   
+				</div>
+				 -->
+				<div>
 					<a id="custom-login-btn" href="javascript:loginWithKakao()">
-					<img src="../images/user/kakaobtn.png" class="img-rounded" width="20%">  &nbsp;
-					</a>
+					<img src="../images/user/kakaobtn.png" class="img-rounded" width="10%"></a>&nbsp;
+					<a href="/user/kakaoGetCode" ><img src="../images/user/naverbtn.PNG" class="img-rounded" width="10%"> </a> &nbsp;
+					<a href="/user/Naver" ><img src="../images/user/googlebtn.png" class="img-rounded" width="10%"> </a>
+				</div>
 					
-					<a href="/user/kakaoGetCode" ><img src="../images/user/naverbtn.PNG" class="img-rounded" width="20%"> </a> &nbsp;
-		
-					
-					<a href="/user/kakaoGetCode" ><img src="../images/user/googlebtn.png" class="img-rounded" width="25%"> </a>
-  
-					    </div>
-					</form>
 			   	</div>
 				
 				
-							<div>		
-				<span class="col-md-4">
-					<!-- <img src="../images/user/kakao_account.png" id = "kakao" class="img-rounded" width="70%" /> -->
-<!-- 					<a href="/user/kakaoGetCode" ><img src="../images/user/kakaobtn.png" class="img-rounded" width="30%"> </a>
-		
-					<img src="../images/user/naver.account.PNG" id = "naver" class="img-rounded" width="70%" />
-					<a href="/user/kakaoGetCode" ><img src="../images/user/nnaverbtn.PNG" class="img-rounded" width="30%"> </a>
-		
-					<img src="../images/user/google_account.png" id = "google" class="img-rounded" width="70%" />
-					<a href="/user/kakaoGetCode" ><img src="../images/user/googlebtn.png" class="img-rounded" width="30%"> </a>
- -->				
-		    </div>
-				
-				
-				
-				
-				<div class="col-sm-offset-4 col-sm-6 text-center">
-					<button id="findUser" class="btn btn-primary"  >ID &nbsp;/ &nbsp;PW &nbsp;찾기</button>					      					      					   
-				</div>
 				
 			</div>
 		</div>	

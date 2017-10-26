@@ -22,6 +22,15 @@ public class Search {
 	public Search() {
 	}
 	
+
+	public void setEndRowNum(int endRowNum) {
+		this.endRowNum = endRowNum;
+	}
+
+	public void setStartRowNum(int startRowNum) {
+		this.startRowNum = startRowNum;
+	}
+
 	///Method
 	public int getPageSize() {
 		return pageSize;
@@ -81,11 +90,14 @@ public class Search {
 		this.stockView = stockView;
 	}
 
+
 	@Override
 	public String toString() {
-		return "Search [currentPage=" + currentPage + ", searchCondition="
-				+ searchCondition + ", searchKeyword=" + searchKeyword
-				+ ", pageSize=" + pageSize + ", endRowNum=" + endRowNum
-				+ ", startRowNum=" + startRowNum + "]";
+		return "Search [currentPage=" + currentPage + ", searchCondition=" + searchCondition + ", searchKeyword="
+				+ searchKeyword + ", searchKeyword2=" + searchKeyword2 + ", pageSize=" + pageSize + ", pageUnit="
+				+ pageUnit + ", endRowNum=" + endRowNum + ", startRowNum=" + startRowNum + ", stockView=" + stockView
+				+ "]";
 	}
+
+	
 }

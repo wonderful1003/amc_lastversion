@@ -22,8 +22,8 @@
 		<result property="orderRegDate"			column="ORDER_REGDATE" 		jdbcType="DATE"/>
 		<result property="impId"				column="IMP_ID" 			jdbcType="VARCHAR"/>
 		
-		<association property="user"	 	javaType="User">
-			<id property="userId" 			column="user_id" 			jdbcType="VARCHAR" />
+ 		<association property="buyer"	 	resultMap="UserMapper.userSelectMap" 		javaType="User">
+			<id property="userId" 			column="user_id" 							jdbcType="VARCHAR" />
 			
 			<result property="userId" 			column="user_id" 			jdbcType="VARCHAR"/>
 			<result property="userName"			column="user_name" 			jdbcType="VARCHAR"/>
@@ -41,10 +41,9 @@
 			<result property="deleteUserFlag" 	column="delete_user_flag" 	jdbcType="CHAR"/>		
 			<result property="uuId" 			column="uuser_id" 			jdbcType="VARCHAR"/>	
 		</association>
-			
 	
-		<association property="product"		javaType="Product">
-			<id property="prodNo"			column="prod_no" 			jdbcType="NUMERIC"/>
+		<association property="purchaseProd" 	resultMap="ProductMapper.productSelectMap"	javaType="Product">
+			<id property="prodNo"				column="prod_no" 							jdbcType="NUMERIC"/>
 			
   			<result property="prodNo" 			column="prod_no" 		jdbcType="NUMERIC"/>
   			<result property="prodPrice" 		column="prod_price" 	jdbcType="NUMERIC"/>
@@ -60,18 +59,32 @@
   			<result property="salesEndDate" 	column="sales_enddate" 	jdbcType="DATE"/>
   			<result property="prodRegDate" 		column="prod_regdate" 	jdbcType="DATE"/>
   			<result property="prodType" 		column="prod_type" 		jdbcType="CHAR"/>
-		</association>
+		</association> 
 	</resultMap>
 		
 		<!-- SQL : INSERT -->
 		<insert id="addPurchase" parameterType="purchase">
-		 	INSERT
-			INTO transaction
+		 	INSERT 
+			INTO transaction (order_no, 
+		 						receiver_name, 
+		 						payment_option, 
+		 						addr_dlvy,				 
+								addr_dlvydetail,		
+								order_stock,		
+								receiver_phone1,			 
+								receiver_phone2,		 
+								receiver_phone3,			
+								total_prodprice,			 
+								tran_code,				
+								order_regdate,			 
+								prod_no, 		 			
+								user_id 
+								seq_transaction_IMP_ID.nextval)
 			VALUES	(	'p'||seq_transaction_order_no.nextval,
 						#{receiverName},
 						#{paymentOption},
 						#{addrDlvy},
-						#{addrDetail},
+						#{addrDlvyDetail},
 						#{orderStock},
 						#{receiverPhone1},
 						#{receiverPhone2},
@@ -79,9 +92,9 @@
 						#{totalProdPrice},
 						#{tranCode},
 						SYSDATE,
-						#{product.prodNo},
-						#{user.userId},
-						#{impId}	)	 
+						#{purchaseProd.prodNo},
+						#{buyer.userId},
+						#{impId} 	)	 
 	 	</insert>
 			
  		<!-- SQL : SELECT ONE -->
@@ -125,8 +138,90 @@
 			WHERE prod_no = #{value}
 		</delete>
 		
-		<!--  map으로 바꿔주기 -->
-	  	<select id="getPurchaseList" parameterType="map" resultMap="purchaseSelectMap">
+		
+		
+		
+<!-- 			<sql id="purchaseList">
+				SELECT 
+					p.prod_name, t.addr_dlvy, t.receiver_phone1, t.receiver_phone2, t.receiver_phone3, t.tran_code, 
+					t.order_no, t.prod_no, COUNT(t2.order_no) purchase_count
+				FROM 
+					transaction t, transaction t2, product p
+				WHERE 
+					t.prod_no=p.prod_no AND t.order_no=t2.order_no AND t.user_id=#{searchCondition}
+				GROUP BY 
+					p.prod_name, t.addr_dlvy, t.receiver_phone1, t.receiver_phone2, t.receiver_phone3, t.tran_code, 
+					t.order_no, t.prod_no, t2.order_no
+				HAVING 
+					t.order_no=MIN(t2.order_no)
+				ORDER BY 
+					t.order_no DESC
+			</sql>
+	
+			<sql id="saleList">
+				SELECT 
+					t.tran_no, p.prod_name, t.buyer_id user_id, t.tran_status_code, t.dlvy_date, p.prod_no, COUNT(t2.tran_no) purchase_count
+				FROM 
+					transaction t, product p , transaction t2
+				WHERE 
+					t.prod_no=p.prod_no(+)  AND t.order_no=t2.order_no 
+				GROUP BY
+					t.tran_no, p.prod_name, t.buyer_id , t.tran_status_code, p.prod_no, t2.order_no, t.dlvy_date
+				HAVING
+					t.tran_no IN MIN(t2.tran_no)
+				ORDER BY 
+					tran_no DESC
+			</sql>
+		
+		
+		
+		
+		
+		<select id="getPurchaseList" parameterType="Search" resultMap="purchaseSelectMap">
+			SELECT *
+			FROM ( SELECT inner_table.*, ROWNUM row_seq
+			       FROM ( 
+						<if test="searchKeyword == 'purchaseList'"><include refid="purchaseList"/></if> 
+						<if test="searchKeyword == 'saleList'"><include refid="saleList"/></if>
+				       ) inner_table
+			       WHERE ROWNUM <![CDATA[<=]]>${currentPage}*${pageSize} )
+			WHERE row_seq BETWEEN ${(currentPage-1)*pageSize+1} AND ${currentPage*pageSize}
+		</select>
+		
+	 	<select id="getTotalCount" parameterType="Search" resultType="int">
+			SELECT
+			COUNT(*)
+			FROM ( 
+				<if test="searchKeyword == 'purchaseList'"><include refid="purchaseList"/></if>
+				<if test="searchKeyword == 'saleList'"><include refid="saleList"/></if>
+				 )
+		</select>
+ -->		
+ 
+ 
+ 
+ 
+ <!-- SQL : SELECT ROW Count -->	 
+		<!-- <select  id="getTotalCount"  parameterType="Search"	 resultType="int">
+	 	SELECT COUNT(*)
+	  	FROM	(	SELECT *
+					FROM transaction 						
+					<if test="searchKeyword !='admin' ">
+					WHERE user_id =	#{searchKeyword} 
+					</if>	) countTable						  	
+	 	</select> -->
+	 	
+	 	<!-- SQL : SELECT LIST -->
+<!--	<select id = "getPurchaseByProd" parameterType="int" resultMap="purchaseSelectMap">
+  			SELECT 
+  				t.*, p.*, u.* 
+  			FROM  transaction t, product p, users u 
+  			WHERE  t.prod_no= #{value} 
+  			AND t.prod_no=p.prod_no AND t.buyer_id=u.user_id
+  		</select>
+  		 -->	
+  				<!--  map으로 바꿔주기 -->
+<!-- 	  	<select id="getPurchaseList" parameterType="map" resultMap="purchaseSelectMap">
 	  		SELECT *
 	  		FROM	(	SELECT inner_table.* , ROWNUM AS row_seq
 	  			 		FROM	(	SELECT *
@@ -139,24 +234,6 @@
 			WHERE row_seq 
 			BETWEEN #{search.startRowNum} AND #{search.endRowNum}
 	  	</select>
-	 
-		<!-- SQL : SELECT ROW Count -->	 
-		<select  id="getTotalCount"  parameterType="Search"	 resultType="int">
-	 	SELECT COUNT(*)
-	  	FROM	(	SELECT *
-					FROM transaction 						
-					<if test="searchKeyword !='admin' ">
-					WHERE user_id =	#{searchKeyword} 
-					</if>	) countTable						  	
-	 	</select>
-	 	
-	 	<!-- SQL : SELECT LIST -->
-<!--	<select id = "getPurchaseByProd" parameterType="int" resultMap="purchaseSelectMap">
-  			SELECT 
-  				t.*, p.*, u.* 
-  			FROM  transaction t, product p, users u 
-  			WHERE  t.prod_no= #{value} 
-  			AND t.prod_no=p.prod_no AND t.buyer_id=u.user_id
-  		</select>
- -->	
+  	 -->	
+	
 </mapper>

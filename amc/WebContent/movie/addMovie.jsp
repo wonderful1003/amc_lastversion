@@ -462,10 +462,7 @@
           
                 // 그리드 높이
                 height:"auto",
-                // 그리드(페이지)마다 보여줄 행의 수 -> 매개변수이름은 "rows"로 요청된다
-                //rowNum:10,
-                // rowNum변경 옵션
-                //rowList:[10,15,20],
+               
                 // 컬럼명
                 colNames:['영화CD','영화명','제작국가','상영마감','줄거리','트레일러'],
                 // 컬럼 데이터(추가, 삭제, 수정이 가능하게 하려면 autoincrement컬럼을 제외한 모든 컬럼을 editable:true로 지정)
@@ -500,8 +497,9 @@
            // 네비게이션 도구를 보여줄 div요소
                	sortable: true,
                 sortname: 'movieCd',
-                pager:"#pager",
-                rowNum:5,
+                pager:"#pager777",
+            	rowNum:10,
+               	//rowList:[10,20,30],             
                 autowidth:true,
                 // 전체 레코드수, 현재레코드 등을 보여줄지 유무
                 multiselect: true,
@@ -532,26 +530,69 @@
                 	cell:"cell",
                 	id:"movieCd"
                 },
-                
-         
-            
-               loadComplete: function(data) {
-          			//alert ("records="+$("#movie_list").getGridParam("records"));
-                }, 
-                 
-    
+        
+           		loadComplete: function(data) {
+          			// alert ("records="+$("#movie_list").getGridParam("records"));
+                },  
+    	       
         	});
          
+            $("#export").on("click", function(){
+				$("#movie_list").jqGrid("exportToExcel",{
+					includeLabels : true,
+					includeGroupHeader : true,
+					includeFooter: true,
+					fileName : "jqGridExport.xlsx",
+					maxlength : 40 // maxlength for visible string data 
+				})
+			})
+      
+      
+     
+  
+         
+
+         
+          
+          jQuery("#movie_list").jqGrid('navGrid','#pager777',
+        		 {}, //options
+        		 {height:280,reloadAfterSubmit:false}, // edit options
+        		 {height:280,reloadAfterSubmit:false}, // add options
+        		 {reloadAfterSubmit:false}, // del options
+        		 {}, // search options   		 
+        	
+        		 
+        	
+        		{
+        		 afterSubmit: function (response) {
+			             // you should return from server OK in sucess, any other message on error
+			             alert("after Submit");
+			             if (response.responseText == true) {
+			                 alert("Update is succefully")
+			                 return [true, "", ""]
+			             }
+			             else {
+			                 alert("Update failed")
+			                 return [false, "", ""]
+			             }
+			           },
+			    	 }
+         		   );
+         		});    
+    
+    
+
+
+      
+          
          // 네비게시션 도구 설정
-	 $("#movie_list").jqGrid(
+	/*  $("#movie_list").jqGrid(
 	         		"navGrid",
-	                 "#pager"                 
+	                "#pager"                 
 	     );
 	    });      
-  
+   */
     </script>
-
-
 
 <body>
 
@@ -562,9 +603,11 @@
 	
 	
 	<table id="movie_list"></table>    
-    <div id="pager" class="scroll" style="text-align:center"></div>
+    <div id="pager777" class="scroll" style="text-align:center"></div>
     <div id="load_time" class="scroll" style="text-align:center"></div>
 
+	
+	<button id="export">Export to Excel</button>
 	
 
 </form>

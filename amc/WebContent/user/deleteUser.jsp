@@ -1,37 +1,129 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML>
- <HEAD>
-  <TITLE> New Document </TITLE>
-  <META NAME="Generator" CONTENT="EditPlus">
-  <META NAME="Author" CONTENT="">
-  <META NAME="Keywords" CONTENT="">
-  <META NAME="Description" CONTENT="">
-  <SCRIPT LANGUAGE="JavaScript">
- 
-    /* ëª¨ë‹¬íŒì—…*/
-function modalPopup(){ 
-    var objectName = new Object(); // object ì„ ì–¸ modalì˜ ì´ë¦„ì´ ëœë‹¤. 
-    objectName.message = "ì´ê±´ í…ŒìŠ¤íŠ¸"; // modalì— ë„˜ê²¨ì¤„ ê°’ì„ ì„ ì–¸í•  ìˆ˜ ìˆë‹¤. 
-    var site = "./modalPop.html"; 
-    var style ="dialogWidth:255px;dialogHeight:250px"; // ì‚¬ì´ì¦ˆë“± styleì„ ì„ ì–¸ 
-    window.showModalDialog(site, objectName ,style ); // modal ì‹¤í–‰ window.showModalDialog í¬ì¸íŠ¸!! 
-    // modal ì— ë„˜ê²¨ì¤¬ë˜ ê°’ì„ ë‹¤ì‹œ ë¶€ëª¨ì°½ì— ë°›ì•„ ë“¤ì„     
-    //document.getElementById("test1").value = objectName.message; 
-}
- 
-  </SCRIPT>
- </HEAD>
- 
- <BODY>
-   
-<pre>
-ëª¨ë‹¬ íŒì—… í…ŒìŠ¤íŠ¸í•´ë³´ì
-<input type="text" id="test1">
-<input type="button" value="ëª¨ë‹¬ íŒì—… í…ŒìŠ¤íŠ¸" onclick="modalPopup()">
-</pre>
- 
- </BODY>
-</HTML>
+<%@ page contentType="text/html; charset=euc-kr" %>
+<%@ page pageEncoding="euc-kr"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-ì¶œì²˜: http://basic-x.tistory.com/45 [WebBrain]
+<!DOCTYPE html>
+
+<html lang="ko">
+	
+<head>
+	<meta charset="euc-kr">	
+	<!-- ÂüÁ¶ : http://getbootstrap.com/css/    -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+	<!-- Ä«Ä«¿À API -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"/>
+	<title> È¸ ¿ø Å»Åğ  </title>
+	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+	<!-- Ä«Ä«¿À API -->
+	
+	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+	<!-- ´ÙÀ½ ÁÖ¼Ò CDN -->
+	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+	
+	<!--  ///////////////////////// CSS ////////////////////////// -->
+	<style>
+       body{
+			padding-top : 70px;
+		}
+    </style>
+    
+     <!--  ///////////////////////// JavaScript ////////////////////////// -->
+	<script type="text/javascript">
+	
+		//============= "°¡ÀÔ"  Event ¿¬°á =============
+		 $(function() {
+			//==> DOM Object GET 3°¡Áö ¹æ¹ı ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$( "button.btn.btn-primary" ).on("click" , function() {
+				fncDeleteUser();
+			});
+		});	
+		
+		function fncDeleteUser() {
+			
+			var id=$("input[name='userId']").val();
+			var pw=$("input[name='password']").val();
+			var name=$("input[name='userName']").val();
+			
+			
+			if(id == null || id.length <1){
+				alert("¾ÆÀÌµğ´Â ¹İµå½Ã ÀÔ·ÂÇÏ¼Å¾ß ÇÕ´Ï´Ù.");
+				return;
+			}
+			if(pw == null || pw.length <1){
+				alert("ÆĞ½º¿öµå´Â  ¹İµå½Ã ÀÔ·ÂÇÏ¼Å¾ß ÇÕ´Ï´Ù.");
+				return;
+			}
+			if(name == null || name.length <1){
+				alert("ÀÌ¸§Àº  ¹İµå½Ã ÀÔ·ÂÇÏ¼Å¾ß ÇÕ´Ï´Ù.");
+				return;
+			}
+			alert("Á¤¸» Å»ÅğÇÏ½Ã°Ú½À´Ï±î?");
+			
+			$("form").attr("method" , "POST").attr("action" , "/user/deleteUser").submit();
+			alert("Å»Åğ¿Ï·á");
+		}
+ 
+	</script>		
+    
+</head>
+
+<body bgcolor="#ffffff" text="#000000">
+
+	<jsp:include page="../layout/topToolbar.jsp">
+		<jsp:param name="uri" value="../"/>
+	</jsp:include>
+
+	<!--  È­¸é±¸¼º div Start /////////////////////////////////////-->
+	<div class="container">
+
+		<div class="page-header col-sm-offset-2 col-sm-10">	
+		<h1>È¸ ¿ø Å» Åğ</h1>
+		</div>
+		<!-- form Start /////////////////////////////////////-->
+		<form class="form-horizontal">
+		
+		  <div class="form-group">
+		    <label for="userId" class="col-sm-3 control-label">¾Æ ÀÌ µğ</label>
+		    <div class="col-sm-3">
+		      <input type="text" class="form-control" id="userId" name="userId" placeholder="ÀÌ¸ŞÀÏIDÀÔ·Â" aria-describedby="helpBlock" >		       	      	
+		    </div>	
+		    <span id="helpBlock" class="help-block col-sm-6"></span>		    
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="password" class=" col-sm-3 control-label">ºñ¹Ğ¹øÈ£</label>
+		    <div class="col-sm-3">
+		      <input type="password" class="form-control" id="password" name="password" placeholder="ºñ¹Ğ¹øÈ£">
+		    </div>
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="userName" class=" col-sm-3 control-label">ÀÌ¸§</label>
+		    <div class="col-sm-4">
+		      <input type="text" class="form-control" id="userName" name="userName" placeholder="È¸¿øÀÌ¸§">
+		    </div>
+		  </div>
+		 
+			<!-- <h1>ÂüÁ¶ : http://postcode.map.daum.net/guide</h1> -->
+		  <div class="form-group">
+		    <div class="col-sm-offset-4  col-sm-4 text-center">
+		      <button type="button" class="btn btn-primary"  >È¸ ¿ø Å» Åğ </button>
+		    </div>
+		  </div>
+		</form>
+		<!-- form Start /////////////////////////////////////-->
+		
+ 	</div>
+	<!--  È­¸é±¸¼º div end /////////////////////////////////////-->
+	
+	
+</body>
+
+</html>

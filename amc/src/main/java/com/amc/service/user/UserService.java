@@ -19,6 +19,12 @@ public interface UserService {
 	// 회원정보수정
 	public void updateUser(User user) throws Exception;
 	
+	// 회원 탈퇴
+	public void deleteUser(User user) throws Exception;
+
+	// 회원 ID 찾기
+	public String getId(User user) throws Exception;
+	
 	// 회원 ID 중복 확인	
 	public boolean checkDuplication(String userId) throws Exception;
 	public User checkUserId(String userId) throws Exception;	
@@ -33,27 +39,4 @@ public interface UserService {
 	     *  @param from 보내는 메일 주소
 	     *  @param to 받는 메일 주소
 	     *  @param filePath 첨부 파일 경로: 첨부파일 없을시 null **/
-	
-	// 회원 탈퇴
-	public void deleteUser(User user) throws Exception;
-	
-	// 회원 ID 찾기
-	public String getId(User user) throws Exception;
-
-	
-	//kakao
-	public String getCode() throws Exception;
-		
-	public String getAccessToken(String authorize_code) throws Exception;
-	
-	public String getHtml(String accesstoken) throws Exception;
-	
-	public Map<String,String> JsonStringMap(String data) throws Exception;
-	
-	public String getAllList(String access_token) throws Exception;
-	
-	/*public String getConn(String accesstoken) throws Exception;*/
-	
-	
-
 }

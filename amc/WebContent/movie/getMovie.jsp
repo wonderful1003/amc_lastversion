@@ -52,7 +52,7 @@
 	function addOpenAlarm() {
 		$.ajax(
 						{
-							url : "/alarm/json/switchOpenAlarm?screenContentNo=10000&userId="
+							url : "/alarm/json/switchOpenAlarm?screenContent.screenContentNo=10000&user.userId="
 									+ "${sessionScope.user.userId}", //서버로 알림 체크 요청
 							type : 'GET',
 						}).done(function(data) {
@@ -66,7 +66,7 @@
 						alert("오픈알림이 취소되었습니다.");
 					}
 				});
-	} //end of kakaoPayCancel function
+	} //end of addOpenAlarm function
 
 	function fncAddMovieComment() {
 		var movieNo = $("input[name='movieNo']").val();
@@ -385,8 +385,6 @@
 			}
 			
 		
-			
-			
 			
 		})
 		
