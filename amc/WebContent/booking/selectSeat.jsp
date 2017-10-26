@@ -78,6 +78,8 @@
 
 </head>
 	<body>
+	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
+	
 		<form>
 		<h2>[예매 2단계]좌석선택입니다. 고갱님이 선택하신 상영번호는 :
 			<input type="text" name="screenContentNo" value="${screenContentNo}">

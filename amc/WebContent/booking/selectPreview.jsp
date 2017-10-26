@@ -58,6 +58,7 @@ var ticketOpenDate="";
  	  	
         if(diff<1){
         	$("button[name='selectSeat']").removeAttr("disabled");
+        	$("button[name='selectRandomSeat']").removeAttr("disabled");
         	$("#dpTime").html("허허");
         } 
 		
@@ -84,24 +85,6 @@ var ticketOpenDate="";
         }
     }
 
-    
-	$( function(){	
-
-    	$("button[name='selectSeat']").on("click", function(){
-    		var screeContentNo = $("#display").text();
-	    	self.location="/booking/selectSeat?screenContentNo="+"10000";
-	    });
-    	$("button[name='tempSelectSeat']").on("click", function(){
-    		var screeContentNo = $("#display").text();
-    		self.location="/booking/selectSeat?screenContentNo="+"10000";
-	    });
-    	$("button[name='selectRandomSeat']").on("click", function(){
-    		var screeContentNo = $("#display").text();
-    		//var headCount = 
-    		self.location="/booking/selectRandomSeat?screenContentNo="+"10172";
-	    });
-    
-    })
     //////////////////////////////////////////////////
     //1. 영화제목 클릭시
 		$( function() {
@@ -195,17 +178,37 @@ var ticketOpenDate="";
 			
 		});
 			
-		$(document).on("click", "#gotoSeat",  function(){
-			
-			var scNo = $("#display").text();	
-			self.location = "/booking/selectSeat?screenContentNo="+scNo;
 
-		});
+	$( function(){	
 
+    	$("button[name='selectSeat']").on("click", function(){
+    		var screeContentNo = $("#display").text();
+	    	self.location="/booking/selectSeat?screenContentNo="+"10000";
+	    });
+    	$("button[name='tempSelectSeat']").on("click", function(){
+    		var screeContentNo = $("#display").text();
+    		self.location="/booking/selectSeat?screenContentNo="+"10000";
+	    });
+    	$("button[name='selectRandomSeat']").on("click", function(){
+    		var screeContentNo = $("#display").text();
+    		var headCount = $("input:radio[name=headCount]:checked").val();
+    		if( $("input:radio[name=headCount]:checked").length<1){
+    			alert("인원수를 먼저 선택해주세요.");
+    		}else{
+    			alert("랜덤좌석을 "+headCount+"석 신청합니다.");
+    			//self.location="/booking/selectRandomSeat?screenContentNo="+screeContentNo+"&headCount="+headCount;	
+        		self.location="/booking/selectRandomSeat?screenContentNo=10172&headCount="+headCount+"";
+    		}
+    		
+	    });
     
+    })
 </script>
 </head>
 	<body>
+	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
+	
+	
 		<h2>[예매1단계]시사회 상영정보를 선택해 주세요.</h2>
 		<input type="hidden" name="flag" value="2">
 		<input type="hidden" name="openTime" value="2017-10-27 12:00:00">
@@ -215,8 +218,11 @@ var ticketOpenDate="";
 
 		<button class="select" name="selectSeat" disabled="disabled">(시간되면 활성화) 좌석선택</button>
 		<button class="select" name="tempSelectSeat">[테스트용] 좌석선택 </button>
-		<button class="select" name="selectRandomSeat"> 랜덤좌석 선택하기 </button>
-		
+		<button class="select" name="selectRandomSeat" disabled="disabled"> 랜덤좌석 선택하기 </button> &nbsp;
+
+		<input TYPE="radio" name="headCount" value="1"/>1석
+		<input TYPE="radio" name="headCount" VALUE="2"/>2석
+	
 
     <div class="container">
 	 <h2>[예매1단계]시사회 상영정보를 선택해 주세요.</h2>

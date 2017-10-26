@@ -77,12 +77,15 @@
 
 </head>
 	<body>
+	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
+		
 		<form>
 		<h2>[예매 2단계] 랜덤으로 선택된 좌석선택입니다. 
 			<input type="text" name="screenContentNo" value="${screenContent.screenContentNo}">
 		</h2>		
-			<%-- <iframe id="child" src="http://127.0.0.1:52273/random_select?screenNo=${screenContentNo}&count=${headCount}" width="600" height="400" > --%>
-			<iframe id="child" src="http://127.0.0.1:52273/random_select?screenNo=10172&count=2" width="800" height="400" >		 
+			<%-- <iframe id="child" src="http://127.0.0.1:52273/random_select?
+			screenNo=${screenContent.screenContentNo}&count=${headCount}" width="600" height="400" > --%>
+			<iframe id="child" src="http://127.0.0.1:52273/random_select?screenNo=10303&headCount=${headCount}" width="800" height="400" >		 
 					  <p>Your browser does not support iframes.</p>
 			</iframe>
 			<button onclick="requestPay()">결제하기</button>

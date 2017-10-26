@@ -242,7 +242,7 @@
 	 	
 	 	//=============  시사회 예매 Event  처리 =============	
 	 	$( "a:contains('시사회 예매')" ).on("click" , function() {
-			$(self.location).attr("href","/booking/getScreenPreviewList");
+			$(self.location).attr("href","/booking/getPreviewList");
 		});
 		
 	 	//=============  영화관 Event  처리 =============	
@@ -296,7 +296,7 @@
 		});
 	 	
 	 	//=============  예매관리 Event  처리 =============	
-	 	$( "a:contains('예매관리')" ).on("click" , function() {ss
+	 	$( "a:contains('예매관리')" ).on("click" , function() {
 			$(self.location).attr("href","/booking/getAdminBookingList");
 		});
 	 	

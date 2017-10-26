@@ -149,6 +149,8 @@ IMP.init('imp41659269');
 
 	
 </script>
+		<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
+
 <body>
 <h2>[예매3단계] 결제를 위한 창입니다.</h2>
 

@@ -53,6 +53,8 @@
 <title>listBookingAdmin.jsp</title>
 </head>
 	<body>
+		<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
+	
 	<div class="container">
 		<h2>관리자용 예매목록 보기 페이지입니다.</h2>
 	<input type="hidden" name="flag" value="1">

@@ -93,11 +93,13 @@ public class BookingController {
 	
 	//¿¹¸Å2´Ü°è : ·£´ý ÁÂ¼®¼±ÅÃ
 	@RequestMapping( value="selectRandomSeat", method=RequestMethod.GET)
-	public String selectRandomSeat(@RequestParam("screenContentNo") String screenContentNo, Model model) throws Exception{
+	public String selectRandomSeat(@RequestParam("screenContentNo") String screenContentNo,
+			@RequestParam("headCount") int headCount, Model model) throws Exception{
 		
 		System.out.println("/booking/selectRandomSeat : GET");
 		ScreenContent screenContent = screenService.getScreenContent(Integer.parseInt(screenContentNo));
-		model.addAttribute("screenContent",screenContent);	
+		model.addAttribute("screenContent",screenContent);
+		model.addAttribute("headCount", headCount);
 		System.out.println(":::::::È£ÀÕ : :"+screenContent);
 
 		return "forward:/booking/selectRandomSeat.jsp";
@@ -109,8 +111,9 @@ public class BookingController {
 			@RequestParam("seats") String seats, Model model) throws Exception{	
 		System.out.println("/booking/requestPay : POST");
 		
-		ScreenContent screenContent = screenService.getScreenContent(Integer.parseInt(screenContentNo));
-				
+		//ScreenContent screenContent = screenService.getScreenContent(Integer.parseInt(screenContentNo));
+		ScreenContent screenContent = screenService.getScreenContent(10000);
+		
 		Booking booking = new Booking();
 		booking.setScreenContent(screenContent);
 		booking.setBookingSeatNo(seats);	

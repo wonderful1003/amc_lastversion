@@ -171,4 +171,12 @@
 				 )
 	</select>
 	
+	<!-- 몽고DB에 등록하기위한 상영번호-->
+	<select id="getScreenNo" parameterType="screenContent" resultType="int">
+		SELECT screenContent_no 
+		FROM  screenContent
+		WHERE screen_OpenTime = TO_DATE(#{screenOpenTime}, 'YYYY/MM/DD HH24:MI') 
+				AND  screen_theater = #{screenTheater} 
+	</select>
+	
 </mapper>

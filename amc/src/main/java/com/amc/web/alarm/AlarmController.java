@@ -24,7 +24,7 @@ public class AlarmController {
 		System.out.println("alarmController() default Constructor");
 	}
 	
-	@RequestMapping(value="selectCancelAlarm", method=RequestMethod.GET)
+	@RequestMapping(value="selectCancelAlarm", method=RequestMethod.POST)
 	public String selectCancelAlarm(@ModelAttribute("screenContent") ScreenContent screenContent,
 									 Model model) throws Exception{
 		

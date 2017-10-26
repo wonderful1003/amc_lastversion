@@ -11,8 +11,13 @@
 	<!--   jQuery , Bootstrap CDN  -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+	<link rel="stylesheet" type="text/css" href="/semantic/semantic.min.css">
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+	integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  	crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js" ></script>
+	<!-- semantic.ui -->
+	<script src="/semantic/semantic.min.js"></script>
 	
 	<!--   Modal CDN  -->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> 
@@ -33,6 +38,7 @@
    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 
+
    <!-- ------------------------------>
 	<script type="text/javascript">
 		
@@ -42,6 +48,8 @@
 			$("td.movieName").on("click" , function() {
 				
 				var movieNo =  $($(this).find("input[name='movieNo']")).val();
+				var movieName =  $($(this).find("input[name='movieName']")).val();
+				$(".selected").eq(0).text(movieName);
 				var flag = $("input:hidden[name='flag']").val();
 				
 				$.ajax(
@@ -80,7 +88,7 @@
 			alert("날짜를 선택하셨습니다.");
 			
 			var date =  $($(this).find("input[name='day']")).val();
-			
+			$(".selected").eq(1).text(date);
 			$.ajax(
 					{
 						url : "/booking/json/getScreenTime/"+date,						
@@ -117,6 +125,7 @@
 			
 			var contNo = $($(this).find("input[name='contNo']")).val();
 			alert("시간을 선택하셨습니다  상영번호는 : "+contNo);
+			$(".selected").eq(2).text(contNo);
 			
 			$("#display").text(contNo);	
 
@@ -134,7 +143,35 @@
 <title>selectScreenMovie.jsp</title>
 </head>
 	<body>
-
+	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
+	
+	<div class="ui inverted segment">
+	  <button class="ui inverted button">Standard</button>
+	  <button class="ui inverted red button">Red</button>
+	  <button class="ui inverted orange button">Orange</button>
+	  <button class="ui inverted yellow button">Yellow</button>
+	  <button class="ui inverted olive button">Olive</button>
+	  <button class="ui inverted green button">Green</button>
+	  <button class="ui inverted teal button">Teal</button>
+	  <button class="ui inverted blue button">Blue</button>
+	  <button class="ui inverted violet button">Violet</button>
+	  <button class="ui inverted purple button">Purple</button>
+	  <button class="ui inverted pink button">Pink</button>
+	  <button class="ui inverted brown button">Brown</button>
+	  <button class="ui inverted grey button">Grey</button>
+	  <button class="ui inverted black button">Black</button>
+	</div>
+	
+	
+	
+	
+	
+	<div class="selected">선택된 상영정보</div>
+	<div class="selected"></div>
+	<div class="selected"></div>
+	<div class="selected"></div>
+	
+	
 	 <div class="container">
 	 <h2>[예매1단계]영화 상영정보를 선택해 주세요.</h2>
 	 <input type="hidden" name="flag" value="1">
@@ -148,6 +185,7 @@
 				<tr>		  
 				  <td align="left" class="movieName"><h5>${movie.movieNm}  ${movie.movieNo}</h5>
 				  	<input type="hidden" name="movieNo" value="${movie.movieNo}">
+				  	<input type="hidden" name="movieName" value="${movie.movieNm}">
 				  </td>
 				</tr>
 	          </c:forEach>        
