@@ -84,7 +84,7 @@ public class ScreenServiceImpl implements ScreenService {
 		System.out.println("screenContent.getPreviewFlag()++++++"+screenContent.getPreviewFlag());
 		if (screenContent.getPreviewFlag().equals("Y")) {
 			if (checkScreenDupPreview == 0) {
-				if (checkScreenDupTime) {
+				if (checkScreenDupTime) {					
 					return screenDAO.addScreenContent(screenContent);
 				} else {
 					System.out.println("중복임중복");
@@ -195,5 +195,13 @@ public class ScreenServiceImpl implements ScreenService {
 		
 		return screenDAO.getTodayTicketOpenList(search);
 	};
+	@Override
+	// 스크린상영번호가져오기
+	public int getScreenNo(ScreenContent screenContent) {
+		return screenDAO.getScreenNo(screenContent);
+		
+	}
+	
+	
 
 }

@@ -1,18 +1,13 @@
 package com.amc.service.alarm.impl;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.codehaus.jettison.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +16,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.amc.common.Search;
+import com.amc.common.util.RestApiUtil;
 import com.amc.service.alarm.AlarmDAO;
 import com.amc.service.alarm.AlarmService;
 import com.amc.service.cinema.CinemaService;
 import com.amc.service.domain.Alarm;
+import com.amc.service.domain.ScreenContent;
+import com.amc.service.domain.User;
+import com.amc.service.screen.ScreenDAO;
 
 @Service("alarmServiceImpl")
 public class AlarmServiceImpl implements AlarmService {
@@ -34,32 +33,105 @@ public class AlarmServiceImpl implements AlarmService {
 	AlarmDAO alarmDAO;
 	
 	@Autowired
+	@Qualifier("screenDAOImpl")
+	ScreenDAO screenDAO;
+
+	@Autowired
 	@Qualifier("cinemaServiceImpl")
 	CinemaService cinemaService;
-	
-	@Value("#{commonProperties['naver-X-NCP-auth-key'] ?: 'naver-X-NCP-auth-key Plz Check'}")
+
+	@Value("#{commonProperties['naver-X-NCP-auth-key'] ?: 'naver-X-NCP-auth-key Check Plz'}")
 	String naver_X_NCP_auth_key;
-	
-	@Value("#{commonProperties['naver-X-NCP-service-secret'] ?: 'naver-X-NCP-service-secret Plz Check'}")
+
+	@Value("#{commonProperties['naver-X-NCP-service-secret'] ?: 'naver-X-NCP-service-secret Check Plz'}")
 	String naver_X_NCP_service_secret;
-	
-	@Value("#{commonProperties['naverServiceId'] ?: 'sensServiceId Plz Check'}")
+
+	@Value("#{commonProperties['naverServiceId'] ?: 'sensServiceId Check Plz'}")
 	String naverServiceId;
 	
-	Map<String, Object> addInfo = new HashMap<String,Object>();
-	
+	@Value("#{commonProperties['fromPhoneNo'] ?: '00000000000'}")
+	String fromPhoneNo;
+
+	Map<String, String> header = new HashMap<String, String>();
+	Map<String, Object> body = new HashMap<String, Object>();
+
 	ObjectMapper om = new ObjectMapper();
 	
 	@Override
-	public int addCancelAlarm(Alarm alarm) {
+	public String addCancelAlarm(Alarm alarm) {
 
-		return 0;
+		alarm.setAlarmSeatNo("1,2,3,4,10,20");
+		
+		///////test User와 screenContentNo//////
+		User user = new User();
+		ScreenContent sc = new ScreenContent();
+		user.setUserId("리신");
+		sc.setScreenContentNo(10260);
+		alarm.setUser(user);
+		alarm.setScreenContent(sc);
+		alarm.setAlarmFlag("C");
+		////////////////////////////////////////
+		
+		//요청한 좌석 리스트
+		List<String> requestSeatList = new ArrayList<String>();
+		//중복된 좌석 리스트
+		List<String> duplicationList = new ArrayList<String>();
+		
+		String[] temp = alarm.getAlarmSeatNo().split(",");
+		for(int i = 1; i<temp.length+1; i++){
+			if(i%2 == 0){
+				requestSeatList.add(temp[i-2]+","+temp[i-1]);
+			}
+		}
+		
+		System.out.println("requestSeatList::"+requestSeatList);
+		
+		//신청+기존의 신청좌석 수가 4개 이상인지 먼저 체크
+		if(requestSeatList.size()+Integer.parseInt(alarmDAO.checkCancelAlarm(alarm)) > 4){
+			System.out.println("4자리 이상 신청하였습니다.");
+			return "exceed";
+		}else{
+			for (String alarmSeatNo : requestSeatList) {
+				alarm.setAlarmSeatNo(alarmSeatNo);
+				if(alarmDAO.checkDuplicationSeat(alarm) != null){
+					duplicationList.add(alarmSeatNo);
+				}
+			}
+			if(duplicationList.size()==0){ //중복된 자석이 하나도 없으면
+				for (String alarmSeatNo : requestSeatList) {
+				alarm.setAlarmSeatNo(alarmSeatNo);
+				alarmDAO.addCancelAlarm(alarm);
+				}
+				return "success";
+				
+			}else{
+				System.out.println("////////중복좌석 리스트/////////");
+				System.out.println(duplicationList.toString());
+				System.out.println("////////중복좌석 리스트/////////");
+				return duplicationList.toString();
+			}
+
+		}
 	}
 
 	@Override
 	public int addOpenAlarm(Alarm alarm) {
 
 		return alarmDAO.addOpenAlarm(alarm);
+	}
+	
+	@Override
+	public String switchOpenAlarm(Alarm alarm) {
+		
+		alarm.setAlarmFlag("O");
+		
+		if(this.checkOpenAlarm(alarm).equals("0")){
+			this.addOpenAlarm(alarm);
+			return "add";
+		}else{
+			this.deleteOpenAlarm(alarm);
+			return "delete";
+		}
 	}
 
 	@Override
@@ -76,138 +148,155 @@ public class AlarmServiceImpl implements AlarmService {
 
 	@Override
 	public int deleteCancelAlarm(Alarm alarm) {
-
-		return 0;
+		return alarmDAO.deleteCancelAlarm(alarm);
 	}
 
 	@Override
 	public int deleteOpenAlarm(Alarm alarm) {
-
 		return alarmDAO.deleteOpenAlarm(alarm);
 	}
 
 	@Override
 	public String checkOpenAlarm(Alarm alarm) {
-		
+
 		return alarmDAO.checkOpenAlarm(alarm);
-		
+
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public String smsPush() throws Exception {
-		
-		addInfo.put("X-NCP-auth-key", naver_X_NCP_auth_key);
-		addInfo.put("X-NCP-service-secret", naver_X_NCP_service_secret);
-		
-		JSONObject jsonObj = this.smsJsonObject(this.getConAndBody
-										("https://api-sens.ncloud.com/v1/sms/services/"+naverServiceId+"/messages", "smsPush", addInfo));
-		
-		String status = jsonObj.get("status").toString();
-        System.out.println("sms push status : " + status);
-        
-        
-        List<String> toList = om.readValue(jsonObj.get("messages").toString(), new TypeReference<List<String>>(){});
-        
-        for (String string : toList) {
-        	jsonObj = (JSONObject)JSONValue.parse(string);
-        	System.out.println("to Phone ::" + jsonObj.get("to").toString());
-		}
-        
-        return status;
+	public String smsPush(String type, String serialNo, String userId) throws Exception {
 
-	}
-	
-	public JSONObject smsJsonObject(Map<String,Object> conAndBody) throws Exception{
+		RestApiUtil restApiUtil = new RestApiUtil(
+				"https://api-sens.ncloud.com/v1/sms/services/" + naverServiceId + "/messages", "POST");
 		
-		HttpsURLConnection con = (HttpsURLConnection)conAndBody.get("con");
+		//naver sms 헤더 설정
+		header.clear();
+		header.put("Content-Type", "application/json; charset=UTF-8");
+		header.put("X-NCP-auth-key", naver_X_NCP_auth_key);
+		header.put("X-NCP-service-secret", naver_X_NCP_service_secret);
+
 		
-		String body = (String)conAndBody.get("body");
-		
-		OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
-        
-	    writer.write(body);
-	    writer.flush();
-	    writer.close();
-	    
-	    System.out.println("con : "+con.toString());
-	    System.out.println("body : "+body);
-	    
-	    int responseCode = con.getResponseCode();
-        
-        BufferedReader br = null;
-        
-        if(responseCode==200) {
-        	System.out.println("송수신 성공 : 200");
-            br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        } else {  // 에러 발생
-        	System.out.println("송수신 실패 : " + responseCode);
-            br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-        }
-        
-        //JSON Data 읽기
-        String oneLine = "";
-        StringBuffer response = new StringBuffer();
-        
-        while ((oneLine = br.readLine()) != null) {
-            response.append(oneLine);
-        }
-        
-        br.close();
-        con.disconnect();
-        
-        String firstJsonData = response.toString();
-        
-        JSONObject jsonObj = (JSONObject)JSONValue.parse(firstJsonData);
-        
-        return jsonObj;
-		
-	}
-	
-	public Map<String,Object> getConAndBody(String inputUrl, String behavior, Map<String,Object> addInfo) throws Exception{
-		
-		Map<String,Object> conAndBody = new HashMap<String, Object>();
-		
-		URL url = new URL(inputUrl);
-		StringBuffer body = new StringBuffer();
+		////////////naver sms 바디 설정 start//////////////
+		body.clear();
+		body.put("type", "sms");
+		body.put("from", fromPhoneNo);
+
+		// userId가 있다 = 한사람에게 보낸다 <-----> userId가 없다 한사람or여러사람에게 보낸다
+		if (!userId.equals("")) {
+			System.out.println("AlarmServiceImpl :: userId 는 Null");
+			body.put("to", userId);
+		} else {
+			System.out.println("AlarmServiceImpl :: userId 는 Not Null");
+			List<String> list = new ArrayList<>(); 
 			
-		HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
-				
-		con.setDoInput(true);
-        con.setDoOutput(true);
-        con.setUseCaches(false);
+			//문자를 보낼 대상을 뽑아온다(알람은 0~* 명으로 인원을 뽑아와야함)
+			for(String phone : (List<String>)this.userList(type, serialNo).get("phone")){
+				list.add(phone);
+			}
+			if(list.size() == 0){
+				return "noOne";
+			}
+			body.put("to", list);
+		}
+		
+		body.put("subject", this.pushValue(type, serialNo).get("subject"));
+		body.put("content", this.pushValue(type, serialNo).get("content"));
+		////////////naver sms 바디 설정 end//////////////
+		
+		
+		String responseJsonString = restApiUtil.restApiResponse(header, body, true);
 
-        if(behavior.equals("smsPush")){
-        	
-        	con.setRequestMethod("POST");
-    		con.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8;json");
-    		con.setRequestProperty("X-NCP-auth-key", (String)addInfo.get("X-NCP-auth-key"));
-    		con.setRequestProperty("X-NCP-service-secret", (String)addInfo.get("X-NCP-service-secret"));
-    		
-    		body.append( "type=sms");
-	        body.append( "&from=01071167840" );
-	        body.append( "&to=" );
-	        
-	        
- 	        //////////////////////유저 번호 리스트 넣으면 됨
-	        List<String> list = new ArrayList<String>(); 
-	        list.add("list1");
-	        list.add("list2");
-	        list.add("list3");
-			String jsonString ="";
-			jsonString = om.writeValueAsString(list);
-			body.append(jsonString);
-			/////////////////////유저 번호 리스트 넣으면 됨
-	        
-	        body.append( "&subject=제목제목제목" );
-	        body.append( "&content=내용내용내용" );
+		//Simple JSONObject로 jsonString JSONObjbect화 -> 단순 status를 뽑기 위해
+		JSONObject jsonObj = (JSONObject) JSONValue.parse(responseJsonString);
+		
+		//codehaus 로 jsonString 을 JSONObject화 -> jsonArray를 뽑기 위해
+		org.codehaus.jettison.json.JSONObject cdJsonObj = new org.codehaus.jettison.json.JSONObject(responseJsonString);
 
-        }
+		String status = jsonObj.get("status").toString();
 
-        conAndBody.put("con", con);
-        conAndBody.put("body", body.toString());
-        
-        con.disconnect();
-        
-		return conAndBody;
+		System.out.println("sms push status : " + status);
+		
+		List toListOfMessage = new ArrayList(); 
+
+		//메세지 내용 상세보기 (한사람 한사람에 대한 송수신이 Array로 옴)
+		JSONArray jsonArray = cdJsonObj.getJSONArray("messages");
+		
+		for(int i = 0; i < jsonArray.length(); i ++){
+				toListOfMessage.add(jsonArray.get(i));
+				System.out.print("[" + ((JSONObject)JSONValue.parse(toListOfMessage.get(i).toString())).get("to")+ "] 에게 SMS전송 ");
+				//status 가 0 이면 전송 성공, 그 외는 실패
+				if(((JSONObject)JSONValue.parse(toListOfMessage.get(i).toString())).get("statusCode").equals("0")){
+					System.out.println("성공!");
+				}else{
+					System.out.println("실패!");
+				}
+			}
+
+		restApiUtil.disConnection();
+		
+		
+		return status;
+	}
+
+	public Map<String, Object> userList(String type, String serialNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> userList = new HashMap<String, Object>();
+		List<String> phone = new ArrayList<String>();
+		List<String> uuid = new ArrayList<String>();
+		Search search = new Search();
+		
+		search.setSearchCondition(type);
+		search.setSearchKeyword(serialNo);
+		map.put("search", search);
+		
+		
+		switch (type) {
+		case "openAlarm":
+			for (Alarm alarm : alarmDAO.getOpenAlarmList(map)) {
+				phone.add(alarm.getUser().getPhone1()+alarm.getUser().getPhone2()+alarm.getUser().getPhone3());
+				uuid.add(alarm.getUser().getUuId());
+			}
+			userList.put("phone", phone);
+			userList.put("uuid", uuid);
+			break;
+
+		case "cancelAlarm":
+
+			break;
+
+		default:
+			break;
+		}
+		return userList;
+	}
+
+	public Map<String, String> pushValue(String type, String serialNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, String> pushValue = new HashMap<String, String>();
+		Search search = new Search();
+		search.setSearchKeyword(serialNo);
+		
+		switch (type) {
+		case "booking":
+
+			break;
+		case "purchase":
+
+			break;
+		case "openAlarm":
+			ScreenContent sc = screenDAO.getScreenContent(Integer.parseInt(serialNo));
+			pushValue.put("subject", "티켓 오픈 알림!");
+			pushValue.put("content", "[티켓 오픈 알림]"+sc.getPreviewTitle()+"\n 30분 후 티켓 오픈!");
+			break;
+		case "cancelAlarm":
+
+			break;
+
+		default:
+			break;
+		}
+
+		return pushValue;
 	}
 }

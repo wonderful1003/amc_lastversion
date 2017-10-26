@@ -49,7 +49,7 @@
 		function fncNextList(){
 			currentPage++;
 			$.ajax({
-				url : 'json/listProduct/'+$('input:hidden[name="menu"]').val(),
+				url : 'json/getSnackList/'+$('input:hidden[name="menu"]').val(),
 				method : 'post',
 				async : false,
 				dataType : 'json',
@@ -65,7 +65,7 @@
 					for( x in JSON.list){
 						var product = JSON.list[x];
 						list += '<div class="col-sm-6 col-md-4"><div class="thumbnail alert alert-'+(product.stock==0? 'danger':'warning')+'">';
-						list += '<img src="../images/uploadFiles/'+(product.fileName!=null ? product.fileName : 'empty'+Math.floor(3*Math.random())+'.GIF')+'" class="img-responsive" data-holder-rendered="true" style="height: 200px; width: 100%; display: block;">';
+						list += '<img src="../images/uploadFiles/'+(product.prodImage!=null ? product.prodImage : 'empty'+Math.floor(3*Math.random())+'.GIF')+'" class="img-responsive" data-holder-rendered="true" style="height: 200px; width: 100%; display: block;">';
 						list += '<div class="caption">';
 						list += '<input type="hidden" name="prodNo" value="'+product.prodNo+'">';
 						list += '<h3>'+product.prodName+'</h3>';
@@ -93,7 +93,7 @@
 		
 		function init(){
 			$('a.btn-primary:contains("상세보기"), a.btn-primary:contains("정보수정")').unbind('click').bind('click',function(){
-				self.location.href='getProduct?menu=${param.menu}&prodNo='+$(this).parent().parent().find('input:hidden').val();
+				self.location.href='getSnackProduct?menu=${param.menu}&prodNo='+$(this).parent().parent().find('input:hidden').val();
 			});
 			
 			$('a.btn-default:contains("구매")').unbind('click').bind('click',function(){
@@ -130,7 +130,7 @@
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
 		
-		<form name="detailForm" action="/product/listProduct?menu=${param.menu }" method="post">
+		<form name="detailForm" action="/product/getSnackList?menu=${param.menu }" method="post">
 	
 		<input type="hidden" name="menu" value="${param.menu}"/>
 		<input type="hidden" name="maxPage" value="${resultPage.maxPage}"/>

@@ -44,9 +44,14 @@
  	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
- 		body {
-            padding-top : 50px;
-        }
+ 	  body {
+            padding-top: 70px;
+            }
+            .thumbnail {
+            width: 150px;
+            height: 200px;
+            overflow: auto;
+      }	
      </style>
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
@@ -232,10 +237,12 @@
 	
 		<div class="row">
 	  		<div class="col-xs-4 col-md-2 "><strong>½ºÆ¿ÄÆ</strong></div>
+	  		<a class='thumbnail' style="text-decoration:none;">
 	  		<!-- <img src="file:C:/amcPoster/${movie.steelCut1}" width="160px" height="180px" align="left"/>  -->
 	  		<img src="../images/movie/${movie.steelCut1} " width="160px" height="180px" align="left"/>
 	  		<img src="../images/movie/${movie.steelCut2} " width="160px" height="180px" align="left"/>
 	  		<img src="../images/movie/${movie.steelCut3} " width="160px" height="180px" align="left"/>
+	  		</a>
 	  	</div>
 	 
 	  	

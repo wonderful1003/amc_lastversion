@@ -5,7 +5,7 @@ public class Booking {
 	private String bookingNo;
 	private String impId;
 	private String userId;
-	private String screenContentNo;
+	private int screenContentNo;
 	private String bookingRegDate;
 	private int headCount;
 	private int totalTicketPrice;
@@ -45,11 +45,11 @@ public class Booking {
 		this.userId = userId;
 	}
 	
-	public String getScreenContentNo() {
+	public int getScreenContentNo() {
 		return screenContentNo;
 	}
 	
-	public void setScreenContentNo(String screenContentNo) {
+	public void setScreenContentNo(int screenContentNo) {
 		this.screenContentNo = screenContentNo;
 	}
 	

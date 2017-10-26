@@ -1,122 +1,112 @@
-<%@ page contentType="text/html; charset=EUC-KR"%>
-<%@ page pageEncoding="EUC-KR"%>
+<%@ page contentType="text/html; charset=euc-kr" %>
+<%@ page pageEncoding="EUC-KR" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<% int index = (int)(java.lang.Math.random()*3.0); %>
 
 <!DOCTYPE html>
 
-<html lang="ko">
-
+<html>
 <head>
+	<title>Model2 MVC Shop</title>
 	<meta charset="EUC-KR">
 	
-	<!-- 참조 : http://getbootstrap.com/css/   참조 -->
+	<!-- 참조 : http://getbootstrap.com/css/   -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
-	<!-- Bootstrap Dropdown Hover CSS -->
-   <link href="/css/animate.min.css" rel="stylesheet">
-   <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
-   
-    <!-- Bootstrap Dropdown Hover JS -->
-   <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
-   
-   <!--  ///////////////////////// CSS ////////////////////////// -->
-   
 	<style>
- 		body {
-            padding-top : 50px;
-        }
-     </style>
+		body{
+			padding-top : 70px;
+		}
+	</style>
 	
-	<!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
-		
 	
-			//============= "등록"  Event 연결 =============
-		 $(function() {
-			$( "button.btn.btn-primary" ).on("click" , function() {
-				self.location = "/product/listProduct?menu=manage"
+		$(function(){
+			
+			$('#tabs').tabs();
+			
+			$('a.add:contains("확인")').bind('click',function(){
+				self.location.href = 'getGoodsList?menu=manage';
 			});
-		});	
-		
-	 	
-		//==> 추가된부분 : "취소"  Event 연결 및 처리
-		 $(function() {
-			 $("a[href='#' ]").on("click" , function() {
-				 self.location = "../product/addProductView.jsp"
+			
+			$('a.add:contains("추가등록")').bind('click',function(){
+				self.location.href = 'addProduct';
 			});
 		});
 
-		
-		</script>
+	</script>
 </head>
 
-<body>
+<body bgcolor="#ffffff" text="#000000">
 
-	<!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/layout/topToolbar.jsp" />
-   	<!-- ToolBar End /////////////////////////////////////-->
+
+	<jsp:include page="../layout/topToolbar.jsp">
+		<jsp:param name="uri" value="../"/>
+	</jsp:include>
 	
-	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
-	
-		<div class="page-header">
-	       <h3 class=" text-info">추가된 상품정보</h3>
-	       <h5 class="text-muted">상품 추가등록시 <strong class="text-danger">"추가등록"</strong>을 클릭하세요.</h5>
-	    </div>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2"><strong>상품명</strong></div>
-			<div class="col-xs-8 col-md-4">${ product.prodName }</div>
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">등록상품보기</a></li>
+			</ul>
+			<div class="row" id="tabs-1">
+				<div class="col-xs-5">
+					<c:if test="${!empty product.prodImage}">
+						<img src="../images/uploadFiles/${product.prodImage}" class="img-responsive"/>
+					</c:if>
+					<c:if test="${empty product.prodImage}">
+						<img src="../images/uploadFiles/empty<%=index%>.GIF" class="img-responsive"/>
+					</c:if>
+				</div>
+				<div class="col-xs-7">
+					<dl class="dl-horizontal">
+						<dt>상품명</dt>
+						<dd>${product.prodName}</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt>수량</dt>
+						<dd>${product.totalStock} 개</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt>판매시작일</dt>
+						<dd>${product.salesOpenDate}</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt>판매종료일</dt>
+						<dd>${product.salesEndDate}</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt>가격</dt>
+						<dd>${product.prodPrice} 원</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt>상세정보</dt>
+						<dd>${product.prodDetail}</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt>구성정보</dt>
+						<dd>${product.prodSetInfo}</dd>
+					</dl>
+					<div class="btn-group" role="group">
+						<a href="#" class="add btn btn-success" role="button">확인</a>
+						<a href="#" class="add btn btn-primary" role="button">추가등록</a>
+					</div>
+					
+				</div>
+			</div>
 		</div>
-	
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2"><strong>상품상세정보</strong></div>
-			<div class="col-xs-8 col-md-4">${product.prodDetail}</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>제조일자</strong></div>
-			<div class="col-xs-8 col-md-4">${product.manuDate }</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>가격</strong></div>
-			<div class="col-xs-8 col-md-4">${product.price}&nbsp;원</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>상품이미지</strong></div>
-			<div class="col-xs-8 col-md-4">${ product.fileName }</div>
-		</div>
-		
-		<hr/>
-				
-		<br/>
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->		
-		 <div class="form-group">
-		    <div class="col-sm-offset-4  col-sm-4 text-center">
-		      <button type="button" class="btn btn-primary"  >확 &nbsp;인</button>
-			  <a class="btn btn-primary btn" href="#" role="button">추가&nbsp;등록</a>
-		    </div>
-		  </div>
-		</form>
-		
- 	</div>
- 	<!--  화면구성 div Start /////////////////////////////////////-->
+	</div>
 
 </body>
-
 </html>

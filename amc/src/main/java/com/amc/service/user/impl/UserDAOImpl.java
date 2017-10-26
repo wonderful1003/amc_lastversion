@@ -1,3 +1,5 @@
+
+
 package com.amc.service.user.impl;
 
 import java.util.List;
@@ -12,7 +14,7 @@ import com.amc.service.domain.User;
 import com.amc.service.user.UserDAO;
 
 //==> 회원관리 DAO CRUD 구현
-@Repository("userDAOImpl")
+@Repository("userDAO")
 public class UserDAOImpl implements UserDAO {
 
 	///Field
@@ -65,7 +67,7 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public void deleteUser(User user) throws Exception {
 		// TODO Auto-generated method stub
-		
+		sqlSession.update("UserMapper.deleteUser", user);
 	}
 
 	@Override

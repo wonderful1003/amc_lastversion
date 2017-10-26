@@ -312,7 +312,7 @@
 			<!-- <h1>참조 : http://postcode.map.daum.net/guide</h1> -->
 		  		  
 		  <div class="form-group">
-		    <label for="ssn" class=" col-sm-3 control-label">휴대전화번호</label>
+		    <label for="phone" class=" col-sm-3 control-label">휴대전화번호</label>
 		     <div class="col-sm-2">
 		      <select class="form-control" name="phone1" id="phone1">
 				  	<option value="010" >010</option>

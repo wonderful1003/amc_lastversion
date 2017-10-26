@@ -126,10 +126,10 @@
 			<div>		
 				<span class="col-md-4">
 					<!-- <img src="../images/user/kakao_account.png" id = "kakao" class="img-rounded" width="70%" /> -->
-					<a href="/user/kakaoGetCode" ><img src="../images/user/kakao_account.png" class="img-rounded" width="70%"> </a>
+					<a href="/user/json/kakaoGetCode" ><img src="../images/user/kakao_account.png" class="img-rounded" width="70%"> </a>
 			<br/><br/>
 					<!-- <img src="../images/user/naver.account.PNG" id = "naver" class="img-rounded" width="70%" /> -->
-					<a href="/user/kakaoGetCode" ><img src="../images/user/naver.account.PNG" class="img-rounded" width="70%"> </a>
+					<a href="/user/json/start" ><img src="../images/user/naver.account.PNG" class="img-rounded" width="70%"> </a>
 			<br/><br/>
 					<!-- <img src="../images/user/google_account.png" id = "google" class="img-rounded" width="70%" /> -->
 					<a href="/user/kakaoGetCode" ><img src="../images/user/google_account.png" class="img-rounded" width="70%"> </a>
