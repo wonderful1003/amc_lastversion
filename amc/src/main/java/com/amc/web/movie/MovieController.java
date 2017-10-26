@@ -112,13 +112,14 @@ public class MovieController {
 
 	@RequestMapping(value = "getMovie")
 	public String getMovie(@RequestParam(value = "menu", required = true) String menu,
-			@RequestParam(value = "movieNo", required = true) Integer movieNo, Model model) throws Exception {
+			@RequestParam(value = "movieNo", required = true) Integer movieNo, @ModelAttribute Search search, Model model) throws Exception {
 
 		System.out.println("/getMovie : GET");
 		// Business Logic
 		System.out.println("movieNo ::" + movieNo);
 
 		Movie movie = movieService.getMovie(movieNo);
+		//System.out.println(search+"searchhhhh");
 
 		// System.out.println("Date format before :: openDate :: " +
 		// movie.getOpenDt());
@@ -144,9 +145,15 @@ public class MovieController {
 					String steelCut1 = steelCutList.get(0).toString();
 					movie.setSteelCut1(steelCut1);
 				} else if (steelCutList.size() == 2) {
+					String steelCut1 = steelCutList.get(0).toString();
+					movie.setSteelCut1(steelCut1);
 					String steelCut2 = steelCutList.get(1).toString();
 					movie.setSteelCut2(steelCut2);
 				} else if (steelCutList.size() == 3) {
+					String steelCut1 = steelCutList.get(0).toString();
+					movie.setSteelCut1(steelCut1);
+					String steelCut2 = steelCutList.get(1).toString();
+					movie.setSteelCut2(steelCut2);
 					String steelCut3 = steelCutList.get(2).toString();
 					movie.setSteelCut3(steelCut3);
 				}
@@ -168,6 +175,7 @@ public class MovieController {
 
 		// Model °ú View ¿¬°á
 		model.addAttribute("movie", movie);
+		model.addAttribute("search", search);
 
 		if (menu.equals("managed")) {
 			System.out.println("updateMovie.jsp called");
