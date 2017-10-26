@@ -5,7 +5,7 @@
 
 <!-- /////////////JSTL/////////////-->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
+ <%
 	User user = new User();
 	user.setUserId("sadf@naver.com");
 	user.setRole("user");
@@ -15,12 +15,14 @@
 	user.setPhone1("010");
 	user.setPhone2("7116");
 	user.setPhone3("7840");
+	user.setGender("M");
+	user.setBirth("1979/01/01");
 	session.setAttribute("user", user);
 	
 	Booking booking = new Booking();
 	booking.setTotalTicketPrice(1111);
 	session.setAttribute("booking",booking);
-%>
+%> 
 
 <!DOCTYPE html >
 <html>
@@ -34,6 +36,9 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+	
+	<!--  ///////////////////////// Sweetalert CDN ////////////////////////// -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	
 <script>
 //imp초기화는 페이지 첫단에 해주는게 좋음
@@ -142,22 +147,26 @@ IMP.init('imp41659269');
 	}
 	
 
+	
 </script>
 <body>
 <h2>[예매3단계] 결제를 위한 창입니다.</h2>
 
 	<input type="button" value="결제하기" onClick="javascript:kakaoPay()"/>
+	<!-- <input type="button" value="결제하기" onClick="javascript:addBooking()"/> -->
 	<input type="button" value="결제취소" onClick="javascript:kakaoPayCancel()"/>
 	
 	<form>
 	<!--  !!!!!!!!!!!!!!!!!!!!!!!!!input type hidden으로 나중에 바꾸기 -->
-		<input type="text" name="userId" value="${session.user.userId}"/>
+		<input type="text" name="userId" value="${sessionScope.user.userId}"/>
 		<input type="text" name="screenContentNo" value="${booking.screenContent.screenContentNo}"/>
 		<input type="text" name="bookingSeatNo" value="${booking.bookingSeatNo}"/>
-		<input type="text" name="impId" value=""/>
+		<!-- <input type="text" name="impId" value=""/> -->
+		 <input type="text" name="impId" value="abc"/> 
 		<input type="text" name="headCount" value="${booking.headCount}"/>
 		<input type="text" name="totalTicketPrice" value="${booking.totalTicketPrice}"/>
-		<input type="hidden" name="qrUrl" value=""/>
+		<!-- <input type="hidden" name="qrUrl" value=""/> -->
+		<input type="hidden" name="qrUrl" value="https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=abc"/>
 		
 	</form>
 

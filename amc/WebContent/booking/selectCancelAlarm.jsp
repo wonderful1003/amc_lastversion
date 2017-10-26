@@ -33,12 +33,28 @@
 <title>selectScreenMovie.jsp</title>
 
 <script>
-		function listener(event){		
-			document.getElementById('cancelAlarm').contentWindow.postMessage(event.data,"*");
-			$("input[name='seats']").val(event.data);
-			alert("event.data[0] : "+event.data[0]);
-			alert("event.data[0][0] : "+event.data[0][0]);
-		}
+	function listener(event){		
+		document.getElementById('cancelAlarm').contentWindow.postMessage(event.data,"*");
+		$("input[name='seats']").val(event.data);
+		
+		  $.ajax({
+					url : "/booking/json/getDisplaySeatNo/"+event.data,						
+					method : "GET" ,
+					dataType : "json" ,
+					headers : {
+						"Accept" : "application/json",
+						"Content-Type" : "application/json"
+					},						
+					success : function(JSONData, status) {
+						console.log('SeatNo 받아옴 : '+JSONData.str);								
+	                    if(JSONData != ""){
+	                    	$("#display2").val(JSONData.str);
+	                    }//end of if문
+					}
+		});//end of ajax
+			  
+	}
+
 		
 		if (window.addEventListener){
 			  addEventListener("message", listener, false);
@@ -89,13 +105,15 @@
 	<form>
 		<h2>[취소표 알리미 신청] 고갱님이 선택하신 상영번호는 :
 			<input type="text" name="screenContentNo" value="${screenContentNo}">
+			<!-- hidden타입으로 바꾸기 -->
 		</h2>
 			<%-- <iframe id="cancelAlarm" src="http://192.168.0.7:52273/cancelAlarm?screenNo=${screenContentNo}" width="600" height="400" > --%>
-			<iframe id="cancelAlarm" src="http://127.0.0.1:52273/cancelAlarm?screenNo=10172" width="600" height="400" >		 
+			<iframe id="cancelAlarm" src="http://127.0.0.1:52273/cancelAlarm?screenNo=10000" width="600" height="400" >		 
 					  <p>Your browser does not support iframes.</p>
 			</iframe>
-		<h2>취소표알리미를 신청하실 좌석번호는 : <input type="text" name="seats" value=""></h2>
-		
+		<h2>취소표알리미를 신청하실 좌석번호는 : <input type="text" name="seats" value="">
+		<!-- <input type="text" id="display2" value=""> --></h2>
+		<input type="hidden" name="seats" value="">
 		<input type="button" value="취소표 알림 신청" onClick="javascript:addCancelAlarm()">
 		
 	</form>

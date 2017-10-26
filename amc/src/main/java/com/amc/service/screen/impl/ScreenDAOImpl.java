@@ -94,8 +94,12 @@ public class ScreenDAOImpl implements ScreenDAO {
 		System.out.println("ScreenDAOImpl의 addScreenContent 메소드 시작...");
 		// sqlSession.insert("ScreenContentMapper.addScreenContent",
 		// screenContent);
+		
+		int test = sqlSession.insert("ScreenContentMapper.addScreenContent", screenContent);
+		System.out.println(":::::::::::확인 ::::::" + screenContent.getScreenContentNo());
+		System.out.println("test"+ test);
 		System.out.println("ScreenDAOImpl의 addScreenContent 메소드 끝...");
-		return sqlSession.insert("ScreenContentMapper.addScreenContent", screenContent);
+		return test ;
 	}
 
 	@Override
@@ -174,6 +178,12 @@ public class ScreenDAOImpl implements ScreenDAO {
 	// 오늘 티켓 오픈하는 리스트 불러오기
 	public List<ScreenContent> getTodayTicketOpenList(Search search) {
 		return sqlSession.selectList("ScreenContentMapper.todayTicketOpenList",search);
+	}
+	
+	@Override
+	// 스크린상영번호가져오기
+	public int getScreenNo(ScreenContent screenContent) {
+		return sqlSession.selectOne("ScreenContentMapper.getScreenNo", screenContent);
 	}
 	
 	

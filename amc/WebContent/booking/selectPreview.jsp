@@ -57,7 +57,7 @@ var ticketOpenDate="";
  	  	
  	  	
         if(diff<1){
-        	$(".selectSeat").removeAttr("disabled");
+        	$("button[name='selectSeat']").removeAttr("disabled");
         	$("#dpTime").html("허허");
         } 
 		
@@ -87,11 +87,18 @@ var ticketOpenDate="";
     
 	$( function(){	
 
-    	$(".selectSeat").on("click", function(){
-	    	self.location="/booking/selectSeat";
+    	$("button[name='selectSeat']").on("click", function(){
+    		var screeContentNo = $("#display").text();
+	    	self.location="/booking/selectSeat?screenContentNo="+"10000";
 	    });
-    	$(".realSelectSeat").on("click", function(){
-	    	self.location="/booking/selectSeat";
+    	$("button[name='tempSelectSeat']").on("click", function(){
+    		var screeContentNo = $("#display").text();
+    		self.location="/booking/selectSeat?screenContentNo="+"10000";
+	    });
+    	$("button[name='selectRandomSeat']").on("click", function(){
+    		var screeContentNo = $("#display").text();
+    		//var headCount = 
+    		self.location="/booking/selectRandomSeat?screenContentNo="+"10172";
 	    });
     
     })
@@ -118,16 +125,17 @@ var ticketOpenDate="";
 		                        var str = "";
 		                        if(JSONData != ""){
 		                        	
-		                            $(JSONData).each(
+		                           $(JSONData).each(
 		                               function(){
-		                            	   str+= '<div class="screenDay">'+this+'일<input type="hidden" name="day" value='+this+'></div>' 			
+		                            	  str+= 	'<div class="screenDay">'+this+'일'
+		                            	  str+=     '<input type="hidden" name="day" value='+this+'>'
+		                            	  str+=	'</div>';
+				                      });//end of each fnc                            
+			                        }//end of if문
+			                        $(".col-md-4").eq(1).find(".screenDay").remove();
+			                        $(".col-md-4").eq(2).find(".screenTime").remove();
+			                        $(".col-md-4").eq(1).find(".head").after(str);
 
-		                               }//end of function
-		                             );
-		                            
-		                        }//end of if문
-		                       
-								$( "tbody").after(str);
 							}
 					});//end of ajax
 			});
@@ -159,18 +167,17 @@ var ticketOpenDate="";
 	                            $(JSONData).each(
 	                               function(){
 	                            	   str+= '<div class="screenTime">시간 : '+this.screenOpenTime
-	                            	   +     ', 상영번호 : '+this.screenContentNo+''
+	                            	   +     ', 상영번호 : '+this.screenContentNo+'  티켓오픈시간은 : '+this.ticketOpenDate
 	                            	   +'<input type="hidden" name="contNo" value="'+this.screenContentNo+'">'
-	                            	   + '티켓오픈시간은 : '+this.ticketOpenDate
 	                            	   +'<input type="hidden" name="ticketOpenDate" value="'+this.ticketOpenDate+'">'
 	                            	   +'</div>' ;				
-
+	                            	   
 	                               }//end of function
 	                             );
-	                            
 	                        }//end of if문
-	                       
-							$( "tbody").after(str);
+	                        
+	                        $(".col-md-4").eq(2).find(".screenTime").remove();
+	                        $(".col-md-4").eq(2).find(".head").after(str);
 						}
 				});//end of ajax
 		});
@@ -206,38 +213,39 @@ var ticketOpenDate="";
 		<h1><span id ="timer">티켓 오픈까지 남은시간 : <span id="dpTime">현재시간 표시</span></span></h1>
 
 
-		<button class="selectSeat" disabled="disabled">시간되면 활성화되는 [좌석선택]버튼</button>
-		<button class="realSelectSeat">테스트용 [좌석선택]버튼</button>
-		<h2><a href="">▶랜덤좌석</a></h2>
+		<button class="select" name="selectSeat" disabled="disabled">(시간되면 활성화) 좌석선택</button>
+		<button class="select" name="tempSelectSeat">[테스트용] 좌석선택 </button>
+		<button class="select" name="selectRandomSeat"> 랜덤좌석 선택하기 </button>
 		
-			<table class="table table-hover table-striped" >
+
+    <div class="container">
+	 <h2>[예매1단계]시사회 상영정보를 선택해 주세요.</h2>
+	 <input type="hidden" name="flag" value="1">
+      <div class="row">
+        <div class="col-md-4">
+         <div class="head"><h2>시사회 제목</h2></div>
+          <table>
+	          <c:set var="i" value="0" />
+			  <c:forEach var="screenContent" items="${screenContentList}">
+				<c:set var="i" value="${ i+1 }" />
+				<tr>		  
+				  <td align="left" class="movieName"><h5>${screenContent.previewTitle} </h5>
+				  	<input type="hidden" name="movieNo" value="${screenContent.screenContentNo}">
+				  </td>
+				</tr>
+	          </c:forEach>        
+          </table>
+        </div>
+		<div class="col-md-4" id="dayList">
+			<div class="head"><h2>상영 날짜</h2></div>
+	   	</div>
+	   	<div class="col-md-4" id="dayList">
+			<div class="head"><h2>상영 날짜</h2></div>
+	   	</div>
+      </div>
       
-        <thead>
-          <tr>
-            <th align="center">번호</th>
-            <th align="center">시사회제목</th>
-            <th align="center">영화제목</th>
-          </tr>
-        </thead>
-       
-		<tbody>
-		
-		  <c:set var="i" value="0" />
-		   <c:forEach var="screenContent" items="${screenContentList}">
-			<c:set var="i" value="${ i+1 }" />
-			<tr>
-			  <td align="center">${ i } </td>
-			  <td align="left" class="movieName">${screenContent.previewTitle} 
-			  	<input type="hidden" name="movieNo" value="${screenContent.screenContentNo}">
-			  </td>			  
-			  <td align="left" class="realmovieName">실제 영화번호 : ${screenContent.movie.movieNm}
-			  </td>
-			</tr>
-          </c:forEach>
-        
-        </tbody>
-      </table>
-      <div id="display" >여기에 상영번호 setting해보기/ 나중에는 hidden으로</div>
-		 <div id="gotoSeat"><h2>▶좌석선택하기</h2></div>
+   	  </div> 
+
+      <div id="display" ></div>
 	</body>
 </html>

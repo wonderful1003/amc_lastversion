@@ -49,11 +49,12 @@
 						success : function(JSONData, status) {
 							console.log('SeatNo 받아옴 : '+JSONData.str);								
 	                        if(JSONData != ""){
-	                        	$("#display2").val(JSONData.str);
+	                        	$("#display2").text(JSONData.str);
 	                        }//end of if문
+
 						}
 				});//end of ajax
-				  	  
+				/////////////////////  
 			  }
 
 		}
@@ -77,15 +78,13 @@
 </head>
 	<body>
 		<form>
-		<h2>[예매 2단계]좌석선택입니다. 고갱님이 선택하신 상영번호는 :
-			<input type="text" name="screenContentNo" value="${screenContentNo}">
-		</h2>
-		
-			<%-- <iframe id="child" src="http://127.0.0.1:52273/yenakoh/3?screenNo=${screenContentNo}" width="400" height="400" > --%>
-			<iframe id="child" src="http://127.0.0.1:52273/yenakoh/3?screenNo=${screenContentNo}" width="600" height="400" >		 
+		<h2>[예매 2단계] 랜덤으로 선택된 좌석선택입니다. 
+			<input type="hidden" name="screenContentNo" value="${screenContentNo}">
+		</h2>		
+			<%-- <iframe id="child" src="http://127.0.0.1:52273/random_select?screenNo=${screenContentNo}&count=${headCount}" width="600" height="400" > --%>
+			<iframe id="child" src="http://127.0.0.1:52273/random_select?screenNo=10000&count=2" width="800" height="400" >		 
 					  <p>Your browser does not support iframes.</p>
 			</iframe>
-
 			<button onclick="myFunction()">Try it</button>
 			<h2>선택하신 좌석번호는 : <input type="text" name="display" value="">
 								<input type="text" id="display2" value=""></h2>

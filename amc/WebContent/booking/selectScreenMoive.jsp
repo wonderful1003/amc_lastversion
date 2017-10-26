@@ -32,11 +32,7 @@
    	<!--  not sure about this part -->
    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <!-- Bootstrap core CSS -->
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="jumbotron.css" rel="stylesheet">
+
    <!-- ------------------------------>
 	<script type="text/javascript">
 		
@@ -61,17 +57,17 @@
 								console.log('히히 : '+JSONData);								
 		                        var str = "";
 		                        if(JSONData != ""){
-		                        	
 		                            $(JSONData).each(
-		                               function(){
-		                            	   str+= '<div class="screenDay">'+this+'일<input type="hidden" name="day" value='+this+'></div>' 			
-
-		                               }//end of function
-		                             );
-		                            
+		                               function(){		                            	   	
+		                            	  	str+= 	'<div class="screenDay">'+this+'일'
+		                            	  	str+=     '<input type="hidden" name="day" value='+this+'>'
+		                            	  	str+=	'</div>';
+		                               });//end of each fnc                            
 		                        }//end of if문
-		                       
-								$( "tbody").after(str);
+		                        $(".col-md-4").eq(1).find(".screenDay").remove();
+		                        $(".col-md-4").eq(2).find(".screenTime").remove();
+		                        $(".col-md-4").eq(1).find(".head").after(str);
+		                        
 							}
 					});//end of ajax
 			});
@@ -93,13 +89,12 @@
 						headers : {
 							"Accept" : "application/json",
 							"Content-Type" : "application/json"
-						},
+						}, 
 						async : false,
 						success : function(JSONData, status) {
 							console.log('screenTime 받아옴 : '+JSONData);								
 	                        var str = "";
 	                        if(JSONData != ""){
-	                        	
 	                            $(JSONData).each(
 	                               function(){
 	                            	   str+= '<div class="screenTime">시간 : '+this.screenOpenTime
@@ -109,10 +104,10 @@
 
 	                               }//end of function
 	                             );
-	                            
 	                        }//end of if문
-	                       
-							$( "tbody").after(str);
+	                        
+	                        $(".col-md-4").eq(2).find(".screenTime").remove();
+	                        $(".col-md-4").eq(2).find(".head").after(str);
 						}
 				});//end of ajax
 		});
@@ -145,7 +140,7 @@
 	 <input type="hidden" name="flag" value="1">
       <div class="row">
         <div class="col-md-4">
-          <h2>영화 제목</h2>
+         <div class="head"><h2>영화 제목</h2></div>
           <table>
 	          <c:set var="i" value="0" />
 			  <c:forEach var="movie" items="${movieList}">
@@ -157,20 +152,19 @@
 				</tr>
 	          </c:forEach>        
           </table>
-
         </div>
-        <div class="col-md-4">
-          <h2>상영 날짜</h2>
-          <div id="display" ></div> 
-        </div>
-        <div class="col-md-4">
-          <h2>상영 시간</h2>
-          <p>상영시간들</p>
-        </div>
+		<div class="col-md-4" id="dayList">
+			<div class="head"><h2>상영 날짜</h2></div>
+	   	</div>
+	   	<div class="col-md-4" id="dayList">
+			<div class="head"><h2>상영 날짜</h2></div>
+	   	</div>
       </div>
+      
    	  </div> 
+   	  
 	  <!-- /container -->	
-	
+	<div id="display" ></div>
 	<div id="gotoSeat"><h2>▶좌석선택하기</h2></div>
 	
 	

@@ -26,9 +26,10 @@
 $( function() {
 	
 	$("#deleteBooking").on("click" , function() {
-		
-		var bookingNo = $("input[name='bookingNo']").val();
-		self.location = "/booking/deleteBooking?bookingNo="+bookingNo;
+		if(confirm("예매를 취소하시겠습니까?")){
+			var bookingNo = $("input[name='bookingNo']").val();
+			self.location = "/booking/deleteBooking?bookingNo="+bookingNo;
+		}		
 	});
 
 });
