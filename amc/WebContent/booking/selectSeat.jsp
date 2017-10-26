@@ -66,10 +66,12 @@
 		}
 		
 		function requestPay() {
-			
 			$("form").attr("method" , "POST").attr("action" , "/booking/requestPay").submit();
 		}
 		
+		function selectCancelAlarm(){
+			$("form").attr("method" , "POST").attr("action" , "/alarm/selectCancelAlarm").submit();
+		}
 		
 		
 </script>
@@ -80,13 +82,12 @@
 		<h2>[예매 2단계]좌석선택입니다. 고갱님이 선택하신 상영번호는 :
 			<input type="text" name="screenContentNo" value="${screenContentNo}">
 		</h2>
-		
+			<button onclick="selectCancelAlarm()">취소표 알리미 신청하기</button>
 			<%-- <iframe id="child" src="http://127.0.0.1:52273/yenakoh/3?screenNo=${screenContentNo}" width="400" height="400" > --%>
 			<iframe id="child" src="http://127.0.0.1:52273/yenakoh/3?screenNo=${screenContentNo}" width="600" height="400" >		 
 					  <p>Your browser does not support iframes.</p>
 			</iframe>
 
-			<button onclick="myFunction()">Try it</button>
 			<h2>선택하신 좌석번호는 : <input type="text" name="display" value="">
 								<input type="text" id="display2" value=""></h2>
 			<input type="hidden" name="seats" value="">

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.amc.common.Search;
 import com.amc.service.alarm.AlarmService;
+import com.amc.service.domain.ScreenContent;
 
 @Controller
 @RequestMapping("/alarm/*")
@@ -23,14 +24,20 @@ public class AlarmController {
 		System.out.println("alarmController() default Constructor");
 	}
 	
+	@RequestMapping(value="selectCancelAlarm", method=RequestMethod.GET)
+	public String selectCancelAlarm(@ModelAttribute("screenContent") ScreenContent screenContent,
+									 Model model) throws Exception{
+		
+		model.addAttribute("screeContent", screenContent);
+		return "forward:/alarm/selectCancelAlarm.jsp";	
+	}
+	
 	@RequestMapping(value="getCancelAlarmList", method=RequestMethod.GET)
 	public String getCancelAlarmList(@ModelAttribute("Search")Search search, Model model) throws Exception{
 		
 		alarmService.getCancelAlarmList(search);
-		
-		
-		return null;
-		
+
+		return null;	
 	}
 
 }

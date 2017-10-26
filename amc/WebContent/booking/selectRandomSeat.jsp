@@ -28,14 +28,14 @@
 <script>
 		function listener(event){		
 			  document.getElementById('child').contentWindow.postMessage(event.data,"*");
-			  alert("event.data : "+event.data);
+			  //console.log("event.data : "+event.data);
 			  if(event.data == 'pay'){
 				  alert('결제요청옴!');
 				  requestPay();	  
 				  
 			  }else{
 				  $("input[name='seats']").val(event.data);
-
+					console.log('data : '+event.data);
 				  $.ajax(
 					{
 						url : "/booking/json/getDisplaySeatNo/"+event.data,						
@@ -49,7 +49,7 @@
 						success : function(JSONData, status) {
 							console.log('SeatNo 받아옴 : '+JSONData.str);								
 	                        if(JSONData != ""){
-	                        	$("#display2").text(JSONData.str);
+	                        	$("#displaySeat").text(JSONData.str);
 	                        }//end of if문
 
 						}
@@ -79,16 +79,17 @@
 	<body>
 		<form>
 		<h2>[예매 2단계] 랜덤으로 선택된 좌석선택입니다. 
-			<input type="hidden" name="screenContentNo" value="${screenContentNo}">
+			<input type="text" name="screenContentNo" value="${screenContent.screenContentNo}">
 		</h2>		
 			<%-- <iframe id="child" src="http://127.0.0.1:52273/random_select?screenNo=${screenContentNo}&count=${headCount}" width="600" height="400" > --%>
-			<iframe id="child" src="http://127.0.0.1:52273/random_select?screenNo=10000&count=2" width="800" height="400" >		 
+			<iframe id="child" src="http://127.0.0.1:52273/random_select?screenNo=10172&count=2" width="800" height="400" >		 
 					  <p>Your browser does not support iframes.</p>
 			</iframe>
-			<button onclick="myFunction()">Try it</button>
-			<h2>선택하신 좌석번호는 : <input type="text" name="display" value="">
-								<input type="text" id="display2" value=""></h2>
-			<input type="hidden" name="seats" value="">
+			<button onclick="requestPay()">결제하기</button>
+			<hr>
+			선택하신 좌석번호는 : <span id="displaySeat" class="displaySeat"></span>
+								
+			<input type="text" name="seats" value="">
 		</form>
 	</body>
 </html>

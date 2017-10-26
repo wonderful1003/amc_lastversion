@@ -98,6 +98,7 @@ public class BookingController {
 		System.out.println("/booking/selectRandomSeat : GET");
 		ScreenContent screenContent = screenService.getScreenContent(Integer.parseInt(screenContentNo));
 		model.addAttribute("screenContent",screenContent);	
+		System.out.println(":::::::»£¿’ : :"+screenContent);
 
 		return "forward:/booking/selectRandomSeat.jsp";
 	}
