@@ -534,17 +534,33 @@
            		loadComplete: function(data) {
           			// alert ("records="+$("#movie_list").getGridParam("records"));
                 },  
-      
-    
+    	       
         	});
          
+            $("#export").on("click", function(){
+				$("#movie_list").jqGrid("exportToExcel",{
+					includeLabels : true,
+					includeGroupHeader : true,
+					includeFooter: true,
+					fileName : "jqGridExport.xlsx",
+					maxlength : 40 // maxlength for visible string data 
+				})
+			})
+      
+      
+     
+  
          
+
+         
+          
           jQuery("#movie_list").jqGrid('navGrid','#pager777',
         		 {}, //options
         		 {height:280,reloadAfterSubmit:false}, // edit options
         		 {height:280,reloadAfterSubmit:false}, // add options
         		 {reloadAfterSubmit:false}, // del options
-        		 {}, // search options
+        		 {}, // search options   		 
+        	
         		 
         	
         		{
@@ -563,8 +579,10 @@
 			    	 }
          		   );
          		});    
-         
- 
+    
+    
+
+
       
           
          // 네비게시션 도구 설정
@@ -588,6 +606,8 @@
     <div id="pager777" class="scroll" style="text-align:center"></div>
     <div id="load_time" class="scroll" style="text-align:center"></div>
 
+	
+	<button id="export">Export to Excel</button>
 	
 
 </form>
