@@ -165,7 +165,7 @@ public class ProductRestController {
 		}
 		
 		Map<String, Object> map = productService.getGoodsList(search, product);
-		
+		System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP:"+map);
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
 		
 		map.put("resultPage", resultPage);

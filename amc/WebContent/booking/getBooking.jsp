@@ -26,9 +26,10 @@
 $( function() {
 	
 	$("#deleteBooking").on("click" , function() {
-		
-		var bookingNo = $("input[name='bookingNo']").val();
-		self.location = "/booking/deleteBooking?bookingNo="+bookingNo;
+		if(confirm("예매를 취소하시겠습니까?")){
+			var bookingNo = $("input[name='bookingNo']").val();
+			self.location = "/booking/deleteBooking?bookingNo="+bookingNo;
+		}		
 	});
 
 });
@@ -37,6 +38,8 @@ $( function() {
 </head>
 		
 <body>
+		<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
+
 	<div class="container">
 	<h2>예매상세보기 페이지입니다.</h2>
 	<input type="hidden" name="bookingNo" value="${booking.bookingNo}">

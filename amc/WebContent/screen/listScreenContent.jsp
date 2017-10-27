@@ -6,25 +6,39 @@
 
         <head>
             <meta charset="EUC-KR">
+            
+            	<!-- 참조 : http://getbootstrap.com/css/   참조 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
+	
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 
             <!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-<!--             <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!--          <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-            <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">  -->
             <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
-            
+      <!--       
      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-	
+	 -->
 	
 
             <script type="text/javascript">
@@ -593,6 +607,9 @@
                     $("select[name='screenTheater']").on("click", function() {
                         fncNotEmptyScreenContent();
                     })
+                    $("button[name='contentList']").on("click", function () {
+                    	$(self.location).attr("href","/screen/getScreenList");
+					})
 
                 })
                 
@@ -745,6 +762,8 @@
                         <div id="checkDupTime" style="background-color:lightgray;"> </div>
 
                     </form>
+                   <p align="middle"><button type="button" class="btn btn-primary" name="contentList">상영목록으로 가기</button> </p>
+                    <div></div>
                 </div>
             </div>
         </body>

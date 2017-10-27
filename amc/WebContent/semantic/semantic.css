@@ -13581,6 +13581,7 @@ a.ui.basic.label:hover {
   padding: 0.4em 0.833em;
   min-width: 3em;
   text-align: center;
+  
 }
 
 /*-------------------
@@ -14425,7 +14426,7 @@ ul.ui.list li:before,
   left: auto;
   font-weight: normal;
   margin-left: -1.25rem;
-  content: '•';
+  content: '��';
   opacity: 1;
   color: inherit;
   vertical-align: top;
@@ -17290,7 +17291,7 @@ ol.ui.horizontal.list li:before,
 .ui.ordered.steps .step.completed:before {
   font-family: 'Step';
   content: '\e800';
-  /* '' */
+  /* '��' */
 }
 
 /*******************************
@@ -17364,9 +17365,11 @@ ol.ui.horizontal.list li:before,
 }
 
 .ui.breadcrumb .section {
+  font-weight: bold;
   display: inline-block;
   margin: 0em;
   padding: 0em;
+  
 }
 
 /* Loose Coupling */
@@ -17374,6 +17377,7 @@ ol.ui.horizontal.list li:before,
 .ui.breadcrumb.segment {
   display: inline-block;
   padding: 0.78571429em 1em;
+  font-weight: bold;
 }
 
 /*******************************
@@ -17382,6 +17386,7 @@ ol.ui.horizontal.list li:before,
 
 .ui.breadcrumb .active.section {
   font-weight: bold;
+  font-size: 2.52857143rem;
 }
 
 /*******************************
@@ -17417,7 +17422,8 @@ ol.ui.horizontal.list li:before,
 }
 
 .ui.massive.breadcrumb {
-  font-size: 1.71428571rem;
+  font-size: 1.91428571rem;
+  font-weight: bold;
 }
 
 /*******************************
@@ -23220,7 +23226,7 @@ Floated Menu / Item
 
 .ui.message .list:not(.ui) li:before {
   position: absolute;
-  content: '•';
+  content: '��';
   left: -1em;
   height: 100%;
   vertical-align: baseline;

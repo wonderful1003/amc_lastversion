@@ -31,8 +31,7 @@
   	
   	<insert 	id="addBooking" parameterType="booking">
   		INSERT 
-  		INTO booking VALUES ('b'||seq_booking_booking_no.nextval, impId, userId, screenContentNo, SYSDATE, headCount,
-  		    totalTicketPrice, bookingSeatNo, qrUrl)
+  		INTO booking VALUES ('b'||seq_booking_booking_no.nextval, #{impId}, #{userId}, #{screenContentNo}, SYSDATE, #{headCount}, #{totalTicketPrice}, #{bookingSeatNo}, #{qrUrl})
   	</insert>
   		
   	<select id="getBooking" parameterType="string" resultMap="bookingSelectMap" >

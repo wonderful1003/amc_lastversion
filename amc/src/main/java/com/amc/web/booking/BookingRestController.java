@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
@@ -62,6 +63,24 @@ public class BookingRestController {
 			
 			return bookingService.getScreenTimeList(screenDate);
 		}
-
-
+		
+		@RequestMapping(value="json/getDisplaySeatNo/{seatNo}", method=RequestMethod.GET)
+		public String getSeatNo(@PathVariable("seatNo") String seatNo, 
+													Model model) throws Exception{		
+			String[] strArray = seatNo.split(",");
+			String displaySeat = "";
+			int k=0;
+	        for(int i=0;i<(strArray.length/2);i++){
+	        	
+	            // 아스키 코드를 문자형으로 변환
+	        	int no = Integer.parseInt(strArray[k])+65;	        	
+	            String displaySeatNo = Character.toString ((char) no);
+	            displaySeat += displaySeatNo + strArray[k+1]+" ";
+	            System.out.println("k : "+k+", displaySeat : "+displaySeat);
+	            k+=2;
+	        }
+	        
+			return (new JSONObject().put("str", displaySeat).toString());
+		}
 }
+

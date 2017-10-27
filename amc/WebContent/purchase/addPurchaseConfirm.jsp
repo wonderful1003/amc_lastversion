@@ -50,7 +50,6 @@
 	<div class="page-header col-sm-offset-2 col-sm-10">
 		<h1>주문이 완료되었습니다.</h1>
 	</div>
-	
 	<dl class="dl-horizontal">
 		<dt>상품명</dt>
 		<dd>${purchase.purchaseProd.prodName}</dd>
@@ -58,6 +57,10 @@
 	<dl class="dl-horizontal">
 		<dt>구매 수량</dt>
 		<dd>${purchase.purchaseCount} 개</dd>
+	</dl>
+	<dl class="dl-horizontal">
+		<dt>가격</dt>
+		<dd>${purchase.totalProdPrice} 원</dd>
 	</dl>
 	<dl class="dl-horizontal">
 		<dt>결제 방법</dt>
@@ -69,21 +72,17 @@
 	</dl>
 	<dl class="dl-horizontal">
 		<dt>연락처</dt>
-		<dd>${purchase.receiverPhone}</dd>
+		<dd>${purchase.receiverPhone1}&emsp;${purchase.receiverPhone2}&emsp;${purchase.receiverPhone3}</dd>
 	</dl>
 	<dl class="dl-horizontal">
 		<dt>배송지</dt>
-		<dd>${purchase.dlvyAddr}</dd>
+		<dd>${purchase.addrDlvy}</dd>
 	</dl>
 	<dl class="dl-horizontal">
-		<dt>구매 요청사항</dt>
-		<dd>${purchase.dlvyRequest}</dd>
+		<dt>상세주소</dt>
+		<dd>${purchase.addrDlvyDetail}</dd>
 	</dl>
-	<dl class="dl-horizontal">
-		<dt>배송 희망 일자</dt>
-		<dd>${purchase.dlvyDate}</dd>
-	</dl>
-	<div class="btn-group" role="group">
+	<div class="btn-group" role="group" >
 		<a href="#" class="add btn btn-success" role="button">확인</a>
 	</div>
 	

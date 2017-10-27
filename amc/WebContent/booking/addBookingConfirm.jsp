@@ -8,6 +8,8 @@
 <title>selectScreenMovie.jsp</title>
 </head>
 	<body>
+		<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
+	
 		<h2>예매가 완료되었습니다!.</h2>
 		<h6>불라불라불라 결제 됐는데 불라불라불라 정보정보정보</h6>
 		<div style="background:yellow;border:1px solid #cccccc;">

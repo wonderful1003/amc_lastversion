@@ -133,10 +133,10 @@
 	</select>
 	<!-- 시사회중복체크 -->
 	<select id="checkScreenDupPreview" parameterType="screenContent" resultType="int">
-		SELECT COUNT(*)
+		SELECT screencontent_no
 		FROM screencontent 
 		WHERE movie_no=#{movie.movieNo} 
-		<if test="screenContentNo != null">
+		<if test="screenContentNo != 0">
 		AND screencontent_no != #{screenContentNo} 
 		</if>
 		AND preview_Flag = 'Y'
@@ -169,6 +169,14 @@
 				 FROM screencontent WHERE TO_CHAR(ticket_opendate-1/(24*60)*30,'YYYY/MM/DD HH24:MI:SS')
 				 <![CDATA[=]]> '${searchKeyword}'</if> 
 				 )
+	</select>
+	
+	<!-- 몽고DB에 등록하기위한 상영번호-->
+	<select id="getScreenNo" parameterType="screenContent" resultType="int">
+		SELECT screenContent_no 
+		FROM  screenContent
+		WHERE screen_OpenTime = TO_DATE(#{screenOpenTime}, 'YYYY/MM/DD HH24:MI') 
+				AND  screen_theater = #{screenTheater} 
 	</select>
 	
 </mapper>
