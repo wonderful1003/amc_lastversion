@@ -23,6 +23,7 @@ import com.amc.service.product.ProductService;
 import com.amc.common.Page;
 import com.amc.common.Search;
 import com.amc.service.domain.Product;
+import com.amc.service.domain.User;
 
 @Controller
 
@@ -52,21 +53,6 @@ public class ProductController {
 	@Autowired
 	@Qualifier("uploadFilePath")
 	private FileSystemResource fsr;
-
-	
-	@RequestMapping(value="removeProduct", method=RequestMethod.POST)
-	public ModelAndView removeProduct(@RequestParam("prodNo") int prodNo , Model model) throws Exception {
-
-		System.out.println("/removeProduct");
-				
-		productService.deleteProduct(prodNo);
-		
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/product/listProduct?menu=manage");
-				
-		return modelAndView;
-
-	}
 	
 	@RequestMapping(value="addProduct", method=RequestMethod.GET)
 	public String addProduct() throws Exception {
@@ -88,7 +74,24 @@ public class ProductController {
 		return "forward:addProductConfirm.jsp";
 	}
 	
+	@RequestMapping( value="deleteProduct", method=RequestMethod.GET )
+	public String deleteProduct( @RequestParam("prodNo") int prodNo,									
+									Model model ) throws Exception{
+		System.out.println("/product/deleteProduct : GET");
+		productService.deleteProduct(prodNo);
+		
+		model.addAttribute("menu", "manage");
+		
+		return "forward:/product/getGoodsList";
+	}
 	
+/*	@RequestMapping( value="deleteProduct", method=RequestMethod.POST )
+	public String deleteProduct( @ModelAttribute("product") Product product, Model model , HttpSession session) throws Exception{
+		System.out.println("/product/deleteProduct : POST");
+		productService.deleteProduct(product);
+		return "forward:/product/index.jsp";
+	}
+*/	
 	@RequestMapping( value="getGoodsProduct", method=RequestMethod.GET)
 	public String getGoodsProduct( @RequestParam("prodNo") int prodNo,
 								@RequestParam(value="menu",defaultValue="") String menu ,
@@ -132,37 +135,30 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value="updateProduct", method=RequestMethod.GET)
-	public ModelAndView updateProduct( @RequestParam("prodNo") int prodNo , Model model ) throws Exception{
-
-		System.out.println("/updateProductView");
-		//Business Logic
+	public String updateProduct( @RequestParam("prodNo") int prodNo , Model model ) throws Exception{
+		System.out.println("/updateProduct");
 		Product product = productService.getProduct(prodNo);
-		// Model 과 View 연결
 		model.addAttribute("product", product);
-		
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/product/updateProductView.jsp");
-		
-		return modelAndView;
+		return "forward:updateProduct.jsp";
 	}
 	
 	@RequestMapping(value="updateProduct", method=RequestMethod.POST)
-	public ModelAndView updateProduct( @ModelAttribute("product") Product product , Model model , HttpSession session) throws Exception{
-
-		System.out.println("/updateProduct");
-		//Business Logic
-		System.out.println("product 나야나 "+product);
-		
+	public String updateProduct( @ModelAttribute("product") Product product, 
+								 @RequestParam(value="file", required=false) MultipartFile file, 
+								 Model model) throws Exception{
+		product.setProdImage("");
+		if(file != null && !file.isEmpty()){
+			product.setProdImage(file.getOriginalFilename());
+		}
 		
 		productService.updateProduct(product);
+		product=productService.getProduct(product.getProdNo());		
+		model.addAttribute("product", product);
 		
-		//model.addAttribute("product", product.getProdNo());
-		System.out.println("product 수정후 나야나 "+product.getProdNo());
-		
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/product/getProduct.jsp");
-		
-		return modelAndView;
+		if(product.getProdType()!="G"){
+				return "forward:getGoodsProduct.jsp?menu=manage&prodNo="+product.getProdNo();
+		}
+		return "forward:getSnackProduct.jsp?menu=manage&prodNo="+product.getProdNo();
 	}
 			
 	@RequestMapping(value="getGoodsList")

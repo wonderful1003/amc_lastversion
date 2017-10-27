@@ -142,9 +142,11 @@
 		
 		<div class="page-header text-info">
 	       <span><h3>${param.menu eq 'search'? "상품 목록조회" : "상품관리" }&ensp;&ensp;
+	      
+	      <c:if test="${param.menu=='manage'}">
 	       <button type="button" class="btn btn-primary pull-right"  float = "right"
 	       			 onclick="location.href='/product/addProduct'">상 품 등 록</button></h3></span>	
-	       		
+	      </c:if> 		
 	    </div>
 		
 	  	<div class="container">

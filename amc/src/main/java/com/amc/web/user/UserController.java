@@ -45,9 +45,11 @@ public class UserController {
 	}
 
 	@RequestMapping( value="addUser", method=RequestMethod.GET )
-	public String addUser() throws Exception{
+	public String addUser(@RequestParam("email") String email , Model model ) throws Exception{
 		System.out.println("/user/addUser : GET");
-		return "redirect:/user/addUser.jsp";
+		System.out.println("@@@@@@@@@@@222"+email);
+		model.addAttribute("email", email);
+		return "forward:/user/addUser.jsp";
 	}
 	
 	@RequestMapping( value="addUser", method=RequestMethod.POST )
@@ -81,7 +83,7 @@ public class UserController {
 		System.out.println("dbUser.roll :" + dbUser.getRole());
 		
 		if(dbUser==null || dbUser.getRole() == "not"){
-			System.out.println("널 값이다");
+			System.out.println("널 값이다");			
 		}else{
 			if(user.getPassword().equals(dbUser.getPassword())){
 				session.setAttribute("user", dbUser);
@@ -95,7 +97,14 @@ public class UserController {
 		
 		System.out.println("/user/logout : POST");
 		session.invalidate();
-		return "redirect:/index.jsp";
+		/*if(session != null){
+			if(session.getAttribute("user")==null){
+				System.out.println("session 의 user 는 null");
+			}else{
+				System.out.println("session 의 user 는 낫 낫ㄴ삿나사나null");
+			}
+		}*/
+		return "forward:/index.jsp";
 	}
 
 	@RequestMapping( value="getUser", method=RequestMethod.GET )
@@ -168,8 +177,10 @@ public class UserController {
 	}
 	
 	@RequestMapping( value="deleteUser", method=RequestMethod.GET )
-	public String deleteUser(  ) throws Exception{
+	public String deleteUser(/*@ModelAttribute("user")User user,*/  Model model, HttpSession session ) throws Exception{
 		System.out.println("/user/deleteUser : GET");
+		/*model.addAttribute(user);*/
+		
 		return "redirect:/user/deleteUser.jsp";
 	}
 	
@@ -178,7 +189,8 @@ public class UserController {
 
 		System.out.println("/user/deleteUser : POST");
 		userService.deleteUser(user);
-		return "forward:/user/logoutUser";
+		session.invalidate();
+		return "redirect:/index.jsp";
 	}
 
 	
@@ -191,16 +203,19 @@ public class UserController {
     	System.out.println(subject);
         
     	StringBuilder sb = new StringBuilder();        
-        String img = "http://127.0.0.1:8080/images/uploadFiles/1.jpg";
+        String img = "http://127.0.0.1:8080/images/common/LOGO.png";
         
         System.out.println(img);
         sb.append("밑에 이미지를 클릭 하시면 회원가입 화면으로 이동합니다. <br/>" );
-        sb.append("<a href=http://127.0.0.1:8080/user/addUser>");
+        sb.append("<a href=http://127.0.0.1:8080/user/addUser?email="+email+">");
         sb.append("<img src='"+img+"'/></a>");
         
         System.out.println(sb);
         
+        
         userService.send(subject, sb.toString(), "bitcampamc@gmail.com", email, null);
+        
+        
         
         System.out.println("메일 보내기 성공");
         

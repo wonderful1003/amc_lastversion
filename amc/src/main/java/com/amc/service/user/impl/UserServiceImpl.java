@@ -95,10 +95,14 @@ public class UserServiceImpl implements UserService {
 	public boolean checkDuplication(String userId) throws Exception {
 		// TODO Auto-generated method stub
 		boolean result=true;
+		System.out.println("+++++++++11userservuceImpl : " + userId);
 		User user=userDAO.getUser(userId);
+		System.out.println("+++++++++22userservuceImpl : " + user);
 		if(user != null) {
 			result=false;
+			System.out.println("아이디가 디비에 존재합니다.");
 		}
+			
 		return result;
 	}
 	
@@ -152,4 +156,10 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+
+	@Override
+	public String deleteCheck(User user) throws Exception {
+		// TODO Auto-generated method stub
+		return userDAO.deleteCheck(user);
+	}
 }

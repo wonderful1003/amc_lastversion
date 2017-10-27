@@ -28,7 +28,7 @@
   	<select id="uniProductList" parameterType="string" resultMap="productSelectMap">
 		SELECT prod_no, prod_regdate, prod_type, prod_name, prod_price, prod_image
 		FROM Product
-		WHERE prod_name LIKE '%${value}%'
+		WHERE prod_name LIKE '%${value}%' AND prod_type != 'D'
 	</select>
 	
 	<!-- SQL : SELECT LIST -->
@@ -40,6 +40,7 @@
 			FROM	(SELECT inner.*, ROWNUM rn
 				 			FROM(SELECT prod_no, prod_type, prod_name, prod_price, prod_image
 								 FROM product
+								 WHERE prod_type != 'D'
 			ORDER BY prod_regdate DESC)inner)outer
 			WHERE outer.rn BETWEEN '1' AND '3'
 		</if>
@@ -50,7 +51,8 @@
 			FROM	(SELECT inner.*, ROWNUM rn
 				 			FROM(SELECT prod_no, prod_type, prod_name, prod_price, prod_image
 								 FROM product
-			ORDER BY sales_stock DESC, prod_regdate DESC)inner)outer
+								 WHERE prod_type != 'D'
+			ORDER BY sales_stock DESC)inner)outer
 			WHERE outer.rn BETWEEN '1' AND '3'
 		</if>
 	</select>
@@ -85,6 +87,16 @@
 					#{prodSetInfo}, 
 					#{prodImage} )
 	</insert>
+
+	 <!-- SQL : UPDATE (DeleteUser)-->
+	 <update	id="deleteProduct"	parameterType="int" >
+	   	UPDATE product
+	   		<set>
+		   		prod_type = 'D',
+	   		</set>
+	   	WHERE prod_no = #{prodNo}
+	 </update>
+	
 	
 	<!-- SQL : SELECT ONE -->	
 	<select id="getProduct" parameterType="string" resultMap="productSelectMap">
@@ -95,24 +107,23 @@
 	</select>
  	
  	<!-- SQL : UPDATE -->		
-	<update id="updateProduct" parameterType="product">
-		UPDATE Product
+	<update id="updateProduct" parameterType="Product">
+		UPDATE product
 		<set>
-				prod_name	= #{prodName},
-				prod_image 	= #{prodImage} ,
-				expiry_date = #{expiryDate}, 
-				prod_detail = #{prodDetail} ,
-				prod_price  = #{prodPrice}						
+												prod_type=#{prodType},
+			<if test="prodName!=null">			prod_name=#{prodName},</if>
+			<if test="prodDetail!=null">		prod_detail=#{prodDetail},</if>
+			<if test="prodSetInfo!=null">		prod_set_info=#{prodSetInfo},</if>
+												stock=stock+	<if test="stock==0">0</if>
+																<if test="stock!=0">#{stock}</if>,
+												sales_opendate=#{salesOpenDate},
+												sales_enddate=#{salesEndDate},
+												prod_price =	<if test="prodPrice==0">null</if>
+																<if test="prodPrice!=0">#{prodPrice}</if>,
+			<if test="prodImage!=''">			prod_image=#{prodImage},</if>
 		</set>
-		WHERE prod_no = #{prodNo}
+		WHERE prod_no=#{prodNo}
 	</update>
-	
-	<!-- SQL : DELETE -->	
-	<delete id="deleteProduct" parameterType="String">
-		DELETE
-		FROM product
-		WHERE prod_No = #{prodNo}
-	</delete>
 
 	<!-- SQL : SELECT LIST -->
 	<select id="getGoodsList" parameterType="map" resultMap="productSelectMap">

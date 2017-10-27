@@ -66,7 +66,8 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public void deleteUser(User user) throws Exception {
-		// TODO Auto-generated method stub
+		System.out.println("Å»Åð ÇÕ½Ã´Ù deleteUser daoimpl "+user);
+		
 		sqlSession.update("UserMapper.deleteUser", user);
 	}
 
@@ -74,6 +75,12 @@ public class UserDAOImpl implements UserDAO {
 	public int getTotalCount(Search search) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("UserMapper.getTotalCount", search);
+	}
+
+	@Override
+	public String deleteCheck(User user) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("UserMapper.deleteCheck", user);
 	}
 
 }

@@ -7,7 +7,7 @@ import com.amc.service.domain.Alarm;
 
 public interface AlarmService {
 	
-	public int addCancelAlarm(Alarm alarm);
+	public String addCancelAlarm(Alarm alarm);
 	
 	public int addOpenAlarm(Alarm alarm);
 	
@@ -21,6 +21,8 @@ public interface AlarmService {
 	
 	public String checkOpenAlarm(Alarm alarm);
 	
-	public String smsPush(String type, String serialNo, String userId) throws Exception;
+	public String switchOpenAlarm(Alarm alarm);
+	
+	public String smsPush(String type, String serialNo, String userId, String alarmSeatNo) throws Exception;
 
 }

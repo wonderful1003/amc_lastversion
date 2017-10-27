@@ -31,7 +31,11 @@ import com.amc.common.Page;
 import com.amc.common.Search;
 import com.amc.common.util.CommonUtil;
 import com.amc.service.domain.Movie;
+import com.amc.service.domain.ScreenContent;
 import com.amc.service.movie.MovieService;
+import com.amc.service.screen.ScreenService;
+
+import sun.print.resources.serviceui;
 
 //==> 영화관리  Controller
 @Controller
@@ -42,7 +46,11 @@ public class MovieController {
 	@Autowired
 	@Qualifier("movieServiceImpl")
 	private MovieService movieService;
-
+	/// Field 해림추가
+	@Autowired
+	@Qualifier("screenServiceImpl")
+	private ScreenService screenService;
+	
 	//setter Method 구현 않음
 	
 	public MovieController() {
@@ -149,13 +157,14 @@ public class MovieController {
 
 	@RequestMapping(value = "getMovie")
 	public String getMovie(@RequestParam(value = "menu", required = true) String menu,
-			@RequestParam(value = "movieNo", required = true) Integer movieNo, Model model) throws Exception {
+			@RequestParam(value = "movieNo", required = true) Integer movieNo, @ModelAttribute Search search, Model model) throws Exception {
 
 		System.out.println("/getMovie : GET");
 		// Business Logic
 		System.out.println("movieNo ::" + movieNo);
 
 		Movie movie = movieService.getMovie(movieNo);
+		//System.out.println(search+"searchhhhh");
 
 		// System.out.println("Date format before :: openDate :: " +
 		// movie.getOpenDt());
@@ -181,9 +190,15 @@ public class MovieController {
 					String steelCut1 = steelCutList.get(0).toString();
 					movie.setSteelCut1(steelCut1);
 				} else if (steelCutList.size() == 2) {
+					String steelCut1 = steelCutList.get(0).toString();
+					movie.setSteelCut1(steelCut1);
 					String steelCut2 = steelCutList.get(1).toString();
 					movie.setSteelCut2(steelCut2);
 				} else if (steelCutList.size() == 3) {
+					String steelCut1 = steelCutList.get(0).toString();
+					movie.setSteelCut1(steelCut1);
+					String steelCut2 = steelCutList.get(1).toString();
+					movie.setSteelCut2(steelCut2);
 					String steelCut3 = steelCutList.get(2).toString();
 					movie.setSteelCut3(steelCut3);
 				}
@@ -205,6 +220,7 @@ public class MovieController {
 
 		// Model 과 View 연결
 		model.addAttribute("movie", movie);
+		model.addAttribute("search", search);
 
 		if (menu.equals("manage")) {
 			System.out.println("updateMovie.jsp called");
@@ -375,7 +391,18 @@ public class MovieController {
 
 		System.out.println("1. movieNo ==> " + movieNo);
 		System.out.println("2. search ==> " + search);
-
+		
+		ScreenContent screenContent = new ScreenContent();
+		
+		screenContent.setMovie(new Movie());
+		screenContent.getMovie().setMovieNo(movieNo);
+		
+		System.out.println("#. screenContent --> "+ screenContent);
+		
+		int screenContentNo = screenService.checkScreenDupPreview(screenContent);
+		if(screenContentNo != 0 ){
+			screenContent.setScreenContentNo(screenContentNo);
+		}
 		if (search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
 		}
@@ -392,11 +419,13 @@ public class MovieController {
 				pageSize);
 
 		System.out.println("4. resultPage ==> " + resultPage);
+		System.out.println("5. previewCheck ==> "+ screenContentNo);
 		
 		model.addAttribute("search", map.get("search"));
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("totalCount", map.get("totalCount"));
 		model.addAttribute("resultPage", resultPage);
+		model.addAttribute("screenContent", screenContent);
 
 		System.out.println("MovieController의 getMovieCommentList메소드 끝");
 

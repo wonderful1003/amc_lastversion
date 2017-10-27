@@ -17,6 +17,7 @@ import com.amc.common.Search;
 import com.amc.service.domain.Movie;
 import com.amc.service.domain.ScreenContent;
 import com.amc.service.screen.ScreenService;
+import com.amc.web.cinema.HttpRequestToNode;
 
 @RestController
 @RequestMapping("/screen/*")
@@ -75,11 +76,40 @@ public class ScreenRestController {
 		screenContent.setMovie(new Movie());
 		screenContent.getMovie().setMovieNo(movieNo);
 		System.out.println("screenContent값 확인해볼까" + screenContent);
-		/// screenService.addScreenContent(screenContent);
+		
+		int addResult = screenService.addScreenContent(screenContent);
+		
+		System.out.println("addResult --> "+addResult);
 		System.out.println("screen/json/addScreenContent :: POST 끝.....");
-
-		return screenService.addScreenContent(screenContent);
-
+		
+		if(addResult == -1 || addResult == -2){
+			return addResult;
+		}else{ // 상영등록이 성공되었을때 
+			System.out.println(screenService.getScreenNo(screenContent));
+			String screenTheater = screenContent.getScreenTheater();
+			int screenContentNo = screenService.getScreenNo(screenContent);
+			
+			//mongodb에 좌석현황 추가 부분
+			String urlStr = "http://localhost:52273/addSeats";
+			String body = "screenNo="+screenContentNo+"&theater="+screenTheater;
+			try {
+				int responseCode = HttpRequestToNode.httpRequest(urlStr, body);
+				if(responseCode ==200){
+					System.out.println("몽고DB에 좌석현황 추가하기를 성공하였습니다.");
+					return addResult;
+				}else{
+					System.out.println("몽고DB에 좌석현황 넣기에 실패하였습니다.");
+					screenService.deleteScreenContent(screenContentNo);
+					return -3;
+				}				
+			} catch (Exception e) {
+				System.out.println("몽고DB가 꺼져있나봅니다!");
+				screenService.deleteScreenContent(screenContentNo);
+				e.printStackTrace();
+				return -3;
+			}	
+			
+		}
 	};
 
 	// 상영 내용 수정

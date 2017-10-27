@@ -47,16 +47,16 @@
 		//=============    검색 / page 두가지 경우 모두  Event  처리 =============	
 		function fncGetList(currentPage) {
 			$("#currentPage").val(currentPage)
-			$("form").attr("method" , "POST").attr("action" , "/user/listUser").submit();
+			$("form").attr("method" , "POST").attr("action" , "/user/getUserList").submit();
 		}
 		
 		
 		//============= "검색"  Event  처리 =============	
 		 $(function() {
 			 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			 //$( "button.btn.btn-default" ).on("click" , function() {
-			//	fncGetUserList(1);
-			//});
+			 $( "button.btn.btn-default" ).on("click" , function() {
+				fncGetList(1);
+			});
 		 });
 		
 		
@@ -80,11 +80,13 @@
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$(  "td:nth-child(5) > i" ).on("click" , function() {
 
-					var userId = $(this).next().val();
-				
+					/* var userId = $(this).next().val(); */
+					var userId = $(this).next().val().trim();
+					var tempId = userId.split(".");
+					console.log("tempId :: " + tempId);
 					$.ajax( 
 							{
-								url : "/user/json/getUser/"+userId ,
+								url : "/user/json/getUser/"+tempId ,
 								method : "GET" ,
 								dataType : "json" ,
 								headers : {
@@ -101,7 +103,7 @@
 																+"등록일 : "+JSONData.regDate+"<br/>"
 																+"</h6>";
 									$("h6").remove();
-									$( "#"+userId+"" ).html(displayValue);
+									$( "#"+userId+"" ).html(displayValue); 
 								}
 						});
 						////////////////////////////////////////////////////////////////////////////////////////////
@@ -179,7 +181,8 @@
             <th align="left" >회원 ID</th>
             <th align="left">회원명</th>
             <th align="left">주소</th>
-            <th align="left">간략정보</th>
+            <th align="left">계정구분</th>
+            <!-- <th align="left">간략정보</th> -->
           </tr>
         </thead>
        
@@ -192,10 +195,11 @@
 			  <td align="center">${ i }</td>
 			  <td align="left"  title="Click : 회원정보 확인">${user.userId}</td>
 			  <td align="left">${user.userName}</td>
-			  <td align="left">${user.addr}</td> 
+			  <td align="left">${user.addr}</td>
+			  <td align="left">${user.role}</td> 
 			  <td align="left">
-			  	<i class="glyphicon glyphicon-ok" id= "${user.userId}"></i>
-			  	<input type="hidden" value="${user.userId}">
+			  	<%-- <i class="glyphicon glyphicon-ok" id= "${user.userId}"></i> --%>
+<%-- 			  	<input type="hidden" value="${user.userId}"> --%>
 			  </td>
 			</tr>
           </c:forEach>

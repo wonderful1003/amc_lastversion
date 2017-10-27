@@ -33,28 +33,36 @@ public class AlarmRestController {
 		
 	}
 	
+	@RequestMapping("/json/addCancelAlarm")
+	public String addCancelAlarm(@ModelAttribute("alarm")Alarm alarm){
+		return alarmService.addCancelAlarm(alarm);
+	}
+	
 	@RequestMapping("/json/switchOpenAlarm")
 	public String switchOpenAlarm(@ModelAttribute("alarm")Alarm alarm){
-		
-		alarm.setAlarmFlag("O");
-		
-		if(alarmService.checkOpenAlarm(alarm).equals("0")){
-			alarmService.addOpenAlarm(alarm);
-			return "add";
-		}else{
-			alarmService.deleteOpenAlarm(alarm);
-			return "delete";
-		}
+		return alarmService.switchOpenAlarm(alarm);
+	}
+	
+	@RequestMapping("/json/deleteCancelAlarm")
+	public int deleteCancelAlarm(@ModelAttribute("alarm")Alarm alarm){
+		return alarmService.deleteCancelAlarm(alarm);
+	}
+	
+	@RequestMapping("/json/deleteOpenAlarm")
+	public int deleteOpenAlarm(@ModelAttribute("alarm")Alarm alarm){
+		return alarmService.deleteOpenAlarm(alarm);
 	}
 	
 	@RequestMapping("/json/push/{type}")
 	public String push(@PathVariable("type")String type,
 						@RequestParam(value="serialNo",defaultValue="")String serialNo,
-						@RequestParam(value="userId",defaultValue="")String userId) throws Exception{
+						@RequestParam(value="userId",defaultValue="")String userId,
+						@RequestParam(value="alarmSeatNo",defaultValue="")String alarmSeatNo
+						) throws Exception{
 		
 		System.out.println("AlarmRestController :: " +type+","+serialNo+","+userId );
 		
-		return alarmService.smsPush(type,serialNo,userId);
+		return alarmService.smsPush(type,serialNo,userId,alarmSeatNo);
 	}
 	
 	@RequestMapping("/json/test")

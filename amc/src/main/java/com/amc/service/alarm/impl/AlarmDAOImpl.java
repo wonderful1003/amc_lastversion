@@ -21,8 +21,7 @@ public class AlarmDAOImpl implements AlarmDAO {
 	
 	@Override
 	public int addCancelAlarm(Alarm alarm) {
-		
-		return 0;
+		return sqlSession.insert("AlarmMapper.addAlarm",alarm);
 	}
 
 	@Override
@@ -33,29 +32,37 @@ public class AlarmDAOImpl implements AlarmDAO {
 
 	@Override
 	public List<Alarm> getCancelAlarmList(Map<String,Object> map) {
-		return null;
+		return sqlSession.selectList("AlarmMapper.getCancelAlarmList",map);
 	}
 
 	@Override
 	public List<Alarm> getOpenAlarmList(Map<String, Object> map) {
-		Search s = (Search)map.get("search");
 		return sqlSession.selectList("AlarmMapper.getOpenAlarmList",map);
 	}
 
 	@Override
 	public int deleteCancelAlarm(Alarm alarm) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.delete("AlarmMapper.deleteAlarm",alarm);
 	}
 
 	@Override
 	public int deleteOpenAlarm(Alarm alarm) {
-		return sqlSession.delete("AlarmMapper.deleteOpenAlarm", alarm);
+		return sqlSession.delete("AlarmMapper.deleteAlarm", alarm);
 	}
 
 	@Override
 	public String checkOpenAlarm(Alarm alarm) {
 		return sqlSession.selectOne("AlarmMapper.checkOpenAlarm",alarm);
+	}
+
+	@Override
+	public String checkCancelAlarm(Alarm alarm) {
+		return sqlSession.selectOne("AlarmMapper.checkCancelAlarm",alarm);
+	}
+
+	@Override
+	public String checkDuplicationSeat(Alarm alarm) {
+		return sqlSession.selectOne("AlarmMapper.checkDuplicationSeat",alarm);
 	}
 	
 }

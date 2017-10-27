@@ -5,36 +5,23 @@
 <!--  ///////////////////////// JSTL  ////////////////////////// -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-	User user = new User();
-	user.setUserId("testAdmin");
-	user.setRole("admin");
-	session.setAttribute("user", user);
-%>
 
 <head>
 <meta charset="EUC-KR">
 	
-	<!-- 참조 : http://getbootstrap.com/css/   참조 -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	
-	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	
-	<!-- Bootstrap Dropdown Hover CSS -->
-   <link href="/css/animate.min.css" rel="stylesheet">
-   <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
-   
-    <!-- Bootstrap Dropdown Hover JS -->
-   <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
 </head>
 
 <!-- ToolBar Start /////////////////////////////////////-->
-<div class="navbar  navbar-inverse navbar-fixed-top">
+<div class="navbar  navbar-inverse navbar-fixed-bottom">
+	<div class="container"> 
+		<div id="modal-testNew" class="modal fade" tabindex="-1" role="dialog" 
+										aria-labelledby="테스트정보 등록" aria-describedby="테스트 모달">
+		    <div class="modal-dialog" style="width:1200px;height:700px">
+		        <div class="modal-content">
+		        </div>
+		    </div>
+		</div> 
+	</div>
 	
 	<div class="container">
 	       

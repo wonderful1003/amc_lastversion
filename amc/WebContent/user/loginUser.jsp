@@ -63,7 +63,7 @@
 						{	
 							url : "/user/json/loginUser",
 							method : "POST" ,
-							async : "false",
+							async : false,
 							headers : {
 								"Accept" : "application/json",
 								"Content-Type" : "application/json"
@@ -78,38 +78,38 @@
 								//alert(status);
 								//alert("JSONData : \n"+JSONData);
 								//alert( "JSON.stringify(JSONData) : \n"+JSON.stringify(JSONData) );
-								alert("JSONData : "+ JSONData );
-								alert("status : "+ status );
-								
-									if( JSONData !=''){
-									//[방법1]
-									alert("login ajax success");
-									$(window.parent.document.location).attr("href","/index.jsp");
+								//alert("JSONData : "+ JSONData );
+								//alert("status : "+ status );
+									//alert(JSONData.role);
+									console.log(JSONData.userId);
 									
-									//[방법2]
-									//window.parent.document.location.reload();
+									//alert("로그인유저");
 									
-									//[방법3]
-									//$(window.parent.frames["topFrame"].document.location).attr("href","/layout/top.jsp");
-									//$(window.parent.frames["leftFrame"].document.location).attr("href","/layout/left.jsp");
-									//$(window.parent.frames["rightFrame"].document.location).attr("href","/user/getUser?userId="+JSONData.userId);
+									if( JSONData.role == 'not' ){
+										alert("탈퇴한회원...");
+									}else if( JSONData !='' ){
+									//$(window.parent.document.location).attr("href","/index.jsp");
+									$(self.location).attr("href","/index.jsp");
 									
-									//==> 방법 1 , 2 , 3 결과 학인
-								}else{
-									alert("아이디 , 패스워드를 확인하시고 다시 로그인1...");
-								}
-							},
+									}else{
+										alert("아이디 , 패스워드를 확인하시고 다시 로그인1...");
+									}
+								},
 							error:function(request,status,error){
-								alert(error);
-								alert("아이디 , 패스워드를 확인하시고 다시 로그인2...");
+								//alert(error);
+								//alert("아이디 , 패스워드를 확인하시고 다시 로그인2...");
 						    }
 					}); 
+				
 			});
 		});	
 		
 		//============= 회원원가입화면이동 =============
 		$( function() {
-			$("a[href='#' ]").on("click" , function() {
+			/* $("a[href='#' ]").on("click" , function() {
+				self.location = "/user/authForm.jsp"
+			}); */
+			$("#addUser").on("click" , function() {
 				self.location = "/user/authForm.jsp"
 			});
 		});
@@ -191,7 +191,8 @@
 		<!--  row Start /////////////////////////////////////-->
 		<div class="row">		
 			<div class="col-md-6">
-				<img src="../images/uploadFiles/1.jpg" class="img-rounded" width="100%" />
+				<img src="http://192.168.0.32:8080/images/common/LOGO.png" class="img-rounded" width="100%" />
+				 <!-- <img src="http://192.168.0.32:8080/images/common/LOGO.png" class="img-rounded" width="100%" /> --> 
 			</div>
 	   	 	
 	 	 	<div class="col-md-6">	 	 	
@@ -214,16 +215,16 @@
 					      <input type="password" class="form-control" name="password" id="password" placeholder="패스워드" >
 					    </div>
 					  </div>
-					 </form>
+					
 					 
 					  <div class="form-group">
 					    <div class="col-sm-offset-4 col-sm-6 text-center">
-					      <button type="button" id="login" class="btn btn-primary"  >로 &nbsp;그 &nbsp;인</button>
-					      <button type="button" id="login" class="btn btn-primary"  >회원가입</button>
-					      <button type="button" id="login" class="btn btn-primary"  >ID/PW찾기</button>
+					      <button type="button" id="login" class="btn btn-primary">로 &nbsp;그 &nbsp;인</button>
+					      <button type="button" id="addUser" class="btn btn-primary">회원가입</button><br/><br/>
+					      <button type="button" id="findUser" class="btn btn-primary">ID/PW찾기</button>
 					 	</div>
 					  </div><br/><br/><br/><br/><br/>  
-					      
+					    </form>   
 					      
 					     <!--  <a class="btn btn-primary btn" href="#" role="button">회 &nbsp;원 &nbsp;가 &nbsp;입</a>
 					      <a class="btn btn-primary btn" href="#" role="button">회 &nbsp;원 &nbsp;가 &nbsp;입</a>		 -->			      					    
@@ -234,9 +235,9 @@
 				 -->
 				<div>
 					<a id="custom-login-btn" href="javascript:loginWithKakao()">
-					<img src="../images/user/kakaobtn.png" class="img-rounded" width="10%"></a>&nbsp;
-					<a href="/user/kakaoGetCode" ><img src="../images/user/naverbtn.PNG" class="img-rounded" width="10%"> </a> &nbsp;
-					<a href="/user/Naver" ><img src="../images/user/googlebtn.png" class="img-rounded" width="10%"> </a>
+					<img src="http://127.0.0.1:8080/images/user/kakaobtn.png" class="img-rounded" width="10%"></a>&nbsp;
+					<a href="/user/kakaoGetCode" ><img src="http://127.0.0.1:8080/images/user/naverbtn.PNG" class="img-rounded" width="10%"> </a> &nbsp;
+					<a href="/user/Naver" ><img src="http://127.0.0.1:8080/images/user/googlebtn.png" class="img-rounded" width="10%"> </a>
 				</div>
 					
 			   	</div>

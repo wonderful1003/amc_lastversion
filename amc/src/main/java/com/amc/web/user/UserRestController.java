@@ -2,19 +2,26 @@ package com.amc.web.user;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import com.amc.service.user.UserService;
+import com.amc.service.SNSLogin.InstaService;
 import com.amc.service.SNSLogin.KakaoService;
 import com.amc.service.SNSLogin.NaverService;
 import com.amc.service.domain.User;
@@ -36,18 +43,38 @@ public class UserRestController {
 	@Autowired
 	@Qualifier("naverServiceImpl")
 	private NaverService naverService;
+	
+	@Autowired
+	@Qualifier("instaServiceImpl")
+	private InstaService instaService;
 
-	@RequestMapping( value="getUser/{userId}", method=RequestMethod.GET )
+/*	@RequestMapping( value="getUser/{userId}", method={RequestMethod.GET,RequestMethod.POST} )
 	public User getUser( @PathVariable String userId ) throws Exception{
 		
 		System.out.println("/user/json/getUser : GET");
 		
 		//Business Logic
 		return userService.getUser(userId);
+	}*/
+	@RequestMapping( value="getUser/{tempId}", method={RequestMethod.GET,RequestMethod.POST} )
+	public User getUser( @PathVariable String tempId ) throws Exception{
+		
+		System.out.println("/user/json/getUser : GET");
+		String userId = tempId.replace(",", ".");
+		
+		//Business Logic
+		return userService.getUser(userId);
 	}
-
+	
+	@RequestMapping( value="deleteCheck", method={RequestMethod.GET,RequestMethod.POST} )
+	public String deleteCheck( @RequestBody User user, Model model,
+										HttpSession session  ) throws Exception{
+		System.out.println("/user/json/deleteCheck : POST");
+		return userService.deleteCheck(user);
+	}
+	
 	@RequestMapping( value="loginUser", method=RequestMethod.POST )
-	public User loginUser(	@RequestBody User user,
+	public User loginUser(	@RequestBody User user, Model model,
 									HttpSession session ) throws Exception{
 	
 		System.out.println("/user/json/login : POST");
@@ -63,6 +90,9 @@ public class UserRestController {
 		/*if(dbUser==null || dbUser.getRole() == "not"){*/
 		if(dbUser==null || dbUser.getRole().equals("not")){
 			System.out.println("널 값이다");
+			System.out.println(dbUser);
+			model.addAttribute("user", dbUser);
+		      
 			return dbUser;
 		}else{
 			if(user.getPassword().equals(dbUser.getPassword())){
@@ -74,29 +104,15 @@ public class UserRestController {
 		
 		return dbUser;
 	}
-
-	@RequestMapping( value="checkDuplication/{userId}", method=RequestMethod.GET )
-	public boolean checkDuplication( @PathVariable String userId ) throws Exception{
-		System.out.println("중복확인 체크");
+	
+/*	@RequestMapping( value="checkDuplication/{userId:.+}", method=RequestMethod.GET )*/
+	@RequestMapping( value="checkDuplication/{tempId}", produces="application/json;charset=UTF-8", method=RequestMethod.GET )
+	public boolean checkDuplication( @PathVariable String tempId ) throws Exception{
+		System.out.println("중복확인 체크"+tempId);
+		String userId = tempId.replace(",", ".");
 		return userService.checkDuplication(userId);
 	}
-	
-	@RequestMapping( value="checkUserId/{tempId}", method=RequestMethod.POST)
-   public String checkUserId(  @PathVariable String tempId, Model model , HttpSession session) throws Exception {
-      
-      System.out.println("/user/checkUserId : GET");
-      tempId=tempId.replace(",", ".");
-      System.out.println("userId :: " + tempId);
-      User user = userService.checkUserId(tempId);
-      
-      model.addAttribute("user", user);
-      System.out.println("checkUserId 11111111111111");
-      session.setAttribute("user", user);
-      System.out.println("checkUserId 2222222222222");
-         
-      return "forward:/user/addUserView.jsp";
-   }
-	
+		
 	@RequestMapping( value="getId", method=RequestMethod.POST)
 	public String getId(  @RequestBody User user,
 							 HttpSession session) throws Exception {
@@ -231,6 +247,7 @@ public class UserRestController {
 		System.out.println("email :"+(String)userMap.get("email"));
 		System.out.println("age :"+(String)userMap.get("age"));
 		*/
-		
 	}	
+
+
 }

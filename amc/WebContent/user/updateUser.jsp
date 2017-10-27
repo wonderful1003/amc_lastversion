@@ -51,7 +51,8 @@
 		$(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$("a[href='#' ]").on("click" , function() {
-				$("form")[0].reset();
+				alert("수정을 취소하시겠습니까?");
+				  history.back();
 			});
 		});	
 		
@@ -68,13 +69,35 @@
 			});
 			 
 		});	
+	
+		$(function(){
+			$('#password2').bind('keyup',function(){
+				if( $('#password').val() != $(this).val()){
+					$('span.help-block2').text("비밀번호가 다릅니다.").css('color','red');
+				}else{
+					$('span.help-block2').text("확인").css('color','blue');
+				}
+			});
+		});
 		
 		///////////////////////////////////////////////////////////////////////
 		function fncUpdateUser() {
 			var name=$("input[name='userName']").val();
+			var pw=$("input[name='password']").val();
+			var pw_confirm=$("input[name='password2']").val();
 			
 			if(name == null || name.length <1){
 				alert("이름은  반드시 입력하셔야 합니다.");
+				return;
+			}
+			if(pw == null || pw.length <1){
+				alert("패스워드는  반드시 입력하셔야 합니다.");
+				/* return check=false; */
+				return; 
+			}
+			if(pw_confirm == null || pw_confirm.length <1){
+				alert("패스워드 확인은  반드시 입력하셔야 합니다.");
+				/* return check=false; */
 				return;
 			}
 				
@@ -125,16 +148,17 @@
 		
 		  <div class="form-group">
 		    <label for="password" class="col-sm-offset-1 col-sm-3 control-label">비밀번호</label>
-		    <div class="col-sm-4">
+		    <div class="col-sm-3">
 		      <input type="password" class="form-control" id="password" name="password" placeholder="변경비밀번호">
 		    </div>
 		  </div>
 		  
 		  <div class="form-group">
 		    <label for="password2" class="col-sm-offset-1 col-sm-3 control-label">비밀번호 확인</label>
-		    <div class="col-sm-4">
+		    <div class="col-sm-3">
 		      <input type="password" class="form-control" id="password2" name="password2" placeholder="변경비밀번호 확인">
 		    </div>
+		     <span id="helpBlock2" class="help-block2 col-sm-6"></span>
 		  </div>
 		  
 		  <div class="form-group">
@@ -145,14 +169,28 @@
 		  </div>
 		  
 		  <div class="form-group">
-		    <label for="ssn" class="col-sm-offset-1 col-sm-3 control-label">주소</label>
+		    <label for="addr" class="col-sm-offset-1 col-sm-3 control-label">주소</label>
 		    <div class="col-sm-4">
 		      <input type="text" class="form-control" id="addr" name="addr"  value="${user.addr}" placeholder="변경주소">
 		    </div>
 		  </div>
 		  
+	  	  <div class="form-group">
+		    <label for="addr" class="col-sm-offset-1 col-sm-3 control-label">상세주소</label>
+		    <div class="col-sm-4">
+		      <input type="text" class="form-control" id="addr" name="addr"  value="${user.addrDetail}" placeholder="변경주소">
+		    </div>
+		  </div>
+		  
 		  <div class="form-group">
-		    <label for="ssn" class="col-sm-offset-1 col-sm-3 control-label">휴대전화번호</label>
+		    <label for="addr" class="col-sm-offset-1 col-sm-3 control-label">가입일</label>
+		    <div class="col-sm-4">
+		      <input type="text" class="form-control" id="userRegDate" name="userRegDate"  value="${user.userRegDate}" readonly>
+		    </div>
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="phone" class="col-sm-offset-1 col-sm-3 control-label">휴대전화번호</label>
 		     <div class="col-sm-2">
 		      <select class="form-control" name="phone1" id="phone1">
 				  	<option value="010" ${ ! empty user.phone1 && user.phone1 == "010" ? "selected" : ""  } >010</option>

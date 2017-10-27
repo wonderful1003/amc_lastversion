@@ -101,7 +101,8 @@ public class BookingServiceImpl implements BookingService {
 		searchCondition(영화번호), currentPage(인원수)*/
 		Search search = new Search();
 		
-		search.setSearchCondition(booking.getMovie().getMovieNo()+"");
+		//search.setSearchCondition(booking.getMovie().getMovieNo()+"");
+		search.setSearchCondition("10231");
 		search.setCurrentPage(booking.getHeadCount());
 		if(user.getGender().equals("M")){
 			search.setSearchKeyword("1");
@@ -150,9 +151,9 @@ public class BookingServiceImpl implements BookingService {
             dos.writeBytes(strPostData);
             dos.flush();
             dos.close();
-
+            System.out.println("DataOutputStream closed");
             int intResponse = conn.getResponseCode();
-            System.out.println("\nSending 'POST' to " + url.toString() + 
+            System.out.println("\nCompleted Sending 'POST' to " + url.toString() + 
                     ", data: " + strPostData + ", rc: " + intResponse);
 	    }
 	}
@@ -166,6 +167,7 @@ public class BookingServiceImpl implements BookingService {
         	
         	String screenDate = screenContentList.get(k).getScreenDate();
         	String screenDay = screenDate.substring(8,10);
+        	//필요시 substring조정해서 월 일까지 나오도록 할 수 있다.
         	dayList.add(screenDay);
         }
         
