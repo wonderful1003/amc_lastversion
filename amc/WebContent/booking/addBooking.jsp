@@ -5,7 +5,7 @@
 
 <!-- /////////////JSTL/////////////-->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
+ <%
 	User user = new User();
 	user.setUserId("sadf@naver.com");
 	user.setRole("user");
@@ -15,12 +15,14 @@
 	user.setPhone1("010");
 	user.setPhone2("7116");
 	user.setPhone3("7840");
+	user.setGender("M");
+	user.setBirth("1979/01/01");
 	session.setAttribute("user", user);
 	
 	Booking booking = new Booking();
 	booking.setTotalTicketPrice(1111);
 	session.setAttribute("booking",booking);
-%>
+%> 
 
 <!DOCTYPE html >
 <html>
@@ -31,9 +33,17 @@
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+	<link rel="stylesheet" type="text/css" href="/semantic/semantic.css">
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+	integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  	crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js" ></script>
+	
 	<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+	
+	<!--  ///////////////////////// Sweetalert CDN ////////////////////////// -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	
 <script>
 //imp초기화는 페이지 첫단에 해주는게 좋음
@@ -141,31 +151,106 @@ IMP.init('imp41659269');
 		alert($("input[name='qrUrl']").val());
 	}
 	
+	$(document).ready(function() {
+		var seatNo ="${booking.bookingSeatNo}"; 
+	  $.ajax(
+				{
+					url : "/booking/json/getDisplaySeatNo/"+seatNo,						
+					method : "GET" ,
+					dataType : "json" ,
+					headers : {
+						"Accept" : "application/json",
+						"Content-Type" : "application/json"
+					},
+					
+					success : function(JSONData, status) {
+						console.log('SeatNo 받아옴 : '+JSONData.str);								
+                      if(JSONData != ""){
+                      	$("#displaySeat").text(JSONData.str);
+                      }//end of if문
 
+					}
+			});//end of ajax
+	})
 </script>
-<body>
-<h2>[예매3단계] 결제를 위한 창입니다.</h2>
+		
 
-	<input type="button" value="결제하기" onClick="javascript:kakaoPay()"/>
-	<input type="button" value="결제취소" onClick="javascript:kakaoPayCancel()"/>
+<body>
+	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
+ 	<div class="container">
 	
+	<div class="ui ordered steps">
+	  <div class="completed step">
+	    <div class="content">
+	      <div class="title">영화정보 선택하기</div>
+	      <div class="description">관람하실 영화정보를 선택하셨습니다.</div>
+	    </div>
+	  </div>
+	  <div class="completed step">
+	    <div class="content">
+	      <div class="title">좌석 선택하기</div>
+	      <div class="description">관람하실 영화의 좌석을 선택하셨습니다.</div>
+	    </div>
+	  </div>
+	  <div class="active step">
+	    <div class="content">
+	      <div class="title">결제하기</div>
+	      <div class="description">카카오페이로 결제하여 예매를 완료합니다.</div>
+	    </div>
+	  </div>
+	</div>
+	
+<h2 class="ui header">
+  	예매정보
+  <div class="sub header">결제하시기 전 예매내역을 다시 한번 확인해 주세요.</div>
+</h2>		
+<div class="ui segment">
+  <h3 class="ui right aligned header">
+   	<input type="button" value="결제하기" onClick="javascript:addBooking()"/>
+	<input type="button" value="결제취소" onClick="javascript:kakaoPayCancel()"/>
+  </h3>
+<h2 class="ui center aligned icon header">
+  <i class="circular users icon"></i>
+
+  <div>	
+		<%-- <div>::: ${booking.screenContent.movie.movieNm}</div>
+		<div>여기는 상영넘버 : ${booking.screenContent.screenContentNo}</div> --%>
+		<div>${booking.screenContent.previewTitle}</div>
+		<div>영화명	킹스맨</div>
+		<div>일시	${booking.screenContent.screenDate}&nbsp; ${booking.screenContent.screenOpenTime}</div>
+		<div>상영관 	${booking.screenContent.screenTheater}</div>
+		<div>인원 	${booking.headCount} </div>
+		<div>좌석<span id="displaySeat">좌석번호</span></div>
+		
+		<h5>결제정보</h5>
+		<div>결제금액 ${screenContent.ticketPrice}원</div>
+		<div>결제수단  Kakaopay</div>
+	</div>
+</h2>
+</div>
+		
 	<form>
 	<!--  !!!!!!!!!!!!!!!!!!!!!!!!!input type hidden으로 나중에 바꾸기 -->
-		<input type="text" name="userId" value="${session.user.userId}"/>
-		<input type="text" name="screenContentNo" value="${booking.screenContent.screenContentNo}"/>
-		<input type="text" name="bookingSeatNo" value="${booking.bookingSeatNo}"/>
-		<input type="text" name="impId" value=""/>
-		<input type="text" name="headCount" value="${booking.headCount}"/>
-		<input type="text" name="totalTicketPrice" value="${booking.totalTicketPrice}"/>
-		<input type="hidden" name="qrUrl" value=""/>
+		<input type="hidden" name="userId" value="${sessionScope.user.userId}"/>
+		<input type="hidden" name="screenContentNo" value="${booking.screenContent.screenContentNo}"/>
+		<input type="hidden" name="bookingSeatNo" value="${booking.bookingSeatNo}"/>
+		<!-- <input type="hidden" name="impId" value=""/>  -->
+		<input type="hidden" name="impId" value="abc"/>
+		<input type="hidden" name="headCount" value="${booking.headCount}"/>
+		<input type="hidden" name="totalTicketPrice" value="${booking.totalTicketPrice}"/>
+		<!-- <input type="hidden" name="qrUrl" value=""/> -->
+		<input type="hidden" name="qrUrl" value="https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=abc"/>
 		
 	</form>
 
-	<div>
-		<div>여기는 상영넘버 : ${booking.screenContent.screenContentNo}</div>
-		<div>선택하신 상영시간 : ${booking.screenContent.screenOpenTime}</div>
-		<div>이 영화(시사회)의 좌석당 가격 : ${screenContent.ticketPrice}</div>
-		<div>선택한 좌석번호 : ${booking.bookingSeatNo}</div>
+
+
+
+	
+	
+	<!-- <input type="button" value="결제하기" onClick="javascript:kakaoPay()"/> -->
+
+	
 	</div>
 	</body>
 </html>

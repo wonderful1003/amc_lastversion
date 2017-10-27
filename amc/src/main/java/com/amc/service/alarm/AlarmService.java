@@ -23,6 +23,6 @@ public interface AlarmService {
 	
 	public String switchOpenAlarm(Alarm alarm);
 	
-	public String smsPush(String type, String serialNo, String userId) throws Exception;
+	public String smsPush(String type, String serialNo, String userId, String alarmSeatNo) throws Exception;
 
 }

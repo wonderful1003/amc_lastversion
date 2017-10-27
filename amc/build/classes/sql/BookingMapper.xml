@@ -31,8 +31,7 @@
   	
   	<insert 	id="addBooking" parameterType="booking">
   		INSERT 
-  		INTO booking VALUES ('b'||seq_booking_booking_no.nextval, impId, userId, screenContentNo, SYSDATE, headCount,
-  		    totalTicketPrice, bookingSeatNo, qrUrl)
+  		INTO booking VALUES ('b'||seq_booking_booking_no.nextval, #{impId}, #{userId}, #{screenContentNo}, SYSDATE, #{headCount}, #{totalTicketPrice}, #{bookingSeatNo}, #{qrUrl})
   	</insert>
   		
   	<select id="getBooking" parameterType="string" resultMap="bookingSelectMap" >
@@ -77,6 +76,23 @@
 
 					WHERE ROWNUM &lt;= #{endRowNum} )
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+  	</select>
+  	
+  	<select id="getUserBookingList" parameterType="map" resultMap="bookingSelectMap">
+		SELECT *
+  		FROM ( SELECT inner_table.booking_no, inner_table.imp_id, inner_table.user_id, inner_table.screencontent_no, 
+      				  inner_table.booking_regdate, inner_table.head_count, inner_table.total_ticketprice, inner_table.bookingseat_no, inner_table.qr_url,
+      				  inner_table.movie_no, inner_table.screen_opentime, inner_table.preview_flag, inner_table.preview_title, inner_table.screen_date, 
+      				  inner_table.movie_title, ROWNUM AS row_seq  
+					  FROM	(SELECT inner.booking_no, inner.imp_id, inner.user_id, inner.screencontent_no, 
+	      							inner.booking_regdate, inner.head_count, inner.total_ticketprice, inner.bookingseat_no, inner.qr_url,
+               						inner.movie_no, inner.screen_opentime, inner.preview_flag, inner.screen_date, inner.preview_title, m.movie_title
+							   FROM (SELECT b.booking_no, b.imp_id, b.user_id, b.screencontent_no, b.booking_regdate, b.head_count, b.total_ticketprice, b.bookingseat_no, b.qr_url, s.movie_no, s.screen_opentime, s.preview_title, s.screen_date, s.preview_flag
+									 FROM booking b,screencontent s 
+									 WHERE b.screencontent_no = s.screencontent_no AND b.user_Id = #{user.userId})inner, movie m
+			   				   WHERE inner.movie_no = m.movie_no)inner_table
+			   WHERE TO_DATE(inner_table.screen_opentime, 'YYYY/MM/DD HH24:MI') >= TO_DATE(SYSDATE,'YYYY/MM/DD HH24:MI') AND ROWNUM &lt;= #{search.endRowNum} )
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum} 
   	</select>
   	
   	<delete id="deleteBooking" parameterType="java.lang.String">

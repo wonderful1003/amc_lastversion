@@ -11,8 +11,13 @@
 	<!--   jQuery , Bootstrap CDN  -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+	<link rel="stylesheet" type="text/css" href="/semantic/semantic.css">
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+	integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  	crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js" ></script>
+	<!-- semantic.ui -->
+	<script src="/semantic/semantic.js"></script>
 	
 	<!--   Modal CDN  -->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> 
@@ -32,11 +37,8 @@
    	<!--  not sure about this part -->
    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <!-- Bootstrap core CSS -->
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="jumbotron.css" rel="stylesheet">
+
+
    <!-- ------------------------------>
 	<script type="text/javascript">
 		
@@ -46,6 +48,8 @@
 			$("td.movieName").on("click" , function() {
 				
 				var movieNo =  $($(this).find("input[name='movieNo']")).val();
+				var movieName =  $($(this).find("input[name='movieName']")).val();
+				$(".item").eq(0).text(movieName);
 				var flag = $("input:hidden[name='flag']").val();
 				
 				$.ajax(
@@ -61,17 +65,17 @@
 								console.log('히히 : '+JSONData);								
 		                        var str = "";
 		                        if(JSONData != ""){
-		                        	
 		                            $(JSONData).each(
-		                               function(){
-		                            	   str+= '<div class="screenDay">'+this+'일<input type="hidden" name="day" value='+this+'></div>' 			
-
-		                               }//end of function
-		                             );
-		                            
+		                               function(){		                            	   	
+		                            	  	str+= 	'<div class="screenDay">'+this+'일'
+		                            	  	str+=     '<input type="hidden" name="day" value='+this+'>'
+		                            	  	str+=	'</div>';
+		                               });//end of each fnc                            
 		                        }//end of if문
-		                       
-								$( "tbody").after(str);
+		                        $(".col-md-4").eq(1).find(".screenDay").remove();
+		                        $(".col-md-4").eq(2).find(".screenTime").remove();
+		                        $(".col-md-4").eq(1).find(".head").after(str);
+		                        
 							}
 					});//end of ajax
 			});
@@ -84,7 +88,7 @@
 			alert("날짜를 선택하셨습니다.");
 			
 			var date =  $($(this).find("input[name='day']")).val();
-			
+			$(".item").eq(1).text(date);
 			$.ajax(
 					{
 						url : "/booking/json/getScreenTime/"+date,						
@@ -93,26 +97,26 @@
 						headers : {
 							"Accept" : "application/json",
 							"Content-Type" : "application/json"
-						},
+						}, 
 						async : false,
 						success : function(JSONData, status) {
 							console.log('screenTime 받아옴 : '+JSONData);								
 	                        var str = "";
 	                        if(JSONData != ""){
-	                        	
 	                            $(JSONData).each(
 	                               function(){
 	                            	   str+= '<div class="screenTime">시간 : '+this.screenOpenTime
 	                            	   +     ', 상영번호 : '+this.screenContentNo+''
 	                            	   +'<input type="hidden" name="contNo" value="'+this.screenContentNo+'">'
+	                            	   +'<input type="hidden" name="screenTime" value="'+this.screenOpenTime+'">'
 	                            	   +'</div>' ;				
 
 	                               }//end of function
 	                             );
-	                            
 	                        }//end of if문
-	                       
-							$( "tbody").after(str);
+	                        
+	                        $(".col-md-4").eq(2).find(".screenTime").remove();
+	                        $(".col-md-4").eq(2).find(".head").after(str);
 						}
 				});//end of ajax
 		});
@@ -120,8 +124,10 @@
 		//3. 시간클릭시
 		$(document).on("click", ".screenTime",  function(){
 			
+			var screenTime = $($(this).find("input[name='screenTime']")).val();
 			var contNo = $($(this).find("input[name='contNo']")).val();
 			alert("시간을 선택하셨습니다  상영번호는 : "+contNo);
+			$(".item").eq(2).text(screenTime);
 			
 			$("#display").text(contNo);	
 
@@ -139,13 +145,42 @@
 <title>selectScreenMovie.jsp</title>
 </head>
 	<body>
+	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
 
 	 <div class="container">
-	 <h2>[예매1단계]영화 상영정보를 선택해 주세요.</h2>
+	 
+	 <div class="ui ordered steps">
+	  <div class="completetd step">
+	    <div class="content">
+	      <div class="title">영화정보 선택하기</div>
+	      <div class="description">관람하실 영화정보를 선택합니다.</div>
+	    </div>
+	  </div>
+	  <div class="active step">
+	    <div class="content">
+	      <div class="title">좌석 선택하기</div>
+	      <div class="description">관람하실 영화의 좌석을 선택합니다.</div>
+	    </div>
+	  </div>
+	  <div class="active step">
+	    <div class="content">
+	      <div class="title">결제하기</div>
+	      <div class="description">카카오페이로 결제하여 예매를 완료합니다.</div>
+	    </div>
+	  </div>
+	</div>	
+	
+ 	<div class="item">선택된 상영정보</div>
+	<div class="item"></div>
+	<div class="item"></div>
+	<div class="item"></div> 
+
+	 
+	 <h4>[예매1단계]영화 상영정보를 선택해 주세요.</h4>
 	 <input type="hidden" name="flag" value="1">
       <div class="row">
         <div class="col-md-4">
-          <h2>영화 제목</h2>
+         <div class="head"><h4>영화 제목</h4></div>
           <table>
 	          <c:set var="i" value="0" />
 			  <c:forEach var="movie" items="${movieList}">
@@ -153,25 +188,25 @@
 				<tr>		  
 				  <td align="left" class="movieName"><h5>${movie.movieNm}  ${movie.movieNo}</h5>
 				  	<input type="hidden" name="movieNo" value="${movie.movieNo}">
+				  	<input type="hidden" name="movieName" value="${movie.movieNm}">
 				  </td>
 				</tr>
 	          </c:forEach>        
           </table>
-
         </div>
-        <div class="col-md-4">
-          <h2>상영 날짜</h2>
-          <div id="display" ></div> 
-        </div>
-        <div class="col-md-4">
-          <h2>상영 시간</h2>
-          <p>상영시간들</p>
-        </div>
+		<div class="col-md-4" id="dayList">
+			<div class="head"><h4>상영 날짜</h4></div>
+	   	</div>
+	   	<div class="col-md-4" id="dayList">
+			<div class="head"><h4>상영 날짜</h4></div>
+	   	</div>
       </div>
+      
    	  </div> 
+   	  
 	  <!-- /container -->	
-	
-	<div id="gotoSeat"><h2>▶좌석선택하기</h2></div>
+	<div id="display" ></div>
+	<div id="gotoSeat"><h4>▶좌석선택하기</h4></div>
 	
 	
 	</body>	

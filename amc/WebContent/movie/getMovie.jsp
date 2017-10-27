@@ -48,7 +48,7 @@ body {
 	function addOpenAlarm() {
 			$.ajax(
 						{
-							url : "/alarm/json/switchOpenAlarm?screenContent.screenContentNo=10000&user.userId="
+							url : "/alarm/json/switchOpenAlarm?screenContentNo=10000&userId="
 									+ "${sessionScope.user.userId}", //서버로 알림 체크 요청
 							type : 'GET',
 						}).done(function(data) {

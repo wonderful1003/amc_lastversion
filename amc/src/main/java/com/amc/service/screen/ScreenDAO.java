@@ -48,4 +48,6 @@ public interface ScreenDAO {
 	// 오늘 티켓 오픈하는 리스트 불러오기
 	public List<ScreenContent> getTodayTicketOpenList(Search search);
 
+	int getScreenNo(ScreenContent screenContent);
+
 }

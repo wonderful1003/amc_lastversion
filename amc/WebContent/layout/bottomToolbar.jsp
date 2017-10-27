@@ -34,7 +34,7 @@
 </head>
 
 <!-- ToolBar Start /////////////////////////////////////-->
-<div class="navbar  navbar-inverse navbar-fixed-top">
+<div class="navbar  navbar-inverse navbar-fixed-bottom">
 	
 	<div class="container">
 	       

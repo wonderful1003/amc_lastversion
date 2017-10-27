@@ -44,4 +44,6 @@ public interface ScreenService {
 
 	int checkScreenDupPreview(ScreenContent screenContent);
 
+	int getScreenNo(ScreenContent screenContent);
+
 }

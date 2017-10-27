@@ -56,11 +56,13 @@ public class AlarmRestController {
 	@RequestMapping("/json/push/{type}")
 	public String push(@PathVariable("type")String type,
 						@RequestParam(value="serialNo",defaultValue="")String serialNo,
-						@RequestParam(value="userId",defaultValue="")String userId) throws Exception{
+						@RequestParam(value="userId",defaultValue="")String userId,
+						@RequestParam(value="alarmSeatNo",defaultValue="")String alarmSeatNo
+						) throws Exception{
 		
 		System.out.println("AlarmRestController :: " +type+","+serialNo+","+userId );
 		
-		return alarmService.smsPush(type,serialNo,userId);
+		return alarmService.smsPush(type,serialNo,userId,alarmSeatNo);
 	}
 	
 	@RequestMapping("/json/test")

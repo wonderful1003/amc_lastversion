@@ -116,5 +116,27 @@
 			</if>
 		</if> 
  	</select>
+ 	
+ 	<select  id="getCancelAlarmList"  parameterType="map"	 resultMap="alarmSelectMap">
+		
+		<!-- sms용 id,uuid 뽑기 -->
+		<if test="search.searchCondition == 'cancelAlarm'">
+			SELECT inner.alarm_no, inner.screencontent_no, inner.user_id, inner.alarm_regdate, 
+				   inner.alarm_flag, u.phone1, u.phone2, u.phone3, u.uuid, inner.alarmseat_no
+			FROM (SELECT * 
+				  FROM alarm WHERE screencontent_no = ${search.searchKeyword} AND alarm_flag = 'C' AND alarmseat_no = #{alarm.alarmSeatNo})inner, users u
+			WHERE inner.user_Id = u.user_Id
+		</if>
+		
+		<!-- 마이페이지용  -->
+	 	<if test="search.searchCondition != 'cancelAlarm'">
+		 	SELECT * 
+		 	FROM alarm 
+			WHERE 
+			<if test="user.userId != ''">
+				user_id = #{user.userId} AND alarm_flag = 'C'
+			</if>
+		</if> 
+ 	</select>
 
 </mapper>

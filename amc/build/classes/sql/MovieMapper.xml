@@ -29,6 +29,16 @@
   		<result property="showTm" 			column="runningtime"		jdbcType="VARCHAR"/>  		
   		<result property="synopsis" 		column="synopsis" 			jdbcType="VARCHAR"/>  	
   		<result property="trailer" 			column="trailer" 			jdbcType="VARCHAR"/>  	
+  		<result property="maleCnt" 			column="male_count" 			jdbcType="NUMERIC"/>
+  		<result property="femaleCnt" 		column="female_count" 			jdbcType="NUMERIC"/>
+  		<result property="age10s"	 		column="age10s" 				jdbcType="NUMERIC"/>  
+  		<result property="age20s" 			column="age20s" 				jdbcType="NUMERIC"/>
+  		<result property="age30s" 	column="age30s" 			jdbcType="NUMERIC"/>
+  		<result property="age40s" 		column="age40s" 			jdbcType="NUMERIC"/>  		
+  		<result property="age50s" 			column="age50s"		jdbcType="NUMERIC"/>  		
+  		<result property="age60s" 		column="age60s" 			jdbcType="NUMERIC"/>  	
+  		<result property="age60sMore" 			column="age60more" 			jdbcType="NUMERIC"/>  
+  		
   	
   		
   	</resultMap>
@@ -101,7 +111,16 @@
 		rating,
 		steelCut,
 		synopsis,
-		trailer				
+		trailer,
+		male_count,
+		female_count,
+		age10s,
+		age20s,
+		age30s,
+		age40s,
+		age50s,
+		age60s,
+		age60more			
 		FROM movie   
 		WHERE movie_no = #{movieNo}											
   	</select>
@@ -245,7 +264,7 @@
 	<select id="uniMovieList" parameterType="search" resultMap="movieSelectMap">
 		SELECT *
 	        FROM (   SELECT inner_table.* , ROWNUM AS row_seq
-	                    FROM      (   SELECT movie_no, movie_title, poster
+	                    FROM      (   SELECT movie_no, movie_title, poster, to_char(movie_opendate, 'yy/mm/dd') movie_opendate
 	                                  FROM   movie 
 	                                   <if test="searchCondition != null">
 	                                    <where>

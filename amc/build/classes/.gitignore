@@ -1,5 +1,2 @@
-/config/
-/log4j.properties
-/sql/
-/test.properties
 /com/
+/sql/

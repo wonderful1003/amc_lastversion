@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
-
+import java.util.Map;
 
 import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,9 +150,9 @@ public class BookingServiceImpl implements BookingService {
             dos.writeBytes(strPostData);
             dos.flush();
             dos.close();
-
+            System.out.println("DataOutputStream closed");
             int intResponse = conn.getResponseCode();
-            System.out.println("\nSending 'POST' to " + url.toString() + 
+            System.out.println("\nCompleted Sending 'POST' to " + url.toString() + 
                     ", data: " + strPostData + ", rc: " + intResponse);
 	    }
 	}
@@ -166,6 +166,7 @@ public class BookingServiceImpl implements BookingService {
         	
         	String screenDate = screenContentList.get(k).getScreenDate();
         	String screenDay = screenDate.substring(8,10);
+        	//필요시 substring조정해서 월 일까지 나오도록 할 수 있다.
         	dayList.add(screenDay);
         }
         
@@ -219,7 +220,10 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public void sendPhoneQR(String bookingNo, String phone) {
 	}
-
-
+	
+	@Override
+	public List<Booking> getUserBookingList(Map<String, Object> map) {
+		return bookingDAO.getUserBookingList(map);
+	}
 	
 }
