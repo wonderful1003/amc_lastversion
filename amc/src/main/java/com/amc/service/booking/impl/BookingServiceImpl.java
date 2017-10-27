@@ -221,7 +221,7 @@ public class BookingServiceImpl implements BookingService {
 	}
 	
 	@Override
-	public Map<String, Object> getUserBookingList(Map<String, Object> map) {
+	public List<Booking> getUserBookingList(Map<String, Object> map) {
 		return bookingDAO.getUserBookingList(map);
 	}
 	

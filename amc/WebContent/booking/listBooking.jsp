@@ -64,12 +64,12 @@
 		 $(function() {
 		
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$( "td:nth-child(2)" ).on("click" , function() {
-				 self.location ="/user/getUser?userId="+$(this).text().trim();
+			$( "td:nth-child(3)" ).on("click" , function() {
+				 self.location ="/booking/getBooking?bookingNo="+$(this).text().trim();
 			});
 						
 			//==> userId LINK Event End User 에게 보일수 있도록 
-			$( "td:nth-child(2)" ).css("color" , "red");
+			//$( "td:nth-child(2)" ).css("color" , "red");
 			
 		});	
 		
@@ -147,8 +147,9 @@
 			    
 				  <div class="form-group">
 				    <select class="form-control" name="searchCondition" >
-						<option value="0"  ${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>회원ID</option>
-						<option value="1"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>회원명</option>
+						<option value="1"  ${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>영화제목</option>
+						<option value="2"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>시사회여부</option>
+						<option value="3"  ${ ! empty search.searchCondition && search.searchCondition==2 ? "selected" : "" }>시사회제목</option>
 					</select>
 				  </div>
 				  
@@ -176,27 +177,33 @@
         <thead>
           <tr>
             <th align="center">No</th>
-            <th align="left" >회원 ID</th>
-            <th align="left">회원명</th>
-            <th align="left">주소</th>
-            <th align="left">간략정보</th>
+            <th align="left">예매일자</th>
+            <th align="left">예매번호</th>
+            <th align="left">영화 시사회 구분</th>
+            <th align="left">영화제목</th>
+            <th align="left">상영날짜</th>
+            <th align="left">좌석</th>
           </tr>
         </thead>
        
 		<tbody>
 		
 		  <c:set var="i" value="0" />
-		  <c:forEach var="user" items="${list}">
+		  <c:forEach var="booking" items="${bookingList}">
 			<c:set var="i" value="${ i+1 }" />
 			<tr>
 			  <td align="center">${ i }</td>
-			  <td align="left"  title="Click : 회원정보 확인">${user.userId}</td>
-			  <td align="left">${user.userName}</td>
-			  <td align="left">${user.addr}</td> 
-			  <td align="left">
-			  	<i class="glyphicon glyphicon-ok" id= "${user.userId}"></i>
-			  	<input type="hidden" value="${user.userId}">
-			  </td>
+			  <td align="left">${booking.bookingRegDate}</td>
+			  <td align="left" title="Click : 예매 상세 조회">${booking.bookingNo}</td>
+			  <td align="left">${booking.screenContent.previewFlag}</td>
+			  <c:if test="${booking.screenContent.previewFlag eq 'Y'}">
+			  	<td align="left">${booking.screenContent.previewtitle}</td>
+			  </c:if>
+			  <c:if test="${booking.screenContent.previewFlag eq 'N'}">
+			  	<td align="left">${booking.movie.movieNm}</td>
+			  </c:if>
+			  <td align="left">${booking.screenContent.screenDate}</td>
+			  <td align="left">${booking.headCount} (${booking.bookingSeatNo})</td>
 			</tr>
           </c:forEach>
         

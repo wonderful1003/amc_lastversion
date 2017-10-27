@@ -22,5 +22,5 @@ public interface BookingDAO {
 
 	public void updateStatistic(Search search);
 	
-	public Map<String,Object> getUserBookingList(Map<String,Object> map);
+	public List<Booking> getUserBookingList(Map<String,Object> map);
 }

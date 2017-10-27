@@ -212,9 +212,9 @@ public class BookingController {
 		
 		map.put("user", user);
 		
-		model.addAttribute("booking", bookingService.getUserBookingList(map));
+		model.addAttribute("bookingList", bookingService.getUserBookingList(map));
 		
-	    return "forward:/booking/listBooking";
+	    return "forward:/booking/listBooking.jsp";
 	}
 	
 	@RequestMapping( value="testCode", method=RequestMethod.GET)

@@ -64,13 +64,8 @@ public class BookingDAOImpl implements BookingDAO {
 
 
 	@Override
-	public Map<String, Object> getUserBookingList(Map<String, Object> map) {
-		List l = new ArrayList<>();
-		l = sqlSession.selectList("BookingMapper.getUserBookingList", map);
-		for(int i = 0; i< l.size(); i++){
-			System.out.println("유저의 예매리스트 : "+l.get(i).toString());
-		}
-		return null;
+	public List<Booking> getUserBookingList(Map<String, Object> map) {
+		return sqlSession.selectList("BookingMapper.getUserBookingList", map);
 	}
 
 

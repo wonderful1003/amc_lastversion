@@ -27,8 +27,7 @@ public class AlarmController {
 	public String getCancelAlarmList(@ModelAttribute("Search")Search search, Model model) throws Exception{
 		
 		alarmService.getCancelAlarmList(search);
-		
-		
+
 		return null;
 		
 	}
