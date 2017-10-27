@@ -221,10 +221,9 @@ public class MovieController {
 	}
 	
 	/*private final String PATH = "C:/Users/jeung/git/amc/amc/WebContent/images/movie/";*/
-	private final String PATH = "http://127.0.0.1:8080/images/movie/";
-	//private final String PATH = "C:/amcPoster/";
-		
-	
+	/*private final String PATH = "http://127.0.0.1:8080/images/movie/";*/
+	private final String PATH = "C:/amcPoster/";
+			
 	
 	@RequestMapping (value ="updateMovie", method=RequestMethod.POST)
 	public String updateMovie( 						
