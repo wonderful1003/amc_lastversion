@@ -111,7 +111,7 @@
 			<iframe id="cancelAlarm" src="http://127.0.0.1:52273/cancelAlarm?screenNo=10000" width="600" height="400" >		 
 					  <p>Your browser does not support iframes.</p>
 			</iframe>
-		<h2>취소표알리미를 신청하실 좌석번호는 : <input type="text" name="seats" value="">
+		<h2>취소표알리미를 신청하실 좌석번호는 : <input type="text" id="display2" name="seats" value="">
 		<!-- <input type="text" id="display2" value=""> --></h2>
 		<input type="hidden" name="seats" value="">
 		<input type="button" value="취소표 알림 신청" onClick="javascript:addCancelAlarm()">

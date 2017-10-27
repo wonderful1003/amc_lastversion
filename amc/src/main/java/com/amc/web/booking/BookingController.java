@@ -22,6 +22,7 @@ import com.amc.service.domain.Booking;
 import com.amc.service.domain.Movie;
 import com.amc.service.domain.ScreenContent;
 import com.amc.service.domain.User;
+import com.amc.service.movie.MovieService;
 import com.amc.service.screen.ScreenService;
 import com.amc.service.user.UserService;
 import com.amc.web.cinema.HttpRequestToNode;
@@ -43,6 +44,9 @@ public class BookingController {
 	@Autowired
 	@Qualifier("cinemaServiceImpl")
 	private CinemaService cinemaService;
+	@Autowired
+	@Qualifier("movieServiceImpl")
+	private MovieService movieService;
 	
 	///Constructor
 	public BookingController(){
@@ -113,6 +117,10 @@ public class BookingController {
 		
 		//ScreenContent screenContent = screenService.getScreenContent(Integer.parseInt(screenContentNo));
 		ScreenContent screenContent = screenService.getScreenContent(10000);
+		/////////////////////////
+		//edit screenContent mapper to get movie name.
+		/////////////////////////
+		
 		
 		Booking booking = new Booking();
 		booking.setScreenContent(screenContent);
@@ -156,13 +164,13 @@ public class BookingController {
 	
 	//예매상세조회
 	@RequestMapping( value="getBooking", method=RequestMethod.GET)
-	public String getBooking(@RequestParam("bookingNo") String bookingNo, 
+	public String getBooking(/*@RequestParam("bookingNo") String bookingNo,*/ 
 												Model model) throws Exception{
 
 		System.out.println("/booking/getBooking : GET");
 
-		Booking booking = bookingService.getBooking(bookingNo); 
-		model.addAttribute("booking", booking);
+		/*Booking booking = bookingService.getBooking(bookingNo); 
+		model.addAttribute("booking", booking);*/
 		
 		return "forward:/booking/getBooking.jsp";
 	}

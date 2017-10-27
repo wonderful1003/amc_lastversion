@@ -5,15 +5,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="ko">
 <head> 
-	<meta charset="EUC-KR">
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
 	<!--   jQuery , Bootstrap CDN  -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+	<link rel="stylesheet" type="text/css" href="/semantic/semantic.css">
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+	integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  	crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js" ></script>
 	
 	<!--   Modal CDN  -->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> 
@@ -26,6 +30,52 @@
    
 <title>selectScreenMovie.jsp</title>
 </head>
+<style>
+                .line { overflow: hidden; }
+                .head {
+                
+                    margin: 3px; 
+                    /* height: 50px;  */
+                    float: center; /*width: 20px; */
+                    border-radius: 3px;
+                    background: #CFD3D4;
+                   
+                }
+                .screenDay {
+                    margin: 3px;                   
+                    border-radius: 3px;
+                    background: #E8EBED;
+;                   
+                }
+                .screenTime {
+                    margin: 3px;                   
+                    border-radius: 3px;
+                    background: #E8EBED;
+;                   
+                }
+                .movieName {
+                    margin: 3px;                   
+                    border-radius: 3px;
+                    background: #E8EBED;                   
+                }
+                .screenTime:hover { background: #C1DEC1; }
+                .screenDay:hover { background: #C1DEC1; }
+                .movieName:hover { background: #C1DEC1; }
+	button.ui.inverted.purple.button{
+	font-size: 1.4rem;
+	}
+	button.ui.inverted.green.button{
+	font-size: 1.4rem;
+	}
+	div.inline.fields{
+	font-size: 1.5rem;
+	}
+	label.lb{
+	font-size: 1.5rem;
+	}
+
+</style>
+
 <script type="text/javascript">
 var ticketOpenDate="";
 
@@ -89,7 +139,7 @@ var ticketOpenDate="";
     //1. 영화제목 클릭시
 		$( function() {
 			
-			$("td.movieName").on("click" , function() {
+			$(".movieName").on("click" , function() {
 				
 				var movieNo =  $($(this).find("input[name='movieNo']")).val();
 				var flag = $("input:hidden[name='flag']").val();
@@ -207,51 +257,88 @@ var ticketOpenDate="";
 </head>
 	<body>
 	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
+ 	<div class="container">
+    
+	<div class="ui ordered steps">
+	  <div class="completed step">
+	    <div class="content">
+	      <div class="title">시사회정보 선택하기</div>
+	      <div class="description">관람하실 시사회정보를 선택합니다.</div>
+	    </div>
+	  </div>
+	  <div class="active step">
+	    <div class="content">
+	      <div class="title">좌석 선택하기</div>
+	      <div class="description">관람하실 영화의 좌석을 선택합니다.</div>
+	    </div>
+	  </div>
+	  <div class="active step">
+	    <div class="content">
+	      <div class="title">결제하기</div>
+	      <div class="description">카카오페이로 결제하여 예매를 완료합니다.</div>
+	    </div>
+	  </div>
+	</div>
+    
+   	<h3>[예매1단계]시사회 상영정보를 선택해 주세요.</h3>
+	<input type="hidden" name="flag" value="2">
+	<input type="hidden" name="openTime" value="2017-10-27 12:00:00">
+
+	<h3><span id ="timer">티켓 오픈까지 남은시간 : <span id="dpTime">현재시간 표시</span></span></h3>
+
+
+	<button class="ui inverted green button" name="selectSeat" disabled="disabled">(시간되면 활성화) 좌석선택</button>
+	<button class="ui inverted green button" name="tempSelectSeat">[테스트용] 좌석선택 </button>
 	
+	<p>
 	
-		<h2>[예매1단계]시사회 상영정보를 선택해 주세요.</h2>
-		<input type="hidden" name="flag" value="2">
-		<input type="hidden" name="openTime" value="2017-10-27 12:00:00">
-		 
-		<h1><span id ="timer">티켓 오픈까지 남은시간 : <span id="dpTime">현재시간 표시</span></span></h1>
-
-
-		<button class="select" name="selectSeat" disabled="disabled">(시간되면 활성화) 좌석선택</button>
-		<button class="select" name="tempSelectSeat">[테스트용] 좌석선택 </button>
-		<button class="select" name="selectRandomSeat" disabled="disabled"> 랜덤좌석 선택하기 </button> &nbsp;
-
-		<input TYPE="radio" name="headCount" value="1"/>1석
-		<input TYPE="radio" name="headCount" VALUE="2"/>2석
+	<div class="ui form">
+		<button class="ui inverted purple button" name="selectRandomSeat" disabled="disabled"> 랜덤좌석 선택하기 </button>
 	
+	  <div class="inline fields">
+	    <label>&nbsp;랜덤좌석 홀딩을 위한 인원수를 선택해주세요</label>
+	    <div class="field">
+	      <div class="ui radio checkbox">
+	        <input type="radio" name="headCount" value="1">
+	        <label class="lb">1명</label>
+	      </div>
+	    </div>
+	    <div class="field">
+	      <div class="ui radio checkbox">
+	        <input type="radio" name="headCount" value="2">
+	        <label class="lb">2명</label>
+	      </div>
+	    </div>	        
+	 </div>
+	</div>
 
-    <div class="container">
-	 <h2>[예매1단계]시사회 상영정보를 선택해 주세요.</h2>
 	 <input type="hidden" name="flag" value="1">
       <div class="row">
         <div class="col-md-4">
-         <div class="head"><h2>시사회 제목</h2></div>
+         <div class="head"><h3>시사회 제목</h3></div>
           <table>
 	          <c:set var="i" value="0" />
 			  <c:forEach var="screenContent" items="${screenContentList}">
 				<c:set var="i" value="${ i+1 }" />
-				<tr>		  
-				  <td align="left" class="movieName"><h5>${screenContent.previewTitle} </h5>
+						  
+				  <div align="left" class="movieName"><h5>${screenContent.previewTitle} </h5>
 				  	<input type="hidden" name="movieNo" value="${screenContent.screenContentNo}">
-				  </td>
-				</tr>
+				  </div>
+				
 	          </c:forEach>        
           </table>
         </div>
 		<div class="col-md-4" id="dayList">
-			<div class="head"><h2>상영 날짜</h2></div>
+			<div class="head"><h3>상영 날짜</h3></div>
 	   	</div>
 	   	<div class="col-md-4" id="dayList">
-			<div class="head"><h2>상영 날짜</h2></div>
+			<div class="head"><h3>상영 날짜</h3></div>
 	   	</div>
       </div>
       
    	  </div> 
 
       <div id="display" ></div>
+     </div>
 	</body>
 </html>
