@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<%@ page language="java" contentType="text/html; charset=UTF-8"   pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"   pageEncoding="EUC-KR"%>
 
 <%@page import="java.util.Arrays"%>
 <%@page import="java.net.URLDecoder"%>
 <%@page import="java.net.URLEncoder"%>
-<%@page import="kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService"%> 
 <%@page import="org.codehaus.jackson.map.ObjectMapper"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
@@ -16,42 +15,74 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
-<html lang="UTF-8">
+<html lang="ko">
 	
-
 <head>
-	<meta charset="UTF-8">
-	
-	<!-- ì°¸ì¡° : http://getbootstrap.com/css/   ì°¸ì¡° -->
-	
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	
-	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+   <meta charset="EUC-KR">
+   
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/ui-darkness/jquery-ui.css" >  
+     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/sunny/jquery-ui.css">
+     <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css" />
+     <link href="/css/animate.min.css" rel="stylesheet">
+     <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+    
+     
+    
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.14.1/css/ui.jqgrid.min.css">
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.14.1/jquery.jqgrid.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js"></script>
+ 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
-	<!-- Bootstrap Dropdown Hover CSS -->
-   <link href="/css/animate.min.css" rel="stylesheet">
-   <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
-   
-    <!-- Bootstrap Dropdown Hover JS -->
-   <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
-   <script type="text/javascript" src="../javascript/calendar.js"></script>
-   
-	
+ 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
- 		body {
-            padding-top : 50px;
-        }
+ 	  body {
+            padding-top: 70px;
+            }
+            .thumbnail {
+            width: 150px;
+            height: 200px;
+            overflow: auto;
+      }	
      </style>
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
 	
+	$(function() {
+		//==> DOM Object GET 3°¡Áö ¹æ¹ı ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+		//==> 1 °ú 3 ¹æ¹ı Á¶ÇÕ : $("tagName.className:filterÇÔ¼ö") »ç¿ëÇÔ.	
+		 $( "#updateMoviebtn" ).on("click" , function() {
+			 	//alert("¼öÁ¤ ¹öÆ° Å¬¸¯ È®ÀÎ");
+				//Debug..
+				// <!-- <a href="javascript:history.go(-1)"></a> -->
+				fncUpdateMovie()
+		});
+	});	
 
+
+
+	$(function() {
+		//==> DOM Object GET 3°¡Áö ¹æ¹ı ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+		//==> 1 °ú 3 ¹æ¹ı Á¶ÇÕ : $("tagName.className:filterÇÔ¼ö") »ç¿ëÇÔ.	
+		 $( "#deleteMoviebtn" ).on("click" , function() {
+				//Debug..
+				// <!-- <a href="javascript:history.go(-1)"></a> -->
+				fncDeleteMovie()
+			 	
+		});
+	});	
+	
+	
 	function fncUpdateMovie() {
 		// document.fncAddProduct.submit();
 		
@@ -65,123 +96,58 @@
 		var showTm=$("input[name='showTm']").val();
 		var endDt=$("input[name='endDt']").val();
 		var synopsis=$("input[name='synopsis']").val();
-		var trailer=$("input[name='trailer']").val();		
+		var trailer=$("input[name='trailer']").val();	
 		
+		//alert(directors+actors+genres+watchGradeNm)
+	
 		
-		if(movieNm == null || movieNm.length<1){
-			alert("ì˜í™” ì œëª© Null ì˜¤ë¥˜ ë°œìƒ");
-			return;
-		}
+	
 		if(directors == null || directors.length<1){
-			alert("ê°ë…ëª…ì€ ë°˜ë“œì‹œ ì…ë ¥í•˜ì—¬ì•¼ í•©ë‹ˆë‹¤.");
+			alert("°¨µ¶¸íÀº ¹İµå½Ã ÀÔ·ÂÇÏ¿©¾ß ÇÕ´Ï´Ù.");
 			return;
 		}
 		if(actors == null || actors.length<1){
-			alert("ë°°ìš°ëª…ì€ ë°˜ë“œì‹œ ì…ë ¥í•˜ì—¬ì•¼ í•©ë‹ˆë‹¤.");
+			alert("¹è¿ì¸íÀº ¹İµå½Ã ÀÔ·ÂÇÏ¿©¾ß ÇÕ´Ï´Ù.");
 			return;
 		}
 		if(genres == null || genres.length<1){
-			alert("ì¥ë¥´ëª…ì€ ë°˜ë“œì‹œ ì…ë ¥í•˜ì…”ì•¼ í•©ë‹ˆë‹¤.");
+			alert("Àå¸£¸íÀº ¹İµå½Ã ÀÔ·ÂÇÏ¼Å¾ß ÇÕ´Ï´Ù.");
 			return;
 		}
 		if(watchGradeNm == null || watchGradeNm.length<1){
-			alert("ê´€ëŒë“±ê¸‰ì€ ë°˜ë“œì‹œ ì…ë ¥í•˜ì…”ì•¼ í•©ë‹ˆë‹¤.");
+			alert("°ü¶÷µî±ŞÀº ¹İµå½Ã ÀÔ·ÂÇÏ¼Å¾ß ÇÕ´Ï´Ù.");
 			return;
 		}
 		if(openDt == null || openDt.length<1){
-			alert("ê°œë´‰ë‚ ì§œëŠ”  ë°˜ë“œì‹œ ì…ë ¥í•˜ì…”ì•¼ í•©ë‹ˆë‹¤.");
+			alert("°³ºÀ³¯Â¥´Â  ¹İµå½Ã ÀÔ·ÂÇÏ¼Å¾ß ÇÕ´Ï´Ù.");
 			return;
 		}
 		if(showTm == null || showTm.length<1){
-			alert("ëŸ¬ë‹íƒ€ì„ì€  ë°˜ë“œì‹œ ì…ë ¥í•˜ì…”ì•¼ í•©ë‹ˆë‹¤.");
+			alert("·¯´×Å¸ÀÓÀº  ¹İµå½Ã ÀÔ·ÂÇÏ¼Å¾ß ÇÕ´Ï´Ù.");
 			return;
 		}
 		if(endDt == null || endDt.length<1){
-			alert("ìƒì˜ë§ˆê°ì€  ë°˜ë“œì‹œ ì…ë ¥í•˜ì…”ì•¼ í•©ë‹ˆë‹¤.");
-			return;
-		}
-		if(synopsis == null || synopsis.length<1){
-			alert("ì¤„ê±°ë¦¬ëŠ” ë°˜ë“œì‹œ ì…ë ¥í•˜ì…”ì•¼ í•©ë‹ˆë‹¤.");
-			return;
-		}
-		if(trailer == null || trailer.length<1){
-			alert("ìŠ¤í‹¸ì»·ì€  ë°˜ë“œì‹œ ì…ë ¥í•˜ì…”ì•¼ í•©ë‹ˆë‹¤.");
+			alert("»ó¿µ¸¶°¨Àº  ¹İµå½Ã ÀÔ·ÂÇÏ¼Å¾ß ÇÕ´Ï´Ù.");
 			return;
 		}
 	
-		$("form").attr("method","GET").attr("action","/movie/updateMovie").submit();
-	}
-		
 	
-	$(function() {
-			//==> DOM Object GET 3ê°€ì§€ ë°©ë²• ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			//==> 1 ê³¼ 3 ë°©ë²• ì¡°í•© : $("tagName.className:filterí•¨ìˆ˜") ì‚¬ìš©í•¨.	
-			 $( "#moviebtn" ).on("click" , function() {
-					//Debug..
-					// <!-- <a href="javascript:history.go(-1)"></a> -->
-					fncUpdateMovie()
-			});
-			
-			
-			 $( "#deletebtn" ).on("click" , function() {
-					//Debug..
-					// <!-- <a href="javascript:history.go(-1)"></a> -->
-					$("form")[0].reset();
-				 	
-			});
-			
-			 $("#btn-upload").on("click", function(){
-     			alert("steelCut click event occurred...")
-				 
-				if(($("#file1").val() == "" || $("#file1").val() == null)) {
-     			    alert("íŒŒì¼ ì²« ë²ˆì§¸ê°€ ì—†ìŠµë‹ˆë‹¤.");
-     			} 
-     			
-     			/* else if(($("#file2").val() == "" || $("#file2").val() == null)) {
-     			    alert("íŒŒì¼ ë‘ ë²ˆì§¸ê°€ ì—†ìŠµë‹ˆë‹¤.");
-     			} else { */
-
-     			   var form = new FormData(document.getElementById('uploadForm'));
-			    $.ajax({
-				      url: "/movie/json/upload", //ì»¨íŠ¸ë¡¤ëŸ¬ URL
-				      data: form,
-				      dataType: 'json',
-				      processData: false,
-				      contentType: false,
-				      type: 'POST',
-				      success: function (response) {
-				    	  alert("ì„±ê³µì ìœ¼ë¡œ íŒŒì¼ ì—…ë¡œë“œë˜ì—ˆìŠµë‹ˆë‹¤.");
-				    	  console.log(response);
-				      },error: function (jqXHR) {
-				    	   //alert("ì„±ê³µì ìœ¼ë¡œ íŒŒì¼ ì—…ë¡œë“œë˜ì—ˆìŠµë‹ˆë‹¤.");
-					       alert(jqXHR.responseText);
-					       console.log(jqXHR.responseText);
-				      }
-			   });
-			    
-		  });
-	 });
+		$("form").attr("method","POST").attr("action","/movie/updateMovie").submit();
+	}	
 	
 	
-	
+	 //==> DOM Object GET 3°¡Áö ¹æ¹ı ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+	function fncDeleteMovie() {		
+		 
+		var movieNo=$("input[name='movieNo']").val();
+		alert("movieNo" + movieNo );
+		 
+		$("form").attr("method","POST").attr("action","/movie/deleteMovie?movieNo="+movieNo).submit();
+	}	
 	 
-	/* $(function() {
-			//==> DOM Object GET 3ê°€ì§€ ë°©ë²• ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			//==> 1 ê³¼ 3 ë°©ë²• ì¡°í•© : $("tagName.className:filterí•¨ìˆ˜") ì‚¬ìš©í•¨.	
-			 $( "#deletebtn" ).on("click" , function() {
-					//Debug..
-					// <!-- <a href="javascript:history.go(-1)"></a> -->
-					$("form")[0].reset();
-				 	
-			});
-	});	
-	 */
-	
-	
-	</script>
+	 </script>
 	
 </head>
-
 <body>
 
 <form id="updateMovie" enctype="multipart/form-data" method="POST">  
@@ -189,26 +155,27 @@
 
 
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/layout/topToolbar.jsp" />
+	<%-- <jsp:include page="/layout/topToolbar.jsp" />  --%>
    	<!-- ToolBar End /////////////////////////////////////-->
 	
-	<!--  í™”ë©´êµ¬ì„± div Start /////////////////////////////////////-->
-	<div class="container">
+	<!--  È­¸é±¸¼º div Start /////////////////////////////////////-->
+
+<div class="container">
 	
 		<div class="page-header">
 	       <h3 class=" text-info">${movie.movieNm}</h3>
 	    </div>
 	
 		<div class="row">
-	  		<div class="col-xs-4 col-md-2"><strong>ê°ë…</strong></div>
-			<input type="text" name="directors" value="${movie.directors}"
+	  		<div class="col-xs-4 col-md-2"><strong>°¨µ¶</strong></div>
+			<input type="text" name="directors" value="${movie.directors}" 			
 				   class="ct_input_g" 	     style="width: 160px; 
 				   height: 20px" 		     maxLength="30"/>
 		</div>
 		
 		
 		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>ë°°ìš°</strong></div>
+	  		<div class="col-xs-4 col-md-2 "><strong>¹è¿ì</strong></div>
 			<input type="text" name="actors" 	
 				   value="${movie.actors}"
 				   class="ct_input_g" 
@@ -218,7 +185,7 @@
 		
 			
 		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>ì¥ë¥´</strong></div>
+	  		<div class="col-xs-4 col-md-2 "><strong>Àå¸£</strong></div>
 			<input type="text" name="genres" 	
 				   class="ct_input_g"    value="${movie.genres}"
 				   style="width: 160px;  height: 20px" maxLength="30" />
@@ -226,7 +193,7 @@
 		</div>
 		
 		<div class="row">
-  		<div class="col-xs-4 col-md-2 "><strong>ê´€ëŒë“±ê¸‰</strong></div>
+  		<div class="col-xs-4 col-md-2 "><strong>°ü¶÷µî±Ş</strong></div>
 		<input type="text" name="watchGradeNm" 	
 			   class="ct_input_g"    value="${movie.watchGradeNm}"
 			   style="width: 160px;  height: 20px" maxLength="30" />
@@ -234,23 +201,23 @@
 		</div>
 
 		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>ê°œë´‰ë‚ ì§œ </strong></div>
+	  		<div class="col-xs-4 col-md-2 "><strong>°³ºÀ³¯Â¥ </strong></div>
 			<input 	type="date" name="openDt" class="ct_input_g" 
 							value="${movie.openDt}" 	
 							style="width: 160px; height: 20px" maxLength="30"/>					
 		</div>
 
 		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>ëŸ¬ë‹íƒ€ì„</strong></div>
+	  		<div class="col-xs-4 col-md-2 "><strong>·¯´×Å¸ÀÓ</strong></div>
 			<input type="text" name="showTm" 	
 				   class="ct_input_g"    value="${movie.showTm}" 
-				   style="width: 160px;  height: 20px" maxLength="30" /> &nbsp;ë¶„
+				   style="width: 160px;  height: 20px" maxLength="30" /> &nbsp;ºĞ
 		
 		</div>
 
 
 		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>ìƒì˜ë§ˆê° </strong></div>
+	  		<div class="col-xs-4 col-md-2 "><strong>»ó¿µ¸¶°¨ </strong></div>
 			<input 	type="date" name="endDt" class="ct_input_g" 
 							value="${movie.endDt}" 	
 							style="width: 160px; height: 20px" maxLength="30"/>		
@@ -258,45 +225,60 @@
 	
 					
 		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>í¬ìŠ¤í„°</strong></div>
+	  		<div class="col-xs-4 col-md-2 "><strong>Æ÷½ºÅÍ</strong></div>
 	  		<img src="${movie.postUrl}" width="160px" height="180px" align="left"/>
 	  		
 		</div>
 		
 		<hr/>
 		
-		<!-- 
-		<div class="row">
-		<input		type="file" name="file"  class="ct_input_g" value="${movie.steelCut}"
-				    style="width: 245px; height: 20px" maxLength="30" align="right"/>
-		</div>
-		 -->
+	    <div class="row">
+	  		<div class="col-xs-4 col-md-2 "><strong>ÁÙ°Å¸®</strong></div>	  	
+	    <textarea name="synopsis" cols="90" rows="8" >${movie.synopsis} </textarea> 	
+	    </div>
 		
+		<hr/>
+	
+		<div class="row">
+	  		<div class="col-xs-4 col-md-2 "><strong>½ºÆ¿ÄÆ</strong></div>
+	  		<a class='thumbnail' style="text-decoration:none;">
+	  		<!-- <img src="file:C:/amcPoster/${movie.steelCut1}" width="160px" height="180px" align="left"/>  -->
+	  		<img src="../images/movie/${movie.steelCut1} " width="160px" height="180px" align="left"/>
+	  		<img src="../images/movie/${movie.steelCut2} " width="160px" height="180px" align="left"/>
+	  		<img src="../images/movie/${movie.steelCut3} " width="160px" height="180px" align="left"/>
+	  		</a>
+	  	</div>
+	 
+	  	
+	    <hr/>
+	    
 		<div><input class="ui-button ui-widget ui-corner-all"  type="file" id="file1" name="file" required="required" /></div>
 		<div><input class="ui-button ui-widget ui-corner-all"  type="file" id="file2" name="file"  /></div>
 		<div><input class="ui-button ui-widget ui-corner-all"  type="file" id="file2" name="file"  /></div>   
-	    
-	    <br/> 
-	  	<div> <button id="btn-upload">ìŠ¤íŒ‰ì»· ì¶”ê°€</button></div>
-		
 				
 		<hr/>
-			
+	    
+	    <div class="row">
+	  		<div class="col-xs-4 col-md-2 "><strong>Æ®·¹ÀÏ·¯ URL</strong></div>	  	
+	    <textarea name="trailer" cols="90" rows="2" >${movie.trailer} </textarea> 	
+
+		<hr/>
 		<div class="row">
 	  		<div class="col-md-2 text-left ">
-	  			<button type="button" id="moviebtn"  class="btn btn-primary">ìˆ˜ì •</button>
+	  			<button type="button" id="updateMoviebtn"  class="btn btn-primary">¼öÁ¤</button>
 	  		</div>
 	  		<div class="col-md-2 text-left ">
-	  			<button type="button" id="deletebtn"   class="btn btn-primary">ì‚­ì œ</button>
+	  			<button type="button" id="deleteMoviebtn"   class="btn btn-primary">»èÁ¦</button>
 	  		</div>
 		</div>
 		
 		<br/>
 		
  	</div>
- 	<!--  í™”ë©´êµ¬ì„± div Start /////////////////////////////////////-->
+ </div>
+ 	<!--  È­¸é±¸¼º div Start /////////////////////////////////////-->
 
 </form>
 </body>
-
 </html>
+

@@ -28,7 +28,7 @@
 	 -->
 	
 	 <form id="form1">
-      <table id="myGrid"></table>
+      <table id="movie_list"></table>
       <div id="pager"></div>
       <button id="export">Export to Excel</button>
     </form>
@@ -36,24 +36,84 @@
 
     <script type="text/javascript"> 
     
-    var gridJson = { page: 1, total: 2, records: 10, rows: [
-             { Id: 0, Label: "Custom Field 1", LastUpdatedDate: "10/02/2012" },
-             { Id: 1, Label: "Custom Field 2", LastUpdatedDate: "10/02/2012"}]
-         };
-  
+
+	function pickdates(id){
+		jQuery("#"+id+"_movieEndDate","#movie_list").datepicker({dateFormat:"yy-mm-dd"});
+	}
+    
          //setup the grid
-         $("#myGrid").empty().jqGrid({
-             datatype: 'jsonstring',
-             datastr: gridJson,
-             colNames: ['Id', 'Custom Field Name', 'Last Update', 'Action'],
-             colModel: [{ name: 'Id', index: 'Id', hidden: true, classes: 'id' },
-                        { name: 'Label', index: 'Label', width: 500 },
-                        { name: 'LastUpdatedDate', index: 'LastUpdatedDate', width: 200 },
-                        { width: 132, sortable: false, classes: 'action', align: 'center'}],
-             pager: jQuery('#pager'),
-             jsonReader: {
-                 repeatitems: false
+       $("#movie_list").empty().jqGrid({     
+        	 url:"/movie/json/getAPIMoiveList",
+        	 caption : "Movie API register",
+        	 mtype:"post",
+        	 datatype:"json",
+             colNames: ['MovieCD', 'MovieTitle', 'Produced Nation', 'EndDate','Synopsis','Trailer'],
+              
+             colModel:[
+                       {name:'movieCd', key: true,index:'movieCd',align:"left",sorttype:"int",width:90, sortable:true,editable:true},
+                       {name:'movieNm', index:'movieNm', align:"left",width:90, sortable:true, editable:true},                       
+	                      {name:'nationAlt', index:'nationAlt',align:"left", width:90,sortable:true, editable:true},              
+                       {name:'movieEndDate', index:'movieEndDate',align:"left",                         	    
+                     	      editable:true, editoptions:{size:10, 
+                               dataInit:function(el){ 
+                                     $(el).datepicker({dateFormat:'yy-mm-dd'}); 
+                               }, 
+                               defaultValue: function(){ 
+                                 var currentTime = new Date(2017,10,1); 
+                                 var month = parseInt(currentTime.getMonth() + 1); 
+                                 month = month <= 9 ? "0"+month : month; 
+                                 var day = currentTime.getDate(); 
+                                 day = day <= 9 ? "0"+day : day; 
+                                 var year = currentTime.getFullYear(); 
+                                 return year+"-"+month + "-"+day; 
+                               } 
+                             }                	     
+                       },
+                 
+                       {name:'synopsis', index:'synopsis',align:"left", width:90,sortable:true, editable:true, 
+                     	     edittype: "textarea",editoptions: { rows: 3, wrap: "off",style: 'overflow-x: hidden',}},                     
+                       {name:'trailer', index:'trailer',align:"left", width:90,editable:true}
+                       ],
+                       
+              
+             
+             jSonReader : {
+             	root:"rows",
+             	page:"page",
+             	total:"total",
+             	records:"records",
+             	repeatitems:false,
+             	cell:"cell",
+             	id:"movieCd"
              },
+                       
+             sortable: true,
+             sortname: 'movieCd',
+             pager:"#pager777",
+         	 rowNum:10,
+            	//rowList:[10,20,30],             
+             autowidth:true,
+             // total record no, current record no
+             multiselect: true,
+             viewrecords:true,
+             
+           
+             editurl: "/movie/json/addMovie",    
+ 
+             mtype:"post",
+           
+        
+       
+             //sortable: true 
+             sortorder: "desc",
+             loadonce : true,
+             
+             
+             
+             
+             
+             editurl: "/movie/json/addMovie",  
+             loadonce: true,          
              width: 832,
              height: "100%",
              scrollOffset: 20,
@@ -64,60 +124,32 @@
              viewrecords: true,
              hoverrows: false,
              caption: "",           
-             beforeSelectRow: function (rowid, e) { return false; } //this disables row being highlighted when clicked
+             beforeSelectRow: function (rowid, e) { return false; 
+             
+             } //this disables row being highlighted when clicked
+         }).navGrid('#pager', {
+             search : true,
+             edit : true,
+             add : true,
+             del : true
          });
 
      	$("#export").on("click", function(){
-			$("#myGrid").jqGrid("exportToExcel",{
+     		alert("called ");
+			$("#movie_list").jqGrid("exportToExcel",{
 				includeLabels : true,
 				includeGroupHeader : true,
 				includeFooter: true,
 				fileName : "jqGridExport.xlsx",
-				maxlength : 40 // maxlength for visible string data 
+				maxlength : 5000 // maxlength for visible string data 
 			})
 	    });
-         
-         
     
+     	
+     	 
+     	jQuery("#movie_list").jqGrid('navGrid',"#movie_list",{edit:true,add:true,del:true});
+     	jQuery("#movie_list").jqGrid('inlineNav',"#movie_list");
     
-    
-       /*  $(document).ready(function () {
-            $("#jqGrid").jqGrid({
-                url: 'data.json',
-                datatype: "json",
-                colModel: [
-					{ label: 'Category Name', name: 'CategoryName', width: 75 },
-					{ label: 'Product Name', name: 'ProductName', width: 90 },
-					{ label: 'Country', name: 'Country', width: 100 },
-					{ label: 'Price', 
-						name: 'Price', 
-						width: 80, 
-						sorttype: 'number', 
-						//formatter: 'number',
-						align: 'right'
-					},
-					{ label: 'Quantity', name: 'Quantity', width: 80, sorttype: 'integer', formatter : 'integer', formatoptions : {thousandsSeparator : ' '} }                   
-                ],
-				loadonce: true,
-				viewrecords: true,
-                footerrow: true,
-                userDataOnFooter: true, // use the userData parameter of the JSON response to display data on footer
-                width: 780,
-                height: 200,
-                rowNum: 150
-            });
-			
-			$("#export").on("click", function(){
-				$("#jqGrid").jqGrid("exportToExcel",{
-					includeLabels : true,
-					includeGroupHeader : true,
-					includeFooter: true,
-					fileName : "jqGridExport.xlsx",
-					maxlength : 40 // maxlength for visible string data 
-				})
-			})
-        });
- */
     </script>
 
     

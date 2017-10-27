@@ -135,9 +135,9 @@ public class MovieServiceImpl implements MovieService {
 	public int addMovie(Movie movie) {
 		// 발급키
 		
-		System.out.println("MovieServiceImp addMovie called....");
-				 
-				String key = "430156241533f1d058c603178cc3ca0e";
+		
+		System.out.println("MovieServiceImp addMovie called....");				 
+		String key = "430156241533f1d058c603178cc3ca0e";
 				
 				// Variables declare
 				String actorsNm = "";
@@ -208,251 +208,278 @@ public class MovieServiceImpl implements MovieService {
 					e1.printStackTrace();
 				}
 			
-			    
-			    System.out.println("showTm :: " + showTm);
-			    System.out.println("movieNm :: " + movieNm);
-			    System.out.println("openDt :: " + openDt);
-		    	    
-			    JSONArray jsonArray = null;
-				try {
-					jsonArray = jsonmovieInfo.getJSONArray("audits");
-				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			    System.out.println("jsonArray-->"+jsonArray);
-			  
-			    
-			    for (int index = 0, total = jsonArray.length(); index < total; index++) {
-			         try {
-						jsonObject = jsonArray.getJSONObject(index);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			         try {
-						watchGradeNm = jsonObject.getString("watchGradeNm");
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-		             System.out.println("watchGradeNm :" + watchGradeNm  );  
-			    }                           
-			    
-			    JSONArray actorsArray = null;
-				try {
-					actorsArray = jsonmovieInfo.getJSONArray("actors");
-				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}  
-			    List<String> actorList = new ArrayList<String>();
-			    
-			    if (actorsArray.length() != 0) {	    
-				    System.out.println("actorsArray-->"+actorsArray);
-				    
-					    for (int index = 0, total = actorsArray.length(); index < total; index++) {
-				         try {
-							jsonObject = actorsArray.getJSONObject(index);
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-				         try {
-							actorsNm = jsonObject.getString("peopleNm");
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-				         
-				      
-				         actorList.add(actorsNm);
-				        
-			         
-				         actorNms += actorsNm + delimeter;
-		 	             
-				    }  
-					    
+				// 가져온 API 영화를 등록하기 전에 우리 DB에 있는지 중복 Check하는 작업
+				// 영화 Title와 감독이 같은 영화는 DAO에 Call하기전에 ServiceImp에  
+				// Return -1 과 Message로 "이미 DB에 등록된 영화" 메시지 전달 
 				
-			
-				    actorNms = CommonUtil.eliminatorLast(actorNms);		    
-				    System.out.println("actorNms :" + actorNms  ); 
-				    
-			    } else {
-			    	System.out.println("actorsArray.length() " + actorsArray.length());
-			    }   
+			    Search search = new Search() ;
 			    
-			    JSONArray directorsArray = null;
+			    search.setSearchCondition("1");
+			    search.setSearchKeyword(movieNm);
+			    search.setSearchKeyword2(directorNm);
+				
 				try {
-					directorsArray = jsonmovieInfo.getJSONArray("directors");
-				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			    List<String> directorList = new ArrayList<String>();
-			    if (directorsArray.length() != 0) {	    
-				    System.out.println("directorsArray-->"+directorsArray);
-				    
-					    for (int index = 0, total = directorsArray.length(); index < total; index++) {
-				         try {
-							jsonObject = directorsArray.getJSONObject(index);
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-				         try {
-							directorNm = jsonObject.getString("peopleNm");
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-				         
-
-				         directorList.add(directorNm);
-				        
-				         
-				         directorNms += directorNm + delimeter;
-		 	             
-				    }   
-			
-					directorNms = CommonUtil.eliminatorLast(directorNms);		    
-				    System.out.println("directorNms :" + directorNms  ); 
-				    
-			    } else {
-			    	System.out.println("directorsArray.length() " + directorsArray.length());
-			    }   
-			    
-			    JSONArray genresArray = null;
-				try {
-					genresArray = jsonmovieInfo.getJSONArray("genres");
-				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			    List<String> genreList = new ArrayList<String>();
-			    if (genresArray.length() != 0) {	    
-				    System.out.println("genresArray-->"+ genresArray);
-				    
-					    for (int index = 0, total = genresArray.length(); index < total; index++) {
-				         try {
-							jsonObject = genresArray.getJSONObject(index);
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-				         try {
-							genreNm = jsonObject.getString("genreNm");
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-				         
-				         genreList.add(genreNm);
-				         
-				         genreNms += genreNm + delimeter;
-		 	             
-				    }   
+					int rtn = movieDAO.dupMovieChk(search);
 					
-					genreNms = CommonUtil.eliminatorLast(genreNms);		    
-				    System.out.println("genreNms :" + genreNms  ); 
-				    
-			    } else {
-			    	System.out.println("genresArray.length() " + genresArray.length());
-			    }   
-				
-			    
-				
-			    System.out.println("movieContentInfo" + movieContentInfo);
-			    
-			    //
-			    //Naver API call for moviePoster Image Featch
-			    //
-			    
-			    String clientId = "IHe0VrmfNN7Bh383bpqD";//애플리케이션 클라이언트 아이디값";
-			    String clientSecret = "iyFkgy3twl";//애플리케이션 클라이언트 시크릿값";
+					if (rtn != 0) {
+						// process stop here
+						
+					} else {
+						
+						   System.out.println("showTm :: " + showTm);
+						    System.out.println("movieNm :: " + movieNm);
+						    System.out.println("openDt :: " + openDt);
+					    	    
+						    JSONArray jsonArray = null;
+							try {
+								jsonArray = jsonmovieInfo.getJSONArray("audits");
+							} catch (JSONException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						    System.out.println("jsonArray-->"+jsonArray);
+						  
+						    
+						    for (int index = 0, total = jsonArray.length(); index < total; index++) {
+						         try {
+									jsonObject = jsonArray.getJSONObject(index);
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+						         try {
+									watchGradeNm = jsonObject.getString("watchGradeNm");
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+					             System.out.println("watchGradeNm :" + watchGradeNm  );  
+						    }                           
+						    
+						    JSONArray actorsArray = null;
+							try {
+								actorsArray = jsonmovieInfo.getJSONArray("actors");
+							} catch (JSONException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}  
+						    List<String> actorList = new ArrayList<String>();
+						    
+						    if (actorsArray.length() != 0) {	    
+							    System.out.println("actorsArray-->"+actorsArray);
+							    
+								    for (int index = 0, total = actorsArray.length(); index < total; index++) {
+							         try {
+										jsonObject = actorsArray.getJSONObject(index);
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+							         try {
+										actorsNm = jsonObject.getString("peopleNm");
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+							         
+							      
+							         actorList.add(actorsNm);
+							        
+						         
+							         actorNms += actorsNm + delimeter;
+					 	             
+							    }  
+						
+							    actorNms = CommonUtil.eliminatorLast(actorNms);		    
+							    System.out.println("actorNms :" + actorNms  ); 
+							    
+						    } else {
+						    	System.out.println("actorsArray.length() " + actorsArray.length());
+						    }   
+						    
+						    JSONArray directorsArray = null;
+							try {
+								directorsArray = jsonmovieInfo.getJSONArray("directors");
+							} catch (JSONException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						    List<String> directorList = new ArrayList<String>();
+						    if (directorsArray.length() != 0) {	    
+							    System.out.println("directorsArray-->"+directorsArray);
+							    
+								    for (int index = 0, total = directorsArray.length(); index < total; index++) {
+							         try {
+										jsonObject = directorsArray.getJSONObject(index);
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+							         try {
+										directorNm = jsonObject.getString("peopleNm");
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+							         
 
-			    try {
-			   	    String title = URLEncoder.encode(movieNm, "UTF-8");
-			   	    String yearf = URLEncoder.encode("2017", "UTF-8");
-			   	    String yeart = URLEncoder.encode("2017", "UTF-8");
-			   	    
-			   	    String apiURL = "https://openapi.naver.com/v1/search/movie.json?query="+ title +
-			   	    		"&yearfrom=" + yearf + "&yearto=" + yeart;
-			   	    //		"&yearfrom=" + yearf + "&yearto=" + yeart;
-			   	    		 // json 결과
-			   	    //String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ title; // xml 결과
-			   	    URL url = new URL(apiURL);
-			   	    HttpURLConnection con = (HttpURLConnection)url.openConnection();
-			   	    con.setRequestMethod("GET");
-			   	    con.setRequestProperty("X-Naver-Client-Id", clientId);
-			   	    con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
-			   	    int responseCode = con.getResponseCode();
-			   	    BufferedReader br;
-			     
-			   	    if(responseCode==200) { // 정상 호출
-			           br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-			           
-			           String line = null;
-			           String values = new String();
-			           final StringBuffer buffer = new StringBuffer(2048);
-			           while ((line = br.readLine()) != null) {	               
-			               values += line;
-			           }
-			           
-			           System.out.println("Naver API info values : " + values.toString());
-			           
-			        
-			           jsonObject = new JSONObject(values);   
-			          
-			           JSONArray itemsArray = jsonObject.getJSONArray("items");
-			           System.out.println("itemsArray-->"+itemsArray);
-			          
-			   	    
-				   	   for (int index = 0, total = itemsArray.length(); index < total; index++) {
-				   	         jsonObject = itemsArray.getJSONObject(index);
-				   	         postUrl = jsonObject.getString("image");
-				   	         System.out.println("postUrl :" + postUrl  );  
-				   	    }            
-			    
-			           
-			        } else {  // 에러 발생
-			           br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-			        }
-			   	    
-			    } catch(Exception e){
-		            System.out.println(e.getMessage());
-		        }
-			    
-			    //Screen Domain loading 			
-			    
-			  
-			    movie.setOpenDt(openDt);
-			    movie.setActors(actorNms);
-			    movie.setDirector(directorNms);	
-			    movie.setGenres(genreNms);
-			    movie.setWatchGradeNm(watchGradeNm);
-			    movie.setMovieNm(movieNm);
-			    movie.setPostUrl(postUrl);	  
-			    movie.setShowTm(showTm);
-			    movie.setEndDt(movieEndDate);
-			    movie.setSynopsis(syonpsis);
-			    movie.setTrailer(trailer);
-			    
-			    System.out.println("actorNms     ::" + movie.getActors());
-			    System.out.println("directorNms  ::" + movie.getDirector());
-			    System.out.println("genreNms     ::" + movie.getGenres());
-			    System.out.println("movieNm      ::" + movie.getMovieNm());
-			    System.out.println("postUrl      ::" + movie.getPostUrl());
-			    System.out.println("watchGradeNm ::" + movie.getWatchGradeNm());
-			    System.out.println("showTm       ::" + movie.getShowTm());
-			    System.out.println("openDt       ::" + movie.getOpenDt());
-			    System.out.println("movieEndDate ::" + movie.getEndDt());
-			    System.out.println("syonpsis     ::" + movie.getSynopsis());
-			    System.out.println("trailer      ::" + movie.getTrailer());
-		    
-				return   movieDAO.addMovie(movie);
+							         directorList.add(directorNm);
+							        
+							         
+							         directorNms += directorNm + delimeter;
+					 	             
+							    }   
+						
+								directorNms = CommonUtil.eliminatorLast(directorNms);		    
+							    System.out.println("directorNms :" + directorNms  ); 
+							    
+						    } else {
+						    	System.out.println("directorsArray.length() " + directorsArray.length());
+						    }   
+						    
+						    JSONArray genresArray = null;
+							try {
+								genresArray = jsonmovieInfo.getJSONArray("genres");
+							} catch (JSONException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						    List<String> genreList = new ArrayList<String>();
+						    if (genresArray.length() != 0) {	    
+							    System.out.println("genresArray-->"+ genresArray);
+							    
+								    for (int index = 0, total = genresArray.length(); index < total; index++) {
+							         try {
+										jsonObject = genresArray.getJSONObject(index);
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+							         try {
+										genreNm = jsonObject.getString("genreNm");
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+							         
+							         genreList.add(genreNm);
+							         
+							         genreNms += genreNm + delimeter;
+					 	             
+							    }   
+								
+								genreNms = CommonUtil.eliminatorLast(genreNms);		    
+							    System.out.println("genreNms :" + genreNms  ); 
+							    
+						    } else {
+						    	System.out.println("genresArray.length() " + genresArray.length());
+						    }   
+							
+						    
+							
+						    System.out.println("movieContentInfo" + movieContentInfo);
+						    
+						    //
+						    //Naver API call for moviePoster Image Featch
+						    //
+						    
+						    String clientId = "IHe0VrmfNN7Bh383bpqD";//애플리케이션 클라이언트 아이디값";
+						    String clientSecret = "iyFkgy3twl";//애플리케이션 클라이언트 시크릿값";
 
-	
+						    try {
+						   	    String title = URLEncoder.encode(movieNm, "UTF-8");
+						   	    String yearf = URLEncoder.encode("2017", "UTF-8");
+						   	    String yeart = URLEncoder.encode("2017", "UTF-8");
+						   	    
+						   	    String apiURL = "https://openapi.naver.com/v1/search/movie.json?query="+ title +
+						   	    		"&yearfrom=" + yearf + "&yearto=" + yeart;
+						   	    //		"&yearfrom=" + yearf + "&yearto=" + yeart;
+						   	    		 // json 결과
+						   	    //String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ title; // xml 결과
+						   	    URL url = new URL(apiURL);
+						   	    HttpURLConnection con = (HttpURLConnection)url.openConnection();
+						   	    con.setRequestMethod("GET");
+						   	    con.setRequestProperty("X-Naver-Client-Id", clientId);
+						   	    con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
+						   	    int responseCode = con.getResponseCode();
+						   	    BufferedReader br;
+						     
+						   	    if(responseCode==200) { // 정상 호출
+						           br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+						           
+						           String line = null;
+						           String values = new String();
+						           final StringBuffer buffer = new StringBuffer(2048);
+						           while ((line = br.readLine()) != null) {	               
+						               values += line;
+						           }
+						           
+						           System.out.println("Naver API info values : " + values.toString());
+						           
+						        
+						           jsonObject = new JSONObject(values);   
+						          
+						           JSONArray itemsArray = jsonObject.getJSONArray("items");
+						           System.out.println("itemsArray-->"+itemsArray);
+						          
+						   	    
+							   	   for (int index = 0, total = itemsArray.length(); index < total; index++) {
+							   	         jsonObject = itemsArray.getJSONObject(index);
+							   	         postUrl = jsonObject.getString("image");
+							   	         
+							   	         if(postUrl.length() == 0){
+							   	        	 return -1;
+							   	         }
+							   	         System.out.println("postUrl :" + postUrl  );  
+							   	    }            
+						    
+						           
+						        } else {  // 에러 발생
+						           br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+						        }
+						   	    
+						    } catch(Exception e){
+					            System.out.println(e.getMessage());
+					        }
+						    
+						    //Screen Domain loading 			
+						    
+						  
+						    movie.setOpenDt(openDt);
+						    movie.setActors(actorNms);
+						    movie.setDirector(directorNms);	
+						    movie.setGenres(genreNms);
+						    movie.setWatchGradeNm(watchGradeNm);
+						    movie.setMovieNm(movieNm);
+						    movie.setPostUrl(postUrl);	  
+						    movie.setShowTm(showTm);
+						    movie.setEndDt(movieEndDate);
+						    movie.setSynopsis(syonpsis);
+						    movie.setTrailer(trailer);
+						    
+						    System.out.println("actorNms     ::" + movie.getActors());
+						    System.out.println("directorNms  ::" + movie.getDirector());
+						    System.out.println("genreNms     ::" + movie.getGenres());
+						    System.out.println("movieNm      ::" + movie.getMovieNm());
+						    System.out.println("postUrl      ::" + movie.getPostUrl());
+						    System.out.println("watchGradeNm ::" + movie.getWatchGradeNm());
+						    System.out.println("showTm       ::" + movie.getShowTm());
+						    System.out.println("openDt       ::" + movie.getOpenDt());
+						    System.out.println("movieEndDate ::" + movie.getEndDt());
+						    System.out.println("syonpsis     ::" + movie.getSynopsis());
+						    System.out.println("trailer      ::" + movie.getTrailer());
+					    
+							return   movieDAO.addMovie(movie);
+				
+					}
+					
+				} catch (Exception e) {	
+					e.printStackTrace();
+				}
+				
+				
+		return -1;	    
+			 
 	}
 	
 	@Override
@@ -539,6 +566,12 @@ public class MovieServiceImpl implements MovieService {
 	public List<Twitter> getTwitterList(String movieName) {
 		
 		return null;
+	}
+
+	@Override
+	public int dupMovieChk(Search search) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	

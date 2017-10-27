@@ -98,6 +98,8 @@ public class MovieApiDAOImpl implements MovieDAO {
 		return null;
 	}
 
+		
+	
 	@Override
 	public List<Movie> getMoviePreviewList(Search search) {
 		// TODO Auto-generated method stub
@@ -240,4 +242,13 @@ public class MovieApiDAOImpl implements MovieDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public int  dupMovieChk(Search search) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	
+	
 }

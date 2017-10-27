@@ -73,6 +73,8 @@ public interface MovieService {
 	public List<Twitter> getTwitterList(String movieName);
 
 	public MovieComment getMovieComment(int movieCommentNo);
+	
+	int dupMovieChk(Search search) throws Exception;
 
 
 }

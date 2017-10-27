@@ -221,6 +221,23 @@
 		</if>) countTable
 	</select>
 	 
+	 <select id="dupMovieChk" parameterType="search" resultType="int">
+		SELECT COUNT(*)
+		FROM(SELECT  movie_no, movie_regdate, movie_opendate,movie_enddate,movie_title,
+	  					poster,director,actor,genre,rating,runningtime,synopsis,steelcut,trailer
+	  					FROM movie
+		
+		<if test="searchCondition !=null">
+		
+				<if test="searchCondition == 1 and searchKeyword !='' ">
+					WHERE movie_title = #{searchKeyword} 
+				</if>
+			
+			
+		</if>) countTable
+	</select>
+	 
+	 
 	 
 
 	<select id="getTotalCount" parameterType="search" resultType="int">

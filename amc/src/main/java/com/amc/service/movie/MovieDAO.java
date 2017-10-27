@@ -21,7 +21,8 @@ public interface MovieDAO {
 
 	// 현재 상영 영화 목록 불러오기
 	public List<Movie> getMovieList(Search search);
-
+	
+	
 	// 상영 예정 영화 목록 불러오기
 	public List<Movie> getMoviePreviewList(Search search);
 
@@ -94,6 +95,9 @@ public interface MovieDAO {
 	public List<Movie>	uniMovieList(Search search);
 
 	int getTotalCount(int movieNo) throws Exception;
+	
+		
+	int dupMovieChk(Search search) throws Exception;
 
 	public MovieComment getMovieComment(int movieCommentNo);
 

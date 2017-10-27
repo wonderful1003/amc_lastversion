@@ -30,6 +30,8 @@ public class TwitterApiDAOImpl implements MovieDAO {
 		return null;
 	}
 	
+
+	
 	@Override
 	public List<MovieOnScheule> getScreenCalendar(Search search) throws Exception {
 		return null;
@@ -163,4 +165,13 @@ public class TwitterApiDAOImpl implements MovieDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	@Override
+	public int dupMovieChk(Search search) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
 }

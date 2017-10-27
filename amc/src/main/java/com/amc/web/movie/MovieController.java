@@ -76,6 +76,18 @@ public class MovieController {
 		
 		System.out.println("pagesize " + search.getPageSize());
 		System.out.println("search " + search);
+		
+		if(request.getParameter("menu").equals("manage")) {
+			
+			search.setSearchKeyword2("manage");
+		
+			System.out.println("search.setSearchKeyword2 [[manage]]" + search.getSearchKeyword2());
+		} else {
+			if (search.getSearchKeyword() != null) {				
+				search.setSearchCondition("movieTitleSearch");	
+			}
+				
+		}
 	
 		
 		Map<String , Object> map= movieService.getMovieList(search);	
@@ -88,14 +100,6 @@ public class MovieController {
 		// 관리자 검색인지 일반인 검색인지 확인하기 위한 조건 
 		// "movieTitleSearch"은 일반인 검색에  해당됨 		
 		
-		if(request.getParameter("menu").equals("manage")) {
-			
-		} else {
-			if (search.getSearchKeyword() != null) {				
-				search.setSearchCondition("movieTitleSearch");	
-			}
-				
-		}
 	
 		System.out.println("search condition :: " + search.getSearchCondition());
 		
@@ -206,6 +210,8 @@ public class MovieController {
 			System.out.println("updateMovie.jsp called");
 			System.out.println(movie + "겟무비액션");
 			return "forward:/movie/updateMovie.jsp";
+			
+			
 		} else {
 			System.out.println(movie + "겟무비액션");
 			// modelAndView.setViewName("/movie/getMovie.jsp");
@@ -213,9 +219,11 @@ public class MovieController {
 			return "forward:/movie/getMovieCommentList/" + movieNo;
 		}
 	}
-
-	private final String PATH = "C:/Users/jeung/git/amc/amc/WebContent/images/movie/";
+	
+	/*private final String PATH = "C:/Users/jeung/git/amc/amc/WebContent/images/movie/";*/
+	private final String PATH = "http://127.0.0.1:8080/images/movie/";
 	//private final String PATH = "C:/amcPoster/";
+		
 	
 	
 	@RequestMapping (value ="updateMovie", method=RequestMethod.POST)
@@ -233,7 +241,7 @@ public class MovieController {
 		 * 
 		 * 테스트 용도로 로컬 경로로 지정했다가, 실제 Deploy할때는 서버 경로로 변경할 것
 		 */
-		
+		System.out.println(movie);
 		System.out.println("상대경로 : " + this.getClass().getResource("").getPath()); // 현재 자신의 절대 경로
 		System.out.println("절대경로 : " + this.getClass().getResource("/").getPath()); // classes 폴더의 최상위 경로
 		// System.out.println(this.getClass().getResource("/com/amc/config/config.properties").getPath()); 
@@ -317,9 +325,13 @@ public class MovieController {
         
         System.out.println("synopsis :" + movie.getSynopsis());
         System.out.println("trailer  :" + movie.getTrailer());
-        
+           
         
 		movie.setSteelCut(dbFileNames);
+		
+		System.out.println("fileName :" + movie.getSteelCut());
+		
+		
 					
 		movieService.updateMovie(movie);	
 		
@@ -331,6 +343,7 @@ public class MovieController {
 	}
         return "forward:/movie/updateMovie.jsp";
   }
+
 
 	@RequestMapping( value="deleteMovie", method=RequestMethod.POST)
 	public String deleteMovie(@RequestParam(value="movieNo", required=true) Integer movieNo , 

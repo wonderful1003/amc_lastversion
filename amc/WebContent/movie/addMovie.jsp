@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/sunny/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-/1.7.1/css/bootstrap-datepicker.css" />
     
      
     
@@ -369,7 +369,18 @@
 			}
         	
         	
-
+		/*     $("#export").on("click", function(){
+					alert("called ");
+				$("#movie_list").jqGrid("exportToExcel",{
+					includeLabels : true,
+					includeGroupHeader : true,
+					includeFooter: true,
+					fileName : "jqGridExport.xlsx",
+					maxlength : 2000 // maxlength for visible string data 
+				})
+			});
+ */
+   
         	function ajaxFileUpload(id) 	{
         	
         	 console.log("ajaxFileUpload called");
@@ -409,8 +420,20 @@
         		        }
         		    )          }     
         	 
-        	 
-        	 
+        	
+        	function setClickRowColor(gridNm, rowId){
+	    	    var ids = $('#'+gridNm).getDataIDs();
+
+        	    $.each(ids, function(idx){
+        	        idx+=1;
+        	        if(idx==rowId){
+        	            $('#'+gridNm).setRowData(idx, false, {background:'#DDFFFF'});
+        	        }else{
+        	            $('#'+gridNm).setRowData(idx, false, {background:'#FFFFFF'});
+        	        }
+        	    });
+        	}
+       	 
         	function formatImage(cellValue, options, rowObject) {
                  //var imageHtml = "<img src='images/" + cellValue + "' originalValue='" + cellValue + "' />";
                  
@@ -467,6 +490,7 @@
                 colNames:['영화CD','영화명','제작국가','상영마감','줄거리','트레일러'],
                 // 컬럼 데이터(추가, 삭제, 수정이 가능하게 하려면 autoincrement컬럼을 제외한 모든 컬럼을 editable:true로 지정)
                 // edittyped은 text, password, ... input type명을 사용
+                     
                 colModel:[
                           {name:'movieCd', key: true,index:'movieCd',align:"left",sorttype:"int",width:90, sortable:true,editable:true},
                           {name:'movieNm', index:'movieNm', align:"left",width:90, sortable:true, editable:true},                       
@@ -495,6 +519,14 @@
                           
          
            // 네비게이션 도구를 보여줄 div요소
+                hidegrid : true,                        // grid 전체를 접는 오른쪽 상단 아이콘 disable
+            	beforeSelectRow : function(invid) {                // 선택한 로우 색상 변경
+                  setClickRowColor('movie_list', invid);
+                    return true;
+               }, 
+ 
+ 
+
                	sortable: true,
                 sortname: 'movieCd',
                 pager:"#pager777",
@@ -530,41 +562,44 @@
                 	cell:"cell",
                 	id:"movieCd"
                 },
+                
+                afterSubmit : function(response, postdata) {
+                	alert("aaa");
+                    return [false, response.responseText, ""];
+                    // Tried with return [true, response.responseText, ""]; and few more
+                 } ,
+                 
+                 beforeSubmit : function( postdata, formid ) {
+                	 
+                	 alert("aaa");
+                     if(someconditionOK) {
+                         return [true,''];
+                     } else {
+                         return [false,'Error submiting data'];
+                     }
+                 },
         
            		loadComplete: function(data) {
-          			// alert ("records="+$("#movie_list").getGridParam("records"));
+          			alert ("records="+$("#movie_list").getGridParam("records"));
                 },  
+                
+                
     	       
         	});
          
-            $("#export").on("click", function(){
-				$("#movie_list").jqGrid("exportToExcel",{
-					includeLabels : true,
-					includeGroupHeader : true,
-					includeFooter: true,
-					fileName : "jqGridExport.xlsx",
-					maxlength : 40 // maxlength for visible string data 
-				})
-			})
-      
-      
-     
-  
-         
-
-         
-          
-          jQuery("#movie_list").jqGrid('navGrid','#pager777',
-        		 {}, //options
-        		 {height:280,reloadAfterSubmit:false}, // edit options
-        		 {height:280,reloadAfterSubmit:false}, // add options
-        		 {reloadAfterSubmit:false}, // del options
-        		 {}, // search options   		 
-        	
-        		 
-        	
-        		{
-        		 afterSubmit: function (response) {
+        
+       
+/* jQuery("#movie_list").jqGrid('navGrid','#pager777',
+     		 {}, //options
+     		 {height:280,reloadAfterSubmit:false}, // edit options
+     		 {height:280,reloadAfterSubmit:false}, // add options
+     		 {reloadAfterSubmit:false}, // del options
+     		 {}, // search options   		 
+     	
+     		 
+     	
+     		{
+     		 afterSubmit: function (response) {
 			             // you should return from server OK in sucess, any other message on error
 			             alert("after Submit");
 			             if (response.responseText == true) {
@@ -577,27 +612,41 @@
 			             }
 			           },
 			    	 }
-         		   );
-         		});    
-    
-    
+      		   );
+      		});     */
+ 
+      		
+      	  // 네비게시션 도구 설정
+      	/*   $("#movie_list").jqGrid(
+      	         		"navGrid",
+      	                "#pager777"                 
+      	     );
+      	    });  
+      	     */
+ 
 
-
-      
-          
-         // 네비게시션 도구 설정
-	/*  $("#movie_list").jqGrid(
+       
+      // 네비게시션 도구 설정
+	  $("#movie_list").jqGrid(
 	         		"navGrid",
-	                "#pager"                 
+	                "#pager777",
+	                
+	                
+	                {search:true, edit:true, add:true, del:true},
+	                {closeAfterEdit: true, reloadAfterSubmit: true},
+	                {closeAfterAdd: true, reloadAfterSubmit: true},
+	                {reloadAfterSubmit: true}
 	     );
-	    });      
-   */
+	    })
+	    
+	
+
     </script>
 
 <body>
 
 
-<form id="uploadForm" enctype="multipart/form-data" method="POST">  
+<form id="uploadForm" method="POST">  
 	<br/> <br/>  <br/> <br/> 
        
 	
@@ -607,8 +656,8 @@
     <div id="load_time" class="scroll" style="text-align:center"></div>
 
 	
-	<button id="export">Export to Excel</button>
-	
+	<!-- <button id="export">Export to Excel</button> 
+	 -->
 
 </form>
 </body>

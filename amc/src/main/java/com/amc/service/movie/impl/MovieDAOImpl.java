@@ -70,7 +70,10 @@ public class MovieDAOImpl implements MovieDAO {
 			System.out.println((Movie)m);
 		}*/
 		
-		if (search.getSearchKeyword() != null) {
+		
+		System.out.println("search.getSearchKeyword2() ::"  + search.getSearchKeyword2());
+		
+		if (search.getSearchKeyword2() != "manage") {
 			System.out.println("MovieDAOImpl called check 111111111111...");
 			
 			List<Movie> list = sqlSession.selectList("MovieMapper.getMovieList_MovieTitle",search);
@@ -276,10 +279,12 @@ public class MovieDAOImpl implements MovieDAO {
 		return null;
 	}
 
+
+		
 	@Override
 	public int getTotalCount(Search search) throws Exception {
 		
-		if (search.getSearchKeyword() != null) {
+		if  (search.getSearchKeyword2() != "manage") {
 			return (sqlSession.selectOne("MovieMapper.getMovieList_MovieTitle_Count",search));
 		} else {
 			List<Movie> list = sqlSession.selectList("MovieMapper.getMovieList",search);
@@ -287,6 +292,13 @@ public class MovieDAOImpl implements MovieDAO {
 		}
 	}
 	
+	@Override
+	public int  dupMovieChk(Search search) throws Exception {
+	
+		return (sqlSession.selectOne("MovieMapper.dupMovieChk",search));
+			
+	}
+
 	
 // 해림 메소드 추가
 	@Override
@@ -299,4 +311,6 @@ public class MovieDAOImpl implements MovieDAO {
 	public List<Movie> uniMovieList(Search search) {
 		return sqlSession.selectList("MovieMapper.uniMovieList",search);
 	}
+
+	
 }
