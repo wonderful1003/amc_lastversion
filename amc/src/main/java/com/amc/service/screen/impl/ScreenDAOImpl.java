@@ -129,10 +129,17 @@ public class ScreenDAOImpl implements ScreenDAO {
 		System.out.println("screenDate와 screenOpenTime와 screenEndTime" + screenContent);
 
 		// System.out.println("List 값이 뭐게 " + list);
+		if (sqlSession.selectOne("ScreenContentMapper.checkScreenDupPreview", screenContent) != null) {
+			System.out.println("ScreenDAOImpl의 checkScreenDupPreview 메소드 끝...?");
+			return sqlSession.selectOne("ScreenContentMapper.checkScreenDupPreview", screenContent);
+		}else{
+			System.out.println("ScreenDAOImpl의 checkScreenDupPreview 메소드 끝...!");
+			return 0 ;
+		}
 
-		System.out.println("ScreenDAOImpl의 checkScreenDupPreview 메소드 끝...");
+	
 
-		return sqlSession.selectOne("ScreenContentMapper.checkScreenDupPreview", screenContent);
+
 	}
 	
 

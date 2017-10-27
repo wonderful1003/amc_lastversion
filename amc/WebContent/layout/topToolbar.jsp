@@ -25,7 +25,7 @@
 	<!--  해림 CDN 순서변경-->
 	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->	
-	<link rel="stylesheet" href="/resources/demos/style.css">
+
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
@@ -33,6 +33,9 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	<!-- 여기가 다른 jsp 페이지에 있는 cdn 끝/////////////////////////////////////////////////////////////////////////////////////////////// -->
+	
+	<!--  해림 캐러셀 사용 js-->
+	<script type="text/javascript" src="http://kenwheeler.github.io/slick/slick/slick.min.js"></script>
 	
 	<!-- Bootstrap Dropdown Hover CSS -->
    <link href="/css/animate.min.css" rel="stylesheet">
