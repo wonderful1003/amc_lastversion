@@ -145,7 +145,7 @@
 <title>selectScreenMovie.jsp</title>
 </head>
 	<body>
-	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
+	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br><br><br><br>
 
 	 <div class="container">
 	 

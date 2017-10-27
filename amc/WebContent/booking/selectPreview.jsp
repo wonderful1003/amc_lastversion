@@ -143,7 +143,9 @@ var ticketOpenDate="";
 				
 				var movieNo =  $($(this).find("input[name='movieNo']")).val();
 				var flag = $("input:hidden[name='flag']").val();
-				alert("flag가 2인가 ? :"+flag)
+				var movieName =  $($(this).find("input[name='movieName']")).val();
+				$(".item").eq(0).text(movieName);
+				
 				$.ajax(
 						{
 							url : "/booking/json/getScreenDate/"+movieNo+"/"+flag,						
@@ -179,9 +181,9 @@ var ticketOpenDate="";
 		//2. 날짜 클릭시
 		$(document).on("click", ".screenDay",  function(){
 			alert("날짜를 선택하셨습니다.");
-			
+
 			var date =  $($(this).find("input[name='day']")).val();
-			
+			$(".item").eq(1).text(date);
 			$.ajax(
 					{
 						url : "/booking/json/getScreenTime/"+date,						
@@ -203,6 +205,7 @@ var ticketOpenDate="";
 	                            	   +     ', 상영번호 : '+this.screenContentNo+'  티켓오픈시간은 : '+this.ticketOpenDate
 	                            	   +'<input type="hidden" name="contNo" value="'+this.screenContentNo+'">'
 	                            	   +'<input type="hidden" name="ticketOpenDate" value="'+this.ticketOpenDate+'">'
+	                            	   +'<input type="hidden" name="screenTime" value="'+this.screenOpenTime+'">'
 	                            	   +'</div>' ;				
 	                            	   
 	                               }//end of function
@@ -220,7 +223,10 @@ var ticketOpenDate="";
 			
 			var contNo = $($(this).find("input[name='contNo']")).val();
 			ticketOpenDate = $($(this).find("input[name='ticketOpenDate']")).val();
-			alert("선택한 상영번호는 : "+contNo+", 티켓오픈타임은 :"+ticketOpenDate);
+			var screenTime = $($(this).find("input[name='screenTime']")).val();
+			$(".item").eq(2).text(screenTime);
+			
+			alert("티켓오픈시간 :"+ticketOpenDate);
 			
 			$("#display").text(contNo);	
 			
@@ -256,7 +262,7 @@ var ticketOpenDate="";
 </script>
 </head>
 	<body>
-	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
+	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br><br><br><br>
  	<div class="container">
     
 	<div class="ui ordered steps">
@@ -312,6 +318,11 @@ var ticketOpenDate="";
 	 </div>
 	</div>
 
+ 	<div class="item">선택된 상영정보</div>
+	<div class="item"></div>
+	<div class="item"></div>
+	<div class="item"></div> 
+
 	 <input type="hidden" name="flag" value="1">
       <div class="row">
         <div class="col-md-4">
@@ -323,6 +334,7 @@ var ticketOpenDate="";
 						  
 				  <div align="left" class="movieName"><h5>${screenContent.previewTitle} </h5>
 				  	<input type="hidden" name="movieNo" value="${screenContent.screenContentNo}">
+				  	<input type="hidden" name="movieName" value="${screenContent.previewTitle}">
 				  </div>
 				
 	          </c:forEach>        

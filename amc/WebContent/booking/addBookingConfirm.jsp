@@ -24,7 +24,10 @@
 			<li>${booking.headCount}</li>
 			<li>${booking.totalTicketPrice}</li>
 			<li>${booking.bookingSeatNo}</li>
-			<li>${booking.qrUrl}</li>
 		</ul>
+		<iframe id="child" src="${booking.qrUrl}" 
+		width="600" height="800" frameborder="0" scrolling="no">		 
+					  <p>Your browser does not support iframes.</p>
+		</iframe> 		
 	</body>
 </html>

@@ -97,6 +97,13 @@ public class UserController {
 		
 		System.out.println("/user/logout : POST");
 		session.invalidate();
+		/*if(session != null){
+			if(session.getAttribute("user")==null){
+				System.out.println("session ÀÇ user ´Â null");
+			}else{
+				System.out.println("session ÀÇ user ´Â ³´ ³´¤¤»ñ³ª»ç³ªnull");
+			}
+		}*/
 		return "forward:/index.jsp";
 	}
 

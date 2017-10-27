@@ -29,7 +29,7 @@ public class AlarmController {
 									 Model model) throws Exception{
 		
 		model.addAttribute("screeContent", screenContent);
-		return "forward:/alarm/selectCancelAlarm.jsp";	
+		return "forward:/booking/selectCancelAlarm.jsp";	
 	}
 	
 	@RequestMapping(value="getCancelAlarmList", method=RequestMethod.GET)

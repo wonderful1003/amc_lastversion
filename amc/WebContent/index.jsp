@@ -105,18 +105,20 @@
 	<!-- ToolBar Start /////////////////////////////////////-->
 	<jsp:include page="/layout/topToolbar.jsp" />
    	<!-- ToolBar End /////////////////////////////////////-->
-   	<!-- Modal 화면 tool bar로 부터 받아오기 시작	 --> 
-	<div id="modal-testNew" class="modal fade" tabindex="-1" role="dialog" 
-									aria-labelledby="테스트정보 등록" aria-describedby="테스트 모달">
-	    <div class="modal-dialog" style="width:1200px;height:700px">
-	        <div class="modal-content">
-	        </div>
-	    </div>
-	</div> 
+   	<!-- Modal 화면 tool bar로 부터 받아오기 시작	 -->
+   	<div class="container"> 
+		<div id="modal-testNew" class="modal fade" tabindex="-1" role="dialog" 
+										aria-labelledby="테스트정보 등록" aria-describedby="테스트 모달">
+		    <div class="modal-dialog" style="width:1200px;height:700px">
+		        <div class="modal-content">
+		        </div>
+		    </div>
+		</div> 
+	</div>
    	
 
 		
-		<!-- Modal 화면 tool bar로 부터 받아오기 끝  --> 
+	<!-- Modal 화면 tool bar로 부터 받아오기 끝  --> 
 	<div class="container"> <!-- main container 시작 -->
 			<div class="row">
 				<div class="jumbotron">
@@ -285,10 +287,10 @@
 						      <ol class="carousel-indicators">
 						      	<c:forEach var="count" begin="1" end="${size}" step="1">
 						      		<c:if test="${count eq 1}">				      	
-						        		<li data-target="#newProductCarousel" data-slide-to="${count }" class="active" background="#c0c0c0"></li>
+						        		<li data-target="#newProductCarousel" data-slide-to="${count-1}" class="active" background="#c0c0c0"></li>
 						        	</c:if>
 						        	<c:if test="${count ne 1}">				      	
-						        		<li data-target="#newProductCarousel" data-slide-to="${count }"></li>
+						        		<li data-target="#newProductCarousel" data-slide-to="${count-1}"></li>
 						        	</c:if>
 						        </c:forEach>
 						      </ol>
@@ -296,11 +298,11 @@
 						      	  <c:forEach var="count" begin="1" end="${size}" step="1">
 						      	  	 <c:if test="${count eq 1}">
 							      	  	 <div class="item active">
-							      	  	  	 <c:if test="${indexList.bestProductList[count-1].prodType eq 'G'}">
-							      	  	 	 	<a href="/product/getGoodsProduct?prodNo=${indexList.bestProductList[count-1].prodNo}">
+							      	  	  	 <c:if test="${indexList.newProductList[count].prodType eq 'G'}">
+							      	  	 	 	<a href="/product/getGoodsProduct?prodNo=${indexList.newProductList[count-1].prodNo}">
 							      	  	 	 </c:if>
-							      	  	 	 <c:if test="${indexList.bestProductList[count-1].prodType eq 'S'}">
-							      	  	 	 	<a href="/product/getSnackProduct?prodNo=${indexList.bestProductList[count-1].prodNo}">
+							      	  	 	 <c:if test="${indexList.newProductList[count].prodType eq 'S'}">
+							      	  	 	 	<a href="/product/getSnackProduct?prodNo=${indexList.newProductList[count-1].prodNo}">
 							      	  	 	 </c:if>
 										     <img class="img-responsive center-block" 
 										     src="/images/uploadFiles/${indexList.newProductList[count-1].prodImage}" 
@@ -311,11 +313,11 @@
 						      	  	 </c:if>
 						      	  	 <c:if test="${count ne 1}">
 							      	  	 <div class="item">
-							      	  	 	 <c:if test="${indexList.bestProductList[count-1].prodType eq 'G'}">
-							      	  	 	 	<a href="/product/getGoodsProduct?prodNo=${indexList.bestProductList[count-1].prodNo}">
+							      	  	 	 <c:if test="${indexList.newProductList[count-1].prodType eq 'G'}">
+							      	  	 	 	<a href="/product/getGoodsProduct?prodNo=${indexList.newProductList[count-1].prodNo}">
 							      	  	 	 </c:if>
-							      	  	 	 <c:if test="${indexList.bestProductList[count-1].prodType eq 'S'}">
-							      	  	 	 	<a href="/product/getSnackProduct?prodNo=${indexList.bestProductList[count-1].prodNo}">
+							      	  	 	 <c:if test="${indexList.newProductList[count-1].prodType eq 'S'}">
+							      	  	 	 	<a href="/product/getSnackProduct?prodNo=${indexList.newProductList[count-1].prodNo}">
 							      	  	 	 </c:if>
 									    	 <img class="img-responsive center-block" 
 									    	 src="/images/uploadFiles/${indexList.newProductList[count-1].prodImage}"

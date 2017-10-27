@@ -5,14 +5,6 @@
 <!--  ///////////////////////// JSTL  ////////////////////////// -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
-<%--   <%
-	User user = new User();
-	user.setUserId("testAdmin");
-	user.setRole("admin");
-	session.setAttribute("user", user);
-%> 
- --%> 
 <head>
 <meta charset="EUC-KR">
 	
@@ -56,7 +48,7 @@
 
 <!-- ToolBar Start /////////////////////////////////////-->
 <div class="navbar  navbar-inverse navbar-fixed-top">
-	
+	 
 	<div class="container">
 	       <!-- 절대경로로 변경  -->
 		<a class="navbar-brand" href="/index.jsp">
@@ -166,22 +158,8 @@
 						</form>
 					</div>  
 	          	 </li>
-	             <!-- 유저가 로그인 상태일 시 -->
-<%-- 	             	<c:if test="${sessionScope.user ne null }">
-		             	<li title="Click : 개인정보 수정"><a href="#">ID : [${sessionScope.user.userId }]</a></li>
-		             	<li><a href="#">로그아웃</a></li>
-		             	<li><a href="#">마이페이지</a></li>
-	             	</c:if>
- --%>	             	
-	             <!-- 유저가 비로그인 상태일 시 -->	
-<%-- 	             	<c:if test="${sessionScope.user eq null }">
-		             	<li>
-		             		<input type="text" name="userId" placeholder="아이디" width="300px">
-		             		<input type="text" name="password" placeholder="비밀번호" width="300px">
-		             	</li>
-		             	<input type="button" value="로그인">
-	             	</c:if>
---%>	         </ul>
+	             </ul>
+	             
 	           	 <!-- 유저가 비로그인 상태일 시 -->	
 	 			<c:if test="${empty user}">		
 	 				<li>			
@@ -197,15 +175,12 @@
 				
 				<c:if test="${!empty user}">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#" class="user-info">${sessionScope.user.userName}</a>
+						<li><a href="#" class="user-info">[${sessionScope.user.userName}]</a>
 						<li><a href="/cinema/myPage.jsp">마이페이지</a></li>
 						<li><a href="#">로그아웃</a></li>
 					</ul>
 				</c:if> 
-				<form action="/cinema/unifiedSearch" method="post">
-					<input type="text" name="searchKeyword" placeholder="통합검색">
-					<input type="button" value="검색!" onClick="javascript:unifiedSearch()">
-				</form>          
+   
 		</div>
 		<!-- dropdown hover END -->	       
 	</div>
@@ -269,7 +244,7 @@
 		
 	 	//=============  영화관 Event  처리 =============	
 	 	$( "a:contains('영화관')" ).on("click" , function() {
-			$(self.location).attr("href","/cinema/theaterInfo");
+			$(self.location).attr("href","/cinema/theaterInfo.jsp");
 		});
 	 	
 	 	//=============  커뮤니티 Event 처리 =============	

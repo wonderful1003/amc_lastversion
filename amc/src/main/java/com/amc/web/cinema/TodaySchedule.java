@@ -38,7 +38,7 @@ public class TodaySchedule implements ServletContextListener {
 		this.dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	}
 
-	//@Scheduled(cron = "50 * * * * *")
+	@Scheduled(cron = "50 * * * * *")
 	public void mainTask() throws Exception {
 
 		calendar =  Calendar.getInstance();

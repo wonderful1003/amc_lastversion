@@ -50,7 +50,7 @@
 				
 			  }else if(event.data == 'failed'){
 				  var screenNo = ${screenContent.screenContentNo}+"";
-				  self.location="/booking/selectSeat?screenContentNo="+"10000";				  
+				  self.location="/booking/selectSeat?screenContentNo="+screenNo+"";				  
 			  }else{
 				  $("input[name='seats']").val(event.data);
 					console.log('data : '+event.data);
@@ -95,7 +95,7 @@
 
 </head>
 	<body>
-	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
+	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br><br><br><br>
 	<div class="container">
 	<div class="ui ordered steps">
 	  <div class="completed step">
@@ -131,7 +131,7 @@
 			<%-- <iframe id="child" src="http://127.0.0.1:52273/random_select?
 			screenNo=${screenContent.screenContentNo}&count=${headCount}" width="600" height="400" > --%>
 			<iframe id="child" src="http://127.0.0.1:52273/random_select?screenNo=10303&headCount=${headCount}"
-			 width="600" height="200" frameborder="0" scrolling="no">		 
+			 width="600" height="500" frameborder="0" scrolling="no">		 
 					  <p>Your browser does not support iframes.</p>
 			</iframe>
 			

@@ -122,7 +122,7 @@
 			선택한 좌석번호 : <input type="text" id="display2" value=""></span></h5>
 			<%-- <iframe id="child" src="http://127.0.0.1:52273/yenakoh/3?screenNo=${screenContentNo}" width="400" height="400" > --%>
 			<iframe id="child" src="http://127.0.0.1:52273/yenakoh/3?screenNo=${screenContentNo}" 
-			width="600" height="400" frameborder="0" scrolling="no">		 
+			width="600" height="800" frameborder="0" scrolling="no">		 
 					  <p>Your browser does not support iframes.</p>
 			</iframe>
 			

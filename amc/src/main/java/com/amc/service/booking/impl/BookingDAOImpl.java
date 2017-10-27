@@ -1,9 +1,6 @@
 package com.amc.service.booking.impl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -63,10 +60,6 @@ public class BookingDAOImpl implements BookingDAO {
 	}
 
 
-	@Override
-	public List<Booking> getUserBookingList(Map<String, Object> map) {
-		return sqlSession.selectList("BookingMapper.getUserBookingList", map);
-	}
 
 
 }

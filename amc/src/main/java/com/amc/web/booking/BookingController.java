@@ -1,8 +1,6 @@
 package com.amc.web.booking;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -117,8 +115,8 @@ public class BookingController {
 			@RequestParam("seats") String seats, Model model) throws Exception{	
 		System.out.println("/booking/requestPay : POST");
 		
-		//ScreenContent screenContent = screenService.getScreenContent(Integer.parseInt(screenContentNo));
-		ScreenContent screenContent = screenService.getScreenContent(10000);
+		ScreenContent screenContent = screenService.getScreenContent(10335);
+		//ScreenContent screenContent = screenService.getScreenContent(10000);
 		/////////////////////////
 		//edit screenContent mapper to get movie name.
 		/////////////////////////
@@ -128,8 +126,10 @@ public class BookingController {
 		booking.setScreenContent(screenContent);
 		booking.setBookingSeatNo(seats);	
 		int headCount = (StringUtils.countOccurrencesOf(seats, ",")+1)/2;
+		System.out.println("headCount : "+headCount+", 티켓가격 : "+screenContent.getTicketPrice());
 		booking.setHeadCount(headCount);
 		booking.setTotalTicketPrice(screenContent.getTicketPrice()*headCount);
+		
 		model.addAttribute(booking);
 		
 		return "forward:/booking/addBooking.jsp";
@@ -152,9 +152,9 @@ public class BookingController {
 		//2. ADD statistic
 		User user = (User) session.getAttribute("user");
 		////////////////////////////////////////////////////////
-		System.out.println(":::::::::session의 User확인 : "+user);
-		user.setBirth("1970/01/01");
-		user.setGender("M");
+		//System.out.println(":::::::::session의 User확인 : "+user);
+		//user.setBirth("1970/01/01");
+		//user.setGender("M");
 		////////////////////////////////////////////////////////
 		bookingService.updateStatistic(user, booking);
 		
@@ -184,18 +184,18 @@ public class BookingController {
 		System.out.println("/booking/deleteBooking : GET");
 		//1. 환불조치하기
 		Booking booking = bookingService.getBooking(bookingNo);
-//		String status = cinemaService.cancelPay(booking.getImpId());
+		String status = cinemaService.cancelPay(booking.getImpId());
 		System.out.println("1. 환불 완료");
-		String status = "cancelled"; //임시
+		//String status = "cancelled"; //임시
 		//환불 성공시
 		if(status.equals("cancelled")){
 			//2. 예매통계 업데이트하기 
 			User user = (User) session.getAttribute("user");
 			////////////////////////////////////////////////////////
-			user = new User();
-			System.out.println(":::::::::session의 User확인 : "+user);
-			user.setBirth("1970/01/01");
-			user.setGender("M");
+			//user = new User();
+			//System.out.println(":::::::::session의 User확인 : "+user);
+			//user.setBirth("1970/01/01");
+			//user.setGender("M");
 			////////////////////////////////////////////////////////
 			booking.setHeadCount(booking.getHeadCount()*(-1));
 			bookingService.updateStatistic(user,booking);
@@ -229,30 +229,6 @@ public class BookingController {
 		return "forward:/booking/listBookingAdmin.jsp";
 	}
 	
-	@RequestMapping( value="getBookingList", method=RequestMethod.GET)
-	public String getBookingList(HttpSession session,Model model) throws Exception {
-		
-		Map<String, Object> map = new HashMap<String,Object>();
-		Search search = new Search();
-		
-		search.setStartRowNum(1);
-		search.setEndRowNum(4);
-		search.setCurrentPage(1);
-		search.setPageSize(3);
-		
-		map.put("search", search);
-		
-		User user = new User();
-		
-		user.setUserId("manager");
-		
-		map.put("user", user);
-		
-		model.addAttribute("bookingList", bookingService.getUserBookingList(map));
-		
-	    return "forward:/booking/listBooking.jsp";
-	}
-	
 	@RequestMapping( value="testCode", method=RequestMethod.GET)
 	public String testCode(HttpSession session) throws Exception {
 		
@@ -265,4 +241,6 @@ public class BookingController {
 	    
 	    return "redirect:/booking/getPreviewList";
 	}
+	
+	
 }

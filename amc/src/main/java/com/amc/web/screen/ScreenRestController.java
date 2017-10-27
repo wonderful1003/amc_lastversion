@@ -94,7 +94,7 @@ public class ScreenRestController {
 			String body = "screenNo="+screenContentNo+"&theater="+screenTheater;
 			try {
 				int responseCode = HttpRequestToNode.httpRequest(urlStr, body);
-				if(responseCode ==2){
+				if(responseCode ==200){
 					System.out.println("몽고DB에 좌석현황 추가하기를 성공하였습니다.");
 					return addResult;
 				}else{
@@ -103,7 +103,8 @@ public class ScreenRestController {
 					return -3;
 				}				
 			} catch (Exception e) {
-				System.out.println("몽고DB에 좌석현황 넣기에 실패하였습니다.");
+				System.out.println("몽고DB가 꺼져있나봅니다!");
+				screenService.deleteScreenContent(screenContentNo);
 				e.printStackTrace();
 				return -3;
 			}	

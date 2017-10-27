@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
+
 
 import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +101,8 @@ public class BookingServiceImpl implements BookingService {
 		searchCondition(영화번호), currentPage(인원수)*/
 		Search search = new Search();
 		
-		search.setSearchCondition(booking.getMovie().getMovieNo()+"");
+		//search.setSearchCondition(booking.getMovie().getMovieNo()+"");
+		search.setSearchCondition("10231");
 		search.setCurrentPage(booking.getHeadCount());
 		if(user.getGender().equals("M")){
 			search.setSearchKeyword("1");
@@ -220,10 +221,7 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public void sendPhoneQR(String bookingNo, String phone) {
 	}
-	
-	@Override
-	public List<Booking> getUserBookingList(Map<String, Object> map) {
-		return bookingDAO.getUserBookingList(map);
-	}
+
+
 	
 }

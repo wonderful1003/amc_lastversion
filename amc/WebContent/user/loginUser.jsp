@@ -191,8 +191,8 @@
 		<!--  row Start /////////////////////////////////////-->
 		<div class="row">		
 			<div class="col-md-6">
-				<!-- <img src="../images/common/LOGO.png" class="img-rounded" width="100%" /> -->
-				 <img src="http://127.0.0.1:8080/images/common/LOGO.png" class="img-rounded" width="100%" /> 
+				<img src="http://192.168.0.32:8080/images/common/LOGO.png" class="img-rounded" width="100%" />
+				 <!-- <img src="http://192.168.0.32:8080/images/common/LOGO.png" class="img-rounded" width="100%" /> --> 
 			</div>
 	   	 	
 	 	 	<div class="col-md-6">	 	 	

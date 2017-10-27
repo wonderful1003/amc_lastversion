@@ -52,7 +52,7 @@
 				 			FROM(SELECT prod_no, prod_type, prod_name, prod_price, prod_image
 								 FROM product
 								 WHERE prod_type != 'D'
-			ORDER BY sales_stock DESC, prod_regdate DESC)inner)outer
+			ORDER BY sales_stock DESC)inner)outer
 			WHERE outer.rn BETWEEN '1' AND '3'
 		</if>
 	</select>

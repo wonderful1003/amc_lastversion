@@ -251,6 +251,13 @@
                                                      
                                                         console.log("3.++++++");
                                                       
+                                                        $("#previewChecked").prop("checked", false);
+                                                        $("input[type !='hidden']").val(null);
+                                                        $("#screenTheater").val('1');
+                                                        $("input[name='previewTitle' ]").attr("readonly", true);
+                                                        $("input[name='previewOpenDate' ]").attr("readonly", true);
+                                                        $("input[name='previewOpenTime' ]").attr("readonly", true);
+                                                        $("input[name='inviteActor' ]").attr("readonly", true);
 
                            /*  $("#screenContentTBody").remove();
 
@@ -312,7 +319,7 @@
                                 "<td>" +
                                 " <select class='form-control input-sm' name='screenTheater' id='screenTheater'>" +
                                 "<option value='1'>1상영관</option>" +
-                                "<option value='2'>2상영관</option>	" +
+                                "<option value='2'>2상영관</option>	" + 
                                 "</select>" +
                                 "</td>" +
                                 "<td><input type='time' class='form-control input-sm' name='screenContentOpenTime'></td>" +
@@ -442,7 +449,9 @@
                                 alert("상영시간이 중복되었습니다. 다시 선택해주세요");
                             } else if (JSONData == -2) {
                                 alert("이미 이영화에 시사회가 등록되어 있습니다.");
-                            } else {
+                            } else if(JSONData == -3){
+                            	 alert('DB연결에 실패하였습니다.')
+                            }else {
                                 fncGetScreenContentList();
                             }
 
@@ -475,6 +484,8 @@
                                 },
                                 success: function(JSONData, status) {
                                     console.log(JSONData);
+
+
                                     fncGetScreenContentList();
                                 },
 
@@ -614,8 +625,48 @@
                 })
                 
                 $(function() {
-    $( "#testDatepicker" ).datepicker({
+                var 	openDt = new Date($("input[name='openDt']").val());
+                var endDt = new Date($("input[name='endDt']").val());
+                var today = new Date();
+                var startDt 
+               	var screenDate
+                console.log("+++"+screenDate)
+                
+               
+                console.log("openDt "+ openDt);
+                console.log("today "+ today);
+                console.log(openDt > today)
+                
+                if(openDt > today){
+            		startDt = openDt
+            	}else{
+            		startDt = today
+            	}
+                
+                
+                console.log("startDt " + startDt);
+                console.log("endDt " + endDt);
+    $( "#screenDate" ).datepicker({
+    	dateFormat : 'yy-mm-dd',
+    	minDate : startDt,
+    	maxDate : endDt,
+    	
     });
+ 
+     $("input[name='screenDate").on("change", function() {
+                	screenDate = new Date( $("input[name='screenDate").val());
+                	console.log(screenDate);
+                    $( "#previewOpenDate" ).datepicker({
+                    	dateFormat : 'yy-mm-dd',
+                    	minDate : today,
+                    	maxDate : screenDate
+                    	
+                    });
+                })
+                
+
+    
+    
 });
                 
                 
@@ -639,7 +690,7 @@
                 <div class="page-header">
                     <h2 class=" text-info">영화 상영 관리</h2>
                 </div>
-                <input type="text" id="testDatepicker">  
+      
                 <div class="row">
 
                     <div class="col-xs-1 col-md-2"></div>
@@ -730,8 +781,7 @@
                                 </tbody>
                            <tbody>
                                 <tr>
-                                    <td></td>
-                                    <td><input type="date" class="form-control input-sm" name='screenDate' id='screenDate'></td>
+                                    <td colspan="2"><input type="text"  class="form-control input-sm" name='screenDate' id='screenDate' placeholder="상영일자"   readonly="readonly"></td>
                                     <td>
                                         <select class="form-control input-sm" name="screenTheater" id="screenTheater">
        								<option value="1">1상영관</option>						
@@ -743,7 +793,7 @@
                                     <td><input type="text" class="form-control input-sm" placeholder="가격" name='ticketPrice'></td>
                                     <td><input type="checkbox" class="checkbox " name='previewChecked' id="previewChecked"></td>
                                     <td><input type="text" class="form-control input-sm" placeholder="시사회제목" name='previewTitle' readonly="readonly"></td>
-                                    <td><input type="date" class="form-control input-sm" name='previewOpenDate' id='previewOpenDate' readonly="readonly"><input type="time" class="form-control input-sm" name='previewOpenTime' readonly="readonly"></td>
+                                    <td><input type="text" class="form-control input-sm" name='previewOpenDate' id='previewOpenDate' readonly="readonly"><input type="time" class="form-control input-sm" name='previewOpenTime' readonly="readonly"></td>
                                     <td><input type="text" class="form-control input-sm" placeholder="초대배우" name='inviteActor' readonly="readonly"></td>
                                     <td>
                                         <div id="button"><button type="button" class="btn btn-primary" id="addScreenContent">등록</button></div>

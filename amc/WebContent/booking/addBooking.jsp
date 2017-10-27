@@ -5,9 +5,10 @@
 
 <!-- /////////////JSTL/////////////-->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
- <%
+
+<%--  <%
 	User user = new User();
-	user.setUserId("sadf@naver.com");
+	user.setUserId("test@naver.com");
 	user.setRole("user");
 	user.setUserName("제이슨");
 	user.setAddr("경기도 성남시 분당구");
@@ -22,7 +23,7 @@
 	Booking booking = new Booking();
 	booking.setTotalTicketPrice(1111);
 	session.setAttribute("booking",booking);
-%> 
+%>  --%>
 
 <!DOCTYPE html >
 <html>
@@ -176,7 +177,7 @@ IMP.init('imp41659269');
 		
 
 <body>
-	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br>
+	<jsp:include page="/layout/topToolbar.jsp" /><br><br><br><br><br><br>
  	<div class="container">
 	
 	<div class="ui ordered steps">
@@ -206,7 +207,8 @@ IMP.init('imp41659269');
 </h2>		
 <div class="ui segment">
   <h3 class="ui right aligned header">
-   	<input type="button" value="결제하기" onClick="javascript:addBooking()"/>
+   	<!-- <input type="button" value="결제하기" onClick="javascript:addBooking()"/> -->
+	<input type="button" value="결제하기" onClick="javascript:kakaoPay()"/>
 	<input type="button" value="결제취소" onClick="javascript:kakaoPayCancel()"/>
   </h3>
 <h2 class="ui center aligned icon header">
