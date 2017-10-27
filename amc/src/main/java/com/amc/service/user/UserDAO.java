@@ -27,5 +27,8 @@ public interface UserDAO {
 	
 	// 게시판 Page 처리를 위한 전체Row(totalCount)  return
 	public int getTotalCount(Search search) throws Exception ;
+	
+	// 회원탈퇴 유저 확인
+	public String deleteCheck(User user) throws Exception;
 		
 }

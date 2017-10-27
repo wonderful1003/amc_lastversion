@@ -44,6 +44,13 @@
 	 </update>
 	 
 	 <!-- SQL : SELECT ONE -->
+	 <select 	id="deleteCheck"	parameterType="user"	resultMap="userSelectMap">
+		SELECT deleteuser_flag 		
+		FROM users 
+		WHERE user_name = #{userName} and user_id = #{value} and password = #{password}
+	 </select>
+	 
+	 <!-- SQL : SELECT ONE -->
 	 <select 	id="getUser"	parameterType="string"	resultMap="userSelectMap">
 		SELECT
 		user_id, user_name, birth, sl_yn, gender, password, role, phone1, phone2, phone3, user_regdate, addr, addr_detail  		
@@ -56,7 +63,7 @@
 	<select  id="getUserList"  parameterType="search"	resultMap="userSelectMap">
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
-	  			FROM (	SELECT user_id , user_name, addr 
+	  			FROM (	SELECT user_id , user_name, addr, role 
 						FROM users
 							<if test="searchCondition != null">
 								<where>
@@ -101,7 +108,7 @@
 	<!-- SQL : SELECT ROW Count -->	 
 	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*)
-	  	FROM (	SELECT user_id , user_name, addr
+	  	FROM (	SELECT user_id , user_name, addr, role
 				FROM users
 					<if test="searchCondition != null">
 						<where>

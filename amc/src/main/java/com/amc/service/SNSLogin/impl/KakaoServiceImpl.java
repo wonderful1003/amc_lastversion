@@ -34,7 +34,7 @@ public class KakaoServiceImpl implements KakaoService{
 	//Rest Api KEY
 	private static final String RestApiKey = "23cb6e93a0ebb38a3ee3f59ebebe33a7";
 	//redirect_uri
-	private static final String Redirect_URL= "http://127.0.0.1:8080/user/kakaologin";
+	private static final String Redirect_URL= "http://127.0.0.1:8080/user/json/kakaologin";
 	//Host
 	private static final String keyHost = "https://kauth.kakao.com";
 	
@@ -47,7 +47,7 @@ public class KakaoServiceImpl implements KakaoService{
 	@Override
 	public String getCode() throws Exception {
 		// TODO  : 코드받기
-		System.out.println("UserServiceImpl 의 kakao get Code 메소드");
+		System.out.println("KakaoserviceImpl 의 kakao get Code 메소드");
 		String getcode = keyHost;
 		getcode += "/oauth/authorize?client_id="+RestApiKey;
 		getcode += "&redirect_uri="+Redirect_URL;

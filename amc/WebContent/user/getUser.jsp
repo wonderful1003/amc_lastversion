@@ -24,6 +24,9 @@
    
     <!-- Bootstrap Dropdown Hover JS -->
    <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
+   <!-- sweetalert -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.1/sweetalert2.all.min.js"></script>
+	
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
@@ -47,12 +50,41 @@
 		 $(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			 $( "#delete" ).on("click" , function() {
-				 alert("getuser 회원탈퇴 고고");
-				 self.location = "/user/deleteUser"
-				 /* $(self.location).attr("method" , "GET").attr("action" , "/user/deleteUser").submit(); */
+				 swal({
+					  title: '회원탈퇴를 진행하시겠습니까?',
+					  text: "'예'를 누르시면 회원탈퇴 페이지로 이동합니다!",
+					  type: 'warning',
+					  showCancelButton: true,
+					  confirmButtonColor: '#3085d6',
+					  cancelButtonColor: '#d33',
+					  confirmButtonText: 'YES'
+					}).then(function () {
+					  swal({	   
+						  type: 'success',
+						  title: '회원탈퇴 페이지로 이동합니다.',
+						  showConfirmButton: false,
+						  timer: 1000
+						})
+						delay()
+					})
+
 			 });
 		 });
 
+		 function sleep(num){	//[1/1000초]
+			 var now = new Date();
+			   var stop = now.getTime() + num;
+			   while(true){
+				 now = new Date();
+				 if(now.getTime() > stop)return;
+			   }
+		}
+		
+		function delay(){
+			setTimeout(function move(){
+				self.location = "/user/deleteUser";
+			},1500) 
+		}
 		
 	</script>
 	
@@ -87,12 +119,17 @@
 		<hr/>
 		
 		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>주소</strong></div>
-			<div class="col-xs-8 col-md-4">${user.addr}</div>
+	  		<div class="col-xs-4 col-md-2 "><strong>성별</strong></div>
+				<div class="col-xs-8 col-md-4">${user.gender}</div> 
 		</div>
 		
 		<hr/>
 		
+		<div class="row">
+	  		<div class="col-xs-4 col-md-2 "><strong>주소</strong></div>
+			<div class="col-xs-8 col-md-4">${user.addr}</div>
+		</div>
+		<hr/>
 		<div class="row">
 	  		<div class="col-xs-4 col-md-2 "><strong>상세주소</strong></div>
 			<div class="col-xs-8 col-md-4">${user.addrDetail}</div>

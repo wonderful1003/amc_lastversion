@@ -127,5 +127,6 @@
 			<value>C:\Users\bang\git\amc\amc\WebContent\images\uploadFiles\</value>
 		</constructor-arg>
 	</bean>
+	
     
 </beans>

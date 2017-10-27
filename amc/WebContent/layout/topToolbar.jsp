@@ -25,7 +25,7 @@
 	<!--  해림 CDN 순서변경-->
 	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->	
-	<link rel="stylesheet" href="/resources/demos/style.css">
+	<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >

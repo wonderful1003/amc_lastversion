@@ -75,11 +75,13 @@ public class ProductController {
 	}
 	
 	@RequestMapping( value="deleteProduct", method=RequestMethod.GET )
-	public String deleteProduct( @RequestParam("prodNo") int prodNo,
-									@RequestParam(value="menu",defaultValue="") String menu , 
+	public String deleteProduct( @RequestParam("prodNo") int prodNo,									
 									Model model ) throws Exception{
 		System.out.println("/product/deleteProduct : GET");
 		productService.deleteProduct(prodNo);
+		
+		model.addAttribute("menu", "manage");
+		
 		return "forward:/product/getGoodsList";
 	}
 	

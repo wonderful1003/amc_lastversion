@@ -36,7 +36,7 @@
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
-	
+		var check = false;
 		//============= "가입"  Event 연결 =============
 		 $(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
@@ -46,7 +46,7 @@
 		});	
 		
 		
-		//============= "취소"  Event 처리 및  연결 =============
+/* 		//============= "취소"  Event 처리 및  연결 =============
 		$(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$("a[href='#' ]").on("click" , function() {
@@ -54,37 +54,52 @@
 			});
 		});	
 	
-		
+ */		
 		function fncAddUser() {
 			
 			var id=$("input[name='userId']").val();
 			var pw=$("input[name='password']").val();
 			var pw_confirm=$("input[name='password2']").val();
 			var name=$("input[name='userName']").val();
-			
+			var birth=$("input[name='birth']").val();
+			var check=true
 			
 			if(id == null || id.length <1){
 				alert("아이디는 반드시 입력하셔야 합니다.");
+				/* return check=false; */
+				return;
+			}
+			if(id != null && (id.indexOf('@') < 1 || id.indexOf('.') == -1) ){
+				alert("이메일형식이아닙니다.");
 				return;
 			}
 			if(pw == null || pw.length <1){
 				alert("패스워드는  반드시 입력하셔야 합니다.");
-				return;
+				/* return check=false; */
+				return; 
 			}
 			if(pw_confirm == null || pw_confirm.length <1){
 				alert("패스워드 확인은  반드시 입력하셔야 합니다.");
+				/* return check=false; */
 				return;
 			}
 			if(name == null || name.length <1){
 				alert("이름은  반드시 입력하셔야 합니다.");
+				/* return check=false; */
 				return;
 			}
-			
 			if( pw != pw_confirm ) {				
 				alert("비밀번호 확인이 일치하지 않습니다.");
 				$("input:text[name='password2']").focus();
+				/* return check=false; */
+				return;
+			}			
+			if( birth == null || birth.length <1 ) {				
+				alert("생년월일은 반드시 입력해야합니다..");				
+				/* return check=false; */
 				return;
 			}
+			
 				
 			var value = "";	
 			if( $("input:text[name='phone2']").val() != ""  &&  $("input:text[name='phone3']").val() != "") {
@@ -93,30 +108,51 @@
 									+ $("input[name='phone3']").val();
 			}
 
-			$("input:hidden[name='phone']").val( value );
+			/* $("input:hidden[name='phone']").val( value ); */
 			
-			$("form").attr("method" , "POST").attr("action" , "/user/addUser").submit();
+			if(check == true){
+				alert('회원가입을 축하합니다.');
+				$("form").attr("method" , "POST").attr("action" , "/user/addUser").submit();
+			}
+			
+			/* $("form").attr("method" , "POST").attr("action" , "/user/addUser").submit(); */
 		}
 		
+ 
+/*  		$(function(){
+ 			$('#email_select').change(function(){
+ 				if($('#email_select').val() == "1"){
+ 					$('#last_email').val(""); //값 초기화
+ 					$('#last_email').prop("readonly",false); //활성화
+ 				} else if($('#email_select').val()==""){
+ 					$('#last_email').val(""); //값 초기화
+ 					$('#last_email').prop("readonly",true); //textBox 비활성화
+ 				} else {
+ 					$('#last_email').val($('#email_select').val()); //선택값 입력
+ 					$('#last_email').prop("readonly",true); //비활성화
+ 				}
+ 			});
+ 		});
+ */ 	
+ 
  
 		//==>""이메일" 유효성Check / ID중복확인" Event 처리 및 연결
 		$(function(){					
 			$('#userId').bind('keyup', function(){
 				var userId = $(this).val().trim();
-				
-				if(userId != "" && (userId.indexOf('@') < 1 || userId.indexOf('.') == -1) ){
-					$('span.help-block').html('이메일형식이아닙니다.').css('color','blue');
-			    }else{
+				var tempId = userId.split(".");
+                console.log("userId :: " + userId);
+                console.log("tempId :: " + tempId);
 					$.ajax({
-						url : 'json/checkDuplication/'+userId,
+						url : 'json/checkDuplication/'+tempId,
 						method : 'get',
-						async : 'true',
-						dataType : 'json',
-						headers : {
+						dataType : 'json', 
+						 headers : {
 							'Accept' : 'application/json',
 							'Content-Type' : 'application/json'
-						},
-						success : function(JSONData , status){					
+						}, 
+						success : function(JSONData , status){
+							/* alert("JSONData" + JSONData); */
 							if(JSONData){
 								$('span.help-block').html('사용가능한 아이디 입니다.').css('color','blue');
 								check = true;
@@ -130,7 +166,7 @@
 					if(userId == ''){
 						$('span.help-block').html('');
 					}
-			     } 
+			      
 			});
 		});
 			
@@ -224,11 +260,21 @@
 		</div>
 		<!-- form Start /////////////////////////////////////-->
 		<form class="form-horizontal">
-		
+			
 		  <div class="form-group">
 		    <label for="userId" class="col-sm-3 control-label">아 이 디</label>
 		    <div class="col-sm-3">
-		      <input type="text" class="form-control" id="userId" name="userId" placeholder="이메일ID입력" aria-describedby="helpBlock" >		       	      	
+		   	 <input type="text" class="form-control" value="${email}" id="userId" name="userId" placeholder="ID입력" aria-describedby="helpBlock" readonly/>
+		    <!--  <input type="text" class="form-control" id="first_email" placeholder="ID입력" aria-describedby="helpBlock" />
+		       @<input type="text" class="form-control" id="last_email" placeholder="이메일입력" aria-describedby="helpBlock" />
+		    	<select id="email_select">
+		    		<option value="" selected>::선택하기::</option>
+		    		<option value="naver.com">naver.com</option>
+		    		<option value="nate.com">nate.com</option>
+		    		<option value="daum.net">daum.net</option>
+		    		<option value="gmail.com">gmail.com</option>
+		    		<option value="1">::직접입력::</option>
+		    	</select> -->
 		    </div>	
 		    <span id="helpBlock" class="help-block col-sm-6"></span>		    
 		  </div>
@@ -330,7 +376,6 @@
 		    <div class="col-sm-2">
 		      <input type="text" class="form-control" id="phone3" name="phone3" placeholder="번호">
 		    </div>
-		    <input type="hidden" name="phone"  />
 		  </div>
 		  		  
 		  <div class="form-group">

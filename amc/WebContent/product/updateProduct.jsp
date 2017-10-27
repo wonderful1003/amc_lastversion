@@ -15,7 +15,7 @@
 	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<link rel="stylesheet" href="/resources/demos/style.css">
+	<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -132,7 +132,7 @@
 			$('button:contains("삭제하기")').bind('click',function(){
 				alert("${product.prodNo }를 정말 삭제하시겠습니까?");
 				/* $('form.update-product').attr('method','post').attr('action','deleteProduct').submit(); */
-				self.location.href = '/product/deleteProduct?prodNo='+$('input:hidden[name="prodNo"]').val();
+				self.location.href = '/product/deleteProduct?prodNo='+$('input:hidden[name="prodNo"]').val()+"&menu=manage";
 			});
  
 

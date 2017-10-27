@@ -27,8 +27,12 @@ public interface UserService {
 	
 	// 회원 ID 중복 확인	
 	public boolean checkDuplication(String userId) throws Exception;
+	
 	public User checkUserId(String userId) throws Exception;	
 	public boolean checkId(String userId) throws Exception;
+	
+	// 회원탈퇴 유저 확인
+	public String deleteCheck(User user) throws Exception;
 	
 	//==> 회원관리에서 서비스할 내용 추상화/캡슐화한 Service  Interface Definition  
 	public boolean send(String subject, String text, String from, String to, String filePath);
